@@ -12,4 +12,4 @@ __pycache__/
 *.sqlite3.bak
 *.egg-info/
 
-sas/.coverage
+.coverage

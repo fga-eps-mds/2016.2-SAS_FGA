@@ -1,8 +1,10 @@
-nguage: python
+language: python
 
 python:
   - "3.4"
   - "3.5"
+
+sudo: required 
 
 # command to install dependencies
 install:
@@ -11,4 +13,7 @@ install:
     
 # command to run tests
 script:
-    - mkdir -p bower
+    - coverage run sas/manage.py test
+
+after_success:
+  coveralls

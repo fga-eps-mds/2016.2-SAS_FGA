@@ -1,10 +1,13 @@
 aloe==0.1.8
 blessings==1.6
 coverage==4.2
+coveralls==1.1
 Django==1.10
 django-nose==1.4.4
+docopt==0.6.2
 future==0.15.2
 gherkin-official==4.0.0
 nose==1.3.7
 repoze.lru==0.6
+requests==2.11.1
 selenium==2.53.6
