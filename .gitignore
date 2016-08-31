@@ -1,0 +1,15 @@
+db/
+
+#cached builds
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.dll
+*.egg
+*.sqlite3
+*.sqlite3.bak
+*.egg-info/
+
+sas/.coverage
