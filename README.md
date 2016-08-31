@@ -5,6 +5,7 @@ alunos do curso de Engenharia de Software que frequentam as aulas de
 MDS e GPP.
 
 O status do projeto pode ser acompanhando pelos seguintes indicadores:
+
 |Brach|Travis|Coveralls|
 |-----|------|---------|
 |Master | [![Build Status](https://travis-ci.org/fga-gpp-mds/2016.2-SAS_FGA.svg?branch=master)](https://travis-ci.org/fga-gpp-mds/2016.2-SAS_FGA) | [![Coverage Status](https://coveralls.io/repos/github/fga-gpp-mds/2016.2-SAS_FGA/badge.svg?branch=master)](https://coveralls.io/github/fga-gpp-mds/2016.2-SAS_FGA?branch=master)|
