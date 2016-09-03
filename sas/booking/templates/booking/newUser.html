@@ -1,0 +1,17 @@
+{% load bootstrap3 %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+<form method = 'POST'>
+Hello
+{% csrf_token %}
+{% bootstrap_form form_user %}
+{% buttons %}
+<button type = 'submit'>Enviar</button>
+{% endbuttons %}
+</form>
+</body>
+</html>>

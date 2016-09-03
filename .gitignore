@@ -13,3 +13,11 @@ __pycache__/
 *.egg-info/
 
 .coverage
+/sas/bin
+/sas/lib64
+/sas/lib
+/sas/man
+/sas/share/
+/sas/pyvenv.cfg
+/sas/booking/migrations
+/sas/pip-selfcheck.json
