@@ -1,13 +1,15 @@
+from django.utils.translation import ugettext as _
 from django.forms import ModelForm
 from .models import UserProfile
 from django import forms
 from django.contrib.auth.models import User
+
 class UserForm(ModelForm):
-  name = forms.CharField(label = 'Nome:')
-  username = forms.CharField(label = 'Usurário:')
-  email = forms.CharField(label = 'Email:')
-  password = forms.CharField(label = 'Senha:', widget = forms.PasswordInput())
-  repeat_password = forms.CharField(label = 'Repetir Senha:', widget = forms.PasswordInput())
+  name = forms.CharField(label = _('Name'))
+  username = forms.CharField(label = _('Username'))
+  email = forms.CharField(label = _('Email'))
+  password = forms.CharField(label = _('Password'), widget = forms.PasswordInput())
+  repeat_password = forms.CharField(label = _('Repeat Password'), widget = forms.PasswordInput())
 
   def save(self, force_insert=False, force_update=False, commit=True):
     userprofile = super(UserForm, self).save(commit=False)

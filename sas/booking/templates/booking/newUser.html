@@ -1,17 +1,13 @@
+{% extends 'booking/base.html' %} 
 {% load bootstrap3 %}
-<!DOCTYPE html>
-<html>
-<head>
-  <title></title>
-</head>
-<body>
-<form method = 'POST'>
-Hello
-{% csrf_token %}
-{% bootstrap_form form_user %}
-{% buttons %}
-<button type = 'submit'>Enviar</button>
-{% endbuttons %}
-</form>
-</body>
-</html>>
+{% block content %}
+  {% bootstrap_form_errors form_user %}	
+  <form method = 'POST'>
+  {% csrf_token %}
+  {% bootstrap_form form_user %}
+  {% buttons %}
+    <button type = 'submit'>Enviar</button>
+  {% endbuttons %}
+  </form>
+{% endblock %}
+

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 	'django_nose',
     'booking',
     'bootstrap3',
+    'aloe_django',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -129,5 +131,5 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # Tell nose to measure coverage on the 'foo' and 'bar' apps
 NOSE_ARGS = [
     '--with-coverage',
-	'--cover-package=sas',
+	'--cover-package=sas,booking',
 ]
