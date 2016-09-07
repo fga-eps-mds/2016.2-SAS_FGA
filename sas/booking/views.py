@@ -35,3 +35,6 @@ def login_user ( request) :
 def logout_user(request):
    logout(request)
    return render(request,'logout/index.html',{})
+
+def delete_user(request, key):
+    User.objects.get(key = key).delete()
