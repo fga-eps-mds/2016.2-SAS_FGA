@@ -1,0 +1,12 @@
+{% extends 'booking/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+  <form method = 'POST'>
+  {% csrf_token %}
+  {% buttons %}
+
+    <button type = 'submit' name="delete">Deletar</button>
+    <button type = 'submit' name="cancel">Cancelar</button>
+  {% endbuttons %}
+  </form>
+{% endblock %}

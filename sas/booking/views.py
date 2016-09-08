@@ -37,4 +37,10 @@ def logout_user(request):
    return render(request,'logout/index.html',{})
 
 def delete_user(request, key):
-    User.objects.get(key = key).delete()
+     if request.POST['delete']:
+         User.objects.get(key = key).delete()
+         return render(request, 'booking/index.html', {})
+     elif request.POST['cancel']:
+        return render(request, 'booking/index.html',{})
+     else:
+        return render(request, 'booking/index.html',{})
