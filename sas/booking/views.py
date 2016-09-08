@@ -26,7 +26,7 @@ def login_user ( request) :
         user = authenticate ( username=username ,password=password)
         if user is not None:
             login ( request , user) ;
-            return render (request ,'booking/index.html',{})
+            return render (request ,'login/index.html',{})
         else:
             return render (request ,'login/login.html',{})
     else:

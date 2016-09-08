@@ -33,11 +33,3 @@ class UserForm(ModelForm):
   class Meta:
     model = UserProfile
     exclude = ['user']
-
-
-# class LoginForm(ModelForm):
-#     username = forms.CharField(label = _('username'))
-#     password = forms.CharField(label = _('password'), widget = forms.PasswordInput())
-#     def __init__(self, arg):
-#         super(LoginForm, self).__init__()
-#         self.arg = arg
