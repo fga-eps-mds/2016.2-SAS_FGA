@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render,redirect
-from .forms import UserForm
+from .forms import NewUserForm
 from .models import UserProfile
 
 def index(request):
@@ -13,9 +13,11 @@ def new_user(request):
       return render(request, 'booking/newUser.html', {'form_user':form})
     else:
       user_profile = form.save()
-      return render(request,'booking/index.html',{})
+      return render(request,'booking/listuser.html',{})
   else:
-    form = UserForm()
+    form = NewUserForm()
     return render(request, 'booking/newUser.html', {'form_user':form})
 
-
+def list_user(request):
+  users = UserProfile.objects.all()
+  return render(request,'booking/listUser.html',{'users':users})

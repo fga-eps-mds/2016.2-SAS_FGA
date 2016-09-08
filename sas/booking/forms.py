@@ -4,7 +4,7 @@ from .models import UserProfile
 from django import forms
 from django.contrib.auth.models import User
 
-class UserForm(ModelForm):
+class NewUserForm(ModelForm):
   name = forms.CharField(label = _('Name'))
   username = forms.CharField(label = _('Username'))
   email = forms.CharField(label = _('Email'))
@@ -12,9 +12,9 @@ class UserForm(ModelForm):
   repeat_password = forms.CharField(label = _('Repeat Password'), widget = forms.PasswordInput())
 
   def save(self, force_insert=False, force_update=False, commit=True):
-    userprofile = super(UserForm, self).save(commit=False)
+    userprofile = super(NewUserForm, self).save(commit=False)
     user = User()
-    user.name = self.cleaned_data.get('name')
+    user.first_name = self.cleaned_data.get('name')
     user.email = self.cleaned_data.get('email')
     user.username = self.cleaned_data.get('username')
     user.set_password(self.cleaned_data.get('password'))
@@ -27,9 +27,10 @@ class UserForm(ModelForm):
     return userprofile
 
   def clean(self):
-    cleaned_data = super(UserForm,self).clean()
+    cleaned_data = super(NewUserForm,self).clean()
     if cleaned_data.get('password') != cleaned_data.get('repeat_password'):
         self.add_error('password','Senhas não conferem.')
   class Meta:
     model = UserProfile
     exclude = ['user']
+  
