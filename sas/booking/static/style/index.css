@@ -72,7 +72,7 @@ header .intro-text .name {
 /* Main content */
 .page-content {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -103,7 +103,8 @@ header {
     color: #2C3E50;
     text-align: center;
     background: #F5F5F5;
-    min-height: 100vh;
+    height: 80vh;
+    overflow: hidden;
 }
 
 header img {
@@ -118,4 +119,31 @@ header .intro-text .name {
 
 header .intro-text .skills {
     font-size: 1.5em;
+}
+
+/* Footer */
+footer {
+    color: #FFF;
+    height: 20vh;
+}
+
+footer h3 {
+    margin-bottom: 1em;
+}
+
+footer .footer-above {
+    padding-top: 1.5em;
+    background-color: #222222;
+}
+
+footer .footer-above strong {
+    color: #5CB85C;
+}
+
+footer .footer-col {
+    margin-bottom: 1.5em;
+}
+
+footer .footer-col img {
+    margin-top: 2em;
 }
