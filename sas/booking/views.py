@@ -14,4 +14,5 @@ def new_user(request):
     form = UserForm()
     return render(request, 'booking/newUser.html', {'form_user':form})
 
-
+def index(request):
+    return render(request, 'booking/index.html')
