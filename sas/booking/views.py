@@ -8,12 +8,12 @@ def index(request):
 
 def new_user(request):
   if request.method == "POST":
-    form = UserForm(request.POST,UserProfile)
+    form = NewUserForm(request.POST,UserProfile)
     if not(form.is_valid()):
       return render(request, 'booking/newUser.html', {'form_user':form})
     else:
       user_profile = form.save()
-      return render(request,'booking/listuser.html',{})
+      return render(request,'booking/index.html',{})
   else:
     form = NewUserForm()
     return render(request, 'booking/newUser.html', {'form_user':form})
