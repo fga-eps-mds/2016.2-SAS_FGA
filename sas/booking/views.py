@@ -4,20 +4,23 @@ from .forms import NewUserForm
 from .models import UserProfile
 
 def index(request):
-  return render(request,'booking/index.html',{})
+    return render(request,'booking/index.html',{})
 
 def new_user(request):
-  if request.method == "POST":
-    form = NewUserForm(request.POST,UserProfile)
-    if not(form.is_valid()):
-      return render(request, 'booking/newUser.html', {'form_user':form})
+    if request.method == "POST":
+      form = NewUserForm(request.POST,UserProfile)
+      if not(form.is_valid()):
+        return render(request, 'booking/newUser.html', {'form_user':form})
+      else:
+        user_profile = form.save()
+        return render(request,'booking/index.html',{})
     else:
-      user_profile = form.save()
-      return render(request,'booking/index.html',{})
-  else:
-    form = NewUserForm()
-    return render(request, 'booking/newUser.html', {'form_user':form})
+      form = NewUserForm()
+      return render(request, 'booking/newUser.html', {'form_user':form})
 
 def list_user(request):
-  users = UserProfile.objects.all()
-  return render(request,'booking/listUser.html',{'users':users})
+    users = UserProfile.objects.all()
+    return render(request,'booking/listUser.html',{'users':users})
+
+def edit_user(request):
+    return render(request,'booking/editUser.html',{})    
