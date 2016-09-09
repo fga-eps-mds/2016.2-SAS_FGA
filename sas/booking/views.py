@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render,redirect,get_object_or_404
+from django.views.generic.edit import UpdateView
 from .forms import NewUserForm
 from .models import UserProfile
 
@@ -26,7 +27,7 @@ def edit_user(request,id):
     user = get_object_or_404(UserProfile, id=id)
 
     if request.method == "POST":
-      form = NewUserForm(request.POST,UserProfile)
+      form = NewUserForm(request.POST,instance=user)
       if not(form.is_valid()):
         return render(request, 'booking/newUser.html', {'form_user':form})
       else:
@@ -34,4 +35,4 @@ def edit_user(request,id):
         return render(request,'booking/index.html',{})
     else:
       form = NewUserForm(initial={'name':user.user.first_name,'username':user.user.username,'email':user.user.email}, instance = user)
-      return render(request, 'booking/newUser.html', {'form_user':form})    
+      return render(request, 'booking/newUser.html', {'form_user':form})
