@@ -14,7 +14,55 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
 }
 
+.page-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
+hr.star-light {
+    padding: 0;
+    border: none;
+    border-color: #41733C !important;
+    border-top: solid 5px;
+    text-align: center;
+    max-width: 40%;
+    margin: 5em auto 5em;
+}
+
+hr.star-light:after {
+    content: "\f005";
+    font-family: FontAwesome;
+    display: inline-block;
+    position: relative;
+    top: -.8em;
+    font-size: 2em;
+    padding: 0 .25em;
+    background-color: #41733C;
+    color: #FFF;
+}
+
+header {
+    color: #2C3E50;
+    text-align: center;
+    background: #F5F5F5;
+    min-height: 100vh;
+}
+
+header img {
+    display: block;
+    margin: 0 auto 20px;
+}
+
+header .intro-text .name {
+    font-weight: bold;
+    font-size: 4em;
+}
+
+header .intro-text .skills {
+    font-size: 1.5em;
+}
 
 .navbar-custom,
 header .intro-text .name {
