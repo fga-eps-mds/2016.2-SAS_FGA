@@ -4,14 +4,31 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+html, body {
+    height:100%;
+}
+
 body {
     font-family: Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    position: relative;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-transform: uppercase;
     font-weight: bold;
+}
+
+.content {
+    min-height: 100%;
+    position: relative;
+    width: 100%;
 }
 
 /* Navigation */
@@ -21,7 +38,22 @@ header .intro-text .name {
     text-transform: uppercase;
 }
 
-.nav li a:hover {
+.navbar-nav li a {
+    color: #FFF;
+}
+
+.navbar-nav li a:hover {
+    background-color: #2C3E50;
+    color: #449d44;
+}
+
+.navbar-nav li a:focus,
+.navbar-nav li a:active {
+    background-color: #2C3E50;
+    color: #FFF;
+}
+
+.nav li .btn-success:hover {
     background-color: #449d44;
 }
 
@@ -124,7 +156,9 @@ header .intro-text .skills {
 /* Footer */
 footer {
     color: #FFF;
-    height: 20vh;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
 }
 
 footer h3 {
@@ -145,5 +179,5 @@ footer .footer-col {
 }
 
 footer .footer-col img {
-    margin-top: 2em;
+    margin-bottom: 0.7em;
 }
