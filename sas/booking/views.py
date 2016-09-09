@@ -1,5 +1,5 @@
 from django.utils.translation import ugettext as _
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .forms import NewUserForm
 from .models import UserProfile
 
@@ -22,5 +22,6 @@ def list_user(request):
     users = UserProfile.objects.all()
     return render(request,'booking/listUser.html',{'users':users})
 
-def edit_user(request):
-    return render(request,'booking/editUser.html',{})    
+def edit_user(request,id):
+    user = get_object_or_404(UserProfile, id=id)
+    return render(request,'booking/editUser.html',{'user':user})    

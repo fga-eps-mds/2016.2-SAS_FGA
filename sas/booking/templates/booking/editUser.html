@@ -1,5 +1,17 @@
-{% extends 'booking/base.html' %}
+{% extends 'booking/base.html' %} 
+{% load bootstrap3 %}
 {% block content %}
-<h1>Editing User</h1>
+	<h1>Editing User</h1>  
+  	<table border="1">
+  		<tr>
+    		<th>Matricula</th>
+    		<th>Username</th> 
+  		</tr>	
+		
+		<tr>
+			<td>{{user.registration_number}}</td>
+			<td>{{user.user.username}}</td>
+		</tr>
 
+	</table>
 {% endblock %}
