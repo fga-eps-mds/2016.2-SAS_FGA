@@ -2,16 +2,12 @@
 {% load bootstrap3 %}
 {% block content %}
 	<h1>Editing User</h1>  
-  	<table border="1">
-  		<tr>
-    		<th>Matricula</th>
-    		<th>Username</th> 
-  		</tr>	
-		
-		<tr>
-			<td>{{user.registration_number}}</td>
-			<td>{{user.user.username}}</td>
-		</tr>
-
-	</table>
+  {% bootstrap_form_errors form_user %}	
+  <form method = 'POST'>
+  {% csrf_token %}
+  {% bootstrap_form form_user %}
+  {% buttons %}
+    <button type = 'submit'>Enviar</button>
+  {% endbuttons %}
+  </form>
 {% endblock %}

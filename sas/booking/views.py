@@ -24,4 +24,14 @@ def list_user(request):
 
 def edit_user(request,id):
     user = get_object_or_404(UserProfile, id=id)
-    return render(request,'booking/editUser.html',{'user':user})    
+
+    if request.method == "POST":
+      form = NewUserForm(request.POST,UserProfile)
+      if not(form.is_valid()):
+        return render(request, 'booking/newUser.html', {'form_user':form})
+      else:
+        user_profile = form.save()
+        return render(request,'booking/index.html',{})
+    else:
+      form = NewUserForm()
+      return render(request, 'booking/newUser.html', {'form_user':form})    
