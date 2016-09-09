@@ -33,5 +33,5 @@ def edit_user(request,id):
         user_profile = form.save()
         return render(request,'booking/index.html',{})
     else:
-      form = NewUserForm()
+      form = NewUserForm(initial={'name':user.user.first_name,'username':user.user.username,'email':user.user.email}, instance = user)
       return render(request, 'booking/newUser.html', {'form_user':form})    
