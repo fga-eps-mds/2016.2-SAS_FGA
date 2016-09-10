@@ -105,6 +105,27 @@ header .intro-text .name {
     }
 }
 
+/* Modal */
+.modal-col {
+    margin-top: 2em;
+    margin-right: 1.5em;
+    width: 48%;
+}
+
+.modal-col:last-child {
+    margin-right: 0;
+}
+
+.forgot-password {
+    text-align: center;
+    padding: 1em;
+}
+
+
+.list-unstyled li span {
+    padding-right: 1em;
+}
+
 /* Main content */
 .page-content {
     position: absolute;
