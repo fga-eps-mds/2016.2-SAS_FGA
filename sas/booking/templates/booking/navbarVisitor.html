@@ -1,0 +1,40 @@
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+
+<!DOCTYPE html>
+<html>
+{%  block head %}
+{% endblock %}
+
+<body>
+ <!-- Navigation -->
+ <div class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav">
+                <li><a href="/">Início</a></li>
+                <li><a href="#">Espaços</a></li>
+                <li><a href="#">Reservas</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+            <ul class="nav navbar-nav pull-right">
+                <li><a class="btn btn-success" data-toggle="modal" href="#sign">Quero Entrar</a></li>
+            </ul>
+        </div>
+    </div>
+  </div>
+</body>
+
+{% block body %}
+{% endblock %}
+
+</html>
