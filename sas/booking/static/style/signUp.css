@@ -51,7 +51,6 @@ hr.star-light:after {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
-  margin-top: 2em;
 }
 
 .form-horizontal {
@@ -60,6 +59,7 @@ hr.star-light:after {
 }
 
 .btn-block {
-  margin: auto;
+  background-color: #2C3E50;
+  margin: 1em auto;
   width: 30%;
 }
