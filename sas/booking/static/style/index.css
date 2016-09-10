@@ -121,9 +121,13 @@ header .intro-text .name {
     padding: 1em;
 }
 
-
 .list-unstyled li span {
     padding-right: 1em;
+}
+
+.btn-block {
+    margin: auto;
+    width: 85%;
 }
 
 /* Main content */
