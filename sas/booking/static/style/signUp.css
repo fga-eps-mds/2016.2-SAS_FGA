@@ -29,7 +29,7 @@ hr.star-light {
     border-color: #41733C !important;
     border-top: solid 5px;
     text-align: center;
-    max-width: 40%;
+    max-width: 20%;
     margin: -6em auto;
 }
 
@@ -39,7 +39,7 @@ hr.star-light:after {
     display: inline-block;
     position: relative;
     top: -.8em;
-    font-size: 2em;
+    font-size: 1.5em;
     padding: 0 .25em;
     background-color: #41733C;
     color: #FFF;

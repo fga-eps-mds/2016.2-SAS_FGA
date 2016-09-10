@@ -1,4 +1,4 @@
-{% extends 'booking/navbarVisitor.html' %}
+{% extends 'booking/baseVisitor.html' %}
 
 {% load bootstrap3 %}
 {% bootstrap_css %}
@@ -11,7 +11,7 @@
         <title>SAS - UnB</title>
 
         {% load staticfiles %}
-        <link rel="stylesheet" type="text/css" href="{% static 'style/navigation.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'style/baseVisitor.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'style/signUp.css' %}" />
     {% endblock %}
 {% endblock %}
@@ -28,5 +28,8 @@
             {% endbuttons %}
         </form>
     </div>
+{% endblock %}
+
+{% block footer %}
 {% endblock %}
 </html>

@@ -90,3 +90,32 @@ body {
         font-size: 1.5em
     }
 }
+
+/* Footer */
+footer {
+    color: #FFF;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+}
+
+footer h3 {
+    margin-bottom: 1em;
+}
+
+footer .footer-above {
+    padding-top: 1.5em;
+    background-color: #222222;
+}
+
+footer .footer-above strong {
+    color: #5CB85C;
+}
+
+footer .footer-col {
+    margin-bottom: 1.5em;
+}
+
+footer .footer-col img {
+    margin-bottom: 0.7em;
+}
