@@ -53,8 +53,12 @@ header .intro-text .name {
     color: #FFF;
 }
 
-.nav li .btn-success:hover {
+.nav li .btn-success:hover,
+.nav li .btn-success:focus,
+.nav li .btn-success:active {
     background-color: #449d44;
+    color: #FFF;
+    outline: 0;
 }
 
 .navbar-custom {

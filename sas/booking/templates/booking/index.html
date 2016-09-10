@@ -8,6 +8,8 @@
 
         {% load staticfiles %}
         <link rel="stylesheet" type="text/css" href="{% static 'style/index.css' %}" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     {% endblock %}
 {% endblock %}
 
@@ -33,10 +35,31 @@
                     <li><a href="#">FAQ</a></li>
                 </ul>
                 <ul class="nav navbar-nav pull-right">
-                    <li><a class="btn btn-success" href="#">Quero Entrar</a></li>
+                    <li><a class="btn btn-success" data-toggle="modal" href="#sign">Quero Entrar</a></li>
                 </ul>
             </div>
         </div>
+    </div>
+
+    <!-- Modal -->
+  <div class="modal fade" id="sign" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
     </div>
 
     <!-- Header -->
@@ -60,12 +83,12 @@
         <div class="footer-above">
             <div class="container">
                 <div class="row">
-                    <div class="footer-col col-md-6">
+                    <div class="footer-col col-sm-6">
                         <img src="{% static 'images/fga_logo.png' %}">
                         <p><strong>Universidade de Brasília - Faculdade Gama</strong> <br>
                             Área Especial de Indústria Projeção A Brasília</p>
                     </div>
-                    <div class="footer-col col-md-6">
+                    <div class="footer-col col-sm-6">
                         <h3>Contato</h3>
                         <p>Telefone: (61) 3107-8901</p>
                         Email (secretaria): <a href="mailto:unbgama@unb.br">unbgama@unb.br</a> <br>
