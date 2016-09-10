@@ -23,12 +23,35 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 
+hr.star-light {
+    padding: 0;
+    border: none;
+    border-color: #41733C !important;
+    border-top: solid 5px;
+    text-align: center;
+    max-width: 40%;
+    margin: -6em auto;
+}
+
+hr.star-light:after {
+    content: "\f005";
+    font-family: FontAwesome;
+    display: inline-block;
+    position: relative;
+    top: -.8em;
+    font-size: 2em;
+    padding: 0 .25em;
+    background-color: #41733C;
+    color: #FFF;
+}
+
 .form-content {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
+  margin-top: 2em;
 }
 
 .form-horizontal {

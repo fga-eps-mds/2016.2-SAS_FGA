@@ -1,3 +1,5 @@
+{% extends 'booking/navbarVisitor.html' %}
+
 {% load bootstrap3 %}
 {% bootstrap_css %}
 {% bootstrap_messages %}
@@ -9,12 +11,14 @@
         <title>SAS - UnB</title>
 
         {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'style/navigation.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'style/signUp.css' %}" />
     {% endblock %}
 {% endblock %}
 
 {% block body %}
     <h1 class="content-title">Novo Usuário</h1>
+    <hr class="star-light">
     <div class="form-content">
        <form class="form-horizontal" method = 'POST'>
             {% csrf_token %}
