@@ -4,12 +4,12 @@ from django import forms
 from django.contrib.auth.models import User
 from booking import models
 class UserForm(ModelForm):
-  name = forms.CharField(label = 'Nome:')
-  username = forms.CharField(label = 'Usuario:')
-  email = forms.CharField(label = 'Email:')
-  password = forms.CharField(label = 'Senha:', widget = forms.PasswordInput())
-  repeat_password = forms.CharField(label = 'Repetir Senha:', widget = forms.PasswordInput())
-  registration_number = forms.CharField(label = 'Matricula:')
+  name = forms.CharField(label = 'Nome Completo:', widget=forms.TextInput(attrs={'placeholder': ''}))
+  username = forms.CharField(label = 'Usuario:', widget=forms.TextInput(attrs={'placeholder': ''}))
+  email = forms.CharField(label = 'Email:', widget=forms.TextInput(attrs={'placeholder': ''}))
+  password = forms.CharField(label = 'Senha:', widget = forms.PasswordInput(attrs={'placeholder': ''}))
+  repeat_password = forms.CharField(label = 'Repetir Senha:', widget = forms.PasswordInput(attrs={'placeholder': ''}))
+  registration_number = forms.CharField(label = 'Matricula:', widget=forms.TextInput(attrs={'placeholder': ''}))
   category = forms.ChoiceField(choices = models.CATEGORY, label = 'Categoria:')
 
   def save(self, force_insert=False, force_update=False, commit=True):
