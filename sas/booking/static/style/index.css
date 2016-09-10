@@ -63,6 +63,10 @@ h1, h2, h3, h4, h5, h6 {
     transform: translate(-50%, -50%);
 }
 
+.page-content .name {
+    text-transform: uppercase;
+}
+
 hr.star-light {
     padding: 0;
     border: none;
