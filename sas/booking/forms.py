@@ -2,12 +2,15 @@ from django.forms import ModelForm
 from .models import UserProfile
 from django import forms
 from django.contrib.auth.models import User
+from booking import models
 class UserForm(ModelForm):
   name = forms.CharField(label = 'Nome:')
-  username = forms.CharField(label = 'Usurário:')
+  username = forms.CharField(label = 'Usuario:')
   email = forms.CharField(label = 'Email:')
   password = forms.CharField(label = 'Senha:', widget = forms.PasswordInput())
   repeat_password = forms.CharField(label = 'Repetir Senha:', widget = forms.PasswordInput())
+  registration_number = forms.CharField(label = 'Matricula:')
+  category = forms.ChoiceField(choices = models.CATEGORY, label = 'Categoria:')
 
   def save(self, force_insert=False, force_update=False, commit=True):
     userprofile = super(UserForm, self).save(commit=False)
@@ -27,7 +30,7 @@ class UserForm(ModelForm):
   def clean(self):
     cleaned_data = super(UserForm,self).clean()
     if cleaned_data.get('password') != cleaned_data.get('repeat_password'):
-        self.add_error('password','Senhas não conferem.')
+        self.add_error('password','Senhas nao conferem.')
   class Meta:
     model = UserProfile
     exclude = ['user']

@@ -1,17 +1,28 @@
 {% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+
 <!DOCTYPE html>
 <html>
-<head>
-  <title></title>
-</head>
-<body>
-<form method = 'POST'>
-Hello
-{% csrf_token %}
-{% bootstrap_form form_user %}
-{% buttons %}
-<button type = 'submit'>Enviar</button>
-{% endbuttons %}
-</form>
-</body>
-</html>>
+{% block head %}
+    {% block title %}
+        <title>SAS - UnB</title>
+
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'style/signUp.css' %}" />
+    {% endblock %}
+{% endblock %}
+
+{% block body %}
+    <h1 class="content-title">Novo Usuário</h1>
+    <div class="form-content">
+       <form class="form-horizontal" method = 'POST'>
+            {% csrf_token %}
+            {% bootstrap_form form_user %}
+            {% buttons %}
+            <a class="btn btn-info btn-block" type = 'submit'>Cadastrar</a>
+            {% endbuttons %}
+        </form>
+    </div>
+{% endblock %}
+</html>
