@@ -19,8 +19,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .content-title {
-  padding: 3em;
+  padding: 4em;
   text-align: center;
+  margin: 0;
 }
 
 hr.star-light {
@@ -29,8 +30,8 @@ hr.star-light {
     border-color: #41733C !important;
     border-top: solid 5px;
     text-align: center;
-    max-width: 20%;
-    margin: -6em auto;
+    max-width: 12%;
+    margin: -9em auto;
 }
 
 hr.star-light:after {
@@ -39,7 +40,7 @@ hr.star-light:after {
     display: inline-block;
     position: relative;
     top: -.8em;
-    font-size: 1.5em;
+    font-size: 1em;
     padding: 0 .25em;
     background-color: #41733C;
     color: #FFF;
