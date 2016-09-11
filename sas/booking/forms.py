@@ -33,4 +33,11 @@ class NewUserForm(ModelForm):
   class Meta:
     model = UserProfile
     exclude = ['user']
-  
+
+class EditUserForm (ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'email']        
+
+    
