@@ -27,7 +27,7 @@ def edit_user(request,id=None):
     instance = get_object_or_404(UserProfile, id=id)
     user = instance.user     
     
-    form = EditUserForm(request.POST or None,initial={'name':user.first_name,'email':user.email},instance=user)
+    form = EditUserForm(request.POST or None,initial={'name':user.first_name,'email':user.email,'password':user.password},instance=user)
 
     if form.is_valid():
         instance = form.save(commit=False)
