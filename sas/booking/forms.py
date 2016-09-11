@@ -6,35 +6,73 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 
 class NewUserForm(ModelForm):
-  name = forms.CharField(label = _('Name'))
-  username = forms.CharField(label = _('Username'))
-  email = forms.CharField(label = _('Email'))
-  password = forms.CharField(label = _('Password'), widget = forms.PasswordInput())
-  repeat_password = forms.CharField(label = _('Repeat Password'), widget = forms.PasswordInput())
+    name = forms.CharField(label = _('Name'))
+    username = forms.CharField(label = _('Username'))
+    email = forms.CharField(label = _('Email'))
+    password = forms.CharField(label = _('Password'), widget = forms.PasswordInput())
+    repeat_password = forms.CharField(label = _('Repeat Password'), widget = forms.PasswordInput())
 
-  def save(self, force_insert=False, force_update=False, commit=True):
-    userprofile = super(NewUserForm, self).save(commit=False)
-    user = User()
-    user.first_name = self.cleaned_data.get('name')
-    user.email = self.cleaned_data.get('email')
-    user.username = self.cleaned_data.get('username')
-    user.set_password(self.cleaned_data.get('password'))
-    user.save()
+    def save(self, force_insert=False, force_update=False, commit=True):
+        userprofile = super(NewUserForm, self).save(commit=False)
+        user = User()
+        user.first_name = self.cleaned_data.get('name')
+        user.email = self.cleaned_data.get('email')
+        user.username = self.cleaned_data.get('username')
+        user.set_password(self.cleaned_data.get('password'))
+        user.save()
 
-    userprofile.user = user
-    # do custom stuff
-    if commit:
-        userprofile.save()
-    return userprofile
+        userprofile.user = user
+        # do custom stuff
+        if commit:
+            userprofile.save()
+        return userprofile
 
-  def clean(self):
-    cleaned_data = super(NewUserForm,self).clean()
-    if cleaned_data.get('password') != cleaned_data.get('repeat_password'):
-        self.add_error('password','Senhas não conferem.')
-        self.add_error('repeat_new_password','') 
-  class Meta:
-    model = UserProfile
-    exclude = ['user']
+    def clean_registration_number(self):
+        registration_number = self.cleaned_data.get('registration_number')
+        if not registration_number.isdigit():
+            self.add_error('registration_number','Insira apenas números')
+        return registration_number
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        
+        if name is (None or ''):
+            self.add_error('name','Insira um nome válido!')
+        
+        if ((len(name) < 3) or (len(name) > 30)):
+            self.add_error('name','Nomes entre 3 e 50 caracteres!')       
+        
+        return name
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        
+        if email is (None or ''):
+            self.add_error('email','Email inválido!')
+
+        if not ('@' and '.com') in email :
+            self.add_error('email','Email inválido!')        
+
+        return email
+
+
+    def clean(self):
+        cleaned_data = super(NewUserForm,self).clean()
+        
+        if ((len(cleaned_data.get('password')) < 6) or (len(cleaned_data.get('password')) > 15)):
+            self.add_error('password','Senhas entre 6 e 15 caracteres!')
+            self.add_error('repeat_password','')
+
+        else:    
+            if cleaned_data.get('password') != cleaned_data.get('repeat_password'):
+                self.add_error('password','Senhas não conferem.')
+                self.add_error('repeat_password','')
+
+        return cleaned_data    
+
+    class Meta:
+        model = UserProfile
+        exclude = ['user']
 
 class EditUserForm (ModelForm):
 
