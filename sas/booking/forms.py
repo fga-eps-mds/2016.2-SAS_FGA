@@ -29,7 +29,7 @@ class UserForm(ModelForm):
   def clean(self):
     cleaned_data = super(UserForm,self).clean()
     if cleaned_data.get('password') != cleaned_data.get('repeat_password'):
-        self.add_error('password','Senhas não conferem.')
+        self.add_error('password','Senhas nao conferem.')
   class Meta:
     model = UserProfile
     exclude = ['user']

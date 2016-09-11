@@ -28,8 +28,8 @@ MODLIBS=        $(LOCALMODLIBS) $(BASEMODLIBS)
 VERSION=	3.5
 srcdir=		.
 
-abs_srcdir=	/home/lucas/Documentos/Facul/4_Semestre/MDS/SAS/uc_01_LucasLuis/2016.2-SAS_FGA/Python-3.5.2
-abs_builddir=	/home/lucas/Documentos/Facul/4_Semestre/MDS/SAS/uc_01_LucasLuis/2016.2-SAS_FGA/Python-3.5.2
+abs_srcdir=	/home/luis/Desktop/branch/2016.2-SAS_FGA/Python-3.5.2
+abs_builddir=	/home/luis/Desktop/branch/2016.2-SAS_FGA/Python-3.5.2
 
 
 CC=		gcc -pthread

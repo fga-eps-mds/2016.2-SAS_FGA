@@ -2,7 +2,7 @@ from django.utils.translation import ugettext as _
 from django.shortcuts import render,redirect
 from .forms import UserForm
 from .models import UserProfile
-from django.contrib.auth import authenticate ,login
+from django.contrib.auth import authenticate ,login, logout
 
 def index(request):
   return render(request,'booking/index.html',{})
@@ -31,3 +31,7 @@ def login_user ( request) :
             return render (request ,'login/login.html',{})
     else:
         return render (request ,'login/login.html',{})
+
+def logout_user(request):
+   logout(request)
+   return render(request,'logout/index.html',{})
