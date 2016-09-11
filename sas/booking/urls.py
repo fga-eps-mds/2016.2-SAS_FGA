@@ -6,6 +6,6 @@ urlpatterns = [
     url(r'newuser/', new_user, name = 'newuser'),
     url (r'login/' ,login_user ,name = 'login'),
     url(r'logout/', logout_user, name = 'logout'),
-    url(r'delete/', delete_user, name = 'deleteuser')
+    url(r'delete/(?P<id>\d+/$)', delete_user, name = 'deleteuser')
 
 ]

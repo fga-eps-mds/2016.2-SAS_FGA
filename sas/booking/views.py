@@ -36,11 +36,11 @@ def logout_user(request):
    logout(request)
    return render(request,'logout/index.html',{})
 
-def delete_user(request, key):
+def delete_user(request, id):
      if request.POST['delete']:
-         User.objects.get(key = key).delete()
-         return render(request, 'booking/index.html', {})
+         User.objects.get(pk = id).delete()
+         return render(request, 'booking/deleteSucceeded.html', {})
      elif request.POST['cancel']:
-        return render(request, 'booking/index.html',{})
+        return render(request, 'booking/index.html',{}) # voltar a página de perfil do usuário -> ainda não existe
      else:
         return render(request, 'booking/index.html',{})
