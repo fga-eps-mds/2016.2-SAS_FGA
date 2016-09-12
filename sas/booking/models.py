@@ -9,4 +9,7 @@ class UserProfile(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE)
   category = models.CharField(choices = CATEGORY,max_length = 20)
 
-
+  def save(self,*args,**kwargs):
+    self.user.save()
+    self.user_id = self.user.pk
+    super(UserProfile,self).save(*args,**kwargs)

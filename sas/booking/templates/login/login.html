@@ -3,8 +3,10 @@
 {% block content %}
   <form method = "POST">
   {% csrf_token %}
-  login: <input type="text" name="username"> </br>
-  senha: <input type="password" name="password">
+  {% bootstrap_label "Username"  %}
+   <input name="Username" type="text" name="username"> </br>
+  {% bootstrap_label "Password"  %}
+  <input name="Password" type="password" name="password">
   {% buttons %}
     <button type = 'submit'>Enviar</button>
   {% endbuttons %}

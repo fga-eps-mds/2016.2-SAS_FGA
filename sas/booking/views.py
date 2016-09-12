@@ -21,8 +21,8 @@ def new_user(request):
 
 def login_user ( request) :
     if request.method == "POST":
-        username = request.POST[ 'username'] ;
-        password = request.POST[ 'password'] ;
+        username = request.POST[ 'Username'] ;
+        password = request.POST[ 'Password'] ;
         user = authenticate ( username=username ,password=password)
         if user is not None:
             login ( request , user) ;
