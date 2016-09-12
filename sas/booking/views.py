@@ -32,7 +32,6 @@ def edit_user(request,id=None):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        users = UserProfile.objects.all()
-        return render(request,'booking/listUser.html',{'users':users})
+        return render(request,'booking/index.html',{})
 
     return render(request, 'booking/editUser.html', {"form_user":form})
