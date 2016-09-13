@@ -41,6 +41,6 @@ def delete_user(request, id):
          User.objects.get(pk = id).delete()
          return render(request, 'booking/deleteSucceeded.html', {})
      elif request.POST['cancel']:
-        return render(request, 'booking/listUser.html',{}) 
+        return render(request, 'booking/listUser.html',{})
      else:
         return render(request, 'booking/listUser.html',{})
