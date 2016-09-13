@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from .models import UserProfile
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import check_password
 
 class UserForm(ModelForm):
   name = forms.CharField(label = _('Name'))
@@ -33,3 +34,4 @@ class UserForm(ModelForm):
   class Meta:
     model = UserProfile
     exclude = ['user']
+
