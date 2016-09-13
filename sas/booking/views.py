@@ -2,6 +2,7 @@ from django.utils.translation import ugettext as _
 from django.shortcuts import render,redirect
 from .forms import UserForm
 from .models import UserProfile
+from django.contrib.auth import authenticate ,login, logout
 
 def index(request):
   return render(request,'booking/index.html',{})
@@ -18,4 +19,19 @@ def new_user(request):
     form = UserForm()
     return render(request, 'booking/newUser.html', {'form_user':form})
 
+def login_user ( request) :
+    if request.method == "POST":
+        username = request.POST[ 'Username'] ;
+        password = request.POST[ 'Password'] ;
+        user = authenticate ( username=username ,password=password)
+        if user is not None:
+            login ( request , user) ;
+            return render (request ,'login/index.html',{})
+        else:
+            return render (request ,'login/login.html',{})
+    else:
+        return render (request ,'login/login.html',{})
 
+def logout_user(request):
+   logout(request)
+   return render(request,'logout/index.html',{})

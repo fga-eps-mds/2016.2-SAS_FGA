@@ -1,0 +1,14 @@
+{% extends 'booking/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+  <form method = "POST">
+  {% csrf_token %}
+  {% bootstrap_label "Username"  %}
+   <input name="Username" type="text" name="username"> </br>
+  {% bootstrap_label "Password"  %}
+  <input name="Password" type="password" name="password">
+  {% buttons %}
+    <button type = 'submit'>Enviar</button>
+  {% endbuttons %}
+  </form>
+{% endblock %}
