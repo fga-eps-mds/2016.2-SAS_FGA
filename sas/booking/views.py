@@ -26,11 +26,11 @@ def login_user ( request) :
         user = authenticate ( username=username ,password=password)
         if user is not None:
             login ( request , user) ;
-            return render (request ,'login/index.html',{})
+            return render (request ,'login/myIndex.html',{})
         else:
-            return render (request ,'login/login.html',{})
+            return render (request ,'index#sign.html',{})
     else:
-        return render (request ,'login/login.html',{})
+        return render (request ,'index#sign.html',{})
 
 def logout_user(request):
    logout(request)
