@@ -37,7 +37,7 @@ class BookTime(models.Model):
 	end_date = models.DateField(null=False, blank=False)
 
 class Booking(models.Model):
-	user = models.OneToOneField(UserProfile, related_name="profile_user")
+	email = User.email
 	time = models.OneToOneField(BookTime, related_name="booking_time")
 	place = models.CharField(max_length=50)
 	name = models.CharField(max_length=50)
