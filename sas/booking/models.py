@@ -33,4 +33,10 @@ class BookTime(models.Model):
 	start_hour = models.TimeField(null=False, blank=False)
 	end_hour = models.TimeField(null=False, blank=False)
 	start_date = models.DateField(null=False, blank=False)
-	end_date = models.DateField(null=False, blank=False)	
+	end_date = models.DateField(null=False, blank=False)
+
+class Booking(models.Model):
+	user = models.OneToOneField(UserProfile, related_name="profile_user")
+	time = models.OneToOneField(BookTime, related_name="booking_time")
+	place = models.CharField(max_length=50)
+	name = models.CharField(max_length=50)
