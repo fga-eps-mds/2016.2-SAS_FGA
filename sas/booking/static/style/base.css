@@ -28,6 +28,15 @@ body {
     color: #FFF;
 }
 
+.navbar-nav li .user-menu-info {
+    text-align: center;
+    text-transform: none;
+}
+
+.navbar-nav li .user-menu-info a {
+    color: #000;
+}
+
 .navbar-nav li a:hover,
 .navbar-nav li a:focus,
 .navbar-nav li a:active {
@@ -36,12 +45,25 @@ body {
     color: #FFF;
 }
 
+.navbar-nav li #user-link:hover,
+.navbar-nav li #user-link:focus,
+.navbar-nav li #user-link:active {
+    background-color: #2C3E50;
+    border-bottom: none;
+    color: #FFF;
+}
+
 .nav li .btn-success:hover,
 .nav li .btn-success:focus,
 .nav li .btn-success:active {
     background-color: #449d44;
+    border-bottom: none;
     color: #FFF;
     outline: 0;
+}
+
+.dropdown-menu {
+    width: 100%;
 }
 
 .navbar-custom {
