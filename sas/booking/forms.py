@@ -1,11 +1,13 @@
 from django.utils.translation import ugettext as _
 from django.forms import ModelForm
-from .models import UserProfile
+from .models import UserProfile,Booking,BookTime
 from .models import CATEGORY
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
+from django.utils import timezone
+import datetime
 
 class LoginForm(ModelForm):
 	email = forms.CharField(
@@ -41,6 +43,9 @@ class UserForm(ModelForm):
 	repeat_password = forms.CharField(
 					label=_('Repeat Password:'),
 					required=False,
+					widget=forms.PasswordInput(attrs={'placeholder': ''}))
+	repeat_password = forms.CharField(
+					label=_('Repeat Password:'),
 					widget=forms.PasswordInput(attrs={'placeholder': ''}))
 	registration_number = forms.CharField(
 					label=_('Registration number:'),
@@ -80,3 +85,45 @@ class NewUserForm(UserForm):
 		password2 = cleaned_data.get('repeat_password')
 		if password1 and password2 and password1 != password2:
 			self.add_error('password', _('Passwords do not match'))	
+
+class BookingForm(ModelForm):
+	name = forms.CharField(
+					label=_('Nome:'),
+					widget=forms.TextInput(attrs={'placeholder': ''}))
+	start_hour = forms.TimeField(
+					label=_('Hora inicial:'),
+					widget=forms.widgets.TimeInput)
+	end_hour = forms.TimeField(
+					label=_('Hora final:'),
+					widget=forms.widgets.TimeInput)
+	start_date = forms.DateField(
+					label=_('Data inicial:'),
+					widget=forms.widgets.DateInput)
+	end_date = forms.DateField(
+					label=_('Data final:'),
+					widget=forms.widgets.DateInput)
+	place = forms.CharField(
+					label=_('Sala:'),
+					widget=forms.TextInput(attrs={'placeholder': ''}))
+
+	def save(self, force_insert=False, force_update=False, commit=True):
+		booking = super(BookingForm, self).save(commit=False)
+		booking.email= self.cleaned_data.get('email')
+		booking.time = BookTime()
+		booking.time.start_hour = self.cleaned_data.get('start_hour') 
+		booking.time.end_hour = self.cleaned_data.get('end_hour')
+		booking.time.start_date = self.cleaned_data.get('start_date')
+		booking.time.end_date = self.cleaned_data.get('end_date')
+
+		booking.name = self.cleaned_data.get('name')
+		booking.place = self.cleaned_data.get('place')
+
+		# do custom stuff
+		if commit:
+			booking.save()
+		return booking
+
+	class Meta:
+		model = Booking
+		fields = ['name', 'place',
+				  'start_hour', 'end_hour', 'start_date', 'end_date']		
