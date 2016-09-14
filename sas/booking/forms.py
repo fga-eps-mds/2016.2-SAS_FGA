@@ -1,6 +1,7 @@
 from django.utils.translation import ugettext as _
 from django.forms import ModelForm
 from .models import UserProfile
+from .models import CATEGORY
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
@@ -31,7 +32,6 @@ class UserForm(ModelForm):
 		if cleaned_data.get('password') != cleaned_data.get('repeat_password'):
 			self.add_error('password','Senhas nao conferem.')
 	
-	class Meta:
-		model = UserProfile
-		exclude = ['user']
-
+  class Meta:
+    model = UserProfile
+    fields = ['name', 'registration_number', 'category', 'email', 'password', 'repeat_password']

@@ -1,13 +1,35 @@
-{% extends 'booking/base.html' %} 
+{% extends 'booking/baseVisitor.html' %}
+
 {% load bootstrap3 %}
-{% block content %}
-  {% bootstrap_form_errors form_user %}	
-  <form method = 'POST'>
-  {% csrf_token %}
-  {% bootstrap_form form_user %}
-  {% buttons %}
-    <button type = 'submit'>Enviar</button>
-  {% endbuttons %}
-  </form>
+{% bootstrap_css %}
+{% bootstrap_messages %}
+
+<!DOCTYPE html>
+<html>
+{% block head %}
+    {% block title %}
+        <title>SAS - UnB</title>
+
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'style/baseVisitor.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'style/newUser.css' %}" />
+    {% endblock %}
 {% endblock %}
 
+{% block body %}
+    <h1 class="content-title">Novo Usuário</h1>
+    <hr class="star-light">
+    <div class="form-content">
+       <form class="form-horizontal" method = 'POST'>
+            {% csrf_token %}
+            {% bootstrap_form form_user %}
+            {% buttons %}
+                <a class="btn btn-info btn-block" type = 'submit'>Cadastrar</a>
+            {% endbuttons %}
+        </form>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+</html>

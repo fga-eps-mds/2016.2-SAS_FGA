@@ -1,6 +1,99 @@
-{% extends 'booking/base.html' %}
-{% block content %}
-<h1>Welcome to SAS</h1>
+{% extends 'booking/baseVisitor.html' %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
 
-Não possui cadastro? <a href="/user/newuser/">Clique aqui!</a>
+<!DOCTYPE html>
+<html>
+{%  block head %}
+    {% block title %}
+        <title>SAS - UnB</title>
+
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'style/baseVisitor.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'style/index.css' %}" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% endblock %}
 {% endblock %}
+
+{% block body %}
+<div class="content">
+    <!-- Modal -->
+    <div class="modal fade" id="sign" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title" id="myModalLabel">Login</p>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="modal-col col-xs-6">
+                            <div class="well">
+                                <form id="loginForm" method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        {% bootstrap_label "Username"  %}
+                                        <input name="Username" type="text" name="username" class="form-control"
+                                            placeholder="exemplo@email.com">
+                                            <span class="help-block"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        {% bootstrap_label "Password"  %}
+                                          <input class="form-control" name="Password" type="password" name="password">
+                                          <span class="help-block"></span>
+                                    </div>
+                                    <div id="loginErrorMsg" class="alert alert-error hide">Usuário ou senha
+                                        inválidos
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="remember" id="remember"> Lembrar dados
+                                        </label>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block">Entrar</button>
+                                    <div class="forgot-password">
+                                        <a href="#">Esqueci minha senha</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-col col-xs-6">
+                            <p class="lead">Ainda não tenho cadastro</p>
+                            <ul class="list-unstyled" style="line-height: 2">
+                                <li>Usuário cadastrado pode reservar:</li> <br>
+                                <li><span class="glyphicon glyphicon-ok text-success"></span> Laboratórios</li>
+                                <li><span class="glyphicon glyphicon-ok text-success"></span> Auditórios</li>
+                                <li><span class="glyphicon glyphicon-ok text-success"></span> Salas</li>
+                            </ul>
+                            <p><a href="/user/newuser/" class="btn btn-info btn-block">Cadastrar</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 page-content">
+                    <div class="intro-text">
+                        <span class="name">Sistema de Alocação de Salas</span>
+                        <hr class="star-light">
+                        <span class="skills">Reservas de salas, auditórios e laboratórios para docentes, discentes <br>
+                        e todo o corpo acadêmico da universidade.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% block footer %}
+    {% endblock %}
+</div>
+{% endblock %}
+</html>

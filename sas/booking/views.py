@@ -52,11 +52,11 @@ def login_user ( request) :
         user = authenticate ( username=username ,password=password)
         if user is not None:
             login ( request , user) ;
-            return render (request ,'login/index.html',{'user': user })
+            return render (request ,'login/myIndex.html',{})
         else:
-            return render (request ,'login/login.html',{})
+            return render (request ,'index#sign.html',{})
     else:
-        return render (request ,'login/login.html',{})
+        return render (request ,'index#sign.html',{})
 
 def logout_user(request):
    logout(request)
@@ -66,6 +66,8 @@ def delete_user(request):
      if request.user.is_authenticated():
          User.objects.get(pk = request.user.pk).delete()
          return render(request, 'booking/deleteSucceeded.html', {})
+     elif request.POST['cancel']:
+        return render(request, 'booking/listUser.html',{})
      else:
         return render(request, 'login/login.html',{})
 
