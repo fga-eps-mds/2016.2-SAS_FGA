@@ -47,20 +47,20 @@ def edit_user(request):
 
 def login_user ( request) :
     if request.method == "POST":
-        username = request.POST[ 'Username'] ;
-        password = request.POST[ 'Password'] ;
-        user = authenticate ( username=username ,password=password)
+        username = request.POST['Username'] ;
+        password = request.POST['Password'] ;
+        user = authenticate (username=username, password=password)
         if user is not None:
             login ( request , user) ;
-            return render (request ,'login/myIndex.html',{})
+            return render (request ,'booking/myIndex.html',{})
         else:
-            return render (request ,'index#sign.html',{})
+            return HttpResponse("Email ou senha inválidos.")
     else:
-        return render (request ,'index#sign.html',{})
+        return render (request ,'booking/index.html',{})
 
 def logout_user(request):
    logout(request)
-   return render(request,'logout/index.html',{})
+   return render(request,'booking/index.html',{})
 
 def delete_user(request):
      if request.user.is_authenticated():

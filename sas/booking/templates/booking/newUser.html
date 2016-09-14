@@ -11,7 +11,7 @@
         <title>SAS - UnB</title>
 
         {% load staticfiles %}
-        <link rel="stylesheet" type="text/css" href="{% static 'style/baseVisitor.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'style/newUser.css' %}" />
     {% endblock %}
 {% endblock %}
@@ -24,7 +24,7 @@
             {% csrf_token %}
             {% bootstrap_form form_user %}
             {% buttons %}
-                <a class="btn btn-info btn-block" type = 'submit'>Cadastrar</a>
+                <button class="btn btn-info btn-block" type = 'submit'>Cadastrar</button>
             {% endbuttons %}
         </form>
     </div>
