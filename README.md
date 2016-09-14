@@ -3,9 +3,9 @@ O projeto tem como finalidade desenvolver um software para o gerenciamento de es
 
 O status do projeto pode ser acompanhando pelos seguintes indicadores:
 
-|Brach|Travis|Coveralls|
-|-----|------|---------|
-|Master | [![Build Status](https://travis-ci.org/fga-gpp-mds/2016.2-SAS_FGA.svg?branch=master)](https://travis-ci.org/fga-gpp-mds/2016.2-SAS_FGA) | [![Coverage Status](https://coveralls.io/repos/github/fga-gpp-mds/2016.2-SAS_FGA/badge.svg?branch=master)](https://coveralls.io/github/fga-gpp-mds/2016.2-SAS_FGA?branch=master)|
+|Brach |Travis|Coveralls|Code Climate|
+|------|------|---------|------------|
+|Master|[![Build Status](https://travis-ci.org/fga-gpp-mds/2016.2-SAS_FGA.svg?branch=master)](https://travis-ci.org/fga-gpp-mds/2016.2-SAS_FGA)|[![Coverage Status](https://coveralls.io/repos/github/fga-gpp-mds/2016.2-SAS_FGA/badge.svg?branch=master)](https://coveralls.io/github/fga-gpp-mds/2016.2-SAS_FGA?branch=master)|[![Code Climate](https://codeclimate.com/github/fga-gpp-mds/2016.2-SAS_FGA/badges/gpa.svg)](https://codeclimate.com/github/fga-gpp-mds/2016.2-SAS_FGA)|
 
 
 # Configurar o ambiente
