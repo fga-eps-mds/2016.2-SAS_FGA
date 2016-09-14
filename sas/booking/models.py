@@ -1,7 +1,8 @@
+from django.utils.translation import ugettext_lazy as _, ugettext as __
 from django.db import models
 from django.contrib.auth.models import User
 
-CATEGORY = (('1','Aluno'),('2','Docente'),('3','Servidor'))
+CATEGORY = (('1',_('Student')),('2',_('Teaching Staff')),('3','Employees'))
 
 
 class UserProfile(models.Model):

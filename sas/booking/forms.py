@@ -7,18 +7,19 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 
 class UserForm(ModelForm):
-	name = forms.CharField(label = _('Name'))
-	username = forms.CharField(label = _('Username'))
-	email = forms.CharField(label = _('Email'))
-	password = forms.CharField(label = _('Password'), widget = forms.PasswordInput())
-	repeat_password = forms.CharField(label = _('Repeat Password'), widget = forms.PasswordInput())
+	name = forms.CharField(label = _('Name:'), widget=forms.TextInput(attrs={'placeholder': ''}))
+	email = forms.CharField(label = _('Email:'), widget=forms.TextInput(attrs={'placeholder': ''}))
+	password = forms.CharField(label = _('Password:'), widget = forms.PasswordInput(attrs={'placeholder': ''}))
+	repeat_password = forms.CharField(label = _('Repeat Password:'), widget = forms.PasswordInput(attrs={'placeholder': ''}))
+	registration_number = forms.CharField(label = _('Registration number:'), widget=forms.TextInput(attrs={'placeholder': ''}))
+	category = forms.ChoiceField(choices = CATEGORY, label = _('Category:'))
 
 	def save(self, force_insert=False, force_update=False, commit=True):
 		userprofile = super(UserForm, self).save(commit=False)
 		userprofile.user = User()
 		userprofile.name(self.cleaned_data.get('name'))
 		userprofile.user.email = self.cleaned_data.get('email')
-		userprofile.user.username = self.cleaned_data.get('username')
+		userprofile.user.username = userprofile.user.email
 		userprofile.user.set_password(self.cleaned_data.get('password'))
 
     # do custom stuff
