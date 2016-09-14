@@ -32,6 +32,6 @@ class UserForm(ModelForm):
 		if cleaned_data.get('password') != cleaned_data.get('repeat_password'):
 			self.add_error('password','Senhas nao conferem.')
 	
-  class Meta:
-    model = UserProfile
-    fields = ['name', 'registration_number', 'category', 'email', 'password', 'repeat_password']
+	class Meta:
+		model = UserProfile
+		fields = ['name', 'registration_number', 'category', 'email', 'password', 'repeat_password']
