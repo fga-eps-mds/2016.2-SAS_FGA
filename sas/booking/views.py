@@ -49,20 +49,18 @@ def edit_user(request):
 		form = UserForm(initial=initial, instance=request.user.profile_user)
 		return render(request, 'booking/newUser.html', {'form_user': form})
 
-
-def login_user(request):
-	if request.method == "POST":
-		username = request.POST['Username']
-		password = request.POST['Password']
-		user = authenticate(username=username, password=password)
-		if user is not None:
-			login(request, user)
-			return render(request, 'booking/myIndex.html', {})
-		else:
-			return HttpResponse("Email ou senha inválidos.")
-	else:
-		return render(request, 'booking/index.html', {})
-
+def login_user ( request) :
+    if request.method == "POST":
+        username = request.POST['Username'] ;
+        password = request.POST['Password'] ;
+        user = authenticate (username=username, password=password)
+        if user is not None:
+            login ( request , user) ;
+            return render (request ,'booking/myIndex.html#success-alert',{})
+        else:
+            return HttpResponse("Email ou senha inválidos.")
+    else:
+        return render (request ,'booking/index.html',{})
 
 def logout_user(request):
 	logout(request)
