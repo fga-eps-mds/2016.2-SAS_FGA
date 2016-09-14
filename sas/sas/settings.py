@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'aloe_django',
     'django_extensions',
+    'test_pep8',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,9 @@ NOSE_ARGS = [
     '--with-coverage',
 	'--cover-package=sas,booking',
 ]
+
+PROJECT_DIR = os.path.dirname(__file__)
+TEST_PEP8_DIRS = [os.path.dirname(PROJECT_DIR), ]
+
+TEST_PEP8_EXCLUDE = ['migrations', ] # Exclude this paths from tests
+TEST_PEP8_IGNORE = ['W191', ]
