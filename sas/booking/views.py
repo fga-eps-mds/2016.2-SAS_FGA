@@ -9,6 +9,8 @@ from .models import UserProfile
 def index(request):
     return render(request, 'booking/index.html', {})
 
+def index_user(request):
+    return render(request, 'booking/myIndex.html', {})
 
 def new_user(request):
 	if request.method == "POST":
@@ -33,13 +35,12 @@ def edit_user(request):
 		form = UserForm(request.POST, instance=request.user)
 		if not(form.is_valid()):
 			form.save()
-			return render(request, 'booking/newUser.html', {'form_user': form})
+			return render(request, 'booking/editUser.html', {'form_user': form})
 		else:
-			return render(request, 'booking/newUser.html', {'form_user': form})
+			return render(request, 'booking/editUser.html', {'form_user': form})
 	elif not request.user.is_authenticated():
-		return render(request, 'login/login.html', {})
+		return render(request, 'booking/index.html', {})
 	else:
-		print("aqui")
 		print(request.user.pk)
 		user = request.user
 		initial = {}
@@ -47,7 +48,7 @@ def edit_user(request):
 		initial['username'] = user.username
 		initial['email'] = user.email
 		form = UserForm(initial=initial, instance=request.user.profile_user)
-		return render(request, 'booking/newUser.html', {'form_user': form})
+		return render(request, 'booking/editUser.html', {'form_user': form})
 
 def login_user ( request) :
     if request.method == "POST":
@@ -56,7 +57,7 @@ def login_user ( request) :
         user = authenticate (username=username, password=password)
         if user is not None:
             login ( request , user) ;
-            return render (request ,'booking/myIndex.html#success-alert',{})
+            return render (request ,'booking/myIndex.html',{})
         else:
             return HttpResponse("Email ou senha inválidos.")
     else:

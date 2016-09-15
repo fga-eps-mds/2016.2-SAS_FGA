@@ -1,13 +1,35 @@
-{% extends 'booking/base.html' %} 
+{% extends 'booking/baseUser.html' %}
+
 {% load bootstrap3 %}
-{% block content %}
-	<h1>Editing User</h1>  
-  {% bootstrap_form_errors form_user %}	
-  <form method = 'POST'>
-  {% csrf_token %}
-  {% bootstrap_form form_user %}
-  {% buttons %}
-    <button type = 'submit'5>Editar</button>
-  {% endbuttons %}
-  </form>
+{% bootstrap_css %}
+{% bootstrap_messages %}
+
+<!DOCTYPE html>
+<html>
+{% block head %}
+    {% block title %}
+        <title>SAS - UnB</title>
+
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'style/newUser.css' %}" />
+    {% endblock %}
 {% endblock %}
+
+{% block body %}
+    <h1 class="content-title">Editar Usuário</h1>
+    <hr class="star-light">
+    <div class="form-content" style="overflow:auto;height: 50%;">
+        {% bootstrap_form_errors form_user %}
+        <form class="form-horizontal" method = 'POST'>
+            {% csrf_token %}
+            {% bootstrap_form form_user %}
+            {% buttons %}
+                <button class="btn btn-info btn-block" type = 'submit'>Editar</button>
+            {% endbuttons %}
+        </form>
+    </div>
+{% endblock %}
+{% block footer %}
+{% endblock %}
+</html>

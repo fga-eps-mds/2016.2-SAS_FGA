@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from booking.views import index
+from booking.views import index, index_user
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', index, name = "index"),
+    url(r'^sas/', index_user, name = "indexuser"),
     url(r'^user/', include('booking.urls')),
 ]
