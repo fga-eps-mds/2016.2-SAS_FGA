@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'login/', login_user, name='login'),
     url(r'logout/', logout_user, name='logout'),
     url(r'delete/$', delete_user, name='deleteuser'),
-	url(r'^edituser/$', edit_user, name='edituser')
+	url(r'^edituser/$', edit_user, name='edituser'),
+    url(r'^newbooking/$', new_booking, name='newbooking')
 ]
