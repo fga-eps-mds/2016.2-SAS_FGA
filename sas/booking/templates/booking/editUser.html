@@ -20,19 +20,14 @@
     <h1 class="content-title">Meus Dados</h1>
     <hr class="star-light">
     <div class="form-content" style="overflow:auto;height: 50%;">
-        <form class="form-horizontal" method = 'POST'>
+        <form class="form-horizontal" method = 'POST' action="/user/edituser/">
             {% csrf_token %}
             {% bootstrap_form form_user %}
             {% buttons %}
                 <button class="btn btn-info btn-block" type = 'submit'>Salvar Dados</button>
             {% endbuttons %}
         </form>
-        <form class="form-horizontal" method = 'POST' action="/user/delete/{{ user.profile_user.id }}/">
-            {% csrf_token %}
-            {% buttons %}
-                <button class="btn btn-danger btn-block" type = 'submit' name="delete">Excluir minha conta</button>
-            {% endbuttons %}
-        </form>
+        <a class="btn btn-danger btn-block" href="/user/delete" name="delete">Excluir minha conta</a>
     </div>
 {% endblock %}
 {% block footer %}

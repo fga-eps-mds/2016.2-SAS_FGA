@@ -70,8 +70,6 @@ def logout_user(request):
 def delete_user(request):
     if request.user.is_authenticated():
         User.objects.get(pk=request.user.pk).delete()
-        return render(request, 'booking/editUser.html', {})
-    elif request.POST['cancel']:
         return render(request, 'booking/index.html', {})
     else:
-        return render(request, 'booking/index.html', {})
+        return render(request, 'booking/editUser.html', {})
