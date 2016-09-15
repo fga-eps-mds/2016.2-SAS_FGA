@@ -1,0 +1,10 @@
+{% block content %}
+{% load bootstrap3 %}
+<h2>Usuário oi com sucesso!</h2>
+<form method='POST'>
+    {% csrf_token %}
+    {% bootstrap_form form_booking %}
+    {% buttons %}
+        <button type="submit">Ok!</button>
+    {% endbuttons %}
+{% endblock %}
