@@ -74,7 +74,7 @@ class BookingForm(ModelForm):
 		booking = super(BookingForm, self).save(commit=False)
 		booking.email= self.cleaned_data.get('email')
 		booking.time = BookTime()
-		booking.time.start_hour = self.cleaned_data.get('start_hour') 
+		booking.time.start_hour = self.cleaned_data.get('start_hour')
 		booking.time.end_hour = self.cleaned_data.get('end_hour')
 		booking.time.start_date = self.cleaned_data.get('start_date')
 		booking.time.end_date = self.cleaned_data.get('end_date')
@@ -90,4 +90,4 @@ class BookingForm(ModelForm):
 	class Meta:
 		model = Booking
 		fields = ['name', 'place',
-				  'start_hour', 'end_hour', 'start_date', 'end_date']		
+				  'start_hour', 'end_hour', 'start_date', 'end_date', 'user']
