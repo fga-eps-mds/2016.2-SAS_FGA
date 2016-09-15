@@ -9,16 +9,16 @@ from django.contrib.auth.hashers import check_password
 
 class UserForm(ModelForm):
 	name = forms.CharField(
-					label=_('Name:'), 
+					label=_('Name:'),
 					widget=forms.TextInput(attrs={'placeholder': ''}))
 	email = forms.CharField(
-					label=_('Email:'), 
+					label=_('Email:'),
 					widget=forms.TextInput(attrs={'placeholder': ''}))
 	password = forms.CharField(
-					label=_('Password:'), 
+					label=_('Password:'),
 					widget=forms.PasswordInput(attrs={'placeholder': ''}))
 	repeat_password = forms.CharField(
-					label=_('Repeat Password:'), 
+					label=_('Repeat Password:'),
 					widget=forms.PasswordInput(attrs={'placeholder': ''}))
 	registration_number = forms.CharField(
 					label=_('Registration number:'),
@@ -46,5 +46,5 @@ class UserForm(ModelForm):
 
 	class Meta:
 		model = UserProfile
-		fields = ['name', 'registration_number', 
+		fields = ['name', 'registration_number',
 				  'category', 'email', 'password', 'repeat_password']

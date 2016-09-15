@@ -12,20 +12,25 @@
 
         {% load staticfiles %}
         <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'style/newUser.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'style/user.css' %}" />
     {% endblock %}
 {% endblock %}
 
 {% block body %}
-    <h1 class="content-title">Editar Usuário</h1>
+    <h1 class="content-title">Meus Dados</h1>
     <hr class="star-light">
     <div class="form-content" style="overflow:auto;height: 50%;">
-        {% bootstrap_form_errors form_user %}
         <form class="form-horizontal" method = 'POST'>
             {% csrf_token %}
             {% bootstrap_form form_user %}
             {% buttons %}
-                <button class="btn btn-info btn-block" type = 'submit'>Editar</button>
+                <button class="btn btn-info btn-block" type = 'submit'>Salvar Dados</button>
+            {% endbuttons %}
+        </form>
+        <form class="form-horizontal" method = 'POST' action="/user/delete/{{ user.profile_user.id }}/">
+            {% csrf_token %}
+            {% buttons %}
+                <button class="btn btn-danger btn-block" type = 'submit' name="delete">Excluir minha conta</button>
             {% endbuttons %}
         </form>
     </div>
