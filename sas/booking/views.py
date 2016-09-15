@@ -82,3 +82,21 @@ def delete_user(request):
         return render(request, 'booking/index.html', {'form': form})
     else:
         return render(request, 'booking/editUser.html', {})
+
+
+def new_booking(request):
+    if request.user.is_authenticated():
+        if request.method == "POST":
+            form_booking = BookingForm(request.POST, Booking)
+            if not(form_booking.is_valid()):
+	               return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
+            else:
+                email = User.objects.get(pk=request.user.pk).email
+                booking = form_booking.save()
+                return render(request, 'booking/index.html', {})
+        else:
+            form_booking = BookingForm()
+            return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
+
+    else:
+    	return render(request, 'booking/index.html', {})
