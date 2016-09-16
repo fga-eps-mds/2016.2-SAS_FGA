@@ -52,7 +52,7 @@ class UserForm(ModelForm):
 		userprofile.user.email = self.cleaned_data.get('email')
 		userprofile.user.username=userprofile.user.email
 		userprofile.user.set_password(self.cleaned_data.get('password'))
-
+		print(commit)
 		# do custom stuff
 		if commit:
 			userprofile.save()
