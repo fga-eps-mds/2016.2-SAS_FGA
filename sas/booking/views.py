@@ -1,28 +1,30 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserForm, NewUserForm
+from .forms import UserForm, NewUserForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile
 
 
 def index(request):
-    return render(request, 'booking/index.html', {})
+	form = LoginForm()	
+	return render(request, 'booking/index.html', {'form':form})
 
 def index_user(request):
     return render(request, 'booking/myIndex.html', {})
 
 def new_user(request):
-    if request.method == "POST":
-        form = NewUserForm(request.POST, UserProfile)
-        if not(form.is_valid()):
-            return render(request, 'booking/newUser.html', {'form_user': form})
-        else:
-            user_profile = form.save()
-            return render(request, 'booking/index.html', {})
-    else:
-        form = NewUserForm()
-        return render(request, 'booking/newUser.html', {'form_user': form})
+	if request.method == "POST":
+		form = NewUserForm(request.POST, UserProfile)
+		if not(form.is_valid()):
+			return render(request, 'booking/newUser.html', {'form_user': form})
+		else:
+			user_profile = form.save()
+			form = LoginForm()
+			return render(request, 'booking/index.html', {'form':form})
+	else:
+		form = NewUserForm()
+		return render(request, 'booking/newUser.html', {'form_user': form})
 
 
 def list_user(request):
@@ -49,22 +51,24 @@ def edit_user(request):
         form = UserForm(initial=initial, instance=request.user.profile_user)
         return render(request, 'booking/editUser.html', {'form_user': form})
 
-def login_user ( request) :
-    if request.method == "POST":
-        username = request.POST['Username'] ;
-        password = request.POST['Password'] ;
-        user = authenticate (username=username, password=password)
-        if user is not None:
-            login ( request , user) ;
-            return render (request ,'booking/myIndex.html',{})
-        else:
-            return HttpResponse("Email ou senha inválidos.")
-    else:
-        return render (request ,'booking/index.html',{})
+def login_user(request) :
+	if request.method == "POST":
+		form = LoginForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			if user is not None:
+				login ( request , user) ;
+				return render (request ,'booking/myIndex.html',{})
+			else:
+				return render (request,'booking/index.html',{'form':form})
+	else:
+		form = LoginForm()
+		return render (request ,'booking/index.html',{'form':form})
 
 def logout_user(request):
-    logout(request)
-    return render(request, 'booking/index.html', {})
+	logout(request)
+	form = LoginForm()
+	return render(request, 'booking/index.html', {'form': form})
 
 
 def delete_user(request):

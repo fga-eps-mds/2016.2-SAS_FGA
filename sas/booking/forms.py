@@ -5,8 +5,27 @@ from .models import CATEGORY
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth import authenticate
 
+class LoginForm(ModelForm):
+	email = forms.CharField(
+					label=_('Email:'),
+					widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}))
+	password = forms.CharField(
+					label=_('Password:'),
+					widget=forms.PasswordInput(attrs={'placeholder': ''}))
 
+	def save(self, force_insert=False, force_update=False, commit=True):
+		username = self.cleaned_data.get("email")	
+		password = self.cleaned_data.get("password")	
+		user = authenticate(username=username, password=password)
+		if user is None:
+			self.add_error('password', _('Email or Password does not match'))
+		return user
+
+	class Meta:
+		model = User
+		fields = ['email', 'password']
 
 class UserForm(ModelForm):
 	name = forms.CharField(
