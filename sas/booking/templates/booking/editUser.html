@@ -30,6 +30,7 @@
                 {% csrf_token %}
                 {% for field in form_user %}
                     {% bootstrap_field field exclude="password,repeat_password" %}
+				{% bootstrap_form_errors form_user %}
                 {% endfor %}
                 <div class="button-div">
                     <a class="btn btn-info btn-block btn-password" href="#change-password"
