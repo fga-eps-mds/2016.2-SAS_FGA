@@ -7,7 +7,7 @@ from .models import UserProfile
 
 
 def index(request):
-	form = LoginForm()	
+	form = LoginForm()
 	return render(request, 'booking/index.html', {'form':form})
 
 def index_user(request):
@@ -74,6 +74,7 @@ def logout_user(request):
 def delete_user(request):
     if request.user.is_authenticated():
         User.objects.get(pk=request.user.pk).delete()
-        return render(request, 'booking/index.html', {})
+        form = LoginForm()
+        return render(request, 'booking/index.html', {'form': form})
     else:
         return render(request, 'booking/editUser.html', {})

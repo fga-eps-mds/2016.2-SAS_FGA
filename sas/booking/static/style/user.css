@@ -18,12 +18,19 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
 }
 
-.col-md-12 {
-  top: 20%;
+.page-content {
+    position: relative;
+    top: 43%;
+    left: 50%;
+    height: 65%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+    margin: auto;
 }
 
 .content-title {
-  padding: 4em;
+  padding-top: 1em;
+  top: 0;
   text-align: center;
   margin: 0;
 }
@@ -35,7 +42,7 @@ hr.star-light {
     border-top: solid 5px;
     text-align: center;
     max-width: 12%;
-    margin: -9em auto;
+    margin: 1.5em auto;
 }
 
 hr.star-light:after {
@@ -51,11 +58,8 @@ hr.star-light:after {
 }
 
 .form-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 80%;
+  margin: auto;
 }
 
 .form-horizontal {
@@ -63,7 +67,35 @@ hr.star-light:after {
   width: 50%;
 }
 
+.user-menu-info:hover,
+.user-menu-info:focus,
+.dropdown-menu: hover,
+.dropdown-menu:focus,
+.dropdown-menu: active {
+  background-color: #2C3E50;
+  color: #FFF;
+}
+
+.form-group:last-child {
+  margin: auto
+}
+
+.button-div {
+  float: left;
+  padding-right: 2em;
+  width: 50%;
+}
+
 .btn-block {
   margin: 1em auto;
-  width: 30%;
+  width: 50%;
+}
+
+.btn-edit {
+  width: 100%;
+}
+
+.btn-delete {
+  width: 25%;
+  float: left;
 }

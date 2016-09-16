@@ -30,6 +30,10 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
 }
 
+.content-title {
+    color: #41733C;
+}
+
 /* Modal */
 .modal-col {
     margin-top: 2em;
@@ -62,10 +66,12 @@ h1, h2, h3, h4, h5, h6 {
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 95%;
 }
 
 .page-content .name {
     text-transform: uppercase;
+    width: 80%;
 }
 
 hr.star-light {
