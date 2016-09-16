@@ -45,6 +45,24 @@ h1, h2, h3, h4, h5, h6 {
     margin-right: 0;
 }
 
+.modal-password {
+    margin: auto;
+    width: 70%;
+}
+
+.col-password {
+    width: 100%;
+}
+
+.btn-email {
+    margin: 2em !important;
+    width: 70%;
+}
+
+.description {
+    padding-bottom: 2em;
+}
+
 .forgot-password {
     text-align: center;
     padding: 1em;
