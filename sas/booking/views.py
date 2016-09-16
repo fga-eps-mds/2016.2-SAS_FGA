@@ -99,4 +99,5 @@ def new_booking(request):
             return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
 
     else:
-    	return render(request, 'booking/index.html', {})
+        form_booking = BookingForm()
+        return render(request, 'booking/newBooking.html', {'form_booking':form_booking})

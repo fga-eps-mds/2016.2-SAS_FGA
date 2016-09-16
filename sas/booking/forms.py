@@ -108,7 +108,6 @@ class BookingForm(ModelForm):
 
 	def save(self, force_insert=False, force_update=False, commit=True):
 		booking = super(BookingForm, self).save(commit=False)
-		booking.email= self.cleaned_data.get('email')
 		booking.time = BookTime()
 		booking.time.start_hour = self.cleaned_data.get('start_hour')
 		booking.time.end_hour = self.cleaned_data.get('end_hour')
