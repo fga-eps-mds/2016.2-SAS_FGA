@@ -18,6 +18,14 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
 }
 
+/* Modal */
+.modal-col {
+    margin-top: 2em;
+    margin-right: 1.5em;
+    width: 48%;
+}
+
+/* Page Content */
 .page-content {
     position: relative;
     top: 43%;
@@ -60,6 +68,8 @@ hr.star-light:after {
 .form-content {
   width: 80%;
   margin: auto;
+  overflow: auto;
+  height: 90%;
 }
 
 .form-horizontal {
@@ -98,4 +108,10 @@ hr.star-light:after {
 .btn-delete {
   width: 25%;
   float: left;
+  margin-top: 5.3em;
+}
+
+.btn-password {
+  margin-bottom: 1em;
+  width: 100%;
 }
