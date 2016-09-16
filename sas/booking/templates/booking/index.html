@@ -38,13 +38,14 @@
                                         {% bootstrap_label "Email:"  %}
                                         <input name="Username" type="text" class="form-control"
                                             placeholder="exemplo@email.com">
-                                            <span class="help-block"></span>
+                                        <span class="help-block"></span>
                                     </div>
                                     <div class="form-group">
                                         {% bootstrap_label "Senha:"  %}
                                           <input class="form-control" name="Password" type="password">
                                           <span class="help-block"></span>
                                     </div>
+                                    <div id="loginError" class="alert alert-error hide">Senha ou usuário inválidos</div>
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" name="remember" id="remember"> Lembrar dados
