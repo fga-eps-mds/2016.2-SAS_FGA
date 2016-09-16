@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 
 
+
 class UserForm(ModelForm):
 	name = forms.CharField(
 					label=_('Name:'),
@@ -38,13 +39,16 @@ class UserForm(ModelForm):
 			userprofile.save()
 		return userprofile
 
-
-	def clean(self):
-		cleaned_data = super(UserForm, self).clean()
-		if cleaned_data.get('password') != cleaned_data.get('repeat_password'):
-			self.add_error('password', 'Senhas nao conferem.')
-
 	class Meta:
 		model = UserProfile
 		fields = ['name', 'registration_number',
 				  'category', 'email', 'password', 'repeat_password']
+
+class NewUserForm(UserForm):
+
+	def clean(self):
+		cleaned_data = super(UserForm, self).clean()
+		password1 = cleaned_data.get('password')
+		password2 = cleaned_data.get('repeat_password')
+		if password1 and password2 and password1 != password2:
+			self.add_error('password', _('Passwords do not match'))	

@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserForm
+from .forms import UserForm, NewUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile
@@ -14,14 +14,14 @@ def index_user(request):
 
 def new_user(request):
     if request.method == "POST":
-        form = UserForm(request.POST, UserProfile)
+        form = NewUserForm(request.POST, UserProfile)
         if not(form.is_valid()):
             return render(request, 'booking/newUser.html', {'form_user': form})
         else:
             user_profile = form.save()
             return render(request, 'booking/index.html', {})
     else:
-        form = UserForm()
+        form = NewUserForm()
         return render(request, 'booking/newUser.html', {'form_user': form})
 
 
