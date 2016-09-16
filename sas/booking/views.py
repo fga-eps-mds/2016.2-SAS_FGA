@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserForm, NewUserForm, LoginForm
+from .forms import UserForm, NewUserForm, LoginForm, EditUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile
@@ -35,7 +35,8 @@ def list_user(request):
 def edit_user(request):
 	if request.user.is_authenticated() and request.method == "POST":
 		print(request.user.pk)
-		form = UserForm(request.POST, instance=request.user.profile_user)
+		print(request.user.profile_user.pk)
+		form = EditUserForm(request.POST, instance=request.user.profile_user)
 		if form.is_valid():
 			user = form.save()
 			print(user.user.pk)	
@@ -51,7 +52,7 @@ def edit_user(request):
 		initial = {}
 		initial['name'] = user.profile_user.full_name()
 		initial['email'] = user.email
-		form = UserForm(initial=initial, instance=request.user.profile_user)
+		form = EditUserForm(initial=initial, instance=request.user.profile_user)
 		return render(request, 'booking/editUser.html', {'form_user': form})
 
 def login_user(request) :

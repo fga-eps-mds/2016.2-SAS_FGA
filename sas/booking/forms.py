@@ -36,9 +36,11 @@ class UserForm(ModelForm):
 					widget=forms.TextInput(attrs={'placeholder': ''}))
 	password = forms.CharField(
 					label=_('Password:'),
+					required=False,
 					widget=forms.PasswordInput(attrs={'placeholder': ''}))
 	repeat_password = forms.CharField(
 					label=_('Repeat Password:'),
+					required=False,
 					widget=forms.PasswordInput(attrs={'placeholder': ''}))
 	registration_number = forms.CharField(
 					label=_('Registration number:'),
@@ -62,6 +64,13 @@ class UserForm(ModelForm):
 		model = UserProfile
 		fields = ['name', 'registration_number',
 				  'category', 'email', 'password', 'repeat_password']
+
+class EditUserForm(UserForm):
+	
+	class Meta:
+		model = UserProfile
+		fields = ['name', 'registration_number',
+				  'category', 'email']
 
 class NewUserForm(UserForm):
 
