@@ -1,0 +1,8 @@
+{% extends 'booking/baseUser.html' %} 
+{% load bootstrap3 %}
+{% block content %}
+	<h1>Teste</h1>
+	{% for booking in bookings %}
+	<h1>{{booking.name }}</h1>
+	{% endfor %}
+{% endblock %}

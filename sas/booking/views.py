@@ -101,3 +101,10 @@ def new_booking(request):
     else:
         form_booking = BookingForm()
         return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
+
+def search_booking(request):
+	if request.user.is_authenticated():
+		print(request.user.bookings)
+		return render(request, 'booking/searchBooking.html', {"booking":request.user.bookings})
+	return render(request, 'booking/index.html', {})
+
