@@ -1,10 +1,37 @@
-{% block content %}
+{% extends 'booking/baseUser.html' %}
+
 {% load bootstrap3 %}
-<h2>Usuário oi com sucesso!</h2>
-<form method='POST'>
-    {% csrf_token %}
-    {% bootstrap_form form_booking %}
-    {% buttons %}
-        <button type="submit">Ok!</button>
-    {% endbuttons %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+
+<!DOCTYPE html>
+<html>
+{% block head %}
+    {% block title %}
+        <title>SAS - UnB</title>
+
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'style/newUser.css' %}" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% endblock %}
 {% endblock %}
+
+{% block body %}
+    <h1 class="content-title">Reserva de Espaço</h1>
+    <hr class="star-light">
+    <div class="form-content" style="overflow:auto;height: 50%;">
+       <form class="form-horizontal" method = 'POST'>
+            {% csrf_token %}
+            {% bootstrap_form form_booking %}
+            {% buttons %}
+                <button class="btn btn-info btn-block" type = 'submit'>Efetuar Reserva</button>
+            {% endbuttons %}
+        </form>
+    </div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+</html>
