@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserForm
+from .forms import UserForm, BookingForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile
@@ -93,4 +93,5 @@ def new_booking(request):
             return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
 
     else:
-    	return render(request, 'booking/index.html', {})
+        form_booking = BookingForm()
+        return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
