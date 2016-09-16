@@ -13,6 +13,8 @@
         {% load staticfiles %}
         <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'style/user.css' %}" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     {% endblock %}
 {% endblock %}
 
@@ -30,8 +32,8 @@
                     {% bootstrap_field field exclude="password,repeat_password" %}
                 {% endfor %}
                 <div class="button-div">
-                    <a class="btn btn-info btn-block btn-password" href="#"
-                        data-toggle="modal" data-target="#change-password">Alterar senha</a>
+                    <a class="btn btn-info btn-block btn-password" href="#change-password"
+                        data-toggle="modal">Alterar senha</a>
                     {% buttons %}
                         <button class="btn btn-success btn-block btn-edit" type = 'submit'>Salvar Dados</button>
                     {% endbuttons %}
@@ -40,27 +42,37 @@
             <a class="btn btn-danger btn-block btn-delete" href="/user/delete" name="delete">Excluir minha conta</a>
         </div>
     </div>
-    <div class="modal hide" role="dialog" id="change-password">
-        <div class="modal-header">
-            <button class="close" data-dismiss="modal">&times;</button>
-            <p class="modal-title" id="myModalLabel">Change Password</p>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="modal-col col-sm-12">
-                    <div class="well">
-                        <form method="post" id="passwordForm">
-                            <input type="password" class="input-lg form-control" name="password1"
-                                id="password1" placeholder="New Password">
-                            <input type="password" class="input-lg form-control" name="password2"
-                                id="password2" placeholder="Repeat Password">
-                        </form>
+    <div class="modal fade" role="dialog" id="change-password">
+        <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title" id="myModalLabel">Alterar Senha</p>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="modal-col col-xs-12">
+                            <form method="POST" id="passwordForm">
+                                <div class="control-group">
+                                    <label class="control-label">Senha Atual:</label>
+                                    <input class="form-control" type="password" name="password" id="password">
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Nova Senha:</label>
+                                    <input class="form-control" type="password" name="new-password" id="new-password">
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Confirmar Nova Senha:</label>
+                                    <input class="form-control" type="password" name="renew-password" id="renew-password">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-success btn-bloc">Alterar Senha</a>
+                </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="btn btn-success btn-bloc">Alterar Senha</a>
         </div>
     </div>
 {% endblock %}

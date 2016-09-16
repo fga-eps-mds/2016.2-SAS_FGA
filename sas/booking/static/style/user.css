@@ -19,10 +19,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Modal */
+.modal-body {
+  width: 70%;
+  margin: auto;
+}
+
+.modal-footer {
+  text-align: center;
+}
+
 .modal-col {
     margin-top: 2em;
     margin-right: 1.5em;
-    width: 48%;
 }
 
 /* Page Content */
