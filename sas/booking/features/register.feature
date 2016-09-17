@@ -9,4 +9,4 @@ Scenario: User not registered
   And I type in "teste123" to "Password"
   And I type in "teste123" to "Repeat Password"
   Then I press "Cadastrar"
-  Then I should see page "/"
+  Then I should see "Entrar"
