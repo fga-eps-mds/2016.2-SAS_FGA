@@ -3,7 +3,7 @@ from aloe_webdriver.util import find_field_by_id, find_any_field, find_field_by_
 from aloe_webdriver import TEXT_FIELDS
 from booking.models import UserProfile
 from django.contrib.auth.models import User
-
+from django.contrib.auth import login,authenticate
 
 @step(r'I type in "(.*)" to "(.*)"')
 def fill_bootstrap_field(step, text, field):
@@ -36,6 +36,11 @@ def register_user(step, username, password):
 	user.user = User()
 	user.registration_number = "140016574"
 	user.user.email = username
+	user.user.username = username
 	user.user.first_name = "Usuário"
 	user.user.set_password(password)
 	user.save()
+
+@step(r'I login in with username "(.*)" and password "(.*)"')
+def login_user(ste,username,password):
+	user = authenticate(username=username,password=password)
