@@ -4,27 +4,28 @@ from .forms import UserForm, NewUserForm, LoginForm, EditUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile, Booking
+from booking.tables import MyBookingTable
 
 
 def index(request):
-	form = LoginForm()
-	return render(request, 'booking/index.html', {'form':form})
+    form = LoginForm()
+    return render(request, 'booking/index.html', {'form':form})
 
 def index_user(request):
     return render(request, 'booking/myIndex.html', {})
 
 def new_user(request):
-	if request.method == "POST":
-		form = NewUserForm(request.POST, UserProfile)
-		if not(form.is_valid()):
-			return render(request, 'booking/newUser.html', {'form_user': form})
-		else:
-			user_profile = form.save()
-			form = LoginForm()
-			return render(request, 'booking/index.html', {'form':form})
-	else:
-		form = NewUserForm()
-		return render(request, 'booking/newUser.html', {'form_user': form})
+    if request.method == "POST":
+        form = NewUserForm(request.POST, UserProfile)
+        if not(form.is_valid()):
+            return render(request, 'booking/newUser.html', {'form_user': form})
+        else:
+            user_profile = form.save()
+            form = LoginForm()
+            return render(request, 'booking/index.html', {'form':form})
+    else:
+        form = NewUserForm()
+        return render(request, 'booking/newUser.html', {'form_user': form})
 
 
 def list_user(request):
@@ -33,46 +34,46 @@ def list_user(request):
 
 
 def edit_user(request):
-	if request.user.is_authenticated() and request.method == "POST":
-		print(request.user.pk)
-		print(request.user.profile_user.pk)
-		form = EditUserForm(request.POST, instance=request.user.profile_user)
-		if form.is_valid():
-			user = form.save()
-			print(user.user.pk)	
-			return render(request, 'booking/editUser.html', {'form_user': form})
-		else:
-			print(form.errors)
-			return render(request, 'booking/editUser.html', {'form_user': form})
-	elif not request.user.is_authenticated():
-		return render(request, 'booking/index.html', {})
-	else:
-		print(request.user.pk)
-		user = request.user
-		initial = {}
-		initial['name'] = user.profile_user.full_name()
-		initial['email'] = user.email
-		form = EditUserForm(initial=initial, instance=request.user.profile_user)
-		return render(request, 'booking/editUser.html', {'form_user': form})
+    if request.user.is_authenticated() and request.method == "POST":
+        print(request.user.pk)
+        print(request.user.profile_user.pk)
+        form = EditUserForm(request.POST, instance=request.user.profile_user)
+        if form.is_valid():
+            user = form.save()
+            print(user.user.pk)
+            return render(request, 'booking/editUser.html', {'form_user': form})
+        else:
+            print(form.errors)
+            return render(request, 'booking/editUser.html', {'form_user': form})
+    elif not request.user.is_authenticated():
+        return render(request, 'booking/index.html', {})
+    else:
+        print(request.user.pk)
+        user = request.user
+        initial = {}
+        initial['name'] = user.profile_user.full_name()
+        initial['email'] = user.email
+        form = EditUserForm(initial=initial, instance=request.user.profile_user)
+        return render(request, 'booking/editUser.html', {'form_user': form})
 
 def login_user(request) :
-	if request.method == "POST":
-		form = LoginForm(request.POST)
-		if form.is_valid():
-			user = form.save()
-			if user is not None:
-				login ( request , user) ;
-				return render (request ,'booking/myIndex.html',{})
-			else:
-				return render (request,'booking/index.html',{'form':form})
-	else:
-		form = LoginForm()
-		return render (request ,'booking/index.html',{'form':form})
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            if user is not None:
+                login ( request , user) ;
+                return render (request ,'booking/myIndex.html',{})
+            else:
+                return render (request,'booking/index.html',{'form':form})
+    else:
+        form = LoginForm()
+        return render (request ,'booking/index.html',{'form':form})
 
 def logout_user(request):
-	logout(request)
-	form = LoginForm()
-	return render(request, 'booking/index.html', {'form': form})
+    logout(request)
+    form = LoginForm()
+    return render(request, 'booking/index.html', {'form': form})
 
 
 def delete_user(request):
@@ -89,7 +90,7 @@ def new_booking(request):
         if request.method == "POST":
             form_booking = BookingForm(request.POST, Booking)
             if not(form_booking.is_valid()):
-	               return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
+                   return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
             else:
                 email = User.objects.get(pk=request.user.pk).email
                 booking = form_booking.save()
@@ -103,9 +104,10 @@ def new_booking(request):
         return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
 
 def search_booking(request):
-	if request.user.is_authenticated():
-		bookings = Booking.objects.filter(user=request.user)
-		print(bookings)
-		return render(request, 'booking/searchBooking.html', {"bookings":bookings})
-	return render(request, 'booking/index.html', {})
+    if request.user.is_authenticated():
+        bookings = Booking.objects.filter(user=request.user)
+        table = MyBookingTable(Booking.objects.all())
+        return render(request, 'booking/searchBooking.html', {"bookings":bookings, "table":table})
+    else:
+       return render(request, 'booking/index.html', {})
 

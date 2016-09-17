@@ -123,3 +123,9 @@ hr.star-light:after {
   margin-bottom: 1em;
   width: 100%;
 }
+
+/* Table */
+.table-content {
+  margin: auto;
+  width: 80%;
+}
