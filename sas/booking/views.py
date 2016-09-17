@@ -34,7 +34,6 @@ def list_user(request):
 
 def edit_user(request):
 	if request.user.is_authenticated() and request.method == "POST":
-		print(request.user.pk)
 		print(request.user.profile_user.pk)
 		form = EditUserForm(request.POST, instance=request.user.profile_user)
 		if form.is_valid():
@@ -45,7 +44,7 @@ def edit_user(request):
 			print(form.errors)
 			return render(request, 'booking/editUser.html', {'form_user': form})
 	elif not request.user.is_authenticated():
-		return render(request, 'booking/index.html', {})
+		return index(request) 
 	else:
 		print(request.user.pk)
 		user = request.user

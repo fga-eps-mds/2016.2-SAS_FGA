@@ -49,17 +49,26 @@ class UserForm(ModelForm):
 
 	def save(self, force_insert=False, force_update=False, commit=True):
 		userprofile = super(UserForm, self).save(commit=False)
-		userprofile.user = User()
+		# if it is a new user
+		if not hasattr(userprofile,'user'):
+			userprofile.user = User()
+			userprofile.user.set_password(self.cleaned_data.get('password'))
+
 		userprofile.name(self.cleaned_data.get('name'))
 		userprofile.user.email = self.cleaned_data.get('email')
 		userprofile.user.username=userprofile.user.email
-		userprofile.user.set_password(self.cleaned_data.get('password'))
 		print(commit)
 		# do custom stuff
 		if commit:
 			userprofile.save()
 		return userprofile
 
+	def clean(self):
+		cleaned_data = super(ModelForm,self).clean()
+		if User.objects.filter(username=cleaned_data.get('email')).exists():
+			self.add_error('email',_('Email already used'))
+		return cleaned_data
+	
 	class Meta:
 		model = UserProfile
 		fields = ['name', 'registration_number',
