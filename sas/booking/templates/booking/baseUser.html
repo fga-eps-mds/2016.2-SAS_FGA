@@ -20,20 +20,21 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
-                <li><a href="/">Início</a></li>
+                <li><a href="/sas">Início</a></li>
                 <li><a href="#">Pesquisa</a></li>
-                <li><a href="#">Reservas</a></li>
+                <li><a href="-newbooking">Reservas</a></li>
                 <li><a href="#">FAQ</a></li>
             </ul>
             <ul class="nav navbar-nav pull-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                        aria-expanded="false" id="user-link">Hi, {{ user.profile_user.full_name }}
+                    <a href="#" class="dropdown-toggle" dropdown-toggle" type="button" id="user-link"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Hi, {{ user.profile_user.full_name }}
                         <span class="caret"></span>
                     </a>
-                    <ul class="dropdown-menu">
-                        <li class="user-menu-info"><a href="#">Meus dados</a></li>
-                        <li class="user-menu-info"><a href="#">Minha reserva</a></li>
+                    <ul class="dropdown-menu" aria-labelledby="user-link">
+                        <li class="user-menu-info"><a href="/user/edituser">Meus dados</a></li>
+                        <li class="user-menu-info"><a href="/user/searchbooking">Minha reserva</a></li>
                         <li role="separator" class="divider"></li>
                         <li class="user-menu-info"><a href="/user/logout">Sair</a></li>
                     </ul>
@@ -41,7 +42,7 @@
             </ul>
         </div>
     </div>
-  </div>
+</div>
 
 {% block body %}
 {% endblock %}

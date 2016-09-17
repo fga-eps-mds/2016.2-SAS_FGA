@@ -5,8 +5,29 @@ from .models import CATEGORY
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth import authenticate
 from django.utils import timezone
 import datetime
+
+class LoginForm(ModelForm):
+	email = forms.CharField(
+					label=_('Email:'),
+					widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}))
+	password = forms.CharField(
+					label=_('Password:'),
+					widget=forms.PasswordInput(attrs={'placeholder': ''}))
+
+	def save(self, force_insert=False, force_update=False, commit=True):
+		username = self.cleaned_data.get("email")	
+		password = self.cleaned_data.get("password")	
+		user = authenticate(username=username, password=password)
+		if user is None:
+			self.add_error('password', _('Email or Password does not match'))
+		return user
+
+	class Meta:
+		model = User
+		fields = ['email', 'password']
 
 class UserForm(ModelForm):
 	name = forms.CharField(
@@ -17,6 +38,11 @@ class UserForm(ModelForm):
 					widget=forms.TextInput(attrs={'placeholder': ''}))
 	password = forms.CharField(
 					label=_('Password:'),
+					required=False,
+					widget=forms.PasswordInput(attrs={'placeholder': ''}))
+	repeat_password = forms.CharField(
+					label=_('Repeat Password:'),
+					required=False,
 					widget=forms.PasswordInput(attrs={'placeholder': ''}))
 	repeat_password = forms.CharField(
 					label=_('Repeat Password:'),
@@ -33,22 +59,33 @@ class UserForm(ModelForm):
 		userprofile.user.email = self.cleaned_data.get('email')
 		userprofile.user.username=userprofile.user.email
 		userprofile.user.set_password(self.cleaned_data.get('password'))
-
+		print(commit)
 		# do custom stuff
 		if commit:
 			userprofile.save()
 		return userprofile
 
-
-	def clean(self):
-		cleaned_data = super(UserForm, self).clean()
-		if cleaned_data.get('password') != cleaned_data.get('repeat_password'):
-			self.add_error('password', 'Senhas nao conferem.')
-
 	class Meta:
 		model = UserProfile
 		fields = ['name', 'registration_number',
 				  'category', 'email', 'password', 'repeat_password']
+
+class EditUserForm(UserForm):
+	
+	class Meta:
+		model = UserProfile
+		fields = ['name', 'registration_number',
+				  'category', 'email']
+
+class NewUserForm(UserForm):
+
+	def clean(self):
+		cleaned_data = super(UserForm, self).clean()
+		password1 = cleaned_data.get('password')
+		password2 = cleaned_data.get('repeat_password')
+		if password1 and password2 and password1 != password2:
+			self.add_error('password', _('Passwords do not match'))	
+
 
 class BookingForm(ModelForm):
 	name = forms.CharField(
@@ -99,3 +136,4 @@ class BookingForm(ModelForm):
 		model = Booking
 		fields = ['name', 'place_name',
 				  'start_hour', 'end_hour', 'start_date', 'end_date']
+

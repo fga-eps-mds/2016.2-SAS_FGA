@@ -4,8 +4,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 import datetime
 
-CATEGORY = (('1', _('Student')),
-			('2', _('Teaching Staff')), ('3', _('Employees')))
+CATEGORY = (('1', _('Student')),('2', _('Teaching Staff')), ('3', _('Employees')))
 
 
 class UserProfile(models.Model):
@@ -57,3 +56,4 @@ class Booking(models.Model):
 
 	def save(self, *args, **kwargs):
 		super(Booking, self).save(*args, **kwargs)
+

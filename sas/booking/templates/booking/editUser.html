@@ -1,13 +1,82 @@
-{% extends 'booking/base.html' %} 
+{% extends 'booking/baseUser.html' %}
+
 {% load bootstrap3 %}
-{% block content %}
-	<h1>Editing User</h1>  
-  {% bootstrap_form_errors form_user %}	
-  <form method = 'POST'>
-  {% csrf_token %}
-  {% bootstrap_form form_user %}
-  {% buttons %}
-    <button type = 'submit'5>Editar</button>
-  {% endbuttons %}
-  </form>
+{% bootstrap_css %}
+{% bootstrap_messages %}
+
+<!DOCTYPE html>
+<html>
+{% block head %}
+    {% block title %}
+        <title>SAS - UnB</title>
+
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'style/user.css' %}" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% endblock %}
 {% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block body %}
+    <div class="col-lg-12 page-content">
+        <h1 class="content-title">Meus Dados</h1>
+        <hr class="star-light">
+        <div class="form-content">
+            <form class="form-horizontal" method = 'POST' action="/user/edituser/">
+                {% csrf_token %}
+                {% for field in form_user %}
+                    {% bootstrap_field field exclude="password,repeat_password" %}
+				{% bootstrap_form_errors form_user %}
+                {% endfor %}
+                <div class="button-div">
+                    <a class="btn btn-info btn-block btn-password" href="#change-password"
+                        data-toggle="modal">Alterar senha</a>
+                    {% buttons %}
+                        <button class="btn btn-success btn-block btn-edit" type = 'submit'>Salvar Dados</button>
+                    {% endbuttons %}
+                </div>
+            </form>
+            <a class="btn btn-danger btn-block btn-delete" href="/user/delete" name="delete">Excluir minha conta</a>
+        </div>
+    </div>
+    <div class="modal fade" role="dialog" id="change-password">
+        <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title" id="myModalLabel">Alterar Senha</p>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="modal-col col-xs-12">
+                            <form method="POST" id="passwordForm">
+                                <div class="control-group">
+                                    <label class="control-label">Senha Atual:</label>
+                                    <input class="form-control" type="password" name="password" id="password">
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Nova Senha:</label>
+                                    <input class="form-control" type="password" name="new-password" id="new-password">
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Confirmar Nova Senha:</label>
+                                    <input class="form-control" type="password" name="renew-password" id="renew-password">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-success btn-block">Alterar Senha</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+{% endblock %}
+</html>
