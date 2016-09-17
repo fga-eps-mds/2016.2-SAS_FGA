@@ -88,20 +88,28 @@ class BookingForm(ModelForm):
 
 	def clean(self):
 		cleaned_data = super(BookingForm, self).clean()
-		if datetime.now() >= cleaned_data.get('start_date'):
-			msg = 'A data de inicio deve ser posterior a data atual'
+		if date.today() > cleaned_data.get('start_date'):
+			msg = 'A data de inicio deve ser posterior a data atual.'
 			self.add_error('start_date', msg)
 			raise forms.ValidationError(msg)
-		if datetime.now() >= cleaned_data.get('end_date'):
-			msg = 'A data final deve ser posterior a data atual'
+		if date.today() > cleaned_data.get('end_date'):
+			msg = 'A data final deve ser posterior a data atual.'
 			self.add_error('end_date', msg)
 			raise forms.ValidationError(msg)
 		elif cleaned_data.get('end_date') < cleaned_data.get('start_date'):
-			msg = 'A data final deve ser posterior a data de inicio'
+			msg = 'A data final deve ser posterior a data de inicio.'
 			self.add_error('end_date', msg)
 			raise forms.ValidationError(msg)
-		if cleaned_data.get('start_date') == cleaned_data.get('end_date') and cleaned_data.get('end_hour') < cleaned_data.get('start_hour'):
-			msg = 'A hora final deve ser anterior a hora inicial'
+		if cleaned_data.get('end_hour') <= cleaned_data.get('start_hour'):
+			msg = 'A hora final deve ser posterior a hora inicial.'
+			self.add_error('end_hour', msg)
+			raise forms.ValidationError(msg)
+		if date.today() == cleaned_data.get('start_date') and date.today() == cleaned_data.get('end_date') and datetime.now() > cleaned_data.get('start_hour'):
+			msg = 'A hora de inicio deve ser posterior a hora atual para uma reserva hoje'
+			self.add_error('start_hour', msg)
+			raise forms.ValidationError(msg)
+		if date.today() == cleaned_data.get('start_date') and date.today() == cleaned_data.get('end_date') and datetime.now() > cleaned_data.get('end_hour'):
+			msg = 'A hora final deve ser posterior a hora atual para uma reserva hoje'
 			self.add_error('end_hour', msg)
 			raise forms.ValidationError(msg)
 
