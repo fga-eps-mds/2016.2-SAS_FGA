@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext as _
 from django.forms import ModelForm
-from .models import UserProfile,Booking,BookTime
+from .models import UserProfile,Booking,BookTime,Place
 from .models import CATEGORY
 from django import forms
 from django.contrib.auth.models import User
@@ -66,27 +66,36 @@ class BookingForm(ModelForm):
 	end_date = forms.DateField(
 					label=_('Data final:'),
 					widget=forms.widgets.DateInput)
-	place = forms.CharField(
+	place_name = forms.CharField(
 					label=_('Sala:'),
 					widget=forms.TextInput(attrs={'placeholder': ''}))
 
 	def save(self, force_insert=False, force_update=False, commit=True):
 		booking = super(BookingForm, self).save(commit=False)
-		booking.time = BookTime()
-		booking.time.start_hour = self.cleaned_data.get('start_hour')
-		booking.time.end_hour = self.cleaned_data.get('end_hour')
-		booking.time.start_date = self.cleaned_data.get('start_date')
-		booking.time.end_date = self.cleaned_data.get('end_date')
-
+		booking_time = BookTime()
+		booking_time.start_hour = self.cleaned_data.get('start_hour')
+		booking_time.end_hour = self.cleaned_data.get('end_hour')
+		booking_time.start_date = self.cleaned_data.get('start_date')
+		booking_time.end_date = self.cleaned_data.get('end_date')
+		booking_time.save()
 		booking.name = self.cleaned_data.get('name')
-		booking.place = self.cleaned_data.get('place')
+		booking_place = Place()
+		booking_place.name = self.cleaned_data.get('place_name')
+		booking_place.capacity = '60'
+		booking_place.place_id = '60'
+		booking_place.localization = 'uac'
+		booking_place.is_laboratory = True
+		booking_place.save()
+		booking.place = booking_place
 
 		# do custom stuff
 		if commit:
+			booking.save()
+			booking.time.add(booking_time)
 			booking.save()
 		return booking
 
 	class Meta:
 		model = Booking
-		fields = ['name', 'place',
-				  'start_hour', 'end_hour', 'start_date', 'end_date', 'user']
+		fields = ['name', 'place_name',
+				  'start_hour', 'end_hour', 'start_date', 'end_date']

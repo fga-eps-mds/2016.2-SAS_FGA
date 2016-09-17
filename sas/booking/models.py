@@ -30,14 +30,30 @@ class UserProfile(models.Model):
 		self.user_id = self.user.pk
 		super(UserProfile, self).save(*args, **kwargs)
 
+class Place(models.Model):
+	name = models.CharField(max_length=50)
+	capacity = models.CharField(max_length=250)
+	is_laboratory = models.BooleanField()
+	place_id = models.CharField(max_length=7)
+	localization = models.CharField(max_length=50)
+
+	def save(self, *args, **kwargs):
+		super(Place, self).save(*args, **kwargs)
+
 class BookTime(models.Model):
 	start_hour = models.TimeField(null=False, blank=False)
 	end_hour = models.TimeField(null=False, blank=False)
 	start_date = models.DateField(null=False, blank=False)
 	end_date = models.DateField(null=False, blank=False)
 
+	def save(self, *args, **kwargs):
+		super(BookTime, self).save(*args, **kwargs)
+
 class Booking(models.Model):
-	user = models.OneToOneField(User, related_name="bookings")
-	time = models.OneToOneField(BookTime, related_name="booking_time")
-	place = models.CharField(max_length=50)
+	user = models.ForeignKey(User, related_name="bookings", on_delete=models.CASCADE)
+	time = models.ManyToManyField(BookTime, related_name="booking_time")
+	place = models.ForeignKey(Place, related_name="booking_place") 
 	name = models.CharField(max_length=50)
+
+	def save(self, *args, **kwargs):
+		super(Booking, self).save(*args, **kwargs)

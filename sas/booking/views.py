@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserForm, BookingForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, Booking
 
 
 def index(request):
@@ -85,8 +85,9 @@ def new_booking(request):
             if not(form_booking.is_valid()):
 	               return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
             else:
-                email = User.objects.get(pk=request.user.pk).email
-                booking = form_booking.save()
+                booking = form_booking.save(commit=False)
+                booking.user = request.user
+                form_booking.save()
                 return render(request, 'booking/index.html', {})
         else:
             form_booking = BookingForm()
@@ -94,4 +95,4 @@ def new_booking(request):
 
     else:
         form_booking = BookingForm()
-        return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
+        return render(request, 'booking/index.html', {})
