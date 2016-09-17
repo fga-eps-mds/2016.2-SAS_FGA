@@ -4,7 +4,6 @@ from .forms import UserForm, NewUserForm, LoginForm, EditUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile, Booking
-from booking.tables import MyBookingTable
 
 
 def index(request):
