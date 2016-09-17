@@ -27,6 +27,44 @@ class LoginForm(ModelForm):
 		model = User
 		fields = ['email', 'password']
 
+class PasswordForm(ModelForm):
+	password = forms.CharField(
+					label=_('Password:'),
+					widget=forms.PasswordInput(attrs={'placeholder': ''}))
+
+	new_password = forms.CharField(
+					label=_('New Password:'),
+					widget=forms.PasswordInput(attrs={'placeholder': ''}))
+	renew_password = forms.CharField(
+					label=_('Repeat Password:'),
+					widget=forms.PasswordInput(attrs={'placeholder': ''}))
+
+	def save(self,user):
+		password = self.cleaned_data.get("new_password")	
+		user.set_password(password)
+		user.save()
+
+	def is_password_valid(self,username):
+		cleaned_data = super(ModelForm,self).clean()
+		password = cleaned_data.get('password') 
+		user = authenticate(username=username,password=password)
+		if user is None:
+			self.add_error('password',_('Password is wrong'))
+			return False
+		return True
+
+	def clean(self):
+		cleaned_data = super(ModelForm,self).clean()
+		password1 = cleaned_data.get('new_password')
+		password2 = cleaned_data.get('renew_password')
+		if password1 and password2 and password1 != password2:
+			self.add_error('new_password', _('Passwords do not match'))
+			self.add_error('renew_password', _('Passwords do not match'))
+
+	class Meta:
+		model = User
+		fields = ['password','new_password','renew_password']
+
 class UserForm(ModelForm):
 	name = forms.CharField(
 					label=_('Name:'),
@@ -56,7 +94,7 @@ class UserForm(ModelForm):
 
 		userprofile.name(self.cleaned_data.get('name'))
 		userprofile.user.email = self.cleaned_data.get('email')
-		userprofile.user.username=userprofile.user.email
+		userprofile.user.username = userprofile.user.email
 		print(commit)
 		# do custom stuff
 		if commit:
@@ -65,8 +103,11 @@ class UserForm(ModelForm):
 
 	def clean(self):
 		cleaned_data = super(ModelForm,self).clean()
-		if User.objects.filter(username=cleaned_data.get('email')).exists():
-			self.add_error('email',_('Email already used'))
+		if self.instance is None or self.instance.user.email != cleaned_data.get('email'):
+			print(self.instance.user.email)
+			print(cleaned_data.get('email'))
+			if User.objects.filter(username=cleaned_data.get('email')).exists():
+				self.add_error('email',_('Email already used'))
 		return cleaned_data
 	
 	class Meta:

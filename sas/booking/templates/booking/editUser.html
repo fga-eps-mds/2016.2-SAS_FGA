@@ -22,6 +22,13 @@
 {% endblock %}
 
 {% block body %}
+	{% if change_form.errors %}
+		<script type="text/javascript">
+			$(window).load(function(){
+				$('#change-password').modal('show');
+			});
+		</script>
+	{% endif %}
     <div class="col-lg-12 page-content">
         <h1 class="content-title">Meus Dados</h1>
         <hr class="star-light">
@@ -53,25 +60,16 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="modal-col col-xs-12">
-                            <form method="POST" id="passwordForm">
-                                <div class="control-group">
-                                    <label class="control-label">Senha Atual:</label>
-                                    <input class="form-control" type="password" name="password" id="password">
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">Nova Senha:</label>
-                                    <input class="form-control" type="password" name="new-password" id="new-password">
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label">Confirmar Nova Senha:</label>
-                                    <input class="form-control" type="password" name="renew-password" id="renew-password">
-                                </div>
+                            <form method="POST" action="/user/change/" id="passwordForm">
+								{% csrf_token %}
+                                {% bootstrap_form change_form %}
+								{% bootstrap_form_errors change_form %}
+								{% buttons %}
+									<button class="btn btn-success btn-block btn-edit" type = 'submit'>Alterar senha</button>
+								{% endbuttons %}
                             </form>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-success btn-block">Alterar Senha</a>
                 </div>
             </div>
         </div>

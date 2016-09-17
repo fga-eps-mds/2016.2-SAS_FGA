@@ -1,6 +1,7 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserForm, NewUserForm, LoginForm, EditUserForm
+from .forms import PasswordForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile
@@ -34,25 +35,26 @@ def list_user(request):
 
 def edit_user(request):
 	if request.user.is_authenticated() and request.method == "POST":
-		print(request.user.profile_user.pk)
 		form = EditUserForm(request.POST, instance=request.user.profile_user)
 		if form.is_valid():
 			user = form.save()
-			print(user.user.pk)	
-			return render(request, 'booking/editUser.html', {'form_user': form})
-		else:
-			print(form.errors)
-			return render(request, 'booking/editUser.html', {'form_user': form})
+		return render_edit_user(request,user_form=form)	
 	elif not request.user.is_authenticated():
 		return index(request) 
 	else:
-		print(request.user.pk)
-		user = request.user
-		initial = {}
-		initial['name'] = user.profile_user.full_name()
-		initial['email'] = user.email
-		form = EditUserForm(initial=initial, instance=request.user.profile_user)
-		return render(request, 'booking/editUser.html', {'form_user': form})
+		return render_edit_user(request)	
+
+def render_edit_user(request,user_form=None,change_form=PasswordForm()):
+	user = request.user
+	initial = {}
+	initial['name'] = user.profile_user.full_name()
+	initial['email'] = user.email
+	if user_form is None:
+		user_form = EditUserForm(initial=initial, 
+								 instance=request.user.profile_user)
+	return render(request, 
+				  'booking/editUser.html', 
+				  {'form_user': user_form,'change_form':change_form})
 
 def login_user(request) :
 	if request.method == "POST":
@@ -65,8 +67,7 @@ def login_user(request) :
 			else:
 				return render (request,'booking/index.html',{'form':form})
 	else:
-		form = LoginForm()
-		return render (request ,'booking/index.html',{'form':form})
+		return index(request) 
 
 def logout_user(request):
 	logout(request)
@@ -81,3 +82,18 @@ def delete_user(request):
         return render(request, 'booking/index.html', {'form': form})
     else:
         return render(request, 'booking/editUser.html', {})
+
+def change_password(request):
+	if request.user.is_authenticated() and request.POST:
+		form = PasswordForm(request.POST)
+		if form.is_valid() and form.is_password_valid(request.user.username):
+			form.save(request.user)
+			login(request,request.user)
+			return render_edit_user(request)
+		else:
+			return render_edit_user(request,change_form=form)		
+	if not request.user.is_authenticated():
+		return index(request)
+	else:
+		return render_edit_user(request)	
+		
