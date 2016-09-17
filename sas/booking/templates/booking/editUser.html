@@ -30,6 +30,7 @@
                 {% csrf_token %}
                 {% for field in form_user %}
                     {% bootstrap_field field exclude="password,repeat_password" %}
+				{% bootstrap_form_errors form_user %}
                 {% endfor %}
                 <div class="button-div">
                     <a class="btn btn-info btn-block btn-password" href="#change-password"
@@ -39,7 +40,7 @@
                     {% endbuttons %}
                 </div>
             </form>
-            <a class="btn btn-danger btn-block btn-delete" href="/user/delete" name="delete">Excluir minha conta</a>
+            <a class="btn btn-danger btn-block btn-delete" id="deleteuser" href="/user/delete" name="delete">Excluir minha conta</a>
         </div>
     </div>
     <div class="modal fade" role="dialog" id="change-password">

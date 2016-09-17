@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserForm, NewUserForm, LoginForm
+from .forms import UserForm, NewUserForm, LoginForm, EditUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile
@@ -33,23 +33,26 @@ def list_user(request):
 
 
 def edit_user(request):
-    if request.user.is_authenticated() and request.method == "POST":
-        form = UserForm(request.POST, instance=request.user)
-        if not(form.is_valid()):
-            form.save()
-            return render(request, 'booking/editUser.html', {'form_user': form})
-        else:
-            return render(request, 'booking/editUser.html', {'form_user': form})
-    elif not request.user.is_authenticated():
-        return render(request, 'booking/index.html', {})
-    else:
-        print(request.user.pk)
-        user = request.user
-        initial = {}
-        initial['name'] = user.profile_user.full_name()
-        initial['email'] = user.email
-        form = UserForm(initial=initial, instance=request.user.profile_user)
-        return render(request, 'booking/editUser.html', {'form_user': form})
+	if request.user.is_authenticated() and request.method == "POST":
+		print(request.user.profile_user.pk)
+		form = EditUserForm(request.POST, instance=request.user.profile_user)
+		if form.is_valid():
+			user = form.save()
+			print(user.user.pk)	
+			return render(request, 'booking/editUser.html', {'form_user': form})
+		else:
+			print(form.errors)
+			return render(request, 'booking/editUser.html', {'form_user': form})
+	elif not request.user.is_authenticated():
+		return index(request) 
+	else:
+		print(request.user.pk)
+		user = request.user
+		initial = {}
+		initial['name'] = user.profile_user.full_name()
+		initial['email'] = user.email
+		form = EditUserForm(initial=initial, instance=request.user.profile_user)
+		return render(request, 'booking/editUser.html', {'form_user': form})
 
 def login_user(request) :
 	if request.method == "POST":

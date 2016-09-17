@@ -36,9 +36,11 @@ class UserForm(ModelForm):
 					widget=forms.TextInput(attrs={'placeholder': ''}))
 	password = forms.CharField(
 					label=_('Password:'),
+					required=False,
 					widget=forms.PasswordInput(attrs={'placeholder': ''}))
 	repeat_password = forms.CharField(
 					label=_('Repeat Password:'),
+					required=False,
 					widget=forms.PasswordInput(attrs={'placeholder': ''}))
 	registration_number = forms.CharField(
 					label=_('Registration number:'),
@@ -47,21 +49,37 @@ class UserForm(ModelForm):
 
 	def save(self, force_insert=False, force_update=False, commit=True):
 		userprofile = super(UserForm, self).save(commit=False)
-		userprofile.user = User()
+		# if it is a new user
+		if not hasattr(userprofile,'user'):
+			userprofile.user = User()
+			userprofile.user.set_password(self.cleaned_data.get('password'))
+
 		userprofile.name(self.cleaned_data.get('name'))
 		userprofile.user.email = self.cleaned_data.get('email')
 		userprofile.user.username=userprofile.user.email
-		userprofile.user.set_password(self.cleaned_data.get('password'))
-
+		print(commit)
 		# do custom stuff
 		if commit:
 			userprofile.save()
 		return userprofile
 
+	def clean(self):
+		cleaned_data = super(ModelForm,self).clean()
+		if User.objects.filter(username=cleaned_data.get('email')).exists():
+			self.add_error('email',_('Email already used'))
+		return cleaned_data
+	
 	class Meta:
 		model = UserProfile
 		fields = ['name', 'registration_number',
 				  'category', 'email', 'password', 'repeat_password']
+
+class EditUserForm(UserForm):
+	
+	class Meta:
+		model = UserProfile
+		fields = ['name', 'registration_number',
+				  'category', 'email']
 
 class NewUserForm(UserForm):
 

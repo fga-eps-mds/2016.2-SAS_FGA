@@ -1,12 +1,16 @@
-Feature: Edit
+Feature: EditUser
+
+Background:
+	Given I register the user "lucas@gmail.com" with the password "123456"
 
 Scenario: User registered
-  When I visit site page "/user/edituser/1"
-  And I fill in "Name" with "Pedro Silva"
-  And I fill in "Username" with "pedra1"
-  And I fill in "Email" with "pedra@gmail.com"
-  And I type in "teste123" to "Password"	
-  And I type in "teste1234" to "Password"
-  And I type in "teste1234" to "Repeat Password"
-  Then I press "Editar"
-  Then I should see "Listing User"
+	When I visit site page "/"
+	Then I should see an element with id of "enter-button"
+	Then I click on an element with id of "enter-button"
+	And I fill in "Email" with "lucas@gmail.com"
+	And I fill in "Password" with "123456"
+	Then I press "Entrar"
+	Then I click on an element with id of "user-link"
+	Then I click on an element with id of "edituser"
+	And I fill in "Name" with "Pedro Pereira Pinto"
+	And I press "Salvar Dados"
