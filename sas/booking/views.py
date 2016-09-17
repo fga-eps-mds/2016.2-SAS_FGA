@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserForm, NewUserForm, LoginForm, EditUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, Booking
 
 
 def index(request):
@@ -104,7 +104,8 @@ def new_booking(request):
 
 def search_booking(request):
 	if request.user.is_authenticated():
-		print(request.user.bookings)
-		return render(request, 'booking/searchBooking.html', {"booking":request.user.bookings})
+		bookings = Booking.objects.filter(user=request.user)
+		print(bookings)
+		return render(request, 'booking/searchBooking.html', {"bookings":bookings})
 	return render(request, 'booking/index.html', {})
 
