@@ -45,6 +45,8 @@ Caso você já utilize o Linux como sistema operacional, siga:
 4. Realize a instalação
   - ```sudo ./install-apt.sh```
 5. Crie um ambiente de desenvolvimento virtual
-  - ```mkvirtualenv -p /usr/local/bin/python3.5 sas```
-6. Finalmente, instale as dependências necessárias 
+  - ```python3 -m venv sas```
+6. Iniciar o ambiente virtual
+  - ```. sas/bin/activate```
+7. Finalmente, instale as dependências necessárias 
   - ```pip install -r requirements.txt```
