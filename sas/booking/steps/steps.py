@@ -5,6 +5,7 @@ from selenium.common.exceptions import NoSuchElementException
 from booking.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import login,authenticate
+from django.test import Client
 
 @step(r'I type in "(.*)" to "(.*)"')
 def fill_bootstrap_field(step, text, field):
@@ -42,6 +43,13 @@ def register_user(step, username, password):
 	user.user.set_password(password)
 	user.save()
 
-@step(r'I login in with username "(.*)" and password "(.*)"')
-def login_user(ste,username,password):
-	user = authenticate(username=username,password=password)
+@step(r'I login in with email "(.*)" and password "(.*)"')
+def login_user(ste,email,password):
+	c = Client()
+	response = c.login(username=email,password=password)
+	cookies = {}
+	for co in c.cookies.values():
+		cookies['name'] = co.key
+		cookies['value'] = co.value  
+		world.browser.add_cookie(cookies)
+	world.browser.refresh()

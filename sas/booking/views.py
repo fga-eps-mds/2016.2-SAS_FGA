@@ -66,6 +66,8 @@ def login_user(request) :
 				return render (request ,'booking/myIndex.html',{})
 			else:
 				return render (request,'booking/index.html',{'form':form})
+		else:
+			return render (request,'booking/index.html',{'form':form})
 	else:
 		return index(request) 
 
