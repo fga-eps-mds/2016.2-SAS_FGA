@@ -102,10 +102,8 @@ class UserForm(ModelForm):
 		return userprofile
 
 	def clean(self):
-		cleaned_data = super(ModelForm,self).clean()
-		if self.instance is None or self.instance.user.email != cleaned_data.get('email'):
-			print(self.instance.user.email)
-			print(cleaned_data.get('email'))
+		cleaned_data = super(ModelForm, self).clean()
+		if not hasattr(self.instance,'user') or self.instance.user.email != cleaned_data.get('email'):
 			if User.objects.filter(username=cleaned_data.get('email')).exists():
 				self.add_error('email',_('Email already used'))
 		return cleaned_data
@@ -125,7 +123,7 @@ class EditUserForm(UserForm):
 class NewUserForm(UserForm):
 
 	def clean(self):
-		cleaned_data = super(UserForm, self).clean()
+		cleaned_data = super(NewUserForm, self).clean()
 		password1 = cleaned_data.get('password')
 		password2 = cleaned_data.get('repeat_password')
 		if password1 and password2 and password1 != password2:
