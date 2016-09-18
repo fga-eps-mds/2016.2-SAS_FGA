@@ -22,7 +22,7 @@ before_script:
 script:
     - cd sas
     - python manage.py makemigrations
-    - coverage run manage.py test
+    - python manage.py test
     - coverage run manage.py harvest 
 
 after_success:
