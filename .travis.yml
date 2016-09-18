@@ -20,9 +20,9 @@ before_script:
     - sleep 5
 # command to run tests
 script:
-    - coverage run sas/manage.py test
     - cd sas
     - python manage.py makemigrations
+    - coverage run manage.py test
     - coverage run manage.py harvest 
 
 after_success:

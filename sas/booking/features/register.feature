@@ -32,4 +32,5 @@ Scenario: Repeated Email
 	And I type in "teste123" to "Password"
 	And I type in "teste123" to "Repeat Password"
 	Then I press "Cadastrar"
+	Then I should see "Entrar"
 	Then I should see "Email already used"
