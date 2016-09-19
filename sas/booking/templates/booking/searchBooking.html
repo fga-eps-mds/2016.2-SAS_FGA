@@ -1,6 +1,5 @@
 {% extends 'booking/baseUser.html' %}
 
-{% load table_tags %}
 {% load bootstrap3 %}
 {% bootstrap_css %}
 {% bootstrap_messages %}
@@ -27,7 +26,11 @@
         <h1 class="content-title">Minhas Reservas</h1>
         <hr class="star-light">
 		<div class="table-content">
-            {% render_table table %}
+            {% for booking in bookings%}
+                Nome: {{ booking.name }}<br>
+                Sala: {{ booking.place.name }}<br>
+                ---------------------------------<br>
+            {% endfor %}    
         </div>
 	</div>
 {% endblock %}

@@ -1,9 +1,10 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserForm, NewUserForm, LoginForm, EditUserForm
+from .forms import UserForm, NewUserForm, LoginForm, EditUserForm, BookingForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile, Booking
+
 
 
 def index(request):
@@ -94,19 +95,22 @@ def new_booking(request):
                 booking = form_booking.save(commit=False)
                 booking.user = request.user
                 form_booking.save()
-                return render(request, 'booking/index.html', {})
+                
+                form = LoginForm()
+                return render(request, 'booking/index.html', {'form':form})
         else:
             form_booking = BookingForm()
             return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
 
     else:
         form_booking = BookingForm()
-        return render(request, 'booking/index.html', {})
+        form = LoginForm()        
+        return render(request, 'booking/index.html', {'form':form})
 
 def search_booking(request):
     if request.user.is_authenticated():
         bookings = Booking.objects.filter(user=request.user)
-        table = MyBookingTable(Booking.objects.all())
-        return render(request, 'booking/searchBooking.html', {"bookings":bookings, "table":table})
+        return render(request, 'booking/searchBooking.html', {'bookings':bookings})
     else:
-       return render(request, 'booking/index.html', {})
+        form = LoginForm() 
+        return render(request, 'booking/index.html', {'form':form})
