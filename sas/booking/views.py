@@ -11,9 +11,6 @@ def index(request):
     form = LoginForm()
     return render(request, 'booking/index.html', {'form':form})
 
-def index_user(request):
-    return render(request, 'booking/myIndex.html', {})
-
 def new_user(request):
     if request.method == "POST":
         form = NewUserForm(request.POST, UserProfile)
@@ -57,18 +54,18 @@ def edit_user(request):
         return render(request, 'booking/editUser.html', {'form_user': form})
 
 def login_user(request) :
-    if request.method == "POST":
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            if user is not None:
-                login ( request , user) ;
-                return render (request ,'booking/myIndex.html',{})
-            else:
-                return render (request,'booking/index.html',{'form':form})
-    else:
-        form = LoginForm()
-        return render (request ,'booking/index.html',{'form':form})
+	if request.method == "POST":
+		form = LoginForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			if user is not None:
+				login ( request , user) ;
+				return render (request ,'booking/home.html',{})
+			else:
+				return render (request,'booking/index.html',{'form':form})
+	else:
+		form = LoginForm()
+		return render (request ,'booking/index.html',{'form':form})
 
 def logout_user(request):
     logout(request)
@@ -95,7 +92,7 @@ def new_booking(request):
                 booking = form_booking.save(commit=False)
                 booking.user = request.user
                 form_booking.save()
-                
+
                 form = LoginForm()
                 return render(request, 'booking/index.html', {'form':form})
         else:
@@ -104,7 +101,7 @@ def new_booking(request):
 
     else:
         form_booking = BookingForm()
-        form = LoginForm()        
+        form = LoginForm()
         return render(request, 'booking/index.html', {'form':form})
 
 def search_booking(request):
@@ -112,5 +109,5 @@ def search_booking(request):
         bookings = Booking.objects.filter(user=request.user)
         return render(request, 'booking/searchBooking.html', {'bookings':bookings})
     else:
-        form = LoginForm() 
+        form = LoginForm()
         return render(request, 'booking/index.html', {'form':form})
