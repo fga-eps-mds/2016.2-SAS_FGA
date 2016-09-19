@@ -1,0 +1,54 @@
+
+<!-- Menu -->
+<div class="navbar navbar-custom" role="navigation">
+   <div class="container">
+       <div class="navbar-header">
+           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+           </button>
+       </div>
+       <div class="collapse navbar-collapse navbar-ex1-collapse">
+         <ul class="nav navbar-nav">
+             <li><a href="/">Início</a></li>
+             <li><a href="#">Pesquisa</a></li>
+             {% if request.user.is_authenticated %}
+             <li><a href="#">Reservas</a></li>
+             <!-- IF request.user is ADM
+             <li><a href="#">Solicitações</a></li>
+             <li><a href="#">Usuarios</a></li>
+              -->
+             {% endif %}
+             <li><a href="#">FAQ</a></li>
+         </ul>
+         {% if request.user.is_authenticated %}
+         <ul class="nav navbar-nav pull-right">
+             <li class="dropdown">
+                 <a href="#" class="dropdown-toggle" type="button" id="user-link"
+                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                     Olá, {{ user.profile_user.full_name }}
+                     <span class="caret"></span>
+                 </a>
+                 <ul class="dropdown-menu left" aria-labelledby="user-link">
+                     <li class="user-menu-info"><a href="/user/edituser">Meus dados</a></li>
+                     <li class="user-menu-info"><a href="#">Minha reserva</a></li>
+                     <li role="separator" class="divider"></li>
+                     <li class="user-menu-info"><a href="/user/logout">Sair</a></li>
+                 </ul>
+             </li>
+         </ul>
+         {% else %}
+         <ul class="nav navbar-nav pull-right">
+             <li>
+              <a id="enter-button" class="btn btn-success" data-toggle="modal" href="{% url 'index' %}?showLoginModal=yes">
+                Entrar
+              </a>
+             </li>
+         </ul>
+         {% endif %}
+     </div>
+   </div>
+</div>
+<!--end menu -->
