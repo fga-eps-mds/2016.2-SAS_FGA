@@ -20,5 +20,5 @@ from booking.views import index
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', index, name = "index"),
-    url(r'^user/', include('booking.urls')),
+    url(r'^user/', include('booking.urls', namespace="booking")),
 ]
