@@ -1,33 +1,25 @@
-{% extends 'booking/baseVisitor.html' %}
+{% extends 'booking/base.html' %}
+
 {% load bootstrap3 %}
-{% bootstrap_css %}
 {% bootstrap_messages %}
-
-<!DOCTYPE html>
-<html>
-{%  block head %}
-    {% block title %}
-        <title>SAS - UnB</title>
-
-        {% load staticfiles %}
-        <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'style/index.css' %}" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    {% endblock %}
-{% endblock %}
-
-{% block body %}
-<div class="content">
-    <!-- Modal -->
-	{% if form.errors %}
-		<script type="text/javascript">
-			$(window).load(function(){
-				$('#sign').modal('show');
-			});
-		</script>
-	{% endif %}
-    <div class="modal fade" id="sign" role="dialog">
+{% block title %}Página inicial{% endblock %}
+{% block content %}
+    <!--index content -->
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="intro-text">
+                <h1 class="content-title">Bem-Vindo</h1>
+                <span class="name">Sistema de Alocação de Salas</span>
+                <hr class="star-light">
+                <span class="skills">Reservas de salas, auditórios e laboratórios para docentes, discentes <br>
+                e todo o corpo acadêmico da universidade.</span>
+            </div>
+        </div>
+    </div>
+    <!--end index content -->
+{% if not request.user.is_authenticated %}
+    <!--Modal Sign in/up -->
+    <div class="modal fade in" id="sign" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -41,13 +33,13 @@
                             <div class="well">
                                 <form id="loginForm" method="POST" action="/user/login/">
                                     {% csrf_token %}
-									{% bootstrap_form form %}
+									                  {% bootstrap_form form %}
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" name="remember" id="remember"> Lembrar dados
                                         </label>
                                     </div>
-									{% bootstrap_form_errors form %}
+									                  {% bootstrap_form_errors form %}
                                     {% buttons %}
                                         <button type="submit" id="btn-login" class="btn btn-success btn-block">Entrar</button>
                                     {% endbuttons %}
@@ -97,31 +89,19 @@
             </div>
         </div>
     </div>
+<!--end modal sign in/up -->
 
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 page-content">
-                    <div class="intro-text">
-                        <span class="name">Sistema de Alocação de Salas</span>
-                        <hr class="star-light">
-                        <span class="skills">Reservas de salas, auditórios e laboratórios para docentes, discentes <br>
-                        e todo o corpo acadêmico da universidade.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    {% block footer %}
-    {% endblock %}
-
-    <script>
-        function hideSignModal() {
-            $('#sign').modal('hide');
-        }
-    </script>
-</div>
+{% block extrajs %}
+<script type="text/javascript">
+//Show modal sign in/up according to parameter
+  $(window).load(function(){
+    var url = window.location.href;
+    if(url.indexOf('?showLoginModal=yes') != -1) {
+      $('#sign').modal('show');
+    }
+  });
+</script>
 {% endblock %}
-</html>
+
+{% endif %}
+{% endblock %}

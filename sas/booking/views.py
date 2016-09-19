@@ -11,9 +11,6 @@ def index(request):
 	form = LoginForm()
 	return render(request, 'booking/index.html', {'form':form})
 
-def index_user(request):
-    return render(request, 'booking/myIndex.html', {})
-
 def new_user(request):
 	if request.method == "POST":
 		form = NewUserForm(request.POST, UserProfile)
@@ -63,7 +60,7 @@ def login_user(request) :
 			user = form.save()
 			if user is not None:
 				login ( request , user) ;
-				return render (request ,'booking/myIndex.html',{})
+				return render (request ,'booking/home.html',{})
 			else:
 				return render (request,'booking/index.html',{'form':form})
 		else:

@@ -1,55 +1,38 @@
-{% extends 'booking/baseUser.html' %}
+{% extends 'booking/base.html' %}
 
 {% load bootstrap3 %}
-{% bootstrap_css %}
 {% bootstrap_messages %}
-
-<!DOCTYPE html>
-<html>
-{% block head %}
-    {% block title %}
-        <title>SAS - UnB</title>
-
-        {% load staticfiles %}
-        <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'style/user.css' %}" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    {% endblock %}
-{% endblock %}
-
-{% block header %}
-{% endblock %}
-
-{% block body %}
-	{% if change_form.errors %}
-		<script type="text/javascript">
-			$(window).load(function(){
-				$('#change-password').modal('show');
-			});
-		</script>
-	{% endif %}
-    <div class="col-lg-12 page-content">
-        <h1 class="content-title">Meus Dados</h1>
-        <hr class="star-light">
-        <div class="form-content">
-            <form class="form-horizontal" method = 'POST' action="/user/edituser/">
-                {% csrf_token %}
-                {% for field in form_user %}
-                    {% bootstrap_field field exclude="password,repeat_password" %}
-				{% bootstrap_form_errors form_user %}
-                {% endfor %}
-                <div class="button-div">
-                    <a class="btn btn-info btn-block btn-password" href="#change-password"
-                        data-toggle="modal">Alterar senha</a>
-                    {% buttons %}
-                        <button class="btn btn-success btn-block btn-edit" type = 'submit'>Salvar Dados</button>
-                    {% endbuttons %}
-                </div>
-            </form>
-            <a class="btn btn-danger btn-block btn-delete" id="deleteuser" href="/user/delete" name="delete">Excluir minha conta</a>
-        </div>
+{% block title %}Editar dados de usuário{% endblock %}
+{% block content %}
+  <div class="row">
+    <div class="col-xs-8 col-sm-6 col-md-4 col-md-offset-4 col-xs-offset-2 col-sm-offset-3">
+      <h1 class="text-center">Meus Dados</h1>
+      <hr class="star-light">
+      <div class="form-content">
+        <form class="form-horizontal" method = 'POST' action="/user/edituser/">
+          {% csrf_token %}
+          {% for field in form_user %}
+            {% bootstrap_field field exclude="password,repeat_password" %}
+          {% endfor %}
+          <div>
+            <div class="col-xs-12 col-md-6">
+              <a class="btn btn-info btn-block btn-password" href="#change-password"
+                  data-toggle="modal">Alterar senha</a>
+            </div>
+            <div class="col-xs-12 col-md-6">
+              {% buttons %}
+                  <button class="btn btn-success btn-block btn-edit" type = 'submit'>Salvar Dados</button>
+              {% endbuttons %}
+            </div>
+            <div class="col-xs-12 col-md-6">
+              <a class="btn btn-danger btn-block btn-delete" href="/user/delete" name="delete">Excluir minha conta</a>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
+  <div class="row">
     <div class="modal fade" role="dialog" id="change-password">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -74,7 +57,5 @@
             </div>
         </div>
     </div>
+  </div>
 {% endblock %}
-{% block footer %}
-{% endblock %}
-</html>
