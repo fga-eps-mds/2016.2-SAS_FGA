@@ -31,16 +31,8 @@
               <tr>
                 <td>{{ booking.name }}</td>
                 <td>{{ booking.place.name }}</td>
-                <td>
-                  {% for time in booking.time.all %}
-                    {{ time.start_date }}, {{ time.start_hour }}<br>
-                  {% endfor %}
-                </td>
-                <td>
-                  {% for time in booking.time.all %}
-                    {{ time.end_date }}, {{ time.end_hour }}<br>
-                  {% endfor %}
-                </td>
+                <td>{{ booking.start_date }}</td>
+                <td>{{ booking.end_date }}</td>
                 <td>
                   <a href="#" class="btn btn-danger">
                     <span class="glyphicon glyphicon-trash"></span>
