@@ -6,6 +6,13 @@ from datetime import datetime, timedelta
 
 CATEGORY = (('1', _('Student')),('2', _('Teaching Staff')), ('3', _('Employees')))
 
+BUILDINGS = (('1', _('')), ('2', _('UAC')), ('3', _('UED')))
+
+# TODO: Select spaces according to building selected
+SPACES = (('1', _('')), ('2', _('I1')), ('3', _('I2')), ('4', _('I3')), ('5', _('I4')), ('6', _('I5')),
+	('7', _('I6')), ('8', _('I7')), ('9', _('I8')), ('10', _('I9')), ('11', _('I10')), ('12', _('S1')), ('13', _('S2')),
+	('14', _('S3')), ('15', _('S4')), ('16', _('S5')), ('17', _('S6')), ('18', _('S7')), ('19', _('S8')),
+	('20', _('S9')), ('21', _('S10')))
 
 class UserProfile(models.Model):
 	registration_number = models.CharField(max_length=20)

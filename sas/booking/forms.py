@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext as _
 from django.forms import ModelForm
 from .models import UserProfile,Booking,BookTime,Place
-from .models import CATEGORY
+from .models import CATEGORY, SPACES, BUILDINGS
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
@@ -89,23 +89,22 @@ class NewUserForm(UserForm):
 
 class BookingForm(ModelForm):
 	name = forms.CharField(
-					label=_('Nome:'),
+					label=_('Nome para Reserva:'),
 					widget=forms.TextInput(attrs={'placeholder': ''}))
 	start_hour = forms.TimeField(
-					label=_('Hora inicial:'),
-					widget=forms.widgets.TimeInput)
+					label=_('Hora Inicial:'),
+					widget=forms.widgets.TimeInput(attrs={'placeholder': ''}))
 	end_hour = forms.TimeField(
-					label=_('Hora final:'),
-					widget=forms.widgets.TimeInput)
+					label=_('Hora Final:'),
+					widget=forms.widgets.TimeInput(attrs={'placeholder': ''}))
 	start_date = forms.DateField(
-					label=_('Data inicial:'),
-					widget=forms.widgets.DateInput)
+					label=_('Data Inicial:'),
+					widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
 	end_date = forms.DateField(
-					label=_('Data final:'),
-					widget=forms.widgets.DateInput)
-	place_name = forms.CharField(
-					label=_('Sala:'),
-					widget=forms.TextInput(attrs={'placeholder': ''}))
+					label=_('Data Final:'),
+					widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
+	place = forms.ChoiceField(choices=SPACES, label=_('Espaço:'))
+	building = forms.ChoiceField(choices=BUILDINGS, label=_('Prédio:'))
 
 	def save(self, force_insert=False, force_update=False, commit=True):
 		booking = super(BookingForm, self).save(commit=False)
@@ -161,6 +160,4 @@ class BookingForm(ModelForm):
 
 	class Meta:
 		model = Booking
-		fields = ['name', 'place_name',
-				  'start_hour', 'end_hour', 'start_date', 'end_date']
-
+		fields = ['name', 'building', 'place', 'start_date', 'end_date', 'start_hour', 'end_hour']
