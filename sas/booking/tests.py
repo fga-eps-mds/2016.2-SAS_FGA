@@ -1,5 +1,19 @@
 from django.test import TestCase
 from booking.models import *
+from django.test import Client
+
+class ViewsTest(TestCase):
+
+	def setUp(self):
+		self.client = Client()
+
+	def test_index(self):
+		result = self.client.get("/")
+		self.assertEqual(result.status_code,200)
+
+	def test_new_user(self):
+		result = self.client.get("/user/newuser/")
+		self.assertEqual(result.status_code,200)
 
 class UserProfileTest(TestCase):
 	
