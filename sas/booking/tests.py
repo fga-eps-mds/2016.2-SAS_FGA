@@ -16,7 +16,7 @@ class TestBookTime(TestCase):
 		self.assertEqual(book.date_booking.strftime("%d%m%Y"),"23092016")
 		book.date_booking = datetime.strptime("21092016","%d%m%Y")
 		book.next_week_day(2)
-		self.assertEqual(book.date_booking.strftime("%d%m%Y"),"21092016")
+		self.assertEqual(book.date_booking.strftime("%d%m%Y"),"28092016")
 		book.date_booking = datetime.strptime("20092016","%d%m%Y")
 		book.next_week_day(0)
 		self.assertEqual(book.date_booking.strftime("%d%m%Y"),"26092016")

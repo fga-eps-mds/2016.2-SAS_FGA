@@ -63,6 +63,8 @@ class BookTime(models.Model):
 			self.add_days(7 - diff_of_weekdays)
 		elif diff_of_weekdays < 0:
 			self.add_days(diff_of_weekdays * (-1))
+		else:
+			self.add_days(7)
 
 	def get_str_weekday(self):
 		return self.date_booking.strftime("%A")
