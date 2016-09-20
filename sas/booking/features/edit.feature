@@ -8,7 +8,7 @@ Scenario: User registered
 	Then I visit site page "/user/edituser/"
 	And I fill in "Name" with "Pedro Pereira Pinto"
 	And I press "Salvar Dados"
-	Then I should see "Hi, Pedro Pereira Pinto"
+	Then I should see "Your data has been updated"
 
 Scenario: User empties one field
 	When I login in with email "lucas@gmail.com" and password "123456"

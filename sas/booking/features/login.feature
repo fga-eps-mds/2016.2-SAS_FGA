@@ -10,7 +10,7 @@ Scenario: Login successfully
 	And I fill in "Email" with "lucas@gmail.com"
 	And I fill in "Password" with "123456"
 	Then I press "Entrar"
-	Then I should see "Hi, Usuário"
+	Then I should see "Olá, Usuário"
 
 Scenario: User does not exist
 	When I visit site page "/"

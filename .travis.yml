@@ -22,8 +22,8 @@ before_script:
 script:
     - cd sas
     - python manage.py makemigrations
-    - python manage.py test
     - coverage run manage.py harvest 
+    - python manage.py test
 
 after_success:
   coveralls
