@@ -6,6 +6,7 @@ O status do projeto pode ser acompanhando pelos seguintes indicadores:
 |Branch|Travis|Coveralls|Code Climate|
 |------|------|---------|------------|
 |Master|[![Build Status](https://travis-ci.org/fga-gpp-mds/2016.2-SAS_FGA.svg?branch=master)](https://travis-ci.org/fga-gpp-mds/2016.2-SAS_FGA)|[![Coverage Status](https://coveralls.io/repos/github/fga-gpp-mds/2016.2-SAS_FGA/badge.svg?branch=master)](https://coveralls.io/github/fga-gpp-mds/2016.2-SAS_FGA?branch=master)|[![Code Climate](https://codeclimate.com/github/fga-gpp-mds/2016.2-SAS_FGA/badges/gpa.svg)](https://codeclimate.com/github/fga-gpp-mds/2016.2-SAS_FGA)|
+|Dev  |[![Build Status](https://travis-ci.org/fga-gpp-mds/2016.2-SAS_FGA.svg?branch=dev)](https://travis-ci.org/fga-gpp-mds/2016.2-SAS_FGA)| [![Coverage Status](https://coveralls.io/repos/github/fga-gpp-mds/2016.2-SAS_FGA/badge.svg?branch=dev)](https://coveralls.io/github/fga-gpp-mds/2016.2-SAS_FGA?branch=dev) | ---|
 
 
 # Configurar o ambiente
