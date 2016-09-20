@@ -2,7 +2,7 @@ from django.utils.translation import ugettext_lazy as _, ugettext as __
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-import datetime
+from datetime import datetime, timedelta
 
 CATEGORY = (('1', _('Student')),('2', _('Teaching Staff')), ('3', _('Employees')))
 
@@ -33,17 +33,25 @@ class Place(models.Model):
 	name = models.CharField(max_length=50)
 	capacity = models.CharField(max_length=250)
 	is_laboratory = models.BooleanField()
-	place_id = models.CharField(max_length=7)
 	localization = models.CharField(max_length=50)
-
-	def save(self, *args, **kwargs):
-		super(Place, self).save(*args, **kwargs)
+	
+	
 
 class BookTime(models.Model):
 	start_hour = models.TimeField(null=False, blank=False)
 	end_hour = models.TimeField(null=False, blank=False)
-	start_date = models.DateField(null=False, blank=False)
-	end_date = models.DateField(null=False, blank=False)
+	date_booking = models.DateField(null=False, blank=False)
+
+	def add_days(self,nr_days):
+		delta = timedelta(days=nr_days)
+		self.date_booking = self.date_booking + delta
+
+	def next_week_day(self,nr_weekday):
+		diff_of_weekdays = self.date_booking.weekday() - nr_weekday
+		if diff_of_weekdays > 0:
+			self.add_days(7 - diff_of_weekdays)
+		elif diff_of_weekdays < 0:
+			self.add_days(diff_of_weekdays * (-1))
 
 	def save(self, *args, **kwargs):
 		super(BookTime, self).save(*args, **kwargs)
@@ -53,6 +61,8 @@ class Booking(models.Model):
 	time = models.ManyToManyField(BookTime, related_name="booking_time")
 	place = models.ForeignKey(Place, related_name="booking_place") 
 	name = models.CharField(max_length=50)
+	start_date = models.DateField(null=False, blank=False)
+	end_date = models.DateField(null=False, blank=False)
 
 	def save(self, *args, **kwargs):
 		super(Booking, self).save(*args, **kwargs)

@@ -1,44 +1,22 @@
 from django.test import TestCase
-from booking.models import UserProfile
-from booking.views import edit_user, delete_user
+from booking.models import *
 
+class TestBookTime(TestCase):
 
-class DeleteUserTestCase(TestCase):
-
-	user_profile = UserProfile()
-	user_profile.name = 'Teste'
-	user_profile.category = 'Aluno'
-	user_profile.registration_number = 10
-	user_profile.email = 'example@example.com'
-	id_test = user_profile.id
-
-	def setUp(self):
-		self.delete_user = delete_user()
-
-	def delete_confirmed(self):
-		self.assertEqual(delete_user(
-					request.POST['delete'], id_test), 
-					render(request, 'booking/index.html', {}))
-
-	def delete_cancelled(self):
-		self.assertEqual(delete_user(
-					request.POST['cancel'], id_test),
-					render(request, 'booking/listUser.html', user_profile))
-
-
-class EditUserTestCase(TestCase):
-	user_profile = UserProfile()
-	user_profile.registration_number = 3
-	user_profile.category = 'Aluno'
-	user_profile.name = 'Testing'
-	user_profile.username = 'testing1'
-	user_profile.email = 'example@example.com'	
-	user_id = user_profile.id
-
-	def setUp(self):
-		self.edit_user = edit_user()
-
-	def test_edit_user_success(self):
-		self.assertEqual(edit_user(
-					request.POST['edituser'], user_id),
-					render(request, 'booking/index.html', {}))
+	def test_add_days(self):
+		book = BookTime()
+		book.date_booking = datetime.strptime("01022010","%d%m%Y")
+		book.add_days(5)
+		self.assertEqual(book.date_booking.strftime("%d%m%Y"),"06022010")
+	
+	def test_next_week_day(self):
+		book = BookTime()
+		book.date_booking = datetime.strptime("21092016","%d%m%Y")
+		book.next_week_day(4)
+		self.assertEqual(book.date_booking.strftime("%d%m%Y"),"23092016")
+		book.date_booking = datetime.strptime("21092016","%d%m%Y")
+		book.next_week_day(2)
+		self.assertEqual(book.date_booking.strftime("%d%m%Y"),"21092016")
+		book.date_booking = datetime.strptime("20092016","%d%m%Y")
+		book.next_week_day(0)
+		self.assertEqual(book.date_booking.strftime("%d%m%Y"),"26092016")
