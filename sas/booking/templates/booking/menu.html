@@ -15,7 +15,7 @@
              <li><a href="{% url 'index' %}">Início</a></li>
              <li><a href="#">Pesquisa</a></li>
              {% if request.user.is_authenticated %}
-             <li><a href="{% url 'booking:searchbooking' %}">Reservas</a></li>
+             <li><a href="{% url 'booking:newbooking' %}">Reservas</a></li>
              <!-- IF request.user is ADM
              <li><a href="#">Solicitações</a></li>
              <li><a href="#">Usuarios</a></li>
