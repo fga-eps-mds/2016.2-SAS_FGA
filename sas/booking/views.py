@@ -35,11 +35,12 @@ def edit_user(request):
 		form = EditUserForm(request.POST, instance=request.user.profile_user)
 		if form.is_valid():
 			user = form.save()
-		return render_edit_user(request,user_form=form)	
+			messages.success(request,_('Your data has been updated'))
+		return render_edit_user(request,user_form=form)
 	elif not request.user.is_authenticated():
-		return index(request) 
+		return index(request)
 	else:
-		return render_edit_user(request)	
+		return render_edit_user(request)
 
 def render_edit_user(request,user_form=None,change_form=PasswordForm()):
 	user = request.user
@@ -47,10 +48,10 @@ def render_edit_user(request,user_form=None,change_form=PasswordForm()):
 	initial['name'] = user.profile_user.full_name()
 	initial['email'] = user.email
 	if user_form is None:
-		user_form = EditUserForm(initial=initial, 
+		user_form = EditUserForm(initial=initial,
 								 instance=request.user.profile_user)
-	return render(request, 
-				  'booking/editUser.html', 
+	return render(request,
+				  'booking/editUser.html',
 				  {'form_user': user_form,'change_form':change_form})
 
 def login_user(request) :
@@ -66,7 +67,7 @@ def login_user(request) :
 		else:
 			return render (request,'booking/index.html',{'form':form})
 	else:
-		return index(request) 
+		return index(request)
 
 def logout_user(request):
 	logout(request)
@@ -78,7 +79,7 @@ def delete_user(request):
 	if request.user.is_authenticated():
 		request.user.delete()
 		logout(request)
-		return index(request) 
+		return index(request)
 	else:
 		return index(request)
 
@@ -91,9 +92,8 @@ def change_password(request):
 			messages.success(request,_('Your password has been changed'))
 			return render_edit_user(request)
 		else:
-			return render_edit_user(request,change_form=form)		
+			return render_edit_user(request,change_form=form)
 	if not request.user.is_authenticated():
 		return index(request)
 	else:
-		return render_edit_user(request)	
-		
+		return render_edit_user(request)

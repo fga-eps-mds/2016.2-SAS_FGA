@@ -24,7 +24,6 @@
   <!-- page content -->
   <div class="content-wrapper">
     {% bootstrap_css %}
-    {% bootstrap_messages %}
     <!-- Message modal-->
     {% if messages %}
       <!-- Modal message-->
@@ -60,6 +59,7 @@
 
     <!-- Main content -->
     <div class="content container">
+    {% bootstrap_messages %}
 
       {% block content %}
       {{ content }}
