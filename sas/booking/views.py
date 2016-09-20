@@ -156,4 +156,3 @@ def confirm_booking(request,id):
 	else:
 		return index(request)
 
->>>>>>> uc03_Gustavo
