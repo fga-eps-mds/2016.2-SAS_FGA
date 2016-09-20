@@ -1,13 +1,14 @@
 from django.utils.translation import ugettext as _
 from django.forms import ModelForm
 from .models import UserProfile,Booking,BookTime,Place
-from .models import CATEGORY, SPACES, BUILDINGS
+from .models import CATEGORY, SPACES, BUILDINGS, WEEKDAYS
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
 from django.utils import timezone
 from datetime import date
+import copy
 
 class LoginForm(ModelForm):
 	email = forms.CharField(
@@ -87,7 +88,7 @@ class NewUserForm(UserForm):
 			self.add_error('password', _('Passwords do not match'))	
 
 
-class BookingForm(ModelForm):
+class BookingForm(forms.Form):
 	name = forms.CharField(
 					label=_('Nome para Reserva:'),
 					widget=forms.TextInput(attrs={'placeholder': ''}))
@@ -105,32 +106,44 @@ class BookingForm(ModelForm):
 					widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
 	place = forms.ChoiceField(choices=SPACES, label=_('Espaço:'))
 	building = forms.ChoiceField(choices=BUILDINGS, label=_('Prédio:'))
+	week_days = forms.MultipleChoiceField(label=_("Days of week"), choices=WEEKDAYS, widget=forms.CheckboxSelectMultiple())	
 
-	def save(self, force_insert=False, force_update=False, commit=True):
-		booking = super(BookingForm, self).save(commit=False)
-		booking_time = BookTime()
-		booking_time.start_hour = self.cleaned_data.get('start_hour')
-		booking_time.end_hour = self.cleaned_data.get('end_hour')
-		booking_time.start_date = self.cleaned_data.get('start_date')
-		booking_time.end_date = self.cleaned_data.get('end_date')
-		booking_time.save()
-		booking.name = self.cleaned_data.get('name')
-		booking_place = Place()
-		booking_place.name = self.cleaned_data.get('place_name')
-		booking_place.capacity = '60'
-		booking_place.place_id = '60'
-		booking_place.localization = 'uac'
-		booking_place.is_laboratory = True
-		booking_place.save()
-		booking.place = booking_place
-
+	def save(self,user, force_insert=False, force_update=False, commit=True):
+		spaces = dict(SPACES)
+		booking = Booking()
+		booking.user = user
+		booking.name = self.cleaned_data.get("name")
+		booking.start_date = self.cleaned_data.get("start_date")
+		booking.end_date = self.cleaned_data.get("end_date")
+		booking.place = Place()
+		booking.place.name = spaces[self.cleaned_data.get("place")] 
+		weekdays =  self.cleaned_data.get("week_days")
+		book = BookTime()
+		book.date_booking = booking.start_date
+		book.start_hour = self.cleaned_data.get("start_hour")
+		book.end_hour = self.cleaned_data.get("end_hour")
+		finish_date = False
+		booking.save()	
+		if booking.exists(book.start_hour,book.end_hour,weekdays):
+			booking.delete()
+			return None
+		else:
+			while not finish_date:
+				for days in weekdays:
+					print(days)
+					book.next_week_day(int(days))
+					if book.date_booking < booking.end_date:
+						newobj = copy.deepcopy(book) 
+						newobj.save()
+						print("pk book time",newobj.pk)
+						booking.time.add(newobj)
+					else:
+						finish_date = True
+						break
+			booking.save()
+			return booking	
 		# do custom stuff
-		if commit:
-			booking.save()
-			booking.time.add(booking_time)
-			booking.save()
-		return booking
-
+			
 	def clean(self):
 		cleaned_data = super(BookingForm, self).clean()
 		if date.today() > cleaned_data.get('start_date'):
@@ -158,6 +171,4 @@ class BookingForm(ModelForm):
 			self.add_error('end_hour', msg)
 			raise forms.ValidationError(msg)
 
-	class Meta:
-		model = Booking
-		fields = ['name', 'building', 'place', 'start_date', 'end_date', 'start_hour', 'end_hour']
+	

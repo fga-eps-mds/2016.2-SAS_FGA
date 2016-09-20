@@ -1,0 +1,41 @@
+{% extends 'booking/base.html' %}
+
+{% load bootstrap3 %}
+{% bootstrap_messages %}
+
+{% block title %} Nova Reserva {% endblock %}
+
+
+{% block content %}
+	<div class="row">
+		<div class="col-xs-8 col-sm-6 col-md-4 col-md-offset-4 col-xs-offset-2 col-sm-offset-3">
+		<h1 class="text-center">Resumo da Reserva</h1>
+		<div class="panel panel-default">	
+			<div class="panel-heading">Reserva: {{booking.name}} </div>
+			<div class="panel-body">
+			<p>{{booking.place.name}}</p>
+			</div>
+			<table class="table">
+			{% for book in booking.time.values %}
+				<tr>
+					<td>
+					{{ book.date_booking }}
+					</td>
+					<td>
+					{{ book.get_str_weekday }}
+					</td>
+					<td>
+					{{ book.start_hour }}	
+					</td>
+					<td>
+					{{ book.end_hour }}
+					</td>
+				</tr>
+			{% endfor %} 
+			</table>
+		</div>
+		</div>
+	</div>
+{% endblock %}
+
+

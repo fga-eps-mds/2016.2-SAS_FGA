@@ -3,21 +3,8 @@
 {% load bootstrap3 %}
 {% bootstrap_messages %}
 
-<!DOCTYPE html>
-<html>
-{% block head %}
-    {% block title %}
-        <title>SAS - UnB</title>
 
-        {% load staticfiles %}
-        <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'style/newUser.css' %}" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    {% endblock %}
-{% endblock %}
-
-{% block body %}
+{% block content %}
     <h1 class="content-title">Novo Usuário</h1>
     <hr class="star-light">
     <div class="form-content" style="overflow:auto;height: 50%;">

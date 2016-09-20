@@ -4,7 +4,7 @@ from .forms import UserForm, NewUserForm, LoginForm, EditUserForm, BookingForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile, Booking
-
+from django.contrib import messages
 
 
 def index(request):
@@ -83,26 +83,23 @@ def delete_user(request):
 
 
 def new_booking(request):
-    if request.user.is_authenticated():
-        if request.method == "POST":
-            form_booking = BookingForm(request.POST, Booking)
-            if not(form_booking.is_valid()):
-	               return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
-            else:
-                booking = form_booking.save(commit=False)
-                booking.user = request.user
-                form_booking.save()
+	if request.user.is_authenticated():
+		if request.method == "POST":
+			form_booking = BookingForm(request.POST)
+			if not(form_booking.is_valid()):
+				return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
+			else:
+				booking = form_booking.save(request.user)
+				if not booking:
+					messages.error(request,"Reserva já existe")
+					return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
+				return render(request, 'booking/showDates.html', {'booking':booking})
+		else:
+			form_booking = BookingForm()
+			return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
 
-                form = LoginForm()
-                return render(request, 'booking/index.html', {'form':form})
-        else:
-            form_booking = BookingForm()
-            return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
-
-    else:
-        form_booking = BookingForm()
-        form = LoginForm()
-        return render(request, 'booking/index.html', {'form':form})
+	else:
+		return index(request) 
 
 def search_booking(request):
     if request.user.is_authenticated():
