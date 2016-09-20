@@ -91,8 +91,9 @@ def new_booking(request):
 			else:
 				booking = form_booking.save(request.user)
 				if not booking:
-					messages.error(request,"Reserva já existe")
+					messages.error(request,_("Booking alread exists"))
 					return render(request, 'booking/newBooking.html', {'form_booking':form_booking})
+				request.session['booking'] = booking.pk
 				return render(request, 'booking/showDates.html', {'booking':booking})
 		else:
 			form_booking = BookingForm()
@@ -108,3 +109,31 @@ def search_booking(request):
     else:
         form = LoginForm()
         return render(request, 'booking/index.html', {'form':form})
+
+def cancel_booking(request,id):
+	if request.user.is_authenticated() and request.session['booking']:
+		id = int(id)
+		if(id == request.session.get('booking')):
+			request.session.pop('booking')
+			Booking.objects.get(pk=id).delete()
+			messages.success(request,_("Booking has been canceled"))
+			return index(request)
+		else:
+			messages.error(request,_("You cannot cancel this booking"))
+			return index(request)
+	else:
+		return index(request)
+
+def confirm_booking(request,id):
+	if request.user.is_authenticated() and request.session['booking']:
+		id = int(id)
+		if id == request.session.get('booking'):
+			request.session.pop('booking')
+			messages.success(request,_("Booking has been saved."))
+			return index(request)
+		else:
+			messages.error(request,_("You cannot confirm this booking"))
+			return index(request)
+	else:
+		return index(request)
+

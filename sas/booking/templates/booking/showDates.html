@@ -13,7 +13,9 @@
 		<div class="panel panel-default">	
 			<div class="panel-heading">Reserva: {{booking.name}} </div>
 			<div class="panel-body">
-			<p>{{booking.place.name}}</p>
+			<p>Espaco: {{booking.place.name}}</p>
+			<p>Data Inical: {{booking.start_date}}</p>
+			<p>Data Final: {{booking.end_date}}</p>
 			</div>
 			<table class="table">
 			{% for book in booking.time.values %}
@@ -31,7 +33,16 @@
 					{{ book.end_hour }}
 					</td>
 				</tr>
-			{% endfor %} 
+			{% endfor %}
+				<tr>
+					<td colspan="2">
+						<a class="btn btn-info btn-block btn-password" href="{% url "booking:cancelbooking" booking.pk %}">Cancelar</a>
+					</td>
+					<td colspan="2">
+						<a class="btn btn-info btn-block btn-password" href="{% url "booking:confirmbooking" booking.pk %}"
+                  data-toggle="modal">Confirmar</a>
+					</td>
+				</tr> 
 			</table>
 		</div>
 		</div>
