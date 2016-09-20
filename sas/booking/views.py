@@ -5,7 +5,7 @@ from .forms import PasswordForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile
-
+from django.contrib import messages
 
 def index(request):
 	form = LoginForm()
@@ -75,12 +75,12 @@ def logout_user(request):
 
 
 def delete_user(request):
-    if request.user.is_authenticated():
-        User.objects.get(pk=request.user.pk).delete()
-        form = LoginForm()
-        return render(request, 'booking/index.html', {'form': form})
-    else:
-        return render(request, 'booking/editUser.html', {})
+	if request.user.is_authenticated():
+		request.user.delete()
+		logout(request)
+		return index(request) 
+	else:
+		return index(request)
 
 def change_password(request):
 	if request.user.is_authenticated() and request.POST:
@@ -88,6 +88,7 @@ def change_password(request):
 		if form.is_valid() and form.is_password_valid(request.user.username):
 			form.save(request.user)
 			login(request,request.user)
+			messages.success(request,_('Your password has been changed'))
 			return render_edit_user(request)
 		else:
 			return render_edit_user(request,change_form=form)		

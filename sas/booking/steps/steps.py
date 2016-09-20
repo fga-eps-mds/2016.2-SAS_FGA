@@ -15,6 +15,10 @@ def fill_bootstrap_field(step, text, field):
 	date_field = find_any_field(world.browser, TEXT_FIELDS, id_field)
 	date_field.send_keys(text)
 
+@step(r'I type in "(.*)" to id "(.*)"')
+def fill_bootstrap_field(step, text, id_field):
+	date_field = find_any_field(world.browser, TEXT_FIELDS, id_field)
+	date_field.send_keys(text)
 
 @step(r'I click on an element with id of "(.*)"')
 def click_on_element_by_id(step, id):
@@ -44,7 +48,8 @@ def register_user(step, username, password):
 	user.save()
 
 @step(r'I login in with email "(.*)" and password "(.*)"')
-def login_user(ste,email,password):
+def login_user(step,email,password):
+	step.given("I visit site page \"/gustavo\"")
 	c = Client()
 	response = c.login(username=email,password=password)
 	cookies = {}

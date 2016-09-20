@@ -16,7 +16,7 @@
           {% endfor %}
           <div>
             <div class="col-xs-12 col-md-6">
-              <a class="btn btn-info btn-block btn-password" href="#change-password"
+              <a id="changepassword" class="btn btn-info btn-block btn-password" href="#change-password"
                   data-toggle="modal">Alterar senha</a>
             </div>
             <div class="col-xs-12 col-md-6">
@@ -25,7 +25,7 @@
               {% endbuttons %}
             </div>
             <div class="col-xs-12 col-md-6">
-              <a class="btn btn-danger btn-block btn-delete" href="/user/delete" name="delete">Excluir minha conta</a>
+              <a id="deleteuser" class="btn btn-danger btn-block btn-delete" href="/user/delete" name="delete">Excluir minha conta</a>
             </div>
           </div>
         </form>
@@ -58,4 +58,13 @@
         </div>
     </div>
   </div>
+{% endblock %}
+{% block extrajs %}
+	{% if change_form.errors %}
+		<script type="text/javascript">
+			$(window).load(function(){
+				$('#change-password').modal('show');
+			});
+		</script>
+	{% endif %}
 {% endblock %}

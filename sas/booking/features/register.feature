@@ -23,8 +23,8 @@ Scenario: User do not inform Registration Number
   Then I should see an alert with text "Please fill out this field."
 
 Scenario: Repeated Email
-	I register the user "test123@gmail.com" with the password "123456"
-	When I visit site page "/user/newuser"
+	When I register the user "test123@gmail.com" with the password "123456"
+	And I visit site page "/user/newuser"
 	And I type in "120030559" to "Registration Number"
 	And I select "Student" from "Category"
 	And I fill in "Name" with "Pedro Pereira Pinto"

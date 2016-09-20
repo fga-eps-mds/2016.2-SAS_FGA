@@ -100,6 +100,11 @@
       $('#sign').modal('show');
     }
   });
+{% if form.errors %}
+	$(window).load(function(){
+		$('#sign').modal('show');
+	});
+{% endif %}
 </script>
 {% endblock %}
 
