@@ -12,10 +12,10 @@
        </div>
        <div class="collapse navbar-collapse navbar-ex1-collapse">
          <ul class="nav navbar-nav">
-             <li><a href="/">Início</a></li>
+             <li><a href="{% url 'index' %}">Início</a></li>
              <li><a href="#">Pesquisa</a></li>
              {% if request.user.is_authenticated %}
-             <li><a href="#">Reservas</a></li>
+             <li><a href="{% url 'booking:newbooking' %}">Reservas</a></li>
              <!-- IF request.user is ADM
              <li><a href="#">Solicitações</a></li>
              <li><a href="#">Usuarios</a></li>
@@ -32,10 +32,10 @@
                      <span class="caret"></span>
                  </a>
                  <ul class="dropdown-menu left" aria-labelledby="user-link">
-                     <li class="user-menu-info"><a href="/user/edituser">Meus dados</a></li>
-                     <li class="user-menu-info"><a href="#">Minha reserva</a></li>
+                     <li class="user-menu-info"><a href="{% url 'booking:edituser' %}">Meus dados</a></li>
+                     <li class="user-menu-info"><a href="{% url 'booking:searchbooking' %}">Minhas reservas</a></li>
                      <li role="separator" class="divider"></li>
-                     <li class="user-menu-info"><a href="/user/logout">Sair</a></li>
+                     <li class="user-menu-info"><a href="{% url 'booking:logout' %}">Sair</a></li>
                  </ul>
              </li>
          </ul>

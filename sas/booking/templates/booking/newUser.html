@@ -3,20 +3,17 @@
 {% load bootstrap3 %}
 {% block title %}Cadastrar usuário{% endblock %}
 
+
 {% block content %}
-    <div class="row">
-      <div class="col-xs-8 col-sm-6 col-md-4 col-md-offset-4 col-xs-offset-2 col-sm-offset-3">
-        <h1 class="text-center">Novo Usuário</h1>
-        <hr class="star-light">
-        <div class="form-content">
-           <form class="form-horizontal" method = 'POST'>
-                {% csrf_token %}
-                {% bootstrap_form form_user %}
-                {% buttons %}
-                    <button class="btn btn-info btn-block" type = 'submit'>Cadastrar</button>
-                {% endbuttons %}
-            </form>
-        </div>
-      </div>
+    <h1 class="content-title">Novo Usuário</h1>
+    <hr class="star-light">
+    <div class="form-content" style="overflow:auto;height: 50%;">
+       <form class="form-horizontal" method = 'POST'>
+            {% csrf_token %}
+            {% bootstrap_form form_user %}
+            {% buttons %}
+                <button class="btn btn-info btn-block" type = 'submit'>Cadastrar</button>
+            {% endbuttons %}
+        </form>
     </div>
 {% endblock %}
