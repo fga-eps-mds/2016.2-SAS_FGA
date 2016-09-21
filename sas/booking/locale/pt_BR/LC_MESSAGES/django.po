@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-20 23:26-0300\n"
+"POT-Creation-Date: 2016-09-21 11:38-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
 #: booking/forms.py:15 booking/forms.py:76
 msgid "Email:"
 msgstr "Email"
@@ -266,8 +267,8 @@ msgstr "Cadastrar"
 
 #: booking/templates/booking/index.html:80
 msgid ""
-"Type your email and an automatic message will be sent to it containing a "
-"new password. This must be changed posteriorly."
+"Type your email and an automatic message will be sent to it containing a new "
+"password. This must be changed posteriorly."
 msgstr ""
 "Escreva seu email e uma mensagem automática será enviada a ele contendo sua "
 "nova senha. A mesma deve ser modificada posteriormente."
@@ -370,6 +371,10 @@ msgstr "Cancelar"
 #: booking/templates/booking/showDates.html:45
 msgid "Confirm"
 msgstr "Confirmar"
+
+#: booking/views.py:22
+msgid "You have been registered"
+msgstr "Seus dados foram registrados"
 
 #: booking/views.py:39
 msgid "Your data has been updated"
