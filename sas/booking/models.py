@@ -8,15 +8,15 @@ from django.db import connection
 
 CATEGORY = (('1', _('Student')),('2', _('Teaching Staff')), ('3', _('Employees')))
 
-BUILDINGS = (('1', _('')), ('2', _('UAC')), ('3', _('UED')))
+BUILDINGS = (('1', ''), ('2', 'UAC'), ('3', 'UED'))
 
 # TODO: Select spaces according to building selected
-SPACES = (('1', _('')), ('2', _('I1')), ('3', _('I2')), ('4', _('I3')), ('5', _('I4')), ('6', _('I5')),
-	('7', _('I6')), ('8', _('I7')), ('9', _('I8')), ('10', _('I9')), ('11', _('I10')), ('12', _('S1')), ('13', _('S2')),
-	('14', _('S3')), ('15', _('S4')), ('16', _('S5')), ('17', _('S6')), ('18', _('S7')), ('19', _('S8')),
-	('20', _('S9')), ('21', _('S10')))
+SPACES = (('1', ''), ('2', 'I1'), ('3', 'I2'), ('4', 'I3'), ('5', 'I4'), ('6', 'I5'), ('7', 'I6'), ('8', 'I7'),
+	('9', 'I8'), ('10', 'I9'), ('11', 'I10'), ('12', 'S1'), ('13', 'S2'), ('14', 'S3'), ('15', 'S4'), ('16', 'S5'),
+	('17', 'S6'), ('18', 'S7'), ('19', 'S8'), ('20', 'S9'), ('21', 'S10'))
 
-WEEKDAYS = ((0,_("Monday")),(1,_("Tuesday")),(2,_("Wednesday")),(3,_("Thursday")),(4,_("Friday")),(5,_("Saturday")),(6,_("Sunday")))
+WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")), ('3', _("Thursday")), ('4', _("Friday")),
+	('5', _("Saturday")), ('6', _("Sunday")))
 
 class UserProfile(models.Model):
 	registration_number = models.CharField(max_length=20)
@@ -45,8 +45,8 @@ class Place(models.Model):
 	capacity = models.CharField(max_length=250)
 	is_laboratory = models.BooleanField()
 	localization = models.CharField(max_length=50)
-	
-	
+
+
 
 class BookTime(models.Model):
 	start_hour = models.TimeField(null=False, blank=False)
@@ -75,11 +75,11 @@ class BookTime(models.Model):
 class Booking(models.Model):
 	user = models.ForeignKey(User, related_name="bookings", on_delete=models.CASCADE)
 	time = models.ManyToManyField(BookTime, related_name="booking_time")
-	place = models.ForeignKey(Place, related_name="booking_place") 
+	place = models.ForeignKey(Place, related_name="booking_place")
 	name = models.CharField(max_length=50)
 	start_date = models.DateField(null=False, blank=False)
 	end_date = models.DateField(null=False, blank=False)
-	
+
 	def exists(self,start_hour,end_hour,week_days):
 		str_weekdays = []
 		for day in week_days:
@@ -88,14 +88,14 @@ class Booking(models.Model):
 
 		str_weekdays = ",".join(str_weekdays)
 		print(str_weekdays)
-		sql = """select count(*) from booking_booking_time bbt  
-			   inner join booking_booktime bt on bbt.booktime_id = bt.id 
-			   inner join booking_booking bb on bbt.booking_id = bb.id 
-			   inner join booking_place bp on bb.place_id = bp.id"""  
+		sql = """select count(*) from booking_booking_time bbt
+			   inner join booking_booktime bt on bbt.booktime_id = bt.id
+			   inner join booking_booking bb on bbt.booking_id = bb.id
+			   inner join booking_place bp on bb.place_id = bp.id"""
 		sql += " where bt.date_booking >= date('" + self.start_date.strftime("%Y-%m-%d") + "')"
-		sql += " and bt.date_booking <= date('" + self.end_date.strftime("%Y-%m-%d") + "')" 
+		sql += " and bt.date_booking <= date('" + self.end_date.strftime("%Y-%m-%d") + "')"
 		sql += " and bt.start_hour <= time('" + start_hour.strftime("%H:%M:%S") + "')"
-		sql += " and bt.end_hour >= time('" + end_hour.strftime("%H:%M:%S") + "')" 
+		sql += " and bt.end_hour >= time('" + end_hour.strftime("%H:%M:%S") + "')"
 		sql += " and strftime('%w',bt.date_booking) IN (" + str_weekdays + ")"
 		sql += " and bp.id = '" + str(self.place.pk) + "'"
 
@@ -103,12 +103,12 @@ class Booking(models.Model):
 		with connection.cursor() as cursor:
 			cursor.execute(sql)
 			row = cursor.fetchone()
-		print("Row",row)	
+		print("Row",row)
 		if row[0] > 0:
 			return True
 		else:
 			return False
-		 
+
 	def save(self, *args, **kwargs):
 		self.place.is_laboratory = False
 		if Place.objects.filter(name=self.place.name):

@@ -19,8 +19,8 @@ class LoginForm(ModelForm):
 					widget=forms.PasswordInput(attrs={'placeholder': ''}))
 
 	def save(self, force_insert=False, force_update=False, commit=True):
-		username = self.cleaned_data.get("email")	
-		password = self.cleaned_data.get("password")	
+		username = self.cleaned_data.get("email")
+		password = self.cleaned_data.get("password")
 		user = authenticate(username=username, password=password)
 		if user is None:
 			self.add_error('password', _('Email or Password does not match'))
@@ -43,13 +43,13 @@ class PasswordForm(ModelForm):
 					widget=forms.PasswordInput(attrs={'placeholder': ''}))
 
 	def save(self,user):
-		password = self.cleaned_data.get("new_password")	
+		password = self.cleaned_data.get("new_password")
 		user.set_password(password)
 		user.save()
 
 	def is_password_valid(self,username):
 		cleaned_data = super(ModelForm,self).clean()
-		password = cleaned_data.get('password') 
+		password = cleaned_data.get('password')
 		user = authenticate(username=username,password=password)
 		if user is None:
 			self.add_error('password',_('Password is wrong'))
@@ -111,14 +111,14 @@ class UserForm(ModelForm):
 			if User.objects.filter(username=cleaned_data.get('email')).exists():
 				self.add_error('email',_('Email already used'))
 		return cleaned_data
-	
+
 	class Meta:
 		model = UserProfile
 		fields = ['name', 'registration_number',
 				  'category', 'email', 'password', 'repeat_password']
 
 class EditUserForm(UserForm):
-	
+
 	class Meta:
 		model = UserProfile
 		fields = ['name', 'registration_number',
@@ -131,28 +131,29 @@ class NewUserForm(UserForm):
 		password1 = cleaned_data.get('password')
 		password2 = cleaned_data.get('repeat_password')
 		if password1 and password2 and password1 != password2:
-			self.add_error('password', _('Passwords do not match'))	
+			self.add_error('password', _('Passwords do not match'))
 
 
 class BookingForm(forms.Form):
 	name = forms.CharField(
-					label=_('Nome para Reserva:'),
+					label=_('Booking Name:'),
 					widget=forms.TextInput(attrs={'placeholder': ''}))
 	start_hour = forms.TimeField(
-					label=_('Hora Inicial:'),
+					label=_('Start Time:'),
 					widget=forms.widgets.TimeInput(attrs={'placeholder': ''}))
 	end_hour = forms.TimeField(
-					label=_('Hora Final:'),
+					label=_('End Time:'),
 					widget=forms.widgets.TimeInput(attrs={'placeholder': ''}))
 	start_date = forms.DateField(
-					label=_('Data Inicial:'),
+					label=_('Start Date:'),
 					widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
 	end_date = forms.DateField(
-					label=_('Data Final:'),
+					label=_('End Date:'),
 					widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
-	place = forms.ChoiceField(choices=SPACES, label=_('Espaço:'))
-	building = forms.ChoiceField(choices=BUILDINGS, label=_('Prédio:'))
-	week_days = forms.MultipleChoiceField(label=_("Days of week"), choices=WEEKDAYS, widget=forms.CheckboxSelectMultiple())	
+	place = forms.ChoiceField(choices=SPACES, label=_('Place:'))
+	building = forms.ChoiceField(choices=BUILDINGS, label=_('Building:'))
+	week_days = forms.MultipleChoiceField(label=_("Days of week: "), choices=WEEKDAYS,
+					widget=forms.CheckboxSelectMultiple())
 
 	def save(self,user, force_insert=False, force_update=False, commit=True):
 		spaces = dict(SPACES)
@@ -162,14 +163,14 @@ class BookingForm(forms.Form):
 		booking.start_date = self.cleaned_data.get("start_date")
 		booking.end_date = self.cleaned_data.get("end_date")
 		booking.place = Place()
-		booking.place.name = spaces[self.cleaned_data.get("place")] 
+		booking.place.name = spaces[self.cleaned_data.get("place")]
 		weekdays =  self.cleaned_data.get("week_days")
 		book = BookTime()
 		book.date_booking = booking.start_date
 		book.start_hour = self.cleaned_data.get("start_hour")
 		book.end_hour = self.cleaned_data.get("end_hour")
 		finish_date = False
-		booking.save()	
+		booking.save()
 		if booking.exists(book.start_hour,book.end_hour,weekdays):
 			booking.delete()
 			return None
@@ -179,7 +180,7 @@ class BookingForm(forms.Form):
 					print(days)
 					book.next_week_day(int(days))
 					if book.date_booking < booking.end_date:
-						newobj = copy.deepcopy(book) 
+						newobj = copy.deepcopy(book)
 						newobj.save()
 						print("pk book time",newobj.pk)
 						booking.time.add(newobj)
@@ -187,34 +188,34 @@ class BookingForm(forms.Form):
 						finish_date = True
 						break
 			booking.save()
-			return booking	
+			return booking
 		# do custom stuff
-			
+
 	def clean(self):
 		cleaned_data = super(BookingForm, self).clean()
 		if date.today() > cleaned_data.get('start_date'):
-			msg = 'A data de inicio deve ser posterior a data atual.'
+			msg = _('Start date must be after current date.')
 			self.add_error('start_date', msg)
 			raise forms.ValidationError(msg)
 		if date.today() > cleaned_data.get('end_date'):
-			msg = 'A data final deve ser posterior a data atual.'
+			msg = _('End date must be after current date.')
 			self.add_error('end_date', msg)
 			raise forms.ValidationError(msg)
 		elif cleaned_data.get('end_date') < cleaned_data.get('start_date'):
-			msg = 'A data final deve ser posterior a data de inicio.'
+			msg = _('End date must be after start date.')
 			self.add_error('end_date', msg)
 			raise forms.ValidationError(msg)
 		if cleaned_data.get('end_hour') <= cleaned_data.get('start_hour'):
-			msg = 'A hora final deve ser posterior a hora inicial.'
+			msg = _('End hour must occur after start hour.')
 			self.add_error('end_hour', msg)
 			raise forms.ValidationError(msg)
 		if date.today() == cleaned_data.get('start_date') and date.today() == cleaned_data.get('end_date') and datetime.now() > cleaned_data.get('start_hour'):
-			msg = 'A hora de inicio deve ser posterior a hora atual para uma reserva hoje'
+			msg = ('Start hour must occur after current hour for a booking today')
 			self.add_error('start_hour', msg)
 			raise forms.ValidationError(msg)
 		if date.today() == cleaned_data.get('start_date') and date.today() == cleaned_data.get('end_date') and datetime.now() > cleaned_data.get('end_hour'):
-			msg = 'A hora final deve ser posterior a hora atual para uma reserva hoje'
+			msg = _('End hour must occur after current hour for a booking today')
 			self.add_error('end_hour', msg)
 			raise forms.ValidationError(msg)
 
-	
+
