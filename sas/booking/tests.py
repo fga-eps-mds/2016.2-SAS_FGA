@@ -1,7 +1,8 @@
 from django.test import TestCase
 from booking.models import *
 from django.test import Client
-
+from booking.factories import *
+from datetime import datetime
 class ViewsTest(TestCase):
 
 	def setUp(self):
@@ -19,7 +20,6 @@ class UserProfileTest(TestCase):
 	
 	def setUp(self):
 		self.userprofile = UserProfile()
-		self.userprofile.user = User()
 
 	def test_set_name(self):
 		self.userprofile.name("Gustavo Rodrigues Coelho")
@@ -33,6 +33,14 @@ class UserProfileTest(TestCase):
 
 	def test_category(self):
 		self.assertEqual(len(CATEGORY),3)		
+	
+	def test_save(self):
+		self.userprofile.name("Gustavo Rodrigues Coelho")
+		self.userprofile.registration_number = "11/0030559"
+		self.userprofile.user.username = "gutorc@hotmail.com"
+		self.userprofile.user.email = "gutorc@hotmail.com"
+		self.userprofile.save()
+		self.assertEqual(self.userprofile.pk,1)
 
 class TestBookTime(TestCase):
 
@@ -58,3 +66,17 @@ class TestBookTime(TestCase):
 		book = BookTime()
 		book.date_booking = datetime.strptime("21092016","%d%m%Y")
 		self.assertEqual(book.get_str_weekday(),"Wednesday")
+
+class TestBooking(TestCase):
+	
+	def setUp(self):
+		self.booking = Booking()
+
+	def test_save(self):
+		self.booking.user = UserFactory.create()
+		self.booking.name = "Teste"
+		self.booking.start_date = datetime.now()
+		self.booking.end_date = datetime.now()
+		self.booking.place = PlaceFactory.create()
+		self.booking.save()
+		self.assertEqual(self.booking.pk,1)

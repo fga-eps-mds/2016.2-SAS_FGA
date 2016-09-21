@@ -177,12 +177,10 @@ class BookingForm(forms.Form):
 		else:
 			while not finish_date:
 				for days in weekdays:
-					print(days)
 					book.next_week_day(int(days))
 					if book.date_booking < booking.end_date:
 						newobj = copy.deepcopy(book)
 						newobj.save()
-						print("pk book time",newobj.pk)
 						booking.time.add(newobj)
 					else:
 						finish_date = True

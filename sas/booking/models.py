@@ -25,7 +25,7 @@ class UserProfile(models.Model):
 	category = models.CharField(choices=CATEGORY, max_length=20)
 
 	def name(self, name):
-		if self.user is None:
+		if not hasattr(self,'user'):
 			self.user = User()
 		names = name.split()
 		self.user.first_name = names.pop(0)
@@ -68,10 +68,7 @@ class BookTime(models.Model):
 
 	def get_str_weekday(self):
 		return self.date_booking.strftime("%A")
-
-	def save(self, *args, **kwargs):
-		super(BookTime, self).save(*args, **kwargs)
-
+	
 class Booking(models.Model):
 	user = models.ForeignKey(User, related_name="bookings", on_delete=models.CASCADE)
 	time = models.ManyToManyField(BookTime, related_name="booking_time")
