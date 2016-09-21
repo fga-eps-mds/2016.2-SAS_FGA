@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext as _
 from django.forms import ModelForm
-from .models import UserProfile,Booking,BookTime,Place
+from .models import UserProfile, Booking, BookTime, Place
 from .models import CATEGORY, SPACES, BUILDINGS, WEEKDAYS
 from django import forms
 from django.contrib.auth.models import User
@@ -10,13 +10,14 @@ from django.utils import timezone
 from datetime import date
 import copy
 
+
 class LoginForm(ModelForm):
 	email = forms.CharField(
-					label=_('Email:'),
-					widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}))
+		label=_('Email:'),
+		widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}))
 	password = forms.CharField(
-					label=_('Password:'),
-					widget=forms.PasswordInput(attrs={'placeholder': ''}))
+		label=_('Password:'),
+		widget=forms.PasswordInput(attrs={'placeholder': ''}))
 
 	def save(self, force_insert=False, force_update=False, commit=True):
 		username = self.cleaned_data.get("email")
@@ -30,34 +31,34 @@ class LoginForm(ModelForm):
 		model = User
 		fields = ['email', 'password']
 
+
 class PasswordForm(ModelForm):
 	password = forms.CharField(
-					label=_('Password:'),
-					widget=forms.PasswordInput(attrs={'placeholder': ''}))
-
+		label=_('Password:'),
+		widget=forms.PasswordInput(attrs={'placeholder': ''}))
 	new_password = forms.CharField(
-					label=_('New Password:'),
-					widget=forms.PasswordInput(attrs={'placeholder': ''}))
+		label=_('New Password:'),
+		widget=forms.PasswordInput(attrs={'placeholder': ''}))
 	renew_password = forms.CharField(
-					label=_('Repeat Password:'),
-					widget=forms.PasswordInput(attrs={'placeholder': ''}))
+		label=_('Repeat Password:'),
+		widget=forms.PasswordInput(attrs={'placeholder': ''}))
 
-	def save(self,user):
+	def save(self, user):
 		password = self.cleaned_data.get("new_password")
 		user.set_password(password)
 		user.save()
 
-	def is_password_valid(self,username):
-		cleaned_data = super(ModelForm,self).clean()
+	def is_password_valid(self, username):
+		cleaned_data = super(ModelForm, self).clean()
 		password = cleaned_data.get('password')
-		user = authenticate(username=username,password=password)
+		user = authenticate(username=username, password=password)
 		if user is None:
-			self.add_error('password',_('Password is wrong'))
+			self.add_error('password', _('Password is wrong'))
 			return False
 		return True
 
 	def clean(self):
-		cleaned_data = super(ModelForm,self).clean()
+		cleaned_data = super(ModelForm, self).clean()
 		password1 = cleaned_data.get('new_password')
 		password2 = cleaned_data.get('renew_password')
 		if password1 and password2 and password1 != password2:
@@ -66,32 +67,33 @@ class PasswordForm(ModelForm):
 
 	class Meta:
 		model = User
-		fields = ['password','new_password','renew_password']
+		fields = ['password', 'new_password', 'renew_password']
+
 
 class UserForm(ModelForm):
 	name = forms.CharField(
-					label=_('Name:'),
-					widget=forms.TextInput(attrs={'placeholder': ''}))
+		label=_('Name:'),
+		widget=forms.TextInput(attrs={'placeholder': ''}))
 	email = forms.CharField(
-					label=_('Email:'),
-					widget=forms.TextInput(attrs={'placeholder': ''}))
+		label=_('Email:'),
+		widget=forms.TextInput(attrs={'placeholder': ''}))
 	password = forms.CharField(
-					label=_('Password:'),
-					required=False,
-					widget=forms.PasswordInput(attrs={'placeholder': ''}))
+		label=_('Password:'),
+		required=False,
+		widget=forms.PasswordInput(attrs={'placeholder': ''}))
 	repeat_password = forms.CharField(
-					label=_('Repeat Password:'),
-					required=False,
-					widget=forms.PasswordInput(attrs={'placeholder': ''}))
+		label=_('Repeat Password:'),
+		required=False,
+		widget=forms.PasswordInput(attrs={'placeholder': ''}))
 	registration_number = forms.CharField(
-					label=_('Registration number:'),
-					widget=forms.TextInput(attrs={'placeholder': ''}))
+		label=_('Registration number:'),
+		widget=forms.TextInput(attrs={'placeholder': ''}))
 	category = forms.ChoiceField(choices=CATEGORY, label=_('Category:'))
 
 	def save(self, force_insert=False, force_update=False, commit=True):
 		userprofile = super(UserForm, self).save(commit=False)
 		# if it is a new user
-		if not hasattr(userprofile,'user'):
+		if not hasattr(userprofile, 'user'):
 			userprofile.user = User()
 			userprofile.user.set_password(self.cleaned_data.get('password'))
 
@@ -107,22 +109,25 @@ class UserForm(ModelForm):
 
 	def clean(self):
 		cleaned_data = super(ModelForm, self).clean()
-		if not hasattr(self.instance,'user') or self.instance.user.email != cleaned_data.get('email'):
+		if not hasattr(self.instance, 'user') or
+		self.instance.user.email != cleaned_data.get('email'):
 			if User.objects.filter(username=cleaned_data.get('email')).exists():
-				self.add_error('email',_('Email already used'))
+				self.add_error('email', _('Email already used'))
 		return cleaned_data
 
 	class Meta:
 		model = UserProfile
-		fields = ['name', 'registration_number',
-				  'category', 'email', 'password', 'repeat_password']
+		fields =
+		['name', 'registration_number', 'category', 'email', 'password',
+			'repeat_password']
+
 
 class EditUserForm(UserForm):
 
 	class Meta:
 		model = UserProfile
-		fields = ['name', 'registration_number',
-				  'category', 'email']
+		fields = ['name', 'registration_number', 'category', 'email']
+
 
 class NewUserForm(UserForm):
 
@@ -136,26 +141,28 @@ class NewUserForm(UserForm):
 
 class BookingForm(forms.Form):
 	name = forms.CharField(
-					label=_('Booking Name:'),
-					widget=forms.TextInput(attrs={'placeholder': ''}))
+		label=_('Booking Name:'),
+		widget=forms.TextInput(attrs={'placeholder': ''}))
 	start_hour = forms.TimeField(
-					label=_('Start Time:'),
-					widget=forms.widgets.TimeInput(attrs={'placeholder': ''}))
+		label=_('Start Time:'),
+		widget=forms.widgets.TimeInput(attrs={'placeholder': ''}))
 	end_hour = forms.TimeField(
-					label=_('End Time:'),
-					widget=forms.widgets.TimeInput(attrs={'placeholder': ''}))
+		label=_('End Time:'),
+		widget=forms.widgets.TimeInput(attrs={'placeholder': ''}))
 	start_date = forms.DateField(
-					label=_('Start Date:'),
-					widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
+		label=_('Start Date:'),
+		widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
 	end_date = forms.DateField(
-					label=_('End Date:'),
-					widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
+		label=_('End Date:'),
+		widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
 	place = forms.ChoiceField(choices=SPACES, label=_('Place:'))
 	building = forms.ChoiceField(choices=BUILDINGS, label=_('Building:'))
-	week_days = forms.MultipleChoiceField(label=_("Days of week: "), choices=WEEKDAYS,
-					widget=forms.CheckboxSelectMultiple())
+	week_days =
+	forms.MultipleChoiceField
+	(label=_("Days of week: "), choices=WEEKDAYS,
+		widget=forms.CheckboxSelectMultiple())
 
-	def save(self,user, force_insert=False, force_update=False, commit=True):
+	def save(self, user, force_insert=False, force_update=False, commit=True):
 		spaces = dict(SPACES)
 		booking = Booking()
 		booking.user = user
@@ -164,14 +171,14 @@ class BookingForm(forms.Form):
 		booking.end_date = self.cleaned_data.get("end_date")
 		booking.place = Place()
 		booking.place.name = spaces[self.cleaned_data.get("place")]
-		weekdays =  self.cleaned_data.get("week_days")
+		weekdays = self.cleaned_data.get("week_days")
 		book = BookTime()
 		book.date_booking = booking.start_date
 		book.start_hour = self.cleaned_data.get("start_hour")
 		book.end_hour = self.cleaned_data.get("end_hour")
 		finish_date = False
 		booking.save()
-		if booking.exists(book.start_hour,book.end_hour,weekdays):
+		if booking.exists(book.start_hour, book.end_hour, weekdays):
 			booking.delete()
 			return None
 		else:
@@ -181,6 +188,7 @@ class BookingForm(forms.Form):
 					if book.date_booking < booking.end_date:
 						newobj = copy.deepcopy(book)
 						newobj.save()
+						print("pk book time", newobj.pk)
 						booking.time.add(newobj)
 					else:
 						finish_date = True
@@ -207,13 +215,15 @@ class BookingForm(forms.Form):
 			msg = _('End hour must occur after start hour.')
 			self.add_error('end_hour', msg)
 			raise forms.ValidationError(msg)
-		if date.today() == cleaned_data.get('start_date') and date.today() == cleaned_data.get('end_date') and datetime.now() > cleaned_data.get('start_hour'):
+		if date.today() == cleaned_data.get('start_date') and date.today() ==
+		cleaned_data.get('end_date') and datetime.now() >
+		cleaned_data.get('start_hour'):
 			msg = ('Start hour must occur after current hour for a booking today')
 			self.add_error('start_hour', msg)
 			raise forms.ValidationError(msg)
-		if date.today() == cleaned_data.get('start_date') and date.today() == cleaned_data.get('end_date') and datetime.now() > cleaned_data.get('end_hour'):
+		if date.today() == cleaned_data.get('start_date') and date.today() ==
+		cleaned_data.get('end_date') and datetime.now() >
+		cleaned_data.get('end_hour'):
 			msg = _('End hour must occur after current hour for a booking today')
 			self.add_error('end_hour', msg)
 			raise forms.ValidationError(msg)
-
-
