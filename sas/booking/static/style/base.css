@@ -82,6 +82,10 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: solid 3px #FFF;
 }
 
+#user-link:hover, #enter-button:hover {
+    border: none;
+}
+
 
 @media (min-width:768px) {
     .navbar-custom {
@@ -132,7 +136,7 @@ footer .footer-col {
 }
 
 footer .footer-col ul, footer .footer-col h3  {
-    text-align: right;
+    text-align: center;
 }
 
 footer .footer-col ul {
