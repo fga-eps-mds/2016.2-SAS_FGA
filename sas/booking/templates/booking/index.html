@@ -1,0 +1,114 @@
+{% extends 'booking/base.html' %}
+
+{% load bootstrap3 %}
+{% load i18n %}
+
+{% block title %}{% trans "Homepage" %}{% endblock %}
+{% block content %}
+    <!--index content -->
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="intro-text">
+                <h1 class="content-title">{% trans "Welcome" %}</h1>
+                <span class="name">{% trans "Rooms Allocation System" %}</span>
+                <hr class="star-light">
+                <span class="skills">{% trans "Booking rooms, auditoriums and laboratories for teachers, students <br> and all the academic body of the university" %}.</span>
+            </div>
+        </div>
+    </div>
+    <!--end index content -->
+    {% if not request.user.is_authenticated %}
+    <!--Modal Sign in/up -->
+    <div class="modal fade in" id="sign" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title" id="myModalLabel">Login</p>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="modal-col col-xs-6">
+                            <div class="well">
+                                <form id="loginForm" method="POST" action="/user/login/">
+                                    {% csrf_token %}
+									{% bootstrap_form form %}
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="remember" id="remember">
+                                            {% trans "Remember me" %}
+                                        </label>
+                                    </div>
+									{% bootstrap_form_errors form %}
+                                    {% buttons %}
+                                        <button type="submit" id="btn-login" class="btn btn-success btn-block">
+                                        {% trans "Sign In" %}</button>
+                                    {% endbuttons %}
+                                    <div class="forgot-password">
+                                        <a href="#forgot-password" data-toggle="modal" onclick="hideSignModal()">
+                                        {% trans "Forgot Password" %}</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-col col-xs-6">
+                            <p class="lead">{% trans "I'm not registered yet" %}</p>
+                            <ul class="list-unstyled" style="line-height: 2">
+                                <li>{% trans "Registered user can book" %}:</li> <br>
+                                <li><span class="glyphicon glyphicon-ok text-success"></span>{% trans " Laboratories" %}</li>
+                                <li><span class="glyphicon glyphicon-ok text-success"></span>{% trans " Auditoriums" %}</li>
+                                <li><span class="glyphicon glyphicon-ok text-success"></span>{% trans " Rooms" %}</li>
+                            </ul>
+                            <p><a href="/user/newuser/" class="btn btn-info btn-block">{% trans "Sign Up" %}</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" role="dialog" id="forgot-password">
+        <div class="modal-dialog">
+            <div class="modal-content content-password">
+               <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <p class="modal-title" id="myModalLabel">{% trans "Forgot Password" %}</p>
+                </div>
+                <div class="modal-body modal-password">
+                    <div class="row">
+                        <div class="modal-col col-password col-xs-12">
+                            <p class="description">{% trans "Type your email and an automatic message will be sent to it containing a new password. This must be changed posteriorly." %}</p>
+                            <div class="control-group">
+                                <label class="control-label">Email:</label>
+                                <input class="form-control" type="email" name="password" id="password">
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#" class="btn btn-success btn-email btn-block">{% trans "Recover Password" %}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--end modal sign in/up -->
+
+{% block extrajs %}
+<script type="text/javascript">
+//Show modal sign in/up according to parameter
+  $(window).load(function(){
+    var url = window.location.href;
+    if(url.indexOf('?showLoginModal=yes') != -1) {
+      $('#sign').modal('show');
+    }
+  });
+{% if form.errors %}
+	$(window).load(function(){
+		$('#sign').modal('show');
+	});
+{% endif %}
+</script>
+{% endblock %}
+
+{% endif %}
+{% endblock %}

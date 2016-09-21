@@ -1,0 +1,28 @@
+engines:
+  csslint:
+    enabled: false  
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
+      - python
+      - php
+  eslint:
+    enabled: false  
+  fixme:
+    enabled: true
+  radon:
+    enabled: true
+ratings:
+  paths:
+  - "**.inc"
+  - "**.jsx"
+  - "**.module"
+  - "**.php"
+  - "**.py"
+  - "**.rb"
+exclude_paths:
+- "tests/"
+- "spec/"
+- "**/vendor/"

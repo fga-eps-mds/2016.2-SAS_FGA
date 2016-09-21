@@ -1,0 +1,18 @@
+{% extends 'booking/base.html' %}
+{% load i18n %}
+
+{% load bootstrap3 %}
+{% bootstrap_messages %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="intro-text">
+            <h2>{% trans "Welcome" %}, {{ user.profile_user.full_name }}</h2>
+            <span class="name">{% trans "Rooms Allocation System" %}</span>
+            <hr class="star-light">
+            <span class="skills">{% trans "Booking rooms, auditoriums and laboratories for teachers, students <br> and all the academic body of the university" %}.</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

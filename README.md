@@ -51,3 +51,4 @@ Caso você já utilize o Linux como sistema operacional, siga:
   - ```. sas/bin/activate```
 7. Finalmente, instale as dependências necessárias 
   - ```pip install -r requirements.txt```
+

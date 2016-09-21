@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'django_nose',
+    'booking',
+    'bootstrap3',
+    'aloe_django',
+    'django_extensions',
+    'test_pep8',
 ]
 
 MIDDLEWARE = [
@@ -104,15 +109,19 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-BR'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
+
+LOCALE_PATHS = (
+    os.path.join(os.path.dirname(__file__), "locale"),
+)
 
 
 # Static files (CSS, JavaScript, Images)
@@ -127,5 +136,11 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # Tell nose to measure coverage on the 'foo' and 'bar' apps
 NOSE_ARGS = [
     '--with-coverage',
-	'--cover-package=sas',
+	'--cover-package=sas,booking',
 ]
+
+PROJECT_DIR = os.path.dirname(__file__)
+TEST_PEP8_DIRS = [os.path.join(BASE_DIR,'booking'), ]
+
+TEST_PEP8_EXCLUDE = ['migrations', ] # Exclude this paths from tests
+TEST_PEP8_IGNORE = ['W191', ]

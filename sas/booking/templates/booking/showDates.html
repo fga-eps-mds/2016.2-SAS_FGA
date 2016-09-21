@@ -1,0 +1,54 @@
+{% extends 'booking/base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% bootstrap_messages %}
+
+{% block title %} {% trans "New Booking" %} {% endblock %}
+
+
+{% block content %}
+	<div class="row">
+		<div class="col-xs-8 col-sm-6 col-md-6 col-md-offset-3 col-xs-offset-2 col-sm-offset-3">
+		<h1 class="text-center">{% trans "Booking Summary" %}</h1>
+		<div class="panel panel-default">
+			<div class="panel-heading">{% trans "Booking" %}: {{booking.name}} </div>
+			<div class="panel-body">
+			<p>{% trans "Place" %}: {{booking.place.name}}</p>
+			<p>{% trans "Start Date" %}: {{booking.start_date}}</p>
+			<p>{% trans "End Date" %}: {{booking.end_date}}</p>
+			</div>
+			<table class="table">
+			{% for book in booking.time.values %}
+				<tr>
+					<td>
+					{{ book.date_booking }}
+					</td>
+					<td>
+					{{ book.get_str_weekday }}
+					</td>
+					<td>
+					{{ book.start_hour }}
+					</td>
+					<td>
+					{{ book.end_hour }}
+					</td>
+				</tr>
+				{% endfor %}
+				<tr>
+					<td colspan="2">
+						<a class="btn btn-info btn-block btn-password" href="{% url "booking:cancelbooking" booking.pk %}">
+						{% trans "Cancel" %}</a>
+					</td>
+					<td colspan="2">
+						<a class="btn btn-info btn-block btn-password" href="{% url "booking:confirmbooking" booking.pk %}"
+                  data-toggle="modal">{% trans "Confirm" %}</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		</div>
+	</div>
+{% endblock %}
+
+

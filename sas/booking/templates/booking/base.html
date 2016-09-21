@@ -1,0 +1,105 @@
+{% load staticfiles bootstrap3 %}
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>SAS - FGA UnB | {% block title %}{% endblock %}</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  {% bootstrap_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  {% block extrastyle %}{% endblock %}
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Main Header -->
+  <header class="main-header">
+    {% include "booking/menu.html" %}
+  </header>
+
+  <!-- page content -->
+  <div class="content-wrapper">
+    {% bootstrap_css %}
+    <!-- Message modal-->
+    {% if messages %}
+      <!-- Modal message-->
+      <div class="message-modal">
+        <div id="message-modal" class="modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{% trans "Message" %}</h4>
+              </div>
+              <div class="modal-body">
+                {% for message in messages %}
+                  <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                      {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<b>{% trans "Important" %}:</b> {% endif %}
+                      {{ message }}
+                  </p>
+                {% endfor %}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Close" %}</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+      </div>
+      <!-- /.message-modal -->
+    {% endif %}
+
+    <!-- Main content -->
+    <div class="content container">
+    {% bootstrap_messages %}
+
+      {% block content %}
+      {{ content }}
+      {% endblock %}
+
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Footer -->
+  <footer class="text-center">
+      <div class="footer-above">
+          <div class="container">
+              <div class="row">
+                  <div class="footer-col col-sm-6 col-xs-6">
+                      <img src="{% static 'images/fga_logo.png' %}" class="fga-logo" alt="FGA logo">
+                      <p><strong>Universidade de Brasília - Faculdade Gama</strong> <br>
+                          Área Especial de Indústria Projeção A Brasília</p>
+                  </div>
+                  <div class="footer-col col-sm-6 col-xs-6">
+                    <h3>{% trans "Contact" %}</h3>
+                    <ul>
+                      <li>{% trans "Telephone" %}: (61) 3107-8901</li>
+                      <li>Email ({% trans "secretariat" %}): <a href="mailto:unbgama@unb.br">unbgama@unb.br</a></li>
+                      <li>Email ({% trans "direction" %}): <a href="mailto:direcaofga@unb.br">direcaofga@unb.br</a></li>
+                    </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </footer>
+</div>
+<!-- end wrapper -->
+
+<!-- REQUIRED JS SCRIPTS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{% block extrajs %}{% endblock %}
+
+</body>
+</html>
