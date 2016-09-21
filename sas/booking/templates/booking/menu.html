@@ -1,3 +1,4 @@
+{% load i18n %}
 
 <!-- Menu -->
 <div class="navbar navbar-custom" role="navigation">
@@ -12,10 +13,10 @@
        </div>
        <div class="collapse navbar-collapse navbar-ex1-collapse">
          <ul class="nav navbar-nav">
-             <li><a href="{% url 'index' %}">Início</a></li>
-             <li><a href="#">Pesquisa</a></li>
+             <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
+             <li><a href="#">{% trans "Search" %}</a></li>
              {% if request.user.is_authenticated %}
-             <li><a href="{% url 'booking:newbooking' %}">Reservas</a></li>
+             <li><a href="{% url 'booking:newbooking' %}">{% trans "Bookings" %}</a></li>
              <!-- IF request.user is ADM
              <li><a href="#">Solicitações</a></li>
              <li><a href="#">Usuarios</a></li>
@@ -28,14 +29,16 @@
              <li class="dropdown">
                  <a href="#" class="dropdown-toggle" type="button" id="user-link"
                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                     Olá, {{ user.profile_user.full_name }}
+                     {% trans "Hi" %}, {{ user.profile_user.full_name }}
                      <span class="caret"></span>
                  </a>
                  <ul class="dropdown-menu left" aria-labelledby="user-link">
-                     <li class="user-menu-info"><a href="{% url 'booking:edituser' %}">Meus dados</a></li>
-                     <li class="user-menu-info"><a href="{% url 'booking:searchbooking' %}">Minhas reservas</a></li>
+                     <li class="user-menu-info"><a href="{% url 'booking:edituser' %}">
+                      {% trans "Personal Data" %}</a></li>
+                     <li class="user-menu-info"><a href="{% url 'booking:searchbooking' %}">
+                      {% trans "My Bookings" %}</a></li>
                      <li role="separator" class="divider"></li>
-                     <li class="user-menu-info"><a href="{% url 'booking:logout' %}">Sair</a></li>
+                     <li class="user-menu-info"><a href="{% url 'booking:logout' %}">{% trans "Logout" %}</a></li>
                  </ul>
              </li>
          </ul>
@@ -43,7 +46,7 @@
          <ul class="nav navbar-nav pull-right">
              <li>
               <a id="enter-button" class="btn btn-success" data-toggle="modal" href="{% url 'index' %}?showLoginModal=yes">
-                Entrar
+                {% trans "Sign In | Sign Up" %}
               </a>
              </li>
          </ul>

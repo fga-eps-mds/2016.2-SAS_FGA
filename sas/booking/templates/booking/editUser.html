@@ -1,12 +1,12 @@
 {% extends 'booking/base.html' %}
-
 {% load bootstrap3 %}
+{% load i18n %}
 
-{% block title %}Editar dados de usuário{% endblock %}
+{% block title %}{% trans "Edit user data" %}{% endblock %}
 {% block content %}
   <div class="row">
     <div class="col-xs-8 col-sm-6 col-md-4 col-md-offset-4 col-xs-offset-2 col-sm-offset-3">
-      <h1 class="text-center">Meus Dados</h1>
+      <h1 class="text-center">{% trans "Personal Data" %}</h1>
       <hr class="star-light">
       <div class="form-content">
         <form class="form-horizontal" method = 'POST' action="/user/edituser/">
@@ -17,15 +17,16 @@
           <div>
             <div class="col-xs-12 col-md-6">
               <a id="changepassword" class="btn btn-info btn-block btn-password" href="#change-password"
-                  data-toggle="modal">Alterar senha</a>
+                  data-toggle="modal">{% trans "Change Password" %}</a>
             </div>
             <div class="col-xs-12 col-md-6">
               {% buttons %}
-                  <button class="btn btn-success btn-block btn-edit" type = 'submit'>Salvar Dados</button>
+                  <button class="btn btn-success btn-block btn-edit" type = 'submit'>{% trans "Save Data" %}</button>
               {% endbuttons %}
             </div>
             <div class="col-xs-12 col-md-6">
-              <a id="deleteuser" class="btn btn-danger btn-block btn-delete" href="/user/delete" name="delete">Excluir minha conta</a>
+              <a id="deleteuser" class="btn btn-danger btn-block btn-delete" href="/user/delete" name="delete">
+                {% trans "Delete my Account" %}</a>
             </div>
           </div>
         </form>
@@ -38,18 +39,19 @@
             <div class="modal-content">
                <div class="modal-header">
                     <button class="close" data-dismiss="modal">&times;</button>
-                    <p class="modal-title" id="myModalLabel">Alterar Senha</p>
+                    <p class="modal-title" id="myModalLabel">{% trans "Change Password" %}</p>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="modal-col col-xs-12">
                             <form method="POST" action="/user/change/" id="passwordForm">
-								{% csrf_token %}
+              					{% csrf_token %}
                                 {% bootstrap_form change_form %}
-								{% bootstrap_form_errors change_form %}
-								{% buttons %}
-									<button class="btn btn-success btn-block btn-edit" type = 'submit'>Alterar senha</button>
-								{% endbuttons %}
+              					 {% bootstrap_form_errors change_form %}
+              					 {% buttons %}
+									<button class="btn btn-success btn-block btn-edit" type = 'submit'>
+                                        {% trans "Change Password" %}</button>
+								 {% endbuttons %}
                             </form>
                         </div>
                     </div>

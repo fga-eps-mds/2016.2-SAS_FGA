@@ -1,4 +1,5 @@
 {% extends 'booking/base.html' %}
+{% load i18n %}
 
 {% load bootstrap3 %}
 {% bootstrap_messages %}
@@ -7,11 +8,10 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="intro-text">
-            <h2>Bem-Vindo, {{ user.profile_user.full_name }}</h2>
-            <span class="name">Sistema de Alocação de Salas</span>
+            <h2>{% trans "Welcome" %}, {{ user.profile_user.full_name }}</h2>
+            <span class="name">{% trans "Rooms Allocation System" %}</span>
             <hr class="star-light">
-            <span class="skills">Reservas de salas, auditórios e laboratórios para docentes, discentes <br>
-            e todo o corpo acadêmico da universidade.</span>
+            <span class="skills">{% trans "Booking rooms, auditoriums and laboratories for teachers, students <br> and all the academic body of the university" %}.</span>
         </div>
     </div>
 </div>

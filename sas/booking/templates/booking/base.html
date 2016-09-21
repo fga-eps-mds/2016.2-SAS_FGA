@@ -1,4 +1,5 @@
 {% load staticfiles bootstrap3 %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,18 +35,18 @@
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Mensagem</h4>
+                <h4 class="modal-title">{% trans "Message" %}</h4>
               </div>
               <div class="modal-body">
                 {% for message in messages %}
                   <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                      {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<b>Importante:</b> {% endif %}
+                      {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<b>{% trans "Important" %}:</b> {% endif %}
                       {{ message }}
                   </p>
                 {% endfor %}
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans "Close" %}</button>
               </div>
             </div>
             <!-- /.modal-content -->
@@ -81,11 +82,11 @@
                           Área Especial de Indústria Projeção A Brasília</p>
                   </div>
                   <div class="footer-col col-sm-6 col-xs-6">
-                    <h3>Contato</h3>
+                    <h3>{% trans "Contact" %}</h3>
                     <ul>
-                      <li>Telefone: (61) 3107-8901</li>
-                      <li>Email (secretaria): <a href="mailto:unbgama@unb.br">unbgama@unb.br</a></li>
-                      <li>Email (direção): <a href="mailto:direcaofga@unb.br">direcaofga@unb.br</a></li>
+                      <li>{% trans "Telephone" %}: (61) 3107-8901</li>
+                      <li>Email ({% trans "secretariat" %}): <a href="mailto:unbgama@unb.br">unbgama@unb.br</a></li>
+                      <li>Email ({% trans "direction" %}): <a href="mailto:direcaofga@unb.br">direcaofga@unb.br</a></li>
                     </ul>
                   </div>
               </div>
