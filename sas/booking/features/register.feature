@@ -8,8 +8,8 @@ Scenario: User not registered
   And I fill in "Email" with "pedropp@gmail.com"
   And I type in "teste123" to "Password"
   And I type in "teste123" to "Repeat Password"
-  Then I press "Cadastrar"
-  Then I should see "Entrar"
+  Then I press "Register"
+  Then I should see "You have been registered"
 
 Scenario: User do not inform Registration Number
   When I visit site page "/user/newuser"
@@ -18,8 +18,7 @@ Scenario: User do not inform Registration Number
   And I fill in "Email" with "pedropp@gmail.com"
   And I type in "teste123" to "Password"
   And I type in "teste123" to "Repeat Password"
-  Then I press "Cadastrar"
-  Then I should see "Entrar"
+  Then I press "Register"
   Then I should see an alert with text "Please fill out this field."
 
 Scenario: Repeated Email
@@ -31,6 +30,5 @@ Scenario: Repeated Email
 	And I fill in "Email" with "test123@gmail.com"
 	And I type in "teste123" to "Password"
 	And I type in "teste123" to "Repeat Password"
-	Then I press "Cadastrar"
-	Then I should see "Entrar"
+	Then I press "Register"
 	Then I should see "Email already used"

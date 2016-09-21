@@ -7,14 +7,14 @@ Scenario: User registered
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
 	And I fill in "Name" with "Pedro Pereira Pinto"
-	And I press "Salvar Dados"
+	And I press "Save Data"
 	Then I should see "Your data has been updated"
 
 Scenario: User empties one field
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
 	And I fill in "Email" with ""
-	And I press "Salvar Dados"
+	And I press "Save Data"
 	Then I should see an alert with text "Please fill out this field."
 
 Scenario: Duplicated email
@@ -22,7 +22,7 @@ Scenario: Duplicated email
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
 	And I fill in "Email" with "pedrot@gmail.com"
-	And I press "Salvar Dados"
+	And I press "Save Data"
 	Then I should see "Email already used"
 
 Scenario: Actual password wrong
@@ -33,7 +33,7 @@ Scenario: Actual password wrong
 	And I type in "12345fjksj" to "Password"  
 	And I type in "asdfgh" to "New Password" 
 	And I type in "asdfgh" to id "renew_password" 
-	And I press "Alterar senha"
+	And I press "Change Password"
 	Then I should see "Password is wrong"
 
 Scenario: Change password successfully
@@ -44,7 +44,7 @@ Scenario: Change password successfully
 	And I type in "123456" to "Password"  
 	And I type in "asdfgh" to "New Password" 
 	And I type in "asdfgh" to id "renew_password" 
-	And I press "Alterar senha"
+	And I press "Change Password"
 	Then I should see "Your password has been changed"
 
 Scenario: New Password do not match
@@ -55,5 +55,5 @@ Scenario: New Password do not match
 	And I type in "123456" to "Password"  
 	And I type in "asdfgh" to "New Password" 
 	And I type in "asdfgh3iu4i3" to id "renew_password" 
-	And I press "Alterar senha"
+	And I press "Change Password"
 	Then I should see "Passwords do not match"

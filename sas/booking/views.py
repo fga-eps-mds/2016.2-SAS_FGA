@@ -13,17 +13,17 @@ def index(request):
     return render(request, 'booking/index.html', {'form':form})
 
 def new_user(request):
-    if request.method == "POST":
-        form = NewUserForm(request.POST, UserProfile)
-        if not(form.is_valid()):
-            return render(request, 'booking/newUser.html', {'form_user': form})
-        else:
-            user_profile = form.save()
-            form = LoginForm()
-            return render(request, 'booking/index.html', {'form':form})
-    else:
-        form = NewUserForm()
-        return render(request, 'booking/newUser.html', {'form_user': form})
+	if request.method == "POST":
+		form = NewUserForm(request.POST, UserProfile)
+		if not(form.is_valid()):
+			return render(request, 'booking/newUser.html', {'form_user': form})
+		else:
+			user_profile = form.save()
+			messages.success(request,_('You have been registered'))
+			return index(request) 
+	else:
+		form = NewUserForm()
+		return render(request, 'booking/newUser.html', {'form_user': form})
 
 
 def list_user(request):

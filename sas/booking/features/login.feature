@@ -9,8 +9,8 @@ Scenario: Login successfully
 	Then I click on an element with id of "enter-button"
 	And I fill in "Email" with "lucas@gmail.com"
 	And I fill in "Password" with "123456"
-	Then I press "Entrar"
-	Then I should see "Olá, Usuário"
+	Then I press "Sign In"
+	Then I should see "Hi, Usuário"
 
 Scenario: User does not exist
 	When I visit site page "/"
@@ -18,7 +18,7 @@ Scenario: User does not exist
 	Then I click on an element with id of "enter-button"
 	And I fill in "Email" with "leticia@hotmail.com"
 	And I fill in "Password" with "lelepass"
-	Then I press "Entrar"
+	Then I press "Sign In"
 	Then I should see "Email or Password does not match"
 
 Scenario: Login without email
@@ -27,7 +27,7 @@ Scenario: Login without email
 	Then I click on an element with id of "enter-button"
 	And I fill in "Email" with ""
 	And I fill in "Password" with "123456"
-	Then I press "Entrar"
+	Then I press "Sign In"
 	Then I should see an alert with text "Please fill out this field."
 
 Scenario: Wrong password
@@ -36,7 +36,7 @@ Scenario: Wrong password
 	Then I click on an element with id of "enter-button"
 	And I fill in "Email" with "lucas@gmail.com"
 	And I fill in "Password" with "password"
-	Then I press "Entrar"
+	Then I press "Sign In"
 	Then I should see "Email or Password does not match"
 
 	Scenario: Login without email
@@ -45,7 +45,7 @@ Scenario: Wrong password
 	Then I click on an element with id of "enter-button"
 	And I fill in "Email" with "lucas@gmail.com"
 	And I fill in "Password" with ""
-	Then I press "Entrar"
+	Then I press "Sign In"
 	Then I should see an alert with text "Please fill out this field."
 
 Scenario: Wrong email
@@ -54,5 +54,5 @@ Scenario: Wrong email
 	Then I click on an element with id of "enter-button"
 	And I fill in "Email" with "fernando@email.com"
 	And I fill in "Password" with "123456"
-	Then I press "Entrar"
+	Then I press "Sign In"
 	Then I should see "Email or Password does not match"
