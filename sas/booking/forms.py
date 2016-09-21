@@ -109,17 +109,15 @@ class UserForm(ModelForm):
 
 	def clean(self):
 		cleaned_data = super(ModelForm, self).clean()
-		if not hasattr(self.instance, 'user') or
-		self.instance.user.email != cleaned_data.get('email'):
+		if not hasattr(self.instance, 'user') or self.instance.user.email != cleaned_data.get('email'):
 			if User.objects.filter(username=cleaned_data.get('email')).exists():
 				self.add_error('email', _('Email already used'))
 		return cleaned_data
 
 	class Meta:
 		model = UserProfile
-		fields =
-		['name', 'registration_number', 'category', 'email', 'password',
-			'repeat_password']
+		fields = ['name', 'registration_number', 'category', 'email',
+												'password', 'repeat_password']
 
 
 class EditUserForm(UserForm):
@@ -157,10 +155,8 @@ class BookingForm(forms.Form):
 		widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
 	place = forms.ChoiceField(choices=SPACES, label=_('Place:'))
 	building = forms.ChoiceField(choices=BUILDINGS, label=_('Building:'))
-	week_days =
-	forms.MultipleChoiceField
-	(label=_("Days of week: "), choices=WEEKDAYS,
-		widget=forms.CheckboxSelectMultiple())
+	week_days = forms.MultipleChoiceField(label=_("Days of week: "),
+						choices=WEEKDAYS, widget=forms.CheckboxSelectMultiple())
 
 	def save(self, user, force_insert=False, force_update=False, commit=True):
 		spaces = dict(SPACES)
@@ -215,15 +211,11 @@ class BookingForm(forms.Form):
 			msg = _('End hour must occur after start hour.')
 			self.add_error('end_hour', msg)
 			raise forms.ValidationError(msg)
-		if date.today() == cleaned_data.get('start_date') and date.today() ==
-		cleaned_data.get('end_date') and datetime.now() >
-		cleaned_data.get('start_hour'):
+		if date.today() == cleaned_data.get('start_date') and date.today() == cleaned_data.get('end_date') and datetime.now() > cleaned_data.get('start_hour'):
 			msg = ('Start hour must occur after current hour for a booking today')
 			self.add_error('start_hour', msg)
 			raise forms.ValidationError(msg)
-		if date.today() == cleaned_data.get('start_date') and date.today() ==
-		cleaned_data.get('end_date') and datetime.now() >
-		cleaned_data.get('end_hour'):
+		if date.today() == cleaned_data.get('start_date') and date.today() == cleaned_data.get('end_date') and datetime.now() > cleaned_data.get('end_hour'):
 			msg = _('End hour must occur after current hour for a booking today')
 			self.add_error('end_hour', msg)
 			raise forms.ValidationError(msg)
