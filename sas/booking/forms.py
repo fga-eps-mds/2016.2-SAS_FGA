@@ -74,9 +74,9 @@ class UserForm(ModelForm):
 	name = forms.CharField(
 		label=_('Name:'),
 		widget=forms.TextInput(attrs={'placeholder': ''}))
-	email = forms.CharField(
+	email = forms.EmailField(
 		label=_('Email:'),
-		widget=forms.TextInput(attrs={'placeholder': ''}))
+		widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}))
 	password = forms.CharField(
 		label=_('Password:'),
 		required=False,
@@ -133,8 +133,13 @@ class NewUserForm(UserForm):
 		cleaned_data = super(NewUserForm, self).clean()
 		password1 = cleaned_data.get('password')
 		password2 = cleaned_data.get('repeat_password')
+
+		if len(password1) < 4 :
+			msg = _('Password must have at least four characters.')
+			self.add_error('password', msg)
+			raise forms.ValidationError(msg)
 		if password1 and password2 and password1 != password2:
-			self.add_error('password', _('Passwords do not match'))
+			self.add_error('password', _('Passwords do not match.'))
 
 
 class BookingForm(forms.Form):
