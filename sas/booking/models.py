@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import copy
 from django.db import connection
 
-CATEGORY = (('1', _('Student')), ('2', _('Teaching Staff')), ('3', _('Employees')))
+CATEGORY = (('', '----'), ('1', _('Student')), ('2', _('Teaching Staff')), ('3', _('Employees')))
 
 BUILDINGS = (('1', ''), ('2', 'UAC'), ('3', 'UED'))
 
