@@ -12,7 +12,7 @@ import copy
 
 
 class LoginForm(ModelForm):
-	email = forms.CharField(
+	ep = forms.CharField(
 		label=_('Email:'),
 		widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}))
 	password = forms.CharField(
