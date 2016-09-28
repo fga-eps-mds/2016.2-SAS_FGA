@@ -35,7 +35,7 @@ class UserProfileTest(TestCase):
 		self.assertEqual(self.userprofile.full_name(), name)
 
 	def test_category(self):
-		self.assertEqual(len(CATEGORY), 3)
+		self.assertEqual(len(CATEGORY), 4)
 
 	def test_save(self):
 		self.userprofile.name("Gustavo Rodrigues Coelho")
