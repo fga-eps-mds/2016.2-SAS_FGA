@@ -48,3 +48,28 @@ Scenario: Repeated Registration Number
   Then I press "Register"
   Then I should see an alert with text "Registration Number already used"
 
+Scenario: User do not inform Email
+  When I register the user "test123@gmail.com" with the password "123456"
+  And I visit the page "/user/newuser"
+  And I type int "120030559" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "pedropp@gmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Please fill out this field."
+
+Scenario: User Informed an Invalid Email
+  When I register the user "sender" with the password "123456"
+  And I visit the page "/user/newuser"
+  And I type int "120030559" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "sender"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Invalid Email, user was not registered"
+
+Scenario: User do not Inform Password
