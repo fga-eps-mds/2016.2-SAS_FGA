@@ -21,7 +21,7 @@ def new_user(request):
 		else:
 			user_profile = form.save()
 			messages.success(request,_('You have been registered'))
-			return index(request) 
+			return index(request)
 	else:
 		form = NewUserForm()
 		return render(request, 'booking/newUser.html', {'form_user': form})
@@ -50,6 +50,7 @@ def render_edit_user(request, user_form=None, change_form=PasswordForm()):
 	initial = {}
 	initial['name'] = user.profile_user.full_name()
 	initial['email'] = user.email
+
 	if user_form is None:
 		user_form = EditUserForm(initial=initial,
 								 instance=request.user.profile_user)
