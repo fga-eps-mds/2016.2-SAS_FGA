@@ -1,8 +1,5 @@
 Feature: Register
 
-Background:
-	Given I register the user "lucas@gmail.com" with the registration_num "120030559"
-
 Scenario: User not registered
   When I visit site page "/user/newuser"
   And I type in "120030559" to "Registration Number"
@@ -25,21 +22,21 @@ Scenario: User do not inform Registration Number
   Then I should see an alert with text "Please fill out this field."
 
 Scenario: Repeated Email
-	When I register the user "test123@gmail.com" with the password "123456"
-	And I visit site page "/user/newuser"
-	And I type in "120030559" to "Registration Number"
-	And I select "Student" from "Category"
-	And I fill in "Name" with "Pedro Pereira Pinto"
-	And I fill in "Email" with "test123@gmail.com"
-	And I type in "teste123" to "Password"
-	And I type in "teste123" to "Repeat Password"
-	Then I press "Register"
-	Then I should see "Email already used"
+  When I register the user "test123@gmail.com" with the password "123456"
+  And I visit site page "/user/newuser"
+  And I type in "120030559" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "test123@gmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password" 
+  Then I press "Register"
+  Then I should see "Email already used"
 
 Scenario: Repeated Registration Number
-  When I register the user "test123@gmail.com" with the password "123456"
-  And I visit the page "/user/newuser"
-  And I type in "120030559" to "Registration Number"
+  When I register the user "test123@gmail.com" with the password "123456" and with registration_number "100200300" 
+  And I visit site page "/user/newuser"
+  And I type in "100200300" to "Registration Number"
   And I select "Student" from "Category"
   And I fill in "Name" with "Pedro Pereira Pinto"
   And I fill in "Email" with "pedropp@gmail.com"
@@ -50,8 +47,8 @@ Scenario: Repeated Registration Number
 
 Scenario: User do not inform Email
   When I register the user "test123@gmail.com" with the password "123456"
-  And I visit the page "/user/newuser"
-  And I type int "120030559" to "Registration Number"
+  And I visit site page "/user/newuser"
+  And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
   And I fill in "Name" with "Pedro Pereira Pinto"
   And I type in "teste123" to "Password"
@@ -61,8 +58,8 @@ Scenario: User do not inform Email
 
 Scenario: User Informed an Invalid Email
   When I register the user "sender" with the password "123456"
-  And I visit the page "/user/newuser"
-  And I type int "120030559" to "Registration Number"
+  And I visit site page "/user/newuser"
+  And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
   And I fill in "Name" with "Pedro Pereira Pinto"
   And I fill in "Email" with "sender"
@@ -73,8 +70,8 @@ Scenario: User Informed an Invalid Email
 
 Scenario: User do not Inform Password
   When I register the user "test123@gmail.com" with the password "123456"
-  And I visit the page "/user/newuser"
-  And I type int "120030559" to "Registration Number"
+  And I visit site page "/user/newuser"
+  And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
   And I fill in "Name" with "Pedro Pereira Pinto"
   And I fill in "Email" with "pedropp@gmail.com"
@@ -84,8 +81,8 @@ Scenario: User do not Inform Password
 
 Scenario: User do not Inform Repeat Password
   When I register the user "test123@gmail.com" with the password "123456"
-  And I visit the page "/user/newuser"
-  And I type int "120030559" to "Registration Number"
+  And I visit site page "/user/newuser"
+  And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
   And I fill in "Name" with "Pedro Pereira Pinto"
   And I fill in "Email" with "pedropp@gmail.com"
@@ -93,15 +90,15 @@ Scenario: User do not Inform Repeat Password
   Then I press "Register"
   Then I should see an alert with text "Please fill out this field."
 
-Scenario: User Informw Different Password and Repeat Password fields
+Scenario: User Informs Different Password and Repeat Password fields
   When I register the user "test123@gmail.com" with the password "123456"
-  And I visit the page "/user/newuser"
-  And I type int "120030559" to "Registration Number"
+  And I visit site page "/user/newuser"
+  And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
   And I fill in "Name" with "Pedro Pereira Pinto"
   And I fill in "Email" with "pedropp@gmail.com"
   And I type in "teste123" to "Password"
-  And I type int "123teste" to "Repeat Password"
+  And I type in "123teste" to "Repeat Password"
   Then I press "Register"
   Then I should see an alert with text "Password and Repeat Password fields dont match"
 
