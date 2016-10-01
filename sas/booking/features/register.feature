@@ -34,7 +34,7 @@ Scenario: Repeated Email
   Then I should see "Email already used"
 
 Scenario: Repeated Registration Number
-  When I register the user "test123@gmail.com" with the password "123456" and with registration_number "100200300" 
+  When I register the user "test123@gmail.com" with the password "123456" and with registration_number "100200300"
   And I visit site page "/user/newuser"
   And I type in "100200300" to "Registration Number"
   And I select "Student" from "Category"
