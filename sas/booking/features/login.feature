@@ -56,3 +56,12 @@ Scenario: Wrong email
 	And I fill in "Password" with "123456"
 	Then I press "Sign In"
 	Then I should see "Email or Password does not match"
+
+Scenario: Registered email with wrong password
+	When I visit site page "/"
+	Then I should see an element with id of "enter-button"
+	Then I click on an element with id of "enter-button"
+	And I fill in "Email" with "lucas@gmail.com"
+	And I fill in "Password" with "456123"
+	Then I press "Sign In"
+	Then I should see "Email or Password does not match"

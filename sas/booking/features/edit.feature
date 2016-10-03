@@ -7,6 +7,7 @@ Scenario: User registered
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
 	And I fill in "Name" with "Pedro Pereira Pinto"
+	And I select "Student" from "Category"
 	And I press "Save Data"
 	Then I should see "Your data has been updated"
 
@@ -22,6 +23,7 @@ Scenario: Duplicated email
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
 	And I fill in "Email" with "pedrot@gmail.com"
+	And I select "Student" from "Category"
 	And I press "Save Data"
 	Then I should see "Email already used"
 
