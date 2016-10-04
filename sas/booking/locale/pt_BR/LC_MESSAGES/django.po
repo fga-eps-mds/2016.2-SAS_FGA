@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-21 11:38-0300\n"
+"POT-Creation-Date: 2016-10-04 18:22-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,141 +18,173 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: booking/forms.py:15 booking/forms.py:76
+#: booking/forms.py:17 booking/forms.py:79
 msgid "Email:"
 msgstr "Email"
 
-#: booking/forms.py:18 booking/forms.py:35 booking/forms.py:79
+#: booking/forms.py:20 booking/forms.py:38 booking/forms.py:82
 msgid "Password:"
 msgstr "Senha"
 
-#: booking/forms.py:26
+#: booking/forms.py:28
 msgid "Email or Password does not match"
 msgstr "Email ou Senha inválidos"
 
-#: booking/forms.py:39
+#: booking/forms.py:41
 msgid "New Password:"
 msgstr "Nova Senha"
 
-#: booking/forms.py:42 booking/forms.py:83
+#: booking/forms.py:44 booking/forms.py:86
 msgid "Repeat Password:"
 msgstr "Confirmar Senha"
 
-#: booking/forms.py:55
+#: booking/forms.py:57
 msgid "Password is wrong"
 msgstr "A senha está errada"
 
-#: booking/forms.py:64 booking/forms.py:65 booking/forms.py:134
+#: booking/forms.py:66 booking/forms.py:67
 msgid "Passwords do not match"
 msgstr "Senhas não compatíveis"
 
-#: booking/forms.py:73
+#: booking/forms.py:76
 msgid "Name:"
 msgstr "Nome"
 
-#: booking/forms.py:87
+#: booking/forms.py:90
 msgid "Registration number:"
 msgstr "Matrícula"
 
-#: booking/forms.py:89
+#: booking/forms.py:92
 msgid "Category:"
 msgstr "Categoria"
 
-#: booking/forms.py:112
+#: booking/forms.py:116
 msgid "Email already used"
 msgstr "Email já está sendo usado"
 
-#: booking/forms.py:139
+#: booking/forms.py:122
+msgid "Name must be between 2 and 50 characters."
+msgstr "Nome deve conter entre 2 e 50 caracteres."
+
+#: booking/forms.py:125
+msgid "Name cannot contain special characters."
+msgstr "Nome não pode conter caracterers especiais."
+
+#: booking/forms.py:129
+msgid "Name cannot contain numbers."
+msgstr "Nome não pode conter números."
+
+#: booking/forms.py:154
+msgid "Password must be between 6 and 15 characters."
+msgstr "Senha deve ter entre 6 e 15 caracteres."
+
+#: booking/forms.py:156
+msgid "Passwords do not match."
+msgstr "Senhas não compatíveis"
+
+#: booking/forms.py:161
 msgid "Booking Name:"
 msgstr "Nome da Reserva"
 
-#: booking/forms.py:142
+#: booking/forms.py:164
 msgid "Start Time:"
 msgstr "Hora Inicial"
 
-#: booking/forms.py:145
+#: booking/forms.py:167
 msgid "End Time:"
 msgstr "Hora Final"
 
-#: booking/forms.py:148
+#: booking/forms.py:170
 msgid "Start Date:"
 msgstr "Data Inicial"
 
-#: booking/forms.py:151
+#: booking/forms.py:173
 msgid "End Date:"
 msgstr "Data Final"
 
-#: booking/forms.py:153
+#: booking/forms.py:175
 msgid "Place:"
 msgstr "Espaço"
 
-#: booking/forms.py:154
+#: booking/forms.py:176
 msgid "Building:"
 msgstr "Prédio"
 
-#: booking/forms.py:155
+#: booking/forms.py:177
 msgid "Days of week: "
 msgstr "Dias da Semana"
 
-#: booking/forms.py:197
+#: booking/forms.py:218
 msgid "Start date must be after current date."
 msgstr "A data inicial deve ser posterior a data atual"
 
-#: booking/forms.py:201
+#: booking/forms.py:222
 msgid "End date must be after current date."
 msgstr "A data final deve ser posterior a data atual"
 
-#: booking/forms.py:205
+#: booking/forms.py:226
 msgid "End date must be after start date."
 msgstr "A data final deve ser posterior a data inicial"
 
-#: booking/forms.py:209
+#: booking/forms.py:230
 msgid "End hour must occur after start hour."
 msgstr "Hora final deve ser posterior a hora inicial"
 
-#: booking/forms.py:217
+#: booking/forms.py:238
 msgid "End hour must occur after current hour for a booking today"
 msgstr "Hora final deve ser posterior a hora atual para reservas hoje"
 
-#: booking/models.py:9
+#: booking/models.py:10
 msgid "Student"
 msgstr "Aluno"
 
-#: booking/models.py:9
+#: booking/models.py:10
 msgid "Teaching Staff"
 msgstr "Professores"
 
-#: booking/models.py:9
+#: booking/models.py:10
 msgid "Employees"
 msgstr "Corpo Acadêmico"
 
-#: booking/models.py:18
+#: booking/models.py:21
 msgid "Monday"
 msgstr "Segunda"
 
-#: booking/models.py:18
+#: booking/models.py:21
 msgid "Tuesday"
 msgstr "Terça"
 
-#: booking/models.py:18
+#: booking/models.py:21
 msgid "Wednesday"
 msgstr "Quarta"
 
-#: booking/models.py:18
+#: booking/models.py:22
 msgid "Thursday"
 msgstr "Quinta"
 
-#: booking/models.py:18
+#: booking/models.py:22
 msgid "Friday"
 msgstr "Sexta"
 
-#: booking/models.py:19
+#: booking/models.py:22
 msgid "Saturday"
 msgstr "Sábado"
 
-#: booking/models.py:19
+#: booking/models.py:23
 msgid "Sunday"
 msgstr "Domingo"
+
+#: booking/models.py:50
+msgid "Registration number must have 9 digits."
+msgstr "Matrícula deve ter 9 dígitos."
+
+#: booking/models.py:53
+msgid "Registration number cannot contain letters."
+msgstr "Matrícula não pode conter letras."
+
+#: booking/models.py:56
+msgid "Registration number cannot contain special characters."
+msgstr "Matrícula não pode conter caracteres especiais."
 
 #: booking/templates/booking/base.html:38
 msgid "Message"
@@ -372,34 +404,34 @@ msgstr "Cancelar"
 msgid "Confirm"
 msgstr "Confirmar"
 
-#: booking/views.py:22
+#: booking/views.py:23
 msgid "You have been registered"
 msgstr "Seus dados foram registrados"
 
-#: booking/views.py:39
+#: booking/views.py:40
 msgid "Your data has been updated"
 msgstr "Seus dados foram atualizados"
 
-#: booking/views.py:94
+#: booking/views.py:99
 msgid "Your password has been changed"
 msgstr "Sua senha foi modificada"
 
-#: booking/views.py:113
+#: booking/views.py:118
 msgid "Booking alread exists"
 msgstr "Esta reserva já existe"
 
-#: booking/views.py:138
+#: booking/views.py:145
 msgid "Booking has been canceled"
 msgstr "Esta reserva foi cancelada"
 
-#: booking/views.py:141
+#: booking/views.py:148
 msgid "You cannot cancel this booking"
 msgstr "Você não pode cancelar esta reserva"
 
-#: booking/views.py:151
+#: booking/views.py:159
 msgid "Booking has been saved."
 msgstr "Reserva salva."
 
-#: booking/views.py:154
+#: booking/views.py:162
 msgid "You cannot confirm this booking"
 msgstr "Você não pode confirmar esta reserva"
