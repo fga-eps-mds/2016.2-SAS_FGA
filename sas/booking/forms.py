@@ -109,10 +109,31 @@ class UserForm(ModelForm):
 
 	def clean(self):
 		cleaned_data = super(ModelForm, self).clean()
+		
+		('@','#','$','%','^','&','+','=')
+
+		name = cleaned_data.get('name')
+
+		if (len(name) <= 2 or len(name) >= 50):
+			self.add_error('name',_('Name must be between 2 and 50 characters.'))
+		
+		if ('@','#','$','%','^','&','+','=') in name:
+			self.add_error('name',_('Name cannot contain special characters.'))
+
+		if ('0','1','2','3','4','5','6','7','8','9') in name:
+			self.add_error('name',_('Name cannot contain numbers.'))					
+
+
+
 		if not hasattr(self.instance, 'user') or self.instance.user.email != cleaned_data.get('email'):
 			if User.objects.filter(username=cleaned_data.get('email')).exists():
 				self.add_error('email', _('Email already used'))
+		
+
+
 		return cleaned_data
+
+		
 
 	class Meta:
 		model = UserProfile
