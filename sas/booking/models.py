@@ -5,6 +5,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 import copy
 from django.db import connection
+from django.core.exceptions import ValidationError
 
 BUILDINGS = (('', '----'), ('1', 'UAC'), ('2', 'UED'))
 
@@ -94,3 +95,18 @@ class Booking(models.Model):
 			self.place.save()
 			self.place_id = self.place.pk
 		super(Booking, self).save(*args, **kwargs)
+
+class Validation():
+
+	def hasNumbers(self, string):
+		if any(char.isdigit() for char in string):
+			return True
+
+	def hasLetters(self, number):
+		if any(char.isalpha() for char in number):
+			return True
+
+	def hasSpecialCharacters(self, string):
+		for character in '@#$%^&+=/\{[]()}-_+=*!§|':
+			if character in string:
+				return True
