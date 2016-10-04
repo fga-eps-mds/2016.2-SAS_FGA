@@ -1,11 +1,12 @@
 from django.utils.translation import ugettext as _
 from django.forms import ModelForm
-from .models import UserProfile
+from .models import UserProfile, Validation
 from .models import CATEGORY
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
+from django.core.exceptions import ValidationError
 
 class LoginForm(ModelForm):
 	email = forms.CharField(
@@ -105,9 +106,24 @@ class UserForm(ModelForm):
 
 	def clean(self):
 		cleaned_data = super(ModelForm, self).clean()
+		validation = Validation()
+
 		if not hasattr(self.instance, 'user') or self.instance.user.email != cleaned_data.get('email'):
 			if User.objects.filter(username=cleaned_data.get('email')).exists():
-				self.add_error('email', _('Email already used'))
+				raise ValidationError(_('Email already used'))
+
+		# Name validation
+		name = cleaned_data.get('name')
+
+		if (len(name) <= 2 or len(name) >= 50):
+			raise ValidationError(_('Name must be between 2 and 50 characters.'))
+
+		if validation.hasSpecialCharacters(name):
+			raise ValidationError(_('Name cannot contain special characters.'))
+
+		if validation.hasNumbers(name):
+			raise ValidationError(_('Name cannot contain numbers.'))
+
 		return cleaned_data
 
 	class Meta:
@@ -130,9 +146,7 @@ class NewUserForm(UserForm):
 		password1 = cleaned_data.get('password')
 		password2 = cleaned_data.get('repeat_password')
 
-		if len(password1) < 4 :
-			msg = _('Password must have at least four characters.')
-			self.add_error('password', msg)
-			raise forms.ValidationError(msg)
+		if len(password1) < 6 or len(password1) > 15  :
+			raise ValidationError(_('Password must be between 6 and 15 characters.'))
 		if password1 and password2 and password1 != password2:
-			self.add_error('password', _('Passwords do not match.'))
+			raise ValidationError(_('Passwords do not match.'))

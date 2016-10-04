@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _, ugettext as __
 from django.db import models
+from django.core.exceptions import ValidationError
 
 CATEGORY = (('', '----'), ('1', _('Student')), ('2', _('Teaching Staff')), ('3', _('Employees')))
 
@@ -20,7 +21,37 @@ class UserProfile(models.Model):
 		name = str.join(" ", [self.user.first_name, self.user.last_name])
 		return name
 
+	def clean_fields(self, exclude=None):
+		validation = Validation()
+
+		# Registration Number validation
+		registration_number = self.registration_number
+
+		if (len(registration_number) != 9):
+			raise ValidationError(_('Registration number must have 9 digits.'))
+
+		if validation.hasLetters(registration_number):
+			raise ValidationError(_('Registration number cannot contain letters.'))
+
+		if validation.hasSpecialCharacters(registration_number):
+			raise ValidationError(_('Registration number cannot contain special characters.'))
+
 	def save(self, *args, **kwargs):
 		self.user.save()
 		self.user_id = self.user.pk
 		super(UserProfile, self).save(*args, **kwargs)
+
+class Validation():
+
+	def hasNumbers(self, string):
+		if any(char.isdigit() for char in string):
+			return True
+
+	def hasLetters(self, number):
+		if any(char.isalpha() for char in number):
+			return True
+
+	def hasSpecialCharacters(self, string):
+		for character in '@#$%^&+=/\{[]()}-_+=*!§|':
+			if character in string:
+				return True
