@@ -2,7 +2,7 @@ from aloe import step, world
 from aloe_webdriver.util import find_field_by_id, find_any_field, find_field_by_value
 from aloe_webdriver import TEXT_FIELDS
 from selenium.common.exceptions import NoSuchElementException
-from booking.models import UserProfile
+from user.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.test import Client

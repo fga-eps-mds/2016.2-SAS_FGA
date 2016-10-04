@@ -33,12 +33,12 @@
                      <span class="caret"></span>
                  </a>
                  <ul class="dropdown-menu left" aria-labelledby="user-link">
-                     <li class="user-menu-info"><a href="{% url 'booking:edituser' %}">
+                     <li class="user-menu-info"><a href="{% url 'user:edituser' %}">
                       {% trans "Personal Data" %}</a></li>
                      <li class="user-menu-info"><a href="{% url 'booking:searchbooking' %}">
                       {% trans "My Bookings" %}</a></li>
                      <li role="separator" class="divider"></li>
-                     <li class="user-menu-info"><a href="{% url 'booking:logout' %}">{% trans "Logout" %}</a></li>
+                     <li class="user-menu-info"><a href="{% url 'user:logout' %}">{% trans "Logout" %}</a></li>
                  </ul>
              </li>
          </ul>
