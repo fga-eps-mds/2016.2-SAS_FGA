@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext as _
 from django.forms import ModelForm
-from .models import UserProfile, Booking, BookTime, Place
+from .models import UserProfile, Booking, BookTime, Place, Validation
 from .models import CATEGORY, SPACES, BUILDINGS, WEEKDAYS
 from django import forms
 from django.contrib.auth.models import User
@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
 from django.utils import timezone
 from datetime import date
+from django.core.exceptions import ValidationError
 import copy
 
 
@@ -96,7 +97,6 @@ class UserForm(ModelForm):
 		if not hasattr(userprofile, 'user'):
 			userprofile.user = User()
 			userprofile.user.set_password(self.cleaned_data.get('password'))
-
 		userprofile.name(self.cleaned_data.get('name'))
 		userprofile.user.email = self.cleaned_data.get('email')
 		userprofile.user.username = userprofile.user.email
@@ -111,40 +111,24 @@ class UserForm(ModelForm):
 		cleaned_data = super(ModelForm, self).clean()
 		validation = Validation()
 
-		#name validation
+		if not hasattr(self.instance, 'user') or self.instance.user.email != cleaned_data.get('email'):
+			if User.objects.filter(username=cleaned_data.get('email')).exists():
+				raise ValidationError(_('Email already used'))
+
+		# Name validation
 		name = cleaned_data.get('name')
+
 		if (len(name) <= 2 or len(name) >= 50):
-			self.add_error('name',_('Name must be between 2 and 50 characters.'))
+			raise ValidationError(_('Name must be between 2 and 50 characters.'))
 
 		if validation.hasSpecialCharacters(name):
-			self.add_error('name',_('Name cannot contain special characters.'))
+			raise ValidationError(_('Name cannot contain special characters.'))
 
 
 		if validation.hasNumbers(name):
-			self.add_error('name',_('Name cannot contain numbers.'))	
-
-		# #registration number validation
-		# registration_number = cleaned_data.get('registration_number')
-
-		# if (len(registration_number) != 9):
-		# 	self.add_error('registration_number',_('Registration number must have 9 digits.'))
-
-		# if validation.hasLetters(registration_number):
-		# 	self.add_error('registration_number',_('Registration number cannot contain letters.'))
-
-		# if validation.hasSpecialCharacters(registration_number):
-		# 	self.add_error('registration_number',_('Registration number cannot contain special characters.'))
-
-
-		if not hasattr(self.instance, 'user') or self.instance.user.email != cleaned_data.get('email'):
-			if User.objects.filter(username=cleaned_data.get('email')).exists():
-				self.add_error('email', _('Email already used'))
-
-
+			raise ValidationError(_('Name cannot contain numbers.'))
 
 		return cleaned_data
-
-
 
 	class Meta:
 		model = UserProfile
@@ -255,18 +239,3 @@ class BookingForm(forms.Form):
 			msg = _('End hour must occur after current hour for a booking today')
 			self.add_error('end_hour', msg)
 			raise forms.ValidationError(msg)
-
-class Validation():
-
-	def hasNumbers(self, string):
-		if any(char.isdigit() for char in string):
-			return True
-
-	def hasLetters(self, number):
-		if any(char.isalpha() for char in number):
-			return True
-
-	def hasSpecialCharacters(self, string):
-		for character in '@#$%^&+=/\{[]()}-_+=*!§|':
-			if character in string:
-				return True

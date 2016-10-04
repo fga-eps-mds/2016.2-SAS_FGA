@@ -39,11 +39,11 @@ class UserProfile(models.Model):
 		name = str.join(" ", [self.user.first_name, self.user.last_name])
 		return name
 
-	def clean_fields(self,exclude = None):
-		
+	def clean_fields(self, exclude=None):
+
 		validation = Validation()
-		
-		#registration number validation
+
+		# Registration Number validation
 		registration_number = self.registration_number
 
 		if (len(registration_number) != 9):
@@ -58,7 +58,7 @@ class UserProfile(models.Model):
 	def save(self, *args, **kwargs):
 		self.user.save()
 		self.user_id = self.user.pk
-		super(UserProfile, self).save(*args, **kwargs)	
+		super(UserProfile, self).save(*args, **kwargs)
 
 class Place(models.Model):
 	name = models.CharField(max_length=50)
