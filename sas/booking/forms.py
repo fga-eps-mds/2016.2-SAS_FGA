@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
 from django.utils import timezone
 from datetime import date
+from django.core.exceptions import ValidationError
 import copy
 
 
@@ -93,18 +94,3 @@ class BookingForm(forms.Form):
 			msg = _('End hour must occur after current hour for a booking today')
 			self.add_error('end_hour', msg)
 			raise forms.ValidationError(msg)
-
-class Validation():
-
-	def hasNumbers(self, string):
-		if any(char.isdigit() for char in string):
-			return True
-
-	def hasLetters(self, number):
-		if any(char.isalpha() for char in number):
-			return True
-
-	def hasSpecialCharacters(self, string):
-		for character in '@#$%^&+=/\{[]()}-_+=*!§|':
-			if character in string:
-				return True
