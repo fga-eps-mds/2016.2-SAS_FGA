@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 	'django_nose',
     'booking',
+    'user',
     'bootstrap3',
     'aloe_django',
     'django_extensions',
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'sas.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['sas/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
