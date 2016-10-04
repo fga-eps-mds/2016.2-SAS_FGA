@@ -113,7 +113,6 @@ class UserForm(ModelForm):
 
 		#name validation
 		name = cleaned_data.get('name')
-
 		if (len(name) <= 2 or len(name) >= 50):
 			self.add_error('name',_('Name must be between 2 and 50 characters.'))
 
@@ -122,19 +121,19 @@ class UserForm(ModelForm):
 
 
 		if validation.hasNumbers(name):
-			self.add_error('name',_('Name cannot contain numbers.'))
+			self.add_error('name',_('Name cannot contain numbers.'))	
 
-		#registration number validation
-		registration_number = cleaned_data.get('registration_number')
+		# #registration number validation
+		# registration_number = cleaned_data.get('registration_number')
 
-		if (len(registration_number) != 9):
-			self.add_error('registration_number',_('Registration number must have 9 digits.'))
+		# if (len(registration_number) != 9):
+		# 	self.add_error('registration_number',_('Registration number must have 9 digits.'))
 
-		if validation.hasLetters(registration_number):
-			self.add_error('registration_number',_('Registration number cannot contain letters.'))
+		# if validation.hasLetters(registration_number):
+		# 	self.add_error('registration_number',_('Registration number cannot contain letters.'))
 
-		if validation.hasSpecialCharacters(registration_number):
-			self.add_error('registration_number',_('Registration number cannot contain special characters.'))
+		# if validation.hasSpecialCharacters(registration_number):
+		# 	self.add_error('registration_number',_('Registration number cannot contain special characters.'))
 
 
 		if not hasattr(self.instance, 'user') or self.instance.user.email != cleaned_data.get('email'):
@@ -167,10 +166,9 @@ class NewUserForm(UserForm):
 		password1 = cleaned_data.get('password')
 		password2 = cleaned_data.get('repeat_password')
 
-		if len(password1) < 4 :
-			msg = _('Password must have at least four characters.')
+		if len(password1) <= 6 or len(password1) >= 15  :
+			msg = _('Password must be between 6 and 15 characters.')
 			self.add_error('password', msg)
-			raise forms.ValidationError(msg)
 		if password1 and password2 and password1 != password2:
 			self.add_error('password', _('Passwords do not match.'))
 

@@ -5,6 +5,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 import copy
 from django.db import connection
+from django.core.exceptions import ValidationError
 
 CATEGORY = (('', '----'), ('1', _('Student')), ('2', _('Teaching Staff')), ('3', _('Employees')))
 
@@ -38,11 +39,26 @@ class UserProfile(models.Model):
 		name = str.join(" ", [self.user.first_name, self.user.last_name])
 		return name
 
+	def clean_fields(self,exclude = None):
+		
+		validation = Validation()
+		
+		#registration number validation
+		registration_number = self.registration_number
+
+		if (len(registration_number) != 9):
+			raise ValidationError(_('Registration number must have 9 digits.'))
+
+		if validation.hasLetters(registration_number):
+			raise ValidationError(_('Registration number cannot contain letters.'))
+
+		if validation.hasSpecialCharacters(registration_number):
+			raise ValidationError(_('Registration number cannot contain special characters.'))
+
 	def save(self, *args, **kwargs):
 		self.user.save()
 		self.user_id = self.user.pk
-		super(UserProfile, self).save(*args, **kwargs)
-
+		super(UserProfile, self).save(*args, **kwargs)	
 
 class Place(models.Model):
 	name = models.CharField(max_length=50)
@@ -118,3 +134,18 @@ class Booking(models.Model):
 			self.place.save()
 			self.place_id = self.place.pk
 		super(Booking, self).save(*args, **kwargs)
+
+class Validation():
+
+	def hasNumbers(self, string):
+		if any(char.isdigit() for char in string):
+			return True
+
+	def hasLetters(self, number):
+		if any(char.isalpha() for char in number):
+			return True
+
+	def hasSpecialCharacters(self, string):
+		for character in '@#$%^&+=/\{[]()}-_+=*!§|':
+			if character in string:
+				return True
