@@ -110,9 +110,9 @@ class UserForm(ModelForm):
 	def clean(self):
 		cleaned_data = super(ModelForm, self).clean()
 
+		#name validation
 		name = cleaned_data.get('name')
-		special_character = '@#$%^&+='
-		number = '0123456789'
+		special_character = '@#$%^&+=/\{}[]()-_+=*!§|'
 
 		foundSpecialCharacter = False
 		foundNumber = False
@@ -131,6 +131,21 @@ class UserForm(ModelForm):
 		if any(char.isdigit() for char in name):
 			self.add_error('name',_('Name cannot contain numbers.'))
 
+		#registration number validation	
+		registration_number = cleaned_data.get('registration_number')
+
+		if (len(registration_number) != 9):
+			self.add_error('registration_number',_('Registration number must have 9 digits.'))
+		
+		if any(number.isalpha() for number in registration_number):
+			self.add_error('registration_number',_('Registration number cannot contain letters.'))		
+
+		for character in special_character:
+			if character in registration_number:
+				foundSpecialCharacter = True
+
+		if foundSpecialCharacter == True:
+			self.add_error('registration_number',_('Registration number cannot contain special characters.'))			
 
 
 		if not hasattr(self.instance, 'user') or self.instance.user.email != cleaned_data.get('email'):
