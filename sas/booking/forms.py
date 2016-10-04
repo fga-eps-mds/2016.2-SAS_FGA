@@ -10,6 +10,174 @@ from django.utils import timezone
 from datetime import date
 import copy
 
+<<<<<<< 97ca3ae450dbdb5d6b7cf2ef64b78805a386b171
+=======
+
+class LoginForm(ModelForm):
+	email = forms.CharField(
+		label=_('Email:'),
+		widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}))
+	password = forms.CharField(
+		label=_('Password:'),
+		widget=forms.PasswordInput(attrs={'placeholder': ''}))
+
+	def save(self, force_insert=False, force_update=False, commit=True):
+		username = self.cleaned_data.get("email")
+		password = self.cleaned_data.get("password")
+		user = authenticate(username=username, password=password)
+		if user is None:
+			self.add_error('password', _('Email or Password does not match'))
+		return user
+
+	class Meta:
+		model = User
+		fields = ['email', 'password']
+
+
+class PasswordForm(ModelForm):
+	password = forms.CharField(
+		label=_('Password:'),
+		widget=forms.PasswordInput(attrs={'placeholder': ''}))
+	new_password = forms.CharField(
+		label=_('New Password:'),
+		widget=forms.PasswordInput(attrs={'placeholder': ''}))
+	renew_password = forms.CharField(
+		label=_('Repeat Password:'),
+		widget=forms.PasswordInput(attrs={'placeholder': ''}))
+
+	def save(self, user):
+		password = self.cleaned_data.get("new_password")
+		user.set_password(password)
+		user.save()
+
+	def is_password_valid(self, username):
+		cleaned_data = super(ModelForm, self).clean()
+		password = cleaned_data.get('password')
+		user = authenticate(username=username, password=password)
+		if user is None:
+			self.add_error('password', _('Password is wrong'))
+			return False
+		return True
+
+	def clean(self):
+		cleaned_data = super(ModelForm, self).clean()
+		password1 = cleaned_data.get('new_password')
+		password2 = cleaned_data.get('renew_password')
+		if password1 and password2 and password1 != password2:
+			self.add_error('new_password', _('Passwords do not match'))
+			self.add_error('renew_password', _('Passwords do not match'))
+
+	class Meta:
+		model = User
+		fields = ['password', 'new_password', 'renew_password']
+
+
+class UserForm(ModelForm):
+	name = forms.CharField(
+		label=_('Name:'),
+		widget=forms.TextInput(attrs={'placeholder': ''}))
+	email = forms.EmailField(
+		label=_('Email:'),
+		widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}))
+	password = forms.CharField(
+		label=_('Password:'),
+		required=False,
+		widget=forms.PasswordInput(attrs={'placeholder': ''}))
+	repeat_password = forms.CharField(
+		label=_('Repeat Password:'),
+		required=False,
+		widget=forms.PasswordInput(attrs={'placeholder': ''}))
+	registration_number = forms.CharField(
+		label=_('Registration number:'),
+		widget=forms.TextInput(attrs={'placeholder': ''}))
+	category = forms.ChoiceField(choices=CATEGORY, label=_('Category:'))
+
+	def save(self, force_insert=False, force_update=False, commit=True):
+		userprofile = super(UserForm, self).save(commit=False)
+		# if it is a new user
+		if not hasattr(userprofile, 'user'):
+			userprofile.user = User()
+			userprofile.user.set_password(self.cleaned_data.get('password'))
+
+		userprofile.name(self.cleaned_data.get('name'))
+		userprofile.user.email = self.cleaned_data.get('email')
+		userprofile.user.username = userprofile.user.email
+		userprofile.user.set_password(self.cleaned_data.get('password'))
+		print(commit)
+		# do custom stuff
+		if commit:
+			userprofile.save()
+		return userprofile
+
+	def clean(self):
+		cleaned_data = super(ModelForm, self).clean()
+		validation = Validation()
+
+		#name validation
+		name = cleaned_data.get('name')
+
+		if (len(name) <= 2 or len(name) >= 50):
+			self.add_error('name',_('Name must be between 2 and 50 characters.'))
+
+		if validation.hasSpecialCharacters(name):
+			self.add_error('name',_('Name cannot contain special characters.'))
+
+
+		if validation.hasNumbers(name):
+			self.add_error('name',_('Name cannot contain numbers.'))
+
+		#registration number validation
+		registration_number = cleaned_data.get('registration_number')
+
+		if (len(registration_number) != 9):
+			self.add_error('registration_number',_('Registration number must have 9 digits.'))
+
+		if validation.hasLetters(registration_number):
+			self.add_error('registration_number',_('Registration number cannot contain letters.'))
+
+		if validation.hasSpecialCharacters(registration_number):
+			self.add_error('registration_number',_('Registration number cannot contain special characters.'))
+
+
+		if not hasattr(self.instance, 'user') or self.instance.user.email != cleaned_data.get('email'):
+			if User.objects.filter(username=cleaned_data.get('email')).exists():
+				self.add_error('email', _('Email already used'))
+
+
+
+		return cleaned_data
+
+
+
+	class Meta:
+		model = UserProfile
+		fields = ['name', 'registration_number', 'category', 'email',
+												'password', 'repeat_password']
+
+
+class EditUserForm(UserForm):
+
+	class Meta:
+		model = UserProfile
+		fields = ['name', 'registration_number', 'category', 'email']
+
+
+class NewUserForm(UserForm):
+
+	def clean(self):
+		cleaned_data = super(NewUserForm, self).clean()
+		password1 = cleaned_data.get('password')
+		password2 = cleaned_data.get('repeat_password')
+
+		if len(password1) < 4 :
+			msg = _('Password must have at least four characters.')
+			self.add_error('password', msg)
+			raise forms.ValidationError(msg)
+		if password1 and password2 and password1 != password2:
+			self.add_error('password', _('Passwords do not match.'))
+
+
+>>>>>>> Adding validations on a class with methods
 class BookingForm(forms.Form):
 	name = forms.CharField(
 		label=_('Booking Name:'),
@@ -92,3 +260,18 @@ class BookingForm(forms.Form):
 			msg = _('End hour must occur after current hour for a booking today')
 			self.add_error('end_hour', msg)
 			raise forms.ValidationError(msg)
+
+class Validation():
+
+	def hasNumbers(self, string):
+		if any(char.isdigit() for char in string):
+			return True
+
+	def hasLetters(self, number):
+		if any(char.isalpha() for char in number):
+			return True
+
+	def hasSpecialCharacters(self, string):
+		for character in '@#$%^&+=/\{[]()}-_+=*!§|':
+			if character in string:
+				return True
