@@ -7,6 +7,7 @@ import copy
 from django.db import connection
 from django.core.exceptions import ValidationError
 
+CATEGORY = (('', '----'), ('1', _('Student')), ('2', _('Teaching Staff')), ('3', _('Employees')))
 BUILDINGS = (('', '----'), ('1', 'UAC'), ('2', 'UED'))
 
 # TODO: Select spaces according to building selected
