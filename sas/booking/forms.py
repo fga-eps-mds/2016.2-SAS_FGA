@@ -150,11 +150,10 @@ class NewUserForm(UserForm):
 		password1 = cleaned_data.get('password')
 		password2 = cleaned_data.get('repeat_password')
 
-		if len(password1) <= 6 or len(password1) >= 15  :
-			msg = _('Password must be between 6 and 15 characters.')
-			self.add_error('password', msg)
+		if len(password1) < 6 or len(password1) > 15  :
+			raise ValidationError(_('Password must be between 6 and 15 characters.'))
 		if password1 and password2 and password1 != password2:
-			self.add_error('password', _('Passwords do not match.'))
+			raise ValidationError(_('Passwords do not match.'))
 
 
 class BookingForm(forms.Form):
