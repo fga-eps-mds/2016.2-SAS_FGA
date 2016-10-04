@@ -130,7 +130,13 @@ LOCALE_PATHS = (
 
 
 
+STATIC_ROOT = 'static'
+
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join('sas/static'),
+)
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
