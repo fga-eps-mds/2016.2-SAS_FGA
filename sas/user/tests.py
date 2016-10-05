@@ -51,6 +51,13 @@ class LoginTest(TestCase):
 		self.client = Client()
 
 	def test_get_request(self):
-		response = self.client.get('/user/login', follow = True)
+		response = self.client.get('/user/login/', follow = True)
 		self.assertEqual(response.status_code, 200)
-		self.assertEqual(response.redirect_chain, [('/user/login/', 301), ('/', 302)])
+		self.assertEqual(response.redirect_chain, [('/', 302)])
+
+	def test_invalid_email(self):
+		response = self.client.post('/user/login/', {'email' : 'aeiou', 'password' : '123'})
+		self.assertEqual(response.status_code, 200)
+		self.assertContains(response, 'Informe um endereço de email válido.')
+
+	

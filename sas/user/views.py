@@ -58,14 +58,14 @@ def login_user(request):
 	if request.method == "POST":
 		form = LoginForm(request.POST)
 		if form.is_valid():
-			user = form.save()
+			user = form.authenticate_user()
 			if user is not None:
 				login(request, user);
 				return render(request, 'sas/home.html', {})
 			else:
 				return render(request, 'sas/index.html', {'form': form})
 		else:
-			return render(request, 'sas/index.html', {'form': form})
+			return index(request, login_form = form)
 	else:
 		return redirect('index')
 

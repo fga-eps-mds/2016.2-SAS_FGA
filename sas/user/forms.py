@@ -15,7 +15,7 @@ class LoginForm(ModelForm):
 		label=_('Password:'),
 		widget=forms.PasswordInput(attrs={'placeholder': ''}))
 
-	def save(self, force_insert=False, force_update=False, commit=True):
+	def authenticate_user(self):
 		username = self.cleaned_data.get("email")
 		password = self.cleaned_data.get("password")
 		user = authenticate(username=username, password=password)
