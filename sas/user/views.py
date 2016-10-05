@@ -67,7 +67,7 @@ def login_user(request):
 		else:
 			return render(request, 'sas/index.html', {'form': form})
 	else:
-		return index(request)
+		return redirect('index')
 
 
 def logout_user(request):

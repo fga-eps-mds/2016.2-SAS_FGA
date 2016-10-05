@@ -1,6 +1,7 @@
 from django.test import TestCase
 from user.models import *
 from django.test import Client
+from user.factories import UserFactory
 
 
 class ViewsTest(TestCase):
@@ -42,3 +43,14 @@ class UserProfileTest(TestCase):
 		self.userprofile.user.email = "gutorc@hotmail.com"
 		self.userprofile.save()
 		self.assertEqual(self.userprofile.pk, 1)
+
+class LoginTest(TestCase):
+	def setUp(self):
+		self.user = UserFactory.create()
+		self.user.set_password('1234')
+		self.client = Client()
+
+	def test_get_request(self):
+		response = self.client.get('/user/login', follow = True)
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.redirect_chain, [('/user/login/', 301), ('/', 302)])
