@@ -56,9 +56,15 @@ class PasswordForm(ModelForm):
 
 	def clean(self):
 		cleaned_data = super(ModelForm, self).clean()
+		password0 = cleaned_data.get('password')
 		password1 = cleaned_data.get('new_password')
 		password2 = cleaned_data.get('renew_password')
-		if password1 and password2 and password1 != password2:
+		if password0 == password1:
+			self.add_error('new_password',_('New password must be different from the old one'))
+		elif len(password1) < 6 or len(password1) > 15:
+			self.add_error('new_password', _('Passwords must \
+			be between 6 and 15 characters'))
+		elif password1 and password2 and password1 != password2:
 			self.add_error('new_password', _('Passwords do not match'))
 			self.add_error('renew_password', _('Passwords do not match'))
 
