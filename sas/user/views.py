@@ -31,7 +31,7 @@ def edit_user(request):
 	if request.user.is_authenticated() and request.method == "POST":
 		form = EditUserForm(request.POST, instance=request.user.profile_user)
 		if form.is_valid():
-			user = form.save()
+			user = form.save(is_edit_form=True)
 			messages.success(request, _('Your data has been updated'))
 		return render_edit_user(request, user_form=form)
 	elif not request.user.is_authenticated():
