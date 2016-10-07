@@ -3,6 +3,8 @@ from user.models import *
 from django.test import Client
 from django.contrib.auth.models import AnonymousUser
 from user.views import edit_user
+from user.factories import UserProfileFactory
+
 
 class EditUserTest(TestCase):
 	def setUp(self):
@@ -24,22 +26,22 @@ class EditUserTest(TestCase):
 		self.assertEqual(response.status_code, 200)
 
 	def test_get_request_anonymous(self):
+		url = '/user/edituser/'
+		response = self.client.get(url, follow = True)
+		self.assertTemplateUsed(response, 'sas/index.html')
+
+
+
+	def test_edit_post_registration_number(self):
 		request = self.factory.get('/user/edituser/')
-		request.user = AnonymousUser()
-		response = edit_user(request)
-		self.assertEqual(response.status_code, 200)
-
-
-
-#	def test_edit_post_registration_number(self):
-#		request = self.factory.get('/user/edituser/')
-#		client = self.client
-#		userprofile = self.userprofile
-#		client.login(username='gutorc@hotmail.com', password='123456')
-#		parameters = {'name': 'Pedro','registration_number': '14000000', \
-#			'category' : 'Student', 'email' : "gutorc@hotmail.com"}
-#		response = client.post('/user/edituser/', parameters)
-#		self.assertEqual('14000000', self.userprofile.registration_number)
+		client = self.client
+		userprofile = self.userprofile
+		client.login(username='gutorc@hotmail.com', password='123456')
+		parameters = {'name': 'Pedro','registration_number': '14000000', \
+			'category' : '1', 'email' : "gutorc@hotmail.com"}
+		response = client.post('/user/edituser/', parameters)
+		self.userprofile.refresh_from_db()
+		self.assertEqual('14000000', self.userprofile.registration_number)
 
 
 
