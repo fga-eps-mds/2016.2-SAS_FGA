@@ -14,6 +14,7 @@ import os
 def with_browser(scenario, outline, steps):
 	chrome_options = Options()
 	chrome_options.add_argument("start-maximized")
+	chrome_options.add_argument("--lang=en")
 	world.browser = webdriver.Chrome(os.path.join(BASE_DIR,
                                      "chromedriver", "chromedriver"),
 									 chrome_options=chrome_options)

@@ -9,7 +9,7 @@ Scenario: Invalid email
 	And I fill in "Email" with "pedro"
 	And I select "Student" from "Category"
 	And I press "Save Data"
-	Then I should see "Informe um endereço de email válido."
+	Then I should see "Enter a valid email address."
 
 Scenario: User registered
 	When I login in with email "lucas@gmail.com" and password "123456"

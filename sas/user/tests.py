@@ -99,7 +99,7 @@ class LoginTest(TestCase):
 	def test_invalid_email(self):
 		response = self.client.post('/user/login/', {'email' : 'aeiou', 'password' : '1234567'})
 		self.assertEqual(response.status_code, 200)
-		self.assertContains(response, 'Informe um endereço de email válido.')
+		self.assertContains(response, 'Enter a valid email address.')
 
 	def test_invalid_password(self):
 		response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1235567'})
