@@ -55,7 +55,7 @@ def register_user(step, username, password):
 
 @step(r'I login in with email "(.*)" and password "(.*)"')
 def login_user(step, email, password):
-	step.given("I visit site page \"/gustavo\"")
+	step.given("I visit site page \"/\"")
 	c = Client()
 	response = c.login(username=email, password=password)
 	cookies = {}
