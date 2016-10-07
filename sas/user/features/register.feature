@@ -43,7 +43,7 @@ Scenario: Repeated Registration Number
   And I type in "teste123" to "Password"
   And I type in "teste123" to "Repeat Password"
   Then I press "Register"
-  Then I should see an alert with text "Registration Number already used"
+  Then I should see an alert with text "Registration Number already used."
 
 Scenario: User do not inform Email
   When I register the user "test123@gmail.com" with the password "123456"
