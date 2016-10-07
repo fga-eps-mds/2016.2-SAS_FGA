@@ -35,25 +35,25 @@ class UserProfileTest(TestCase):
     def test_category(self):
         self.assertEqual(len(CATEGORY), 4)
 
-    def test_registration_number(self):         
-        registration_number = "123456789"         
-        self.userprofile.registration_number = registration_number          
-        registration_size = len(registration_number)         
-        profile_registration_size = len(self.userprofile.registration_number)            
-        self.assertEqual(profile_registration_size, registration_size)         
-        
+    def test_registration_number(self):
+        registration_number = "123456789"
+        self.userprofile.registration_number = registration_number
+        registration_size = len(registration_number)
+        profile_registration_size = len(self.userprofile.registration_number)
+        self.assertEqual(profile_registration_size, registration_size)
+
     def test_registration_number_bigger(self):
         registration_number = "0123456789"
-        self.userprofile.registration_number = registration_number          
+        self.userprofile.registration_number = registration_number
         registration_size = len(registration_number)
         self.assertGreater(registration_size, 9)
 
     def test_registration_number_smaller(self):
         registration_number = "01234567"
-        self.userprofile.registration_number = registration_number          
+        self.userprofile.registration_number = registration_number
         registration_size = len(registration_number)
-        self.assertLess(registration_size, 9)    
-        
+        self.assertLess(registration_size, 9)
+
     def test_save(self):
         self.userprofile.name("Gustavo Rodrigues Coelho")
         self.userprofile.registration_number = "11/0030559"
