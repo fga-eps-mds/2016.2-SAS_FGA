@@ -4,6 +4,5 @@ from django.contrib import messages
 from user.forms import LoginForm
 
 
-def index(request):
-    form = LoginForm()
-    return render(request, 'sas/index.html', {'form': form})
+def index(request, login_form = LoginForm()):
+    return render(request, 'sas/index.html', {'form': login_form})
