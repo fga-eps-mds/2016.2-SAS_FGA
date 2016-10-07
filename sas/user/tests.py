@@ -82,11 +82,13 @@ class LogoutTest(TestCase):
 
 	def test_logout(self):
 		self.client.login(username= self.user.user.email, password= '1234567')
-		response = self.client.get('/user/logout/')
+		response = self.client.get('/user/logout/', follow = True)
 		self.assertEqual(response.status_code, 200)
-		self.assertContains(response, 'You have been logged out sucessfully!')
+		self.assertEqual(response.redirect_chain, [('/', 302)])
+		self.assertContains(response, 'You have been logged out successfully!')
 
 	def test_invalid_logout(self):
-		response = self.client.get('/user/logout/')
+		response = self.client.get('/user/logout/', follow = True)
 		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.redirect_chain, [('/', 302)])
 		self.assertNotContains(response, 'You have been logged out sucessfully!')

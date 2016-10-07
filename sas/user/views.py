@@ -71,7 +71,7 @@ def logout_user(request):
 	if hasattr(request, 'user') and isinstance(request.user, User):
 		logout(request)
 		messages.success(request, _('You have been logged out successfully!'))
-	return index(request)
+	return redirect('index')
 
 
 def delete_user(request):
