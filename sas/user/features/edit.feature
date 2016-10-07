@@ -11,12 +11,37 @@ Scenario: User registered
 	And I press "Save Data"
 	Then I should see "Your data has been updated"
 
-Scenario: User empties one field
+Scenario: User empties email
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
 	And I fill in "Email" with ""
 	And I press "Save Data"
 	Then I should see an alert with text "Please fill out this field."
+
+
+Scenario: User empties name
+	When I login in with email "lucas@gmail.com" and password "123456"
+	Then I visit site page "/user/edituser/"
+	And I fill in "Name" with ""
+	And I press "Save Data"
+	Then I should see an alert with text "Please fill out this field."
+
+
+Scenario: User empties registration number
+	When I login in with email "lucas@gmail.com" and password "123456"
+	Then I visit site page "/user/edituser/"
+	And I fill in "Registration number" with ""
+	And I press "Save Data"
+	Then I should see an alert with text "Please fill out this field."
+
+
+
+Scenario: User empties category
+	When I login in with email "lucas@gmail.com" and password "123456"
+	Then I visit site page "/user/edituser/"
+	And I select "----" from "Category"
+	And I press "Save Data"
+	Then I should see an alert with text "Please select an item on the list."
 
 Scenario: Duplicated email
 	When I register the user "pedrot@gmail.com" with the password "123456"
@@ -32,9 +57,9 @@ Scenario: Actual password wrong
 	Then I visit site page "/user/edituser/"
 	And I click on an element with id of "changepassword"
 	And I should see an element with id of "id_password"
-	And I type in "12345fjksj" to "Password"  
-	And I type in "asdfgh" to "New Password" 
-	And I type in "asdfgh" to id "renew_password" 
+	And I type in "12345fjksj" to "Password"
+	And I type in "asdfgh" to "New Password"
+	And I type in "asdfgh" to id "renew_password"
 	And I press "Change Password"
 	Then I should see "Password is wrong"
 
@@ -43,9 +68,9 @@ Scenario: Change password successfully
 	Then I visit site page "/user/edituser/"
 	And I click on an element with id of "changepassword"
 	And I should see an element with id of "id_password"
-	And I type in "123456" to "Password"  
-	And I type in "asdfgh" to "New Password" 
-	And I type in "asdfgh" to id "renew_password" 
+	And I type in "123456" to "Password"
+	And I type in "asdfgh" to "New Password"
+	And I type in "asdfgh" to id "renew_password"
 	And I press "Change Password"
 	Then I should see "Your password has been changed"
 
@@ -54,8 +79,8 @@ Scenario: New Password do not match
 	Then I visit site page "/user/edituser/"
 	And I click on an element with id of "changepassword"
 	And I should see an element with id of "id_password"
-	And I type in "123456" to "Password"  
-	And I type in "asdfgh" to "New Password" 
-	And I type in "asdfgh3iu4i3" to id "renew_password" 
+	And I type in "123456" to "Password"
+	And I type in "asdfgh" to "New Password"
+	And I type in "asdfgh3iu4i3" to id "renew_password"
 	And I press "Change Password"
 	Then I should see "Passwords do not match"
