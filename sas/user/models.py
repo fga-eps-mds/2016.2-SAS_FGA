@@ -44,22 +44,29 @@ class UserProfile(models.Model):
 class Validation():
 
 	def hasNumbers(self, string):
-		if any(char.isdigit() for char in string):
-			return True
+		if (string is not None):
+			if any(char.isdigit() for char in string):
+				return True
+
+			return False
 
 		else:
 			return False
 
 	def hasLetters(self, number):
-		if any(char.isalpha() for char in number):
-			return True
+		if (number is not None):
+			if any(char.isalpha() for char in number):
+				return True
+
+			return False
 
 		else:
 			return False
 
 	def hasSpecialCharacters(self, string):
-		for character in '@#$%^&+=/\{[]()}-_+=*!§|':
-			if character in string:
-				return True
+		if (string is not None):
+			for character in '@#$%^&+=/\{[]()}-_+=*!§|':
+				if character in string:
+					return True
 
 		return False

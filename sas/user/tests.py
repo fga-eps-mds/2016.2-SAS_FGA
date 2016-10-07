@@ -66,3 +66,23 @@ class ValidationTest(TestCase):
 
 	def test_has_no_special_characters(self):
 		self.assertEqual(self.validation.hasSpecialCharacters('Another Test'), False);
+
+	# Empty Validations
+	def test_has_numbers_empty(self):
+		self.assertEqual(self.validation.hasNumbers(''), False);
+
+	def test_has_letters_empty(self):
+		self.assertEqual(self.validation.hasLetters(''), False);
+
+	def test_has_special_characters_empty(self):
+		self.assertEqual(self.validation.hasSpecialCharacters(''), False);
+
+	# None Validations
+	def test_has_numbers_none(self):
+		self.assertEqual(self.validation.hasNumbers(None), False);
+
+	def test_has_letters_none(self):
+		self.assertEqual(self.validation.hasLetters(None), False);
+
+	def test_has_special_characters_none(self):
+		self.assertEqual(self.validation.hasSpecialCharacters(None), False);
