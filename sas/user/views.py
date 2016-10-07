@@ -60,7 +60,7 @@ def login_user(request):
 		if form.is_valid():
 			user = form.authenticate_user()
 			if user is not None:
-				login(request, user);
+				login(request, user)
 				return render(request, 'sas/home.html', {})
 			else:
 				return render(request, 'sas/index.html', {'form': form})

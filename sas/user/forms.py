@@ -59,7 +59,7 @@ class PasswordForm(ModelForm):
 		password2 = cleaned_data.get('renew_password')
 		if password1 and password2 and password1 != password2:
 			self.add_error('new_password', _('Passwords do not match'))
-			self.add_error('renew_password', _('Passwords do not match'))
+			self.add_error('renew_password', _('Password	s do not match'))
 
 	class Meta:
 		model = User

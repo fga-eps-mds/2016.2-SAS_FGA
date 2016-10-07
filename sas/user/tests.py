@@ -1,8 +1,9 @@
 from django.test import TestCase
 from user.models import *
 from django.test import Client
-from user.factories import UserFactory
-
+from user.factories import UserFactory, UserProfileFactory
+from django.contrib import auth
+from django.contrib.auth import authenticate, login, logout
 
 class ViewsTest(TestCase):
 
@@ -46,8 +47,9 @@ class UserProfileTest(TestCase):
 
 class LoginTest(TestCase):
 	def setUp(self):
-		self.user = UserFactory.create()
-		self.user.set_password('1234')
+		self.user = UserProfileFactory.create()
+		self.user.user.set_password('1234567')
+		self.user.save()
 		self.client = Client()
 
 	def test_get_request(self):
@@ -56,11 +58,31 @@ class LoginTest(TestCase):
 		self.assertEqual(response.redirect_chain, [('/', 302)])
 
 	def test_invalid_email(self):
-		response = self.client.post('/user/login/', {'email' : 'aeiou', 'password' : '123'})
+		response = self.client.post('/user/login/', {'email' : 'aeiou', 'password' : '1234567'})
 		self.assertEqual(response.status_code, 200)
 		self.assertContains(response, 'Informe um endereço de email válido.')
 
 	def test_invalid_password(self):
-		response = self.client.post('/user/login/', {'email' : self.user.email, 'password' : '123'})
+		response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1235567'})
 		self.assertEqual(response.status_code, 200)
 		self.assertContains(response, 'Email or Password does not match')
+
+	def test_valid_user(self):
+		logout(self.client)
+		response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1234567'})
+		self.assertEqual(response.status_code, 200)
+		self.assertContains(response, 'Hi, %s' % (self.user.full_name()))
+
+"""
+class LogoutTest(TestCase):
+	def setUp(self):
+		self.user = UserFactory.create()
+		self.user.set_password('1234')
+		self.client = Client()
+
+	def test_logout(self):
+		self.client.login(username = self.user.email, password = self.user.password)
+		response = self.client.get('/user/logout/')
+		self.assertEqual(response.status_code, 200)
+		self.client.logout()
+		self.assertFalse(self.user.is_authenticated())"""
