@@ -9,6 +9,7 @@ class EditUserTest(TestCase):
 		self.userprofile = UserProfile()
 		self.userprofile.name("Gustavo Rodrigues Coelho")
 		self.userprofile.registration_number = "110030559"
+		self.userprofile.category = 'Student'
 		self.userprofile.user.username = "gutorc@hotmail.com"
 		self.userprofile.user.email = "gutorc@hotmail.com"
 		self.userprofile.user.set_password('123456')
@@ -29,15 +30,16 @@ class EditUserTest(TestCase):
 		self.assertEqual(response.status_code, 200)
 
 	def test_edit_valid_field(self):
-		new_number = "160000000"
 		request = self.factory.get('/user/edituser/')
-		request.user = self.userprofile.user
-		response = edit_user(request)
+		new_number = "14000000"
 		client = self.client
+		userprofile = self.userprofile
 		client.login(username='gutorc@hotmail.com', password='123456')
-		response = client.post('/user/edituser/', {'registration_number': new_number})
-		self.assertEqual(response.status_code, 200)
-		self.assertEqual(self.userprofile.registration_number, new_number)
+		parameters = {'name': 'Gustavo Rodrigues Coelho','registration_number': new_number, \
+		'category' : 'Student', 'email' : "gutorc@hotmail.com"}
+		response = client.post('/user/edituser/', parameters)
+		print(response.content)
+		self.assertContains(response, "14000000")
 
 
 class ViewsTest(TestCase):
