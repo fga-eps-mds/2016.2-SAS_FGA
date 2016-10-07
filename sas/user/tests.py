@@ -1,6 +1,21 @@
 from django.test import TestCase
 from user.models import *
 from django.test import Client
+from views import edit_user
+
+class EditUserTest(TestCase):
+	def setUp:
+		self.user= UserProfile()
+		self.userprofile.name("Gustavo Rodrigues Coelho")
+		self.userprofile.registration_number = "11/0030559"
+		self.userprofile.user.username = "gutorc@hotmail.com"
+		self.userprofile.user.email = "gutorc@hotmail.com"
+		self.userprofile.user.set_password('123456')
+		self.userprofile.save()
+		self.edit_user() = views.edit_user()
+		self.client = Client()
+
+	def test_get_request:
 
 
 class ViewsTest(TestCase):
