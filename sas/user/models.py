@@ -28,13 +28,13 @@ class UserProfile(models.Model):
 		registration_number = self.registration_number
 
 		if (len(registration_number) != 9):
-			raise ValidationError(_('Registration number must have 9 digits.'))
+			raise ValidationError({'registration_number': [_('Registration number must have 9 digits.'),]})
 
 		if validation.hasLetters(registration_number):
-			raise ValidationError(_('Registration number cannot contain letters.'))
+			raise ValidationError({'registration_number': [_('Registration number cannot contain letters.'),]})
 
 		if validation.hasSpecialCharacters(registration_number):
-			raise ValidationError(_('Registration number cannot contain special characters.'))
+			raise ValidationError({'registration_number': [_('Registration number cannot contain special characters.'),]})		
 
 	def save(self, *args, **kwargs):
 		self.user.save()
