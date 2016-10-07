@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import copy
 from django.db import connection
 
-BUILDINGS = (('1', 'UAC'), ('2', 'UED'))
+BUILDINGS = (('', '----'), ('1', 'UAC'), ('2', 'UED'))
 
 # TODO: Select spaces according to building selected
 SPACES = (('', '----'), ('1', 'I1'), ('2', 'I2'), ('3', 'I3'), ('4', 'I4'),
