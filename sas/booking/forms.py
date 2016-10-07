@@ -8,7 +8,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import copy
 
 
@@ -29,7 +29,7 @@ class BookingForm(forms.Form):
 		label=_('End Date:'),
 		widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
 	building = forms.ModelChoiceField(
-		queryset=Building.objects.values_list('name', flat=True).distinct(),
+		queryset=Building.objects,
 		label=_('Building:'))
 	place = forms.ModelChoiceField(queryset=Place.objects, label=_('Place:'))
 	week_days = forms.MultipleChoiceField(label=_("Days of week: "),
@@ -42,8 +42,12 @@ class BookingForm(forms.Form):
 		booking.name = self.cleaned_data.get("name")
 		booking.start_date = self.cleaned_data.get("start_date")
 		booking.end_date = self.cleaned_data.get("end_date")
-		booking.place = Building.objects.get(cleaned_data.get("building"))
+		booking.place = self.cleaned_data.get("place")
 		weekdays = self.cleaned_data.get("week_days")
+		if not weekdays:
+			date_range = [booking.start_date + timedelta(days=x) for x in range(0, (booking.end_date-booking.start_date ).days)]
+			for day in date_range:
+				weekdays.append(day.weekday())
 		book = BookTime()
 		book.date_booking = booking.start_date
 		book.start_hour = self.cleaned_data.get("start_hour")
