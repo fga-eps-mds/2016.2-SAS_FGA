@@ -4,6 +4,8 @@ from django.test import Client
 from django.contrib.auth.models import AnonymousUser
 from user.views import delete_user
 from user.factories import UserProfileFactory
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class DeleteUserTest(TestCase):
@@ -34,10 +36,11 @@ class DeleteUserTest(TestCase):
 		self.assertEqual(response.status_code, 200)
 
 	def test_delete_user(self):
+		userprofile = self.userprofile
 		client = self.client
 		client.login(username='gutorc@hotmail.com', password='123456')
 		response = self.client.get(self.url, follow = True)
-		self.assertRaises(self.userprofile, None)
+		self.assertEqual(False,UserProfile.objects.filter(registration_number="110030559").exists())
 
 
 class ViewsTest(TestCase):
