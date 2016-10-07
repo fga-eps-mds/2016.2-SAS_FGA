@@ -47,6 +47,7 @@ class ValidationTest(TestCase):
 	def setUp(self):
 		self.validation = Validation()
 
+	# True validations
 	def test_has_numbers(self):
 		self.assertEqual(self.validation.hasNumbers('Test123'), True);
 
@@ -55,3 +56,13 @@ class ValidationTest(TestCase):
 
 	def test_has_special_characters(self):
 		self.assertEqual(self.validation.hasSpecialCharacters('#Test'), True);
+
+	# False validations
+	def test_has_no_numbers(self):
+		self.assertEqual(self.validation.hasNumbers('Test Test'), False);
+
+	def test_has_no_letters(self):
+		self.assertEqual(self.validation.hasLetters('123456'), False);
+
+	def test_has_no_special_characters(self):
+		self.assertEqual(self.validation.hasSpecialCharacters('Another Test'), False);
