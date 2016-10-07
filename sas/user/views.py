@@ -59,11 +59,8 @@ def login_user(request):
 		form = LoginForm(request.POST)
 		if form.is_valid():
 			user = form.authenticate_user()
-			if user is not None:
-				login(request, user)
-				return render(request, 'sas/home.html', {})
-			else:
-				return render(request, 'sas/index.html', {'form': form})
+			login(request, user)
+			return render(request, 'sas/home.html', {})
 		else:
 			return index(request, login_form = form)
 	else:
@@ -71,9 +68,9 @@ def login_user(request):
 
 
 def logout_user(request):
-    logout(request)
-    form = LoginForm()
-    return render(request, 'sas/index.html', {'form': form})
+	logout(request)
+	messages.success(request, _('You have been logged out sucessfully!'))
+	return index(request)
 
 
 def delete_user(request):

@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
 
-class LoginForm(ModelForm):
-	email = forms.CharField(
+class LoginForm(forms.Form):
+	email = forms.EmailField(
 		label=_('Email:'),
 		widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}))
 	password = forms.CharField(
@@ -23,9 +23,10 @@ class LoginForm(ModelForm):
 			self.add_error('password', _('Email or Password does not match'))
 		return user
 
-	class Meta:
-		model = User
-		fields = ['email', 'password']
+	def clean(self):
+		cleaned_data = super(LoginForm, self).clean()
+		self.authenticate_user()
+		return cleaned_data
 
 
 class PasswordForm(ModelForm):

@@ -73,16 +73,15 @@ class LoginTest(TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertContains(response, 'Hi, %s' % (self.user.full_name()))
 
-"""
 class LogoutTest(TestCase):
 	def setUp(self):
-		self.user = UserFactory.create()
-		self.user.set_password('1234')
+		self.user = UserProfileFactory.create()
+		self.user.user.set_password('1234567')
+		self.user.save()
 		self.client = Client()
 
 	def test_logout(self):
-		self.client.login(username = self.user.email, password = self.user.password)
+		self.client.login(username= self.user.user.email, password= '1234567')
 		response = self.client.get('/user/logout/')
 		self.assertEqual(response.status_code, 200)
-		self.client.logout()
-		self.assertFalse(self.user.is_authenticated())"""
+		self.assertContains(response, 'You have been logged out sucessfully!')
