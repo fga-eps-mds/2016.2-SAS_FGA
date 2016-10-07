@@ -143,11 +143,11 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # Tell nose to measure coverage on the 'foo' and 'bar' apps
 NOSE_ARGS = [
     '--with-coverage',
-	'--cover-package=sas,booking',
+	'--cover-package=sas,booking,user',
 ]
 
 PROJECT_DIR = os.path.dirname(__file__)
-TEST_PEP8_DIRS = [os.path.join(BASE_DIR,'booking'), ]
+TEST_PEP8_DIRS = [os.path.join(BASE_DIR,'booking','user'), ]
 
 TEST_PEP8_EXCLUDE = ['migrations', ] # Exclude this paths from tests
 TEST_PEP8_IGNORE = ['W191', ]
