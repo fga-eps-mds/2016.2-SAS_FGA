@@ -29,39 +29,18 @@ class EditUserTest(TestCase):
 		response = edit_user(request)
 		self.assertEqual(response.status_code, 200)
 
-#	def test_edit_valid_name(self):
+
+
+#	def test_edit_post_registration_number(self):
 #		request = self.factory.get('/user/edituser/')
 #		client = self.client
 #		userprofile = self.userprofile
 #		client.login(username='gutorc@hotmail.com', password='123456')
-#		'category' : 'Student', 'email' : "gutorc@hotmail.com"}
 #		parameters = {'name': 'Pedro','registration_number': '14000000', \
+#			'category' : 'Student', 'email' : "gutorc@hotmail.com"}
 #		response = client.post('/user/edituser/', parameters)
-#		print(response.content)
-#		self.assertContains(response, "Pedro")
+#		self.assertEqual('14000000', self.userprofile.registration_number)
 
-#	def test_edit_valid_registration_number(self):
-#		request = self.factory.get('/user/edituser/')
-#		new_number = "14000000"
-#		client = self.client
-#		userprofile = self.userprofile
-#		client.login(username='gutorc@hotmail.com', password='123456')
-#		parameters = {'name': 'Gustavo Rodrigues Coelho','registration_number': new_number, \
-#		'category' : 'Student', 'email' : "gutorc@hotmail.com"}
-#		response = client.post('/user/edituser/', parameters)
-#		print(response.content)
-#		self.assertContains(response, "14000000")
-
-#	def test_edit_null_registration_number(self):
-#		request = self.factory.get('/user/edituser/')
-#		client = self.client
-#		userprofile = self.userprofile
-#		client.login(username='gutorc@hotmail.com', password='123456')
-#		parameters = {'name': 'Gustavo Rodrigues Coelho','registration_number': '14000000', \
-#		'category' : 'Student', 'email' : "gutorcom"}
-#		response = client.post('/user/edituser/', parameters)
-#		print(response.content)
-#		self.assertContains(response, "Informe um endereço de email válido.")
 
 
 class ViewsTest(TestCase):
