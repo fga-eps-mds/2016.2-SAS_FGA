@@ -1,6 +1,28 @@
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from user.models import *
 from django.test import Client
+from django.contrib.auth.models import AnonymousUser
+from user.views import delete_user
+from user.factories import UserProfileFactory
+
+
+class DeleteUserTest(TestCase):
+	def setUp(self):
+		self.userprofile = UserProfile()
+		self.userprofile.name("Gustavo Rodrigues Coelho")
+		self.userprofile.registration_number = "110030559"
+		self.userprofile.category = 'Student'
+		self.userprofile.user.username = "gutorc@hotmail.com"
+		self.userprofile.user.email = "gutorc@hotmail.com"
+		self.userprofile.user.set_password('123456')
+		self.userprofile.save()
+		self.client = Client()
+		self.factory = RequestFactory()
+
+	def test_get_request_anonymous(self):
+		url = '/user/delete/'
+		response = self.client.get(url, follow = True)
+		self.assertTemplateUsed(response, 'sas/index.html')
 
 
 class ViewsTest(TestCase):
