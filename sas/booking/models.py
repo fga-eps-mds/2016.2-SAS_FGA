@@ -22,7 +22,7 @@ WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
 
 class Place(models.Model):
 	name = models.CharField(max_length=50)
-	capacity = models.CharField(max_length=250)
+	capacity = models.PositiveSmallIntegerField()
 	is_laboratory = models.BooleanField()
 	localization = models.CharField(max_length=50)
 
