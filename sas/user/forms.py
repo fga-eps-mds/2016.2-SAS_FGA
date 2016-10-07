@@ -110,19 +110,19 @@ class UserForm(ModelForm):
 
 		if not hasattr(self.instance, 'user') or self.instance.user.email != cleaned_data.get('email'):
 			if User.objects.filter(username=cleaned_data.get('email')).exists():
-				raise ValidationError(_('Email already used'))
+				raise ValidationError({'email': [_('Email already used'),]})
 
 		# Name validation
 		name = cleaned_data.get('name')
 
-		if (len(name) <= 2 or len(name) >= 50):
-			raise ValidationError(_('Name must be between 2 and 50 characters.'))
+		if (len(name) < 2 or len(name) > 50):
+			raise ValidationError({'name': [_('Name must be between 2 and 50 characters.'),]})		
 
 		if validation.hasSpecialCharacters(name):
-			raise ValidationError(_('Name cannot contain special characters.'))
+			raise ValidationError({'name': [_('Name cannot contain special characters.'),]})			
 
 		if validation.hasNumbers(name):
-			raise ValidationError(_('Name cannot contain numbers.'))
+			raise ValidationError({'name': [_('Name cannot contain numbers.'),]})			
 
 		return cleaned_data
 
@@ -146,7 +146,8 @@ class NewUserForm(UserForm):
 		password1 = cleaned_data.get('password')
 		password2 = cleaned_data.get('repeat_password')
 
-		if len(password1) < 6 or len(password1) > 15  :
-			raise ValidationError(_('Password must be between 6 and 15 characters.'))
+		if len(password1) < 6 or len(password1) > 15 :
+			raise ValidationError({'password': [_('Password must be between 6 and 15 characters.'),]})			
+		
 		if password1 and password2 and password1 != password2:
-			raise ValidationError(_('Passwords do not match.'))
+			raise ValidationError({'repeat_password': [_('Passwords do not match.'),]})			
