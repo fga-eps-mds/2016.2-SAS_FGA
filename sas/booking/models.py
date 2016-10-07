@@ -13,6 +13,9 @@ WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
 class Building(models.Model):
 	name = models.CharField(max_length=200)
 
+	def __str__(self):
+		return self.name
+
 class Place(models.Model):
 	name = models.CharField(max_length=200)
 	capacity = models.PositiveSmallIntegerField()
@@ -60,12 +63,13 @@ class Booking(models.Model):
 
 	def exists(self, start_hour, end_hour, week_days):
 		str_weekdays = []
+		if not week_days:
+			return True
 		for day in week_days:
 				new_day = int(day) + 1 % 6
 				str_weekdays.append("'" + str(new_day) + "'")
 
 		str_weekdays = ",".join(str_weekdays)
-		print(str_weekdays)
 		sql = """select count(*) from booking_booking_time bbt
 			   inner join booking_booktime bt on bbt.booktime_id = bt.id
 			   inner join booking_booking bb on bbt.booking_id = bb.id
