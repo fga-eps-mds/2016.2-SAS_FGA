@@ -6,15 +6,6 @@ from datetime import datetime, timedelta
 import copy
 from django.db import connection
 
-BUILDINGS = (('', '----'), ('1', 'UAC'), ('2', 'UED'))
-
-# TODO: Select spaces according to building selected
-SPACES = (('', '----'), ('1', 'I1'), ('2', 'I2'), ('3', 'I3'), ('4', 'I4'),
-			('7', 'I5'), ('8', 'I6'), ('9', 'I7'), ('10', 'I8'), ('11', 'I9'),
-			('12', 'I10'), ('13', 'S1'), ('14', 'S2'), ('15', 'S3'),
-			('16', 'S4'), ('17', 'S5'), ('18', 'S6'), ('19', 'S7'),
-			('20', 'S8'), ('21', 'S9'), ('22', 'S10'))
-
 WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
 			('3', _("Thursday")), ('4', _("Friday")), ('5', _("Saturday")),
 			('6', _("Sunday")))
@@ -90,7 +81,6 @@ class Booking(models.Model):
 		with connection.cursor() as cursor:
 			cursor.execute(sql)
 			row = cursor.fetchone()
-		print("Row", row)
 		if row[0] > 0:
 			return True
 		else:

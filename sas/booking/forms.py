@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext as _
 from django.forms import ModelForm
-from .models import Booking, BookTime, Place
-from .models import SPACES, BUILDINGS, WEEKDAYS
+from .models import Booking, BookTime, Place, Building
+from .models import WEEKDAYS
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
@@ -26,21 +26,21 @@ class BookingForm(forms.Form):
 	end_date = forms.DateField(
 		label=_('End Date:'),
 		widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
-	building = forms.ModelChoiceField(queryset=Place.objects.values_list('building', flat=True).distinct(), label=_('Building:'))
+	building = forms.ModelChoiceField(
+		queryset=Building.objects.values_list('name', flat=True).distinct(),
+		label=_('Building:'))
 	place = forms.ModelChoiceField(queryset=Place.objects, label=_('Place:'))
 	week_days = forms.MultipleChoiceField(label=_("Days of week: "),
 						required=False, choices=WEEKDAYS,
 						widget=forms.CheckboxSelectMultiple())
 
 	def save(self, user, force_insert=False, force_update=False, commit=True):
-		spaces = dict(SPACES)
 		booking = Booking()
 		booking.user = user
 		booking.name = self.cleaned_data.get("name")
 		booking.start_date = self.cleaned_data.get("start_date")
 		booking.end_date = self.cleaned_data.get("end_date")
-		booking.place = Place()
-		booking.place.name = spaces[self.cleaned_data.get("place")]
+		booking.place = Building.objects.get(cleaned_data.get("building"))
 		weekdays = self.cleaned_data.get("week_days")
 		book = BookTime()
 		book.date_booking = booking.start_date
