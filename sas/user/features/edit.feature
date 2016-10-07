@@ -3,6 +3,14 @@ Feature: EditUser
 Background:
 	Given I register the user "lucas@gmail.com" with the password "123456"
 
+Scenario: Invalid email
+	When I login in with email "lucas@gmail.com" and password "123456"
+	Then I visit site page "/user/edituser/"
+	And I fill in "Email" with "pedro"
+	And I select "Student" from "Category"
+	And I press "Save Data"
+	Then I should see "Informe um endereço de email válido."
+
 Scenario: User registered
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
