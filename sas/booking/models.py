@@ -21,22 +21,12 @@ WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
 			('3', _("Thursday")), ('4', _("Friday")), ('5', _("Saturday")),
 			('6', _("Sunday")))
 
-class Building(models.Model):
-	name = models.CharField(max_length=200)
 
 class Place(models.Model):
-	building = models.ForeignKey(Building, related_name='building')
-	name = models.CharField(max_length=200)
-	location = models.CharField(max_length=50)
-	capacity = models.CharField(max_length=200)
-	place_id = models.CharField(max_length=200)
-	is_laboratory = models.BooleanField(default=False)
-
-	def __str__(self):
-		return self.name
-
-	def get_buildings(self):
-		return self.objects.values_list('building', flat=True)
+	name = models.CharField(max_length=50)
+	capacity = models.CharField(max_length=250)
+	is_laboratory = models.BooleanField()
+	localization = models.CharField(max_length=50)
 
 
 class BookTime(models.Model):
