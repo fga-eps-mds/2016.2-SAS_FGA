@@ -68,8 +68,9 @@ def login_user(request):
 
 
 def logout_user(request):
-	logout(request)
-	messages.success(request, _('You have been logged out sucessfully!'))
+	if hasattr(request, 'user') and isinstance(request.user, User):
+		logout(request)
+		messages.success(request, _('You have been logged out successfully!'))
 	return index(request)
 
 

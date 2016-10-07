@@ -85,3 +85,8 @@ class LogoutTest(TestCase):
 		response = self.client.get('/user/logout/')
 		self.assertEqual(response.status_code, 200)
 		self.assertContains(response, 'You have been logged out sucessfully!')
+
+	def test_invalid_logout(self):
+		response = self.client.get('/user/logout/')
+		self.assertEqual(response.status_code, 200)
+		self.assertNotContains(response, 'You have been logged out sucessfully!')
