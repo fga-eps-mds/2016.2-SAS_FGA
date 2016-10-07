@@ -5,7 +5,6 @@ from django.contrib.auth.models import AnonymousUser
 from user.views import edit_user
 from user.factories import UserProfileFactory
 
-
 class EditUserTest(TestCase):
 	def setUp(self):
 		self.userprofile = UserProfile()
@@ -42,7 +41,6 @@ class EditUserTest(TestCase):
 		response = client.post('/user/edituser/', parameters)
 		self.userprofile.refresh_from_db()
 		self.assertEqual('14000000', self.userprofile.registration_number)
-
 
 
 class ViewsTest(TestCase):
