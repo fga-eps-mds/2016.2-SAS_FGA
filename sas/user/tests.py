@@ -18,11 +18,26 @@ class DeleteUserTest(TestCase):
 		self.userprofile.save()
 		self.client = Client()
 		self.factory = RequestFactory()
+		self.url = '/user/delete/'
+
+	def test_get_request_logged(self):
+		client = self.client
+		client.login(username='gutorc@hotmail.com', password='123456')
+		response = self.client.get(self.url, follow = True)
+		self.assertTemplateUsed(response, 'sas/index.html')
+		self.assertEqual(response.status_code, 200)
+
 
 	def test_get_request_anonymous(self):
-		url = '/user/delete/'
-		response = self.client.get(url, follow = True)
+		response = self.client.get(self.url, follow = True)
 		self.assertTemplateUsed(response, 'sas/index.html')
+		self.assertEqual(response.status_code, 200)
+
+	def test_delete_user(self):
+		client = self.client
+		client.login(username='gutorc@hotmail.com', password='123456')
+		response = self.client.get(self.url, follow = True)
+		self.assertRaises(self.userprofile, None)
 
 
 class ViewsTest(TestCase):
