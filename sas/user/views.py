@@ -78,9 +78,7 @@ def delete_user(request):
 	if request.user.is_authenticated():
 		request.user.delete()
 		logout(request)
-		return index(request)
-	else:
-		return index(request)
+	return redirect('index')
 
 
 def change_password(request):

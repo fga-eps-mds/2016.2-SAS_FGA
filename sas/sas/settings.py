@@ -131,6 +131,8 @@ LOCALE_PATHS = (
 
 STATIC_ROOT = 'static/'
 
+STATIC_ROOT = 'static'
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = ( os.path.join(BASE_DIR, "sas/static"), )
@@ -144,7 +146,8 @@ NOSE_ARGS = [
 ]
 
 PROJECT_DIR = os.path.dirname(__file__)
-TEST_PEP8_DIRS = [os.path.join(BASE_DIR,'booking'), os.path.join(BASE_DIR,'user')]
+
+TEST_PEP8_DIRS = [os.path.join(BASE_DIR,'booking'), os.path.join(BASE_DIR,'user'), ]
 
 TEST_PEP8_EXCLUDE = ['migrations', ] # Exclude this paths from tests
 TEST_PEP8_IGNORE = ['W191', ]
