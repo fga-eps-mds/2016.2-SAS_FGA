@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _, ugettext as __
 from django.db import models
+from django.core.exceptions import ValidationError
 
 CATEGORY = (('', '----'), ('1', _('Student')), ('2', _('Teaching Staff')), ('3', _('Employees')))
 
 class UserProfile(models.Model):
-	registration_number = models.CharField(max_length=20)
+	registration_number = models.CharField(max_length=20, unique=True, error_messages={'unique':_('Registration Number already used.')})
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile_user")
 	category = models.CharField(choices=CATEGORY, max_length=20)
 
@@ -27,13 +28,13 @@ class UserProfile(models.Model):
 		registration_number = self.registration_number
 
 		if (len(registration_number) != 9):
-			raise ValidationError(_('Registration number must have 9 digits.'))
+			raise ValidationError({'registration_number': [_('Registration number must have 9 digits.'),]})
 
 		if validation.hasLetters(registration_number):
-			raise ValidationError(_('Registration number cannot contain letters.'))
+			raise ValidationError({'registration_number': [_('Registration number cannot contain letters.'),]})
 
 		if validation.hasSpecialCharacters(registration_number):
-			raise ValidationError(_('Registration number cannot contain special characters.'))
+			raise ValidationError({'registration_number': [_('Registration number cannot contain special characters.'),]})
 
 	def save(self, *args, **kwargs):
 		self.user.save()

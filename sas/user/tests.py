@@ -1,5 +1,5 @@
 from django.test import TestCase, RequestFactory
-from user.models import *
+from user.models import UserProfile, Validation, CATEGORY
 from django.test import Client
 from django.contrib.auth.models import AnonymousUser
 from user.views import delete_user, edit_user
@@ -111,7 +111,6 @@ class UserProfileTest(TestCase):
     def test_category(self):
         self.assertEqual(len(CATEGORY), 4)
 
-
     def test_save(self):
         self.userprofile.name("Gustavo Rodrigues Coelho")
         self.userprofile.registration_number = "11/0030559"
@@ -164,15 +163,6 @@ class ValidationTest(TestCase):
 
     def test_has_special_characters_none(self):
         self.assertEqual(self.validation.hasSpecialCharacters(None), False)
-
-    def test_save(self):
-        self.userprofile = UserProfile()
-        self.userprofile.name("Gustavo Rodrigues Coelho")
-        self.userprofile.registration_number = "11/0030559"
-        self.userprofile.user.username = "gutorc@hotmail.com"
-        self.userprofile.user.email = "gutorc@hotmail.com"
-        self.userprofile.save()
-        self.assertEqual(self.userprofile.pk, 1)
 
 class LoginTest(TestCase):
     def setUp(self):

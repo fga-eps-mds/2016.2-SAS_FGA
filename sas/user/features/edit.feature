@@ -1,7 +1,7 @@
 Feature: EditUser
 
 Background:
-	Given I register the user "lucas@gmail.com" with the password "123456"
+	Given I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574"
 
 Scenario: Invalid email
 	When I login in with email "lucas@gmail.com" and password "123456"
@@ -9,7 +9,7 @@ Scenario: Invalid email
 	And I fill in "Email" with "pedro"
 	And I select "Student" from "Category"
 	And I press "Save Data"
-	Then I should see "Enter a valid email address."
+	Then I should see "Email address must be in a valid format."
 
 Scenario: User registered
 	When I login in with email "lucas@gmail.com" and password "123456"
@@ -26,7 +26,6 @@ Scenario: User empties email
 	And I press "Save Data"
 	Then I should see an alert with text "Please fill out this field."
 
-
 Scenario: User empties name
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
@@ -34,15 +33,12 @@ Scenario: User empties name
 	And I press "Save Data"
 	Then I should see an alert with text "Please fill out this field."
 
-
 Scenario: User empties registration number
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
 	And I fill in "Registration number" with ""
 	And I press "Save Data"
 	Then I should see an alert with text "Please fill out this field."
-
-
 
 Scenario: User empties category
 	When I login in with email "lucas@gmail.com" and password "123456"
@@ -52,10 +48,10 @@ Scenario: User empties category
 	Then I should see an alert with text "Please select an item on the list."
 
 Scenario: Duplicated email
-	When I register the user "pedrot@gmail.com" with the password "123456"
+	When I register the user "pedro@gmail.com" with the password "123456" and registration number "150016572"
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
-	And I fill in "Email" with "pedrot@gmail.com"
+	And I fill in "Email" with "pedro@gmail.com"
 	And I select "Student" from "Category"
 	And I press "Save Data"
 	Then I should see "Email already used"
@@ -69,7 +65,7 @@ Scenario: Actual password wrong
 	And I type in "asdfgh" to "New Password"
 	And I type in "asdfgh" to id "renew_password"
 	And I press "Change Password"
-	Then I should see "Password is wrong"
+	Then I should see "Current password is wrong"
 
 Scenario: Change password successfully
 	When I login in with email "lucas@gmail.com" and password "123456"

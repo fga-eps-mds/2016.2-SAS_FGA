@@ -1,7 +1,7 @@
 Feature: Delete
 
 Background:
-  Given I register the user "lucas@gmail.com" with the password "123456"
+  Given I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574"
 
 Scenario: Test
 	When I login in with email "lucas@gmail.com" and password "123456"

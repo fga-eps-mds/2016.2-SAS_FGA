@@ -5,7 +5,9 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 import copy
 from django.db import connection
+from django.core.exceptions import ValidationError
 
+CATEGORY = (('', '----'), ('1', _('Student')), ('2', _('Teaching Staff')), ('3', _('Employees')))
 BUILDINGS = (('', '----'), ('1', 'UAC'), ('2', 'UED'))
 
 # TODO: Select spaces according to building selected
@@ -19,12 +21,22 @@ WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
 			('3', _("Thursday")), ('4', _("Friday")), ('5', _("Saturday")),
 			('6', _("Sunday")))
 
+class Building(models.Model):
+	name = models.CharField(max_length=200)
 
 class Place(models.Model):
-	name = models.CharField(max_length=50)
-	capacity = models.CharField(max_length=250)
-	is_laboratory = models.BooleanField()
-	localization = models.CharField(max_length=50)
+	building = models.ForeignKey(Building, related_name='building')
+	name = models.CharField(max_length=200)
+	location = models.CharField(max_length=50)
+	capacity = models.CharField(max_length=200)
+	place_id = models.CharField(max_length=200)
+	is_laboratory = models.BooleanField(default=False)
+
+	def __str__(self):
+		return self.name
+
+	def get_buildings(self):
+		return self.objects.values_list('building', flat=True)
 
 
 class BookTime(models.Model):
@@ -94,3 +106,18 @@ class Booking(models.Model):
 			self.place.save()
 			self.place_id = self.place.pk
 		super(Booking, self).save(*args, **kwargs)
+
+class Validation():
+
+	def hasNumbers(self, string):
+		if any(char.isdigit() for char in string):
+			return True
+
+	def hasLetters(self, number):
+		if any(char.isalpha() for char in number):
+			return True
+
+	def hasSpecialCharacters(self, string):
+		for character in '@#$%^&+=/\{[]()}-_+=*!§|':
+			if character in string:
+				return True

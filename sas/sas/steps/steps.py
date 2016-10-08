@@ -41,11 +41,11 @@ def click_on_element_by_value(step, value, typeelement):
 	text.click()
 
 
-@step(r'I register the user "(.*)" with the password "(.*)"')
-def register_user(step, username, password):
+@step(r'I register the user "(.*)" with the password "(.*)" and registration number "(.*)"')
+def register_user(step, username, password,registration_number):
 	user = UserProfile()
-	user.user = User()
-	user.registration_number = "140016574"
+	user.user = User()				
+	user.registration_number = registration_number	
 	user.user.email = username
 	user.user.username = username
 	user.user.first_name = "Usuário"
@@ -55,7 +55,7 @@ def register_user(step, username, password):
 
 @step(r'I login in with email "(.*)" and password "(.*)"')
 def login_user(step, email, password):
-	step.given("I visit site page \"/gustavo\"")
+	step.given("I visit site page \"/\"")
 	c = Client()
 	response = c.login(username=email, password=password)
 	cookies = {}
