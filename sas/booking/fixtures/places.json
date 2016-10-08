@@ -3,7 +3,7 @@
     "model": "booking.place",
     "pk": 1,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-I1",
       "location": "AT-49/41",
       "capacity": 45,
@@ -15,7 +15,7 @@
     "model": "booking.place",
     "pk": 2,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-I2",
       "location": "AT-42-48",
       "capacity": 60,
@@ -27,7 +27,7 @@
     "model": "booking.place",
     "pk": 3,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-I3",
       "location": "AT-39/48",
       "capacity": 60,
@@ -39,7 +39,7 @@
     "model": "booking.place",
     "pk": 4,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-I4",
       "location": "AT-32/41",
       "capacity": 45,
@@ -51,7 +51,7 @@
     "model": "booking.place",
     "pk": 5,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-I5",
       "location": "AT-29/41",
       "capacity": 45,
@@ -63,7 +63,7 @@
     "model": "booking.place",
     "pk": 6,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-I6",
       "location": "AT-22/48",
       "capacity": 40,
@@ -75,7 +75,7 @@
     "model": "booking.place",
     "pk": 7,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-I7",
       "location": "AT-19/48",
       "capacity": 40,
@@ -87,7 +87,7 @@
     "model": "booking.place",
     "pk": 8,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-I8",
       "location": "AT-12/41",
       "capacity": 45,
@@ -99,7 +99,7 @@
     "model": "booking.place",
     "pk": 9,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-I9",
       "location": "AT-09/41",
       "capacity": 130,
@@ -111,7 +111,7 @@
     "model": "booking.place",
     "pk": 10,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-I10",
       "location": "AT-09/23",
       "capacity": 80,
@@ -123,7 +123,7 @@
     "model": "booking.place",
     "pk": 11,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-S1",
       "location": "A1-62/41",
       "capacity": 130,
@@ -135,7 +135,7 @@
     "model": "booking.place",
     "pk": 12,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-S2",
       "location": "A1-59/41",
       "capacity": 130,
@@ -147,7 +147,7 @@
     "model": "booking.place",
     "pk": 13,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-S3",
       "location": "A1-42/41",
       "capacity": 130,
@@ -159,7 +159,7 @@
     "model": "booking.place",
     "pk": 14,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-S4",
       "location": "A1-32/41",
       "capacity": 130,
@@ -171,7 +171,7 @@
     "model": "booking.place",
     "pk": 15,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-S5",
       "location": "A1-29/41",
       "capacity": 45,
@@ -183,7 +183,7 @@
     "model": "booking.place",
     "pk": 16,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-S6",
       "location": "A1-22/48",
       "capacity": 60,
@@ -195,7 +195,7 @@
     "model": "booking.place",
     "pk": 17,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-S7",
       "location": "A1-19/48",
       "capacity": 60,
@@ -207,7 +207,7 @@
     "model": "booking.place",
     "pk": 18,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-S8",
       "location": "A1-12/41",
       "capacity": 45,
@@ -219,7 +219,7 @@
     "model": "booking.place",
     "pk": 19,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-S9",
       "location": "A1-09/41",
       "capacity": 130,
@@ -231,7 +231,7 @@
     "model": "booking.place",
     "pk": 20,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-S10",
       "location": "A1-09/23",
       "capacity": 80,
@@ -243,7 +243,7 @@
     "model": "booking.place",
     "pk": 21,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-Antessala I10",
       "location": "Antessala-I10",
       "capacity": 7,
@@ -255,7 +255,7 @@
     "model": "booking.place",
     "pk": 22,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-Sala_Multiuso",
       "location": "Sala_Multiuso",
       "capacity": 15,
@@ -267,7 +267,7 @@
     "model": "booking.place",
     "pk": 23,
     "fields": {
-      "building": "UAC",
+      "building": 1,
       "name": "FGA-Sala04",
       "location": "Sala04",
       "capacity": 250,
@@ -279,7 +279,7 @@
     "model": "booking.place",
     "pk": 24,
     "fields": {
-      "building": "UED",
+      "building": 2,
       "name": "FGA-LAB_QUIMICA",
       "location": "LAB_QUIMICA",
       "capacity": 25,
@@ -291,7 +291,7 @@
     "model": "booking.place",
     "pk": 25,
     "fields": {
-      "building": "UED",
+      "building": 2,
       "name": "FGA-LAB_FISICA",
       "location": "LAB_FISICA",
       "capacity": 25,
@@ -303,7 +303,7 @@
     "model": "booking.place",
     "pk": 26,
     "fields": {
-      "building": "UED",
+      "building": 2,
       "name": "FGA-LAB_FIS_MOD",
       "location": "LAB_FISICA_MODERNA",
       "capacity": 25,
@@ -315,7 +315,7 @@
     "model": "booking.place",
     "pk": 27,
     "fields": {
-      "building": "GALPÃO",
+      "building": 4,
       "name": "FGA-GALPÃO",
       "location": "GALPÃO",
       "capacity": 45,
@@ -327,7 +327,7 @@
     "model": "booking.place",
     "pk": 28,
     "fields": {
-      "building": "UED",
+      "building": 2,
       "name": "FGA-LAB_NEI",
       "location": "LAB_NEI",
       "capacity": 25,
@@ -339,7 +339,7 @@
     "model": "booking.place",
     "pk": 29,
     "fields": {
-      "building": "UED",
+      "building": 2,
       "name": "FGA-LAB_SS",
       "location": "LAB_SS",
       "capacity": 50,
@@ -351,7 +351,7 @@
     "model": "booking.place",
     "pk": 30,
     "fields": {
-      "building": "UED",
+      "building": 2,
       "name": "FGA-LAB_ELETRICIDADE",
       "location": "LAB_ELETRICIDADE",
       "capacity": 25,
@@ -363,7 +363,7 @@
     "model": "booking.place",
     "pk": 31,
     "fields": {
-      "building": "UED",
+      "building": 2,
       "name": "FGA-LAB_TERMOFLUIDOS",
       "location": "LAB_TERMOFLUIDOS",
       "capacity": 25,
@@ -375,7 +375,7 @@
     "model": "booking.place",
     "pk": 32,
     "fields": {
-      "building": "UED",
+      "building": 2,
       "name": "FGA-LAB_MATERIAIS",
       "location": "LAB_MATERIAIS",
       "capacity": 25,
@@ -387,7 +387,7 @@
     "model": "booking.place",
     "pk": 33,
     "fields": {
-      "building": "UED",
+      "building": 2,
       "name": "FGA-LAB_MOCAP",
       "location": "LAB_MOCAP",
       "capacity": 50,
@@ -399,7 +399,7 @@
     "model": "booking.place",
     "pk": 34,
     "fields": {
-      "building": "FÓRUM",
+      "building": 3,
       "name": "FGA-Fórum",
       "location": "LAB_FORUM",
       "capacity": 30,
