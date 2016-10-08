@@ -55,22 +55,20 @@ class BookingForm(forms.Form):
 			if booking.exists(book.start_hour, book.end_hour, weekdays):
 				return None
 			else:
-				print("inicio "+str(book.date_booking))
-				print("fim "+str(booking.end_date))
-				print(date_range(book.date_booking, booking.end_date))
 				for day in date_range(book.date_booking, booking.end_date):
-					for days in weekdays:
-						book.next_week_day(int(days))
-						newobj = copy.deepcopy(book)
-						newobj.save()
-						booking.time.add(newobj)
+					if(day.isoweekday()-1 in map(int, weekdays)):
+						newBookTime = BookTime(start_hour=book.start_hour,
+										end_hour=book.end_hour,
+										date_booking=day)
+						newBookTime.save()
+						booking.time.add(newBookTime)
 				booking.save()
 		except Exception as e:
 			booking.delete()
-			booking = None
 			msg = _('Failed to book selected period')
 			print(e)
 			raise forms.ValidationError(msg)
+			return None
 		return booking
 		# do custom stuff
 

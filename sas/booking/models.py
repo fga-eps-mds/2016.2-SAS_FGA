@@ -41,30 +41,26 @@ class BookTime(models.Model):
 	end_hour = models.TimeField(null=False, blank=False)
 	date_booking = models.DateField(null=False, blank=False)
 
-	def add_days(self, nr_days):
-		delta = timedelta(days=nr_days)
-		self.date_booking = self.date_booking + delta
-
-	def next_week_day(self, nr_weekday):
-		diff_of_weekdays = self.date_booking.weekday() - nr_weekday
-		if diff_of_weekdays > 0:
-			self.add_days(7 - diff_of_weekdays)
-		elif diff_of_weekdays < 0:
-			self.add_days(diff_of_weekdays * (-1))
-		else:
-			self.add_days(7)
-
 	def get_str_weekday(self):
 		return self.date_booking.strftime("%A")
 
+	def __str__(self):
+		return (str(self.date_booking)+" | "+
+				str(self.start_hour)+" - "+str(self.end_hour))
+
 
 class Booking(models.Model):
-	user = models.ForeignKey(User, related_name="bookings", on_delete=models.CASCADE)
+	user = models.ForeignKey(User, related_name="bookings",
+							on_delete=models.CASCADE)
 	time = models.ManyToManyField(BookTime, related_name="booking_time")
 	place = models.ForeignKey(Place, related_name="booking_place")
 	name = models.CharField(max_length=50)
 	start_date = models.DateField(null=False, blank=False)
 	end_date = models.DateField(null=False, blank=False)
+
+	def __str__(self):
+		return ( (self.user.email)+" | "+ str(self.place) +
+				" - "+str(self.start_date) + " - " +str(self.end_date))
 
 	def exists(self, start_hour, end_hour, week_days):
 		str_weekdays = []
@@ -79,10 +75,14 @@ class Booking(models.Model):
 			   inner join booking_booktime bt on bbt.booktime_id = bt.id
 			   inner join booking_booking bb on bbt.booking_id = bb.id
 			   inner join booking_place bp on bb.place_id = bp.id"""
-		sql += " where bt.date_booking >= date('" + self.start_date.strftime("%Y-%m-%d") + "')"
-		sql += " and bt.date_booking <= date('" + self.end_date.strftime("%Y-%m-%d") + "')"
-		sql += " and bt.start_hour <= time('" + start_hour.strftime("%H:%M:%S") + "')"
-		sql += " and bt.end_hour >= time('" + end_hour.strftime("%H:%M:%S") + "')"
+		sql += " where bt.date_booking >= date('" + (
+					self.start_date.strftime("%Y-%m-%d") + "')")
+		sql += " and bt.date_booking <= date('" + (
+					self.end_date.strftime("%Y-%m-%d") + "')")
+		sql += " and bt.start_hour <= time('" + (
+					start_hour.strftime("%H:%M:%S") + "')")
+		sql += " and bt.end_hour >= time('" + (
+					end_hour.strftime("%H:%M:%S") + "')")
 		sql += " and strftime('%w',bt.date_booking) IN (" + str_weekdays + ")"
 		sql += " and bp.id = '" + str(self.place.pk) + "'"
 
@@ -120,4 +120,5 @@ class Validation():
 				return True
 
 def date_range(start_date, end_date):
-	return [start_date + timedelta(days=x) for x in range(0, (end_date-start_date ).days+1)]
+	return [start_date +
+			timedelta(days=x) for x in range(0, (end_date-start_date ).days+1)]
