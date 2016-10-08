@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'pt-BR'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'America/Sao_Paulo'
 
@@ -129,25 +129,25 @@ LOCALE_PATHS = (
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 
+STATIC_ROOT = 'static/'
 
 STATIC_ROOT = 'static'
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    os.path.join('sas/static'),
-)
+STATICFILES_DIRS = ( os.path.join(BASE_DIR, "sas/static"), )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # Tell nose to measure coverage on the 'foo' and 'bar' apps
 NOSE_ARGS = [
     '--with-coverage',
-	'--cover-package=sas,booking',
+	'--cover-package=sas,booking,user',
 ]
 
 PROJECT_DIR = os.path.dirname(__file__)
-TEST_PEP8_DIRS = [os.path.join(BASE_DIR,'booking'), ]
+
+TEST_PEP8_DIRS = [os.path.join(BASE_DIR,'booking'), os.path.join(BASE_DIR,'user'), ]
 
 TEST_PEP8_EXCLUDE = ['migrations', ] # Exclude this paths from tests
 TEST_PEP8_IGNORE = ['W191', ]
