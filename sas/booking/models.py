@@ -3,8 +3,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import datetime, timedelta
-import copy
 from django.db import connection
+from datetime import datetime, timedelta
+import copy
+
 
 WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
 			('3', _("Thursday")), ('4', _("Friday")), ('5', _("Saturday")),
@@ -98,3 +100,6 @@ class Booking(models.Model):
 			self.place.save()
 			self.place_id = self.place.pk
 		super(Booking, self).save(*args, **kwargs)
+
+def date_range(start_date, end_date):
+	return [start_date + timedelta(days=x) for x in range(0, (end_date-start_date ).days+1)]
