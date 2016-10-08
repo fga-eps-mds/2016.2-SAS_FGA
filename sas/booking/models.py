@@ -3,11 +3,13 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import datetime, timedelta
-import copy
 from django.db import connection
 from django.core.exceptions import ValidationError
+from datetime import datetime, timedelta
+import copy
 
 CATEGORY = (('', '----'), ('1', _('Student')), ('2', _('Teaching Staff')), ('3', _('Employees')))
+
 
 WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
 			('3', _("Thursday")), ('4', _("Friday")), ('5', _("Saturday")),
@@ -116,3 +118,6 @@ class Validation():
 		for character in '@#$%^&+=/\{[]()}-_+=*!§|':
 			if character in string:
 				return True
+
+def date_range(start_date, end_date):
+	return [start_date + timedelta(days=x) for x in range(0, (end_date-start_date ).days+1)]
