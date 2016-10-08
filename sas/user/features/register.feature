@@ -29,7 +29,7 @@ Scenario: Repeated Email
   And I fill in "Name" with "Pedro Pereira Pinto"
   And I fill in "Email" with "test123@gmail.com"
   And I type in "teste123" to "Password"
-  And I type in "teste123" to "Repeat Password" 
+  And I type in "teste123" to "Repeat Password"
   Then I press "Register"
   Then I should see "Email already used"
 
@@ -66,7 +66,7 @@ Scenario: User Informed an Invalid Email
   And I type in "teste123" to "Password"
   And I type in "teste123" to "Repeat Password"
   Then I press "Register"
-  Then I should see an alert with text "Invalid Email, user was not registered"
+  Then I should see an alert with text "Email address must be in a valid format."
 
 Scenario: User do not Inform Password
   When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
@@ -101,4 +101,126 @@ Scenario: User Informs Different Password and Repeat Password fields
   And I type in "123teste" to "Repeat Password"
   Then I press "Register"
   Then I should see an alert with text "Password and Repeat Password fields dont match"
+
+Scenario: User informs a name with number
+  When I visit site page "/user/newuser"
+  And I type in "120030559" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto 1"
+  And I fill in "Email" with "pedropp@gmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Name cannot contain numbers."
+
+Scenario: User informs a name with special characters
+  When I visit site page "/user/newuser"
+  And I type in "120030559" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto #"
+  And I fill in "Email" with "pedropp@gmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Name cannot contain special characters."
+
+Scenario: User informs a name with size smaller than two characters
+  When I visit site page "/user/newuser"
+  And I type in "120030559" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "P"
+  And I fill in "Email" with "pedropp@gmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Name must be between 2 and 50 characters."
+
+Scenario: User informs a name with size bigger than fifth characters
+  When I visit site page "/user/newuser"
+  And I type in "120030559" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "PedroPedro PedroPedro PedroPedro PedroPedro PedroPedro PedroPedro"
+  And I fill in "Email" with "pedropp@gmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Name must be between 2 and 50 characters."
+
+Scenario: User informs a registration number with size bigger than nine digits
+  When I visit site page "/user/newuser"
+  And I type in "1200305591" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "pedropp@gmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Registration number must have 9 digits."
+
+Scenario: User informs a registration number with size smaller than nine digits
+  When I visit site page "/user/newuser"
+  And I type in "12003055" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "pedropp@gmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Registration number must have 9 digits."
+
+Scenario: User informs a registration number with letters
+  When I visit site page "/user/newuser"
+  And I type in "12003055a" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "pedropp@gmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Registration number cannot contain letters."
+
+Scenario: User informs a registration number with special characters
+  When I visit site page "/user/newuser"
+  And I type in "12003055#" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "pedropp@gmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Registration number cannot contain special characters."
+
+Scenario: User informs a wrong email address
+  When I visit site page "/user/newuser"
+  And I type in "120030551" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "pedroppgmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Informe um endereço de email válido."
+
+Scenario: User informs a password with size smaller than six characters
+  When I visit site page "/user/newuser"
+  And I type in "120030551" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "pedroppgmail.com"
+  And I type in "teste" to "Password"
+  And I type in "teste" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Password must be between 6 and 15 characters."
+
+Scenario: User informs a password with size bigger than fifteen characters
+  When I visit site page "/user/newuser"
+  And I type in "120030551" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "pedroppgmail.com"
+  And I type in "teste12345678901" to "Password"
+  And I type in "teste12345678901" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Password must be between 6 and 15 characters."
+
 

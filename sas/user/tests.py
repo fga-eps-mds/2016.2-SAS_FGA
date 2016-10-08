@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login, logout
 
+
 class EditUserTest(TestCase):
     def setUp(self):
         self.userprofile = UserProfile()
@@ -111,6 +112,25 @@ class UserProfileTest(TestCase):
     def test_category(self):
         self.assertEqual(len(CATEGORY), 4)
 
+    def test_registration_number(self):
+        registration_number = "123456789"
+        self.userprofile.registration_number = registration_number
+        registration_size = len(registration_number)
+        profile_registration_size = len(self.userprofile.registration_number)
+        self.assertEqual(profile_registration_size, registration_size)
+
+    def test_registration_number_bigger(self):
+        registration_number = "0123456789"
+        self.userprofile.registration_number = registration_number
+        registration_size = len(registration_number)
+        self.assertGreater(registration_size, 9)
+
+    def test_registration_number_smaller(self):
+        registration_number = "01234567"
+        self.userprofile.registration_number = registration_number
+        registration_size = len(registration_number)
+        self.assertLess(registration_size, 9)
+
     def test_save(self):
         self.userprofile.name("Gustavo Rodrigues Coelho")
         self.userprofile.registration_number = "11/0030559"
@@ -164,6 +184,7 @@ class ValidationTest(TestCase):
     def test_has_special_characters_none(self):
         self.assertEqual(self.validation.hasSpecialCharacters(None), False)
 
+
 class LoginTest(TestCase):
     def setUp(self):
         self.user = UserProfileFactory.create()
@@ -191,6 +212,7 @@ class LoginTest(TestCase):
         response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1234567'})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Hi, %s' % (self.user.full_name()))
+
 
 class LogoutTest(TestCase):
     def setUp(self):

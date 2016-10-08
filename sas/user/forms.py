@@ -4,7 +4,6 @@ from .models import UserProfile, Validation
 from .models import CATEGORY
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 
@@ -53,6 +52,7 @@ class PasswordForm(ModelForm):
         user = authenticate(username=username, password=password)
         if user is None:
             self.add_error('password', _('Current password is wrong'))
+
             return False
         return True
 
@@ -76,6 +76,7 @@ class UserForm(ModelForm):
         label=_('Email:'),
         widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}),
         error_messages= {'invalid': _('Email address must be in a valid format.')})
+
     password = forms.CharField(
         label=_('Password:'),
         required=False,
@@ -91,6 +92,7 @@ class UserForm(ModelForm):
 
     def save(self, force_insert=False, force_update=False, commit=True, is_edit_form=False):
         userprofile = super(UserForm, self).save(commit=False)
+
         # if it is a new user
         if not hasattr(userprofile, 'user'):
             userprofile.user = User()
@@ -132,8 +134,8 @@ class UserForm(ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ['name', 'registration_number', 'category', 'email',
-                                                'password', 'repeat_password']
+        fields = ['name', 'registration_number', 'category', 'email', 'password', 'repeat_password']
+
 
 
 class EditUserForm(UserForm):
@@ -150,8 +152,8 @@ class NewUserForm(UserForm):
         password1 = cleaned_data.get('password')
         password2 = cleaned_data.get('repeat_password')
 
-        if len(password1) < 6 or len(password1) > 15 :
-            raise ValidationError({'password': [_('Password must be between 6 and 15 characters.'),]})
+        if len(password1) < 6 or len(password1) > 15:
+            raise ValidationError({'password': [_('Password must be between 6 and 15 characters.'), ]})
 
         if password1 and password2 and password1 != password2:
-            raise ValidationError({'repeat_password': [_('Passwords do not match.'),]})
+            raise ValidationError({'repeat_password': [_('Passwords do not match.'), ]})
