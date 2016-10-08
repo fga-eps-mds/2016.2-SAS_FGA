@@ -3,7 +3,8 @@ from user.models import *
 from django.test import Client
 from django.contrib.auth.models import AnonymousUser
 from user.views import edit_user
-from user.factories import UserProfileFactory
+from user.factories import UserFactory, UserProfileFactory
+from django.contrib.auth import authenticate, login, logout
 
 class EditUserTest(TestCase):
 	def setUp(self):
@@ -82,3 +83,51 @@ class UserProfileTest(TestCase):
 		self.userprofile.user.email = "gutorc@hotmail.com"
 		self.userprofile.save()
 		self.assertEqual(self.userprofile.pk, 1)
+
+class LoginTest(TestCase):
+	def setUp(self):
+		self.user = UserProfileFactory.create()
+		self.user.user.set_password('1234567')
+		self.user.save()
+		self.client = Client()
+
+	def test_get_request(self):
+		response = self.client.get('/user/login/', follow = True)
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.redirect_chain, [('/', 302)])
+
+	def test_invalid_email(self):
+		response = self.client.post('/user/login/', {'email' : 'aeiou', 'password' : '1234567'})
+		self.assertEqual(response.status_code, 200)
+		self.assertContains(response, 'Enter a valid email address.')
+
+	def test_invalid_password(self):
+		response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1235567'})
+		self.assertEqual(response.status_code, 200)
+		self.assertContains(response, 'Email or Password does not match')
+
+	def test_valid_user(self):
+		logout(self.client)
+		response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1234567'})
+		self.assertEqual(response.status_code, 200)
+		self.assertContains(response, 'Hi, %s' % (self.user.full_name()))
+
+class LogoutTest(TestCase):
+	def setUp(self):
+		self.user = UserProfileFactory.create()
+		self.user.user.set_password('1234567')
+		self.user.save()
+		self.client = Client()
+
+	def test_logout(self):
+		self.client.login(username= self.user.user.email, password= '1234567')
+		response = self.client.get('/user/logout/', follow = True)
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.redirect_chain, [('/', 302)])
+		self.assertContains(response, 'You have been logged out successfully!')
+
+	def test_invalid_logout(self):
+		response = self.client.get('/user/logout/', follow = True)
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.redirect_chain, [('/', 302)])
+		self.assertNotContains(response, 'You have been logged out sucessfully!')

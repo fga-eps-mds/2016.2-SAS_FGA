@@ -7,15 +7,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
 
-class LoginForm(ModelForm):
-	email = forms.CharField(
+class LoginForm(forms.Form):
+	email = forms.EmailField(
 		label=_('Email:'),
 		widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}))
 	password = forms.CharField(
 		label=_('Password:'),
 		widget=forms.PasswordInput(attrs={'placeholder': ''}))
 
-	def save(self, force_insert=False, force_update=False, commit=True):
+	def authenticate_user(self):
 		username = self.cleaned_data.get("email")
 		password = self.cleaned_data.get("password")
 		user = authenticate(username=username, password=password)
@@ -23,9 +23,10 @@ class LoginForm(ModelForm):
 			self.add_error('password', _('Email or Password does not match'))
 		return user
 
-	class Meta:
-		model = User
-		fields = ['email', 'password']
+	def clean(self):
+		cleaned_data = super(LoginForm, self).clean()
+		self.authenticate_user()
+		return cleaned_data
 
 
 class PasswordForm(ModelForm):
@@ -59,7 +60,7 @@ class PasswordForm(ModelForm):
 		password2 = cleaned_data.get('renew_password')
 		if password1 and password2 and password1 != password2:
 			self.add_error('new_password', _('Passwords do not match'))
-			self.add_error('renew_password', _('Passwords do not match'))
+			self.add_error('renew_password', _('Password	s do not match'))
 
 	class Meta:
 		model = User
