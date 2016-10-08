@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
 from django.utils import timezone
 from datetime import date, datetime, timedelta
+from booking.models import date_range
 import copy
 
 class BookingForm(forms.Form):
@@ -42,33 +43,33 @@ class BookingForm(forms.Form):
 		booking.end_date = self.cleaned_data.get("end_date")
 		booking.place = self.cleaned_data.get("place")
 		weekdays = self.cleaned_data.get("week_days")
-		if not weekdays:
-			date_range = [booking.start_date + timedelta(days=x) for x in range(0, (booking.end_date-booking.start_date ).days)]
-			for day in date_range:
-				weekdays.append(day.weekday())
+
 		book = BookTime()
 		book.date_booking = booking.start_date
 		book.start_hour = self.cleaned_data.get("start_hour")
 		book.end_hour = self.cleaned_data.get("end_hour")
-		finish_date = False
-		booking.save()
-		if booking.exists(book.start_hour, book.end_hour, weekdays):
-			booking.delete()
-			return None
-		else:
-			while not finish_date:
-				for days in weekdays:
-					book.next_week_day(int(days))
-					if book.date_booking < booking.end_date:
+		try:
+			booking.save()
+			if booking.exists(book.start_hour, book.end_hour, weekdays):
+				return None
+			else:
+				print("inicio "+str(book.date_booking))
+				print("fim "+str(booking.end_date))
+				print(date_range(book.date_booking, booking.end_date))
+				for day in date_range(book.date_booking, booking.end_date):
+					for days in weekdays:
+						book.next_week_day(int(days))
 						newobj = copy.deepcopy(book)
 						newobj.save()
-						print("pk book time", newobj.pk)
 						booking.time.add(newobj)
-					else:
-						finish_date = True
-						break
-			booking.save()
-			return booking
+				booking.save()
+		except Exception as e:
+			booking.delete()
+			booking = None
+			msg = _('Failed to book selected period')
+			print(e)
+			raise forms.ValidationError(msg)
+		return booking
 		# do custom stuff
 
 	def clean_week_days(self):
@@ -78,6 +79,10 @@ class BookingForm(forms.Form):
 		if((end_date-start_date).days > 7 and not weekdays):#7 days in a week
 			msg = _('Select a repeating standard for the period you selected')
 			self.add_error('week_days', msg)
+		elif not weekdays:
+			period = date_range(start_date, end_date)
+			for day in period:
+				weekdays.append(day.weekday())
 		return weekdays
 
 	def clean(self):
