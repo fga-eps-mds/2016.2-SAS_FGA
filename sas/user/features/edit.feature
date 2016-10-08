@@ -1,7 +1,15 @@
 Feature: EditUser
 
 Background:
-	Given I register the user "lucas@gmail.com" with the password "123456"
+	Given I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574"
+
+Scenario: Invalid email
+	When I login in with email "lucas@gmail.com" and password "123456"
+	Then I visit site page "/user/edituser/"
+	And I fill in "Email" with "pedro"
+	And I select "Student" from "Category"
+	And I press "Save Data"
+	Then I should see "Email address must be in a valid format."
 
 Scenario: User registered
 	When I login in with email "lucas@gmail.com" and password "123456"
@@ -11,18 +19,39 @@ Scenario: User registered
 	And I press "Save Data"
 	Then I should see "Your data has been updated"
 
-Scenario: User empties one field
+Scenario: User empties email
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
 	And I fill in "Email" with ""
 	And I press "Save Data"
 	Then I should see an alert with text "Please fill out this field."
 
-Scenario: Duplicated email
-	When I register the user "pedrot@gmail.com" with the password "123456"
+Scenario: User empties name
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
-	And I fill in "Email" with "pedrot@gmail.com"
+	And I fill in "Name" with ""
+	And I press "Save Data"
+	Then I should see an alert with text "Please fill out this field."
+
+Scenario: User empties registration number
+	When I login in with email "lucas@gmail.com" and password "123456"
+	Then I visit site page "/user/edituser/"
+	And I fill in "Registration number" with ""
+	And I press "Save Data"
+	Then I should see an alert with text "Please fill out this field."
+
+Scenario: User empties category
+	When I login in with email "lucas@gmail.com" and password "123456"
+	Then I visit site page "/user/edituser/"
+	And I select "----" from "Category"
+	And I press "Save Data"
+	Then I should see an alert with text "Please select an item on the list."
+
+Scenario: Duplicated email
+	When I register the user "pedro@gmail.com" with the password "123456" and registration number "150016572"
+	When I login in with email "lucas@gmail.com" and password "123456"
+	Then I visit site page "/user/edituser/"
+	And I fill in "Email" with "pedro@gmail.com"
 	And I select "Student" from "Category"
 	And I press "Save Data"
 	Then I should see "Email already used"

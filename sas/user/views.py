@@ -35,7 +35,7 @@ def edit_user(request):
 			messages.success(request, _('Your data has been updated'))
 		return render_edit_user(request, user_form=form)
 	elif not request.user.is_authenticated():
-		return index(request)
+		return redirect('index')
 	else:
 		return render_edit_user(request)
 
@@ -78,10 +78,7 @@ def delete_user(request):
 	if request.user.is_authenticated():
 		request.user.delete()
 		logout(request)
-		return index(request)
-	else:
-		return index(request)
-
+	return redirect('index')
 
 def change_password(request):
 	if request.user.is_authenticated() and request.POST:

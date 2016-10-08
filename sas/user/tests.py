@@ -185,33 +185,34 @@ class ValidationTest(TestCase):
         self.assertEqual(self.validation.hasSpecialCharacters(None), False)
 
 
-    class LoginTest(TestCase):
-        def setUp(self):
-            self.user = UserProfileFactory.create()
-            self.user.user.set_password('1234567')
-            self.user.save()
-            self.client = Client()
+class LoginTest(TestCase):
+    def setUp(self):
+        self.user = UserProfileFactory.create()
+        self.user.user.set_password('1234567')
+        self.user.save()
+        self.client = Client()
 
-        def test_get_request(self):
-            response = self.client.get('/user/login/', follow = True)
-            self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.redirect_chain, [('/', 302)])
+    def test_get_request(self):
+        response = self.client.get('/user/login/', follow = True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.redirect_chain, [('/', 302)])
 
-        def test_invalid_email(self):
-            response = self.client.post('/user/login/', {'email' : 'aeiou', 'password' : '1234567'})
-            self.assertEqual(response.status_code, 200)
-            self.assertContains(response, 'Enter a valid email address.')
+    def test_invalid_email(self):
+        response = self.client.post('/user/login/', {'email' : 'aeiou', 'password' : '1234567'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Enter a valid email address.')
 
-        def test_invalid_password(self):
-            response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1235567'})
-            self.assertEqual(response.status_code, 200)
-            self.assertContains(response, 'Email or Password does not match')
+    def test_invalid_password(self):
+        response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1235567'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Email or Password does not match')
 
-        def test_valid_user(self):
-            logout(self.client)
-            response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1234567'})
-            self.assertEqual(response.status_code, 200)
-            self.assertContains(response, 'Hi, %s' % (self.user.full_name()))
+    def test_valid_user(self):
+        logout(self.client)
+        response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1234567'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Hi, %s' % (self.user.full_name()))
+
 
 class LogoutTest(TestCase):
     def setUp(self):

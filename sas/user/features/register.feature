@@ -22,19 +22,19 @@ Scenario: User do not inform Registration Number
   Then I should see an alert with text "Please fill out this field."
 
 Scenario: Repeated Email
-  When I register the user "test123@gmail.com" with the password "123456"
+  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
   And I visit site page "/user/newuser"
   And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
   And I fill in "Name" with "Pedro Pereira Pinto"
   And I fill in "Email" with "test123@gmail.com"
   And I type in "teste123" to "Password"
-  And I type in "teste123" to "Repeat Password" 
+  And I type in "teste123" to "Repeat Password"
   Then I press "Register"
   Then I should see "Email already used"
 
 Scenario: Repeated Registration Number
-  When I register the user "test123@gmail.com" with the password "123456" and with registration_number "100200300"
+  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
   And I visit site page "/user/newuser"
   And I type in "100200300" to "Registration Number"
   And I select "Student" from "Category"
@@ -43,10 +43,10 @@ Scenario: Repeated Registration Number
   And I type in "teste123" to "Password"
   And I type in "teste123" to "Repeat Password"
   Then I press "Register"
-  Then I should see an alert with text "Registration Number already used"
+  Then I should see an alert with text "Registration Number already used."
 
 Scenario: User do not inform Email
-  When I register the user "test123@gmail.com" with the password "123456"
+  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
   And I visit site page "/user/newuser"
   And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
@@ -56,8 +56,20 @@ Scenario: User do not inform Email
   Then I press "Register"
   Then I should see an alert with text "Please fill out this field."
 
+Scenario: User Informed an Invalid Email
+  When I register the user "sender" with the password "123456" and registration number "140016574"
+  And I visit site page "/user/newuser"
+  And I type in "120030559" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "sender"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  Then I press "Register"
+  Then I should see an alert with text "Email address must be in a valid format."
+
 Scenario: User do not Inform Password
-  When I register the user "test123@gmail.com" with the password "123456"
+  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
   And I visit site page "/user/newuser"
   And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
@@ -68,7 +80,7 @@ Scenario: User do not Inform Password
   Then I should see an alert with text "Please fill out this field."
 
 Scenario: User do not Inform Repeat Password
-  When I register the user "test123@gmail.com" with the password "123456"
+  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
   And I visit site page "/user/newuser"
   And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
@@ -79,7 +91,7 @@ Scenario: User do not Inform Repeat Password
   Then I should see an alert with text "Please fill out this field."
 
 Scenario: User Informs Different Password and Repeat Password fields
-  When I register the user "test123@gmail.com" with the password "123456"
+  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
   And I visit site page "/user/newuser"
   And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
@@ -121,7 +133,7 @@ Scenario: User informs a name with size smaller than two characters
   And I type in "teste123" to "Password"
   And I type in "teste123" to "Repeat Password"
   Then I press "Register"
-  Then I should see an alert with text "Name must be between 2 and 50 characters."  
+  Then I should see an alert with text "Name must be between 2 and 50 characters."
 
 Scenario: User informs a name with size bigger than fifth characters
   When I visit site page "/user/newuser"
@@ -132,7 +144,7 @@ Scenario: User informs a name with size bigger than fifth characters
   And I type in "teste123" to "Password"
   And I type in "teste123" to "Repeat Password"
   Then I press "Register"
-  Then I should see an alert with text "Name must be between 2 and 50 characters."  
+  Then I should see an alert with text "Name must be between 2 and 50 characters."
 
 Scenario: User informs a registration number with size bigger than nine digits
   When I visit site page "/user/newuser"
