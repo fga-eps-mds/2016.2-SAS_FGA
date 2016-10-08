@@ -5,4 +5,7 @@ from user.forms import LoginForm
 
 
 def index(request, login_form = LoginForm()):
-    return render(request, 'sas/index.html', {'form': login_form})
+    if hasattr(request, 'user') and request.user.is_authenticated():
+        return render(request, 'sas/home.html', {})
+    else:
+        return render(request, 'sas/index.html', {'form' : login_form})

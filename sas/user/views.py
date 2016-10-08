@@ -31,11 +31,11 @@ def edit_user(request):
 	if request.user.is_authenticated() and request.method == "POST":
 		form = EditUserForm(request.POST, instance=request.user.profile_user)
 		if form.is_valid():
-			user = form.save(is_edit_form=True)
+			user = form.save()
 			messages.success(request, _('Your data has been updated'))
 		return render_edit_user(request, user_form=form)
 	elif not request.user.is_authenticated():
-		return redirect('index')
+		return index(request)
 	else:
 		return render_edit_user(request)
 
@@ -60,7 +60,7 @@ def login_user(request):
 		if form.is_valid():
 			user = form.authenticate_user()
 			login(request, user)
-			return render(request, 'sas/home.html', {})
+			return redirect('index')
 		else:
 			return index(request, login_form = form)
 	else:
@@ -78,7 +78,10 @@ def delete_user(request):
 	if request.user.is_authenticated():
 		request.user.delete()
 		logout(request)
-	return redirect('index')
+		return index(request)
+	else:
+		return index(request)
+
 
 def change_password(request):
 	if request.user.is_authenticated() and request.POST:
