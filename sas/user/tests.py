@@ -36,11 +36,11 @@ class EditUserTest(TestCase):
 		client = self.client
 		userprofile = self.userprofile
 		client.login(username='gutorc@hotmail.com', password='123456')
-		parameters = {'name': 'Pedro','registration_number': '14000000', \
+		parameters = {'name': 'Pedro','registration_number': '140000000', \
 			'category' : '1', 'email' : "gutorc@hotmail.com"}
 		response = client.post('/user/edituser/', parameters)
 		self.userprofile.refresh_from_db()
-		self.assertEqual('14000000', self.userprofile.registration_number)
+		self.assertEqual('140000000', self.userprofile.registration_number)
 
 
 class ViewsTest(TestCase):

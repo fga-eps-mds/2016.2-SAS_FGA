@@ -88,7 +88,7 @@ class UserForm(ModelForm):
         widget=forms.TextInput(attrs={'placeholder': ''}))
     category = forms.ChoiceField(choices=CATEGORY, label=_('Category:'))
 
-    def save(self, force_insert=False, force_update=False, commit=True):
+    def save(self, force_insert=False, force_update=False, commit=True, is_edit_form=False):
         userprofile = super(UserForm, self).save(commit=False)
         # if it is a new user
         if not hasattr(userprofile, 'user'):
@@ -98,8 +98,10 @@ class UserForm(ModelForm):
         userprofile.name(self.cleaned_data.get('name'))
         userprofile.user.email = self.cleaned_data.get('email')
         userprofile.user.username = userprofile.user.email
-        userprofile.user.set_password(self.cleaned_data.get('password'))
-        print(commit)
+
+        if not is_edit_form:
+            userprofile.user.set_password(self.cleaned_data.get('password'))
+
         # do custom stuff
         if commit:
             userprofile.save()
