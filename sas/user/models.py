@@ -34,12 +34,13 @@ class UserProfile(models.Model):
 			raise ValidationError({'registration_number': [_('Registration number cannot contain letters.'),]})
 
 		if validation.hasSpecialCharacters(registration_number):
-			raise ValidationError({'registration_number': [_('Registration number cannot contain special characters.'),]})		
+			raise ValidationError({'registration_number': [_('Registration number cannot contain special characters.'),]})
 
 	def save(self, *args, **kwargs):
 		self.user.save()
 		self.user_id = self.user.pk
 		super(UserProfile, self).save(*args, **kwargs)
+
 
 class Validation():
 

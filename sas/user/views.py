@@ -58,22 +58,20 @@ def login_user(request):
 	if request.method == "POST":
 		form = LoginForm(request.POST)
 		if form.is_valid():
-			user = form.save()
-			if user is not None:
-				login(request, user);
-				return render(request, 'sas/home.html', {})
-			else:
-				return render(request, 'sas/index.html', {'form': form})
+			user = form.authenticate_user()
+			login(request, user)
+			return render(request, 'sas/home.html', {})
 		else:
-			return render(request, 'sas/index.html', {'form': form})
+			return index(request, login_form = form)
 	else:
-		return index(request)
+		return redirect('index')
 
 
 def logout_user(request):
-    logout(request)
-    form = LoginForm()
-    return render(request, 'sas/index.html', {'form': form})
+	if hasattr(request, 'user') and isinstance(request.user, User):
+		logout(request)
+		messages.success(request, _('You have been logged out successfully!'))
+	return redirect('index')
 
 
 def delete_user(request):
