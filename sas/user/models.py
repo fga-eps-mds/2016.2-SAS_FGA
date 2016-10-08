@@ -20,7 +20,53 @@ class UserProfile(models.Model):
 		name = str.join(" ", [self.user.first_name, self.user.last_name])
 		return name
 
+	def clean_fields(self, exclude=None):
+		validation = Validation()
+
+		# Registration Number validation
+		registration_number = self.registration_number
+
+		if (len(registration_number) != 9):
+			raise ValidationError(_('Registration number must have 9 digits.'))
+
+		if validation.hasLetters(registration_number):
+			raise ValidationError(_('Registration number cannot contain letters.'))
+
+		if validation.hasSpecialCharacters(registration_number):
+			raise ValidationError(_('Registration number cannot contain special characters.'))
+
 	def save(self, *args, **kwargs):
 		self.user.save()
 		self.user_id = self.user.pk
 		super(UserProfile, self).save(*args, **kwargs)
+
+
+class Validation():
+
+	def hasNumbers(self, string):
+		if (string is not None):
+			if any(char.isdigit() for char in string):
+				return True
+
+			return False
+
+		else:
+			return False
+
+	def hasLetters(self, number):
+		if (number is not None):
+			if any(char.isalpha() for char in number):
+				return True
+
+			return False
+
+		else:
+			return False
+
+	def hasSpecialCharacters(self, string):
+		if (string is not None):
+			for character in '@#$%^&+=/\{[]()}-_+=*!§|':
+				if character in string:
+					return True
+
+		return False
