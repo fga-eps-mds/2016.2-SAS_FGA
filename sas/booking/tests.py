@@ -29,18 +29,3 @@ class TestBookTime(TestCase):
 		book = BookTime()
 		book.date_booking = datetime.strptime("21092016", "%d%m%Y")
 		self.assertEqual(book.get_str_weekday(), "Wednesday")
-
-
-class TestBooking(TestCase):
-
-	def setUp(self):
-		self.booking = Booking()
-
-	def test_save(self):
-		self.booking.user = UserFactory.create()
-		self.booking.name = "Teste"
-		self.booking.start_date = datetime.now()
-		self.booking.end_date = datetime.now()
-		self.booking.place = PlaceFactory.create()
-		self.booking.save()
-		self.assertEqual(self.booking.pk, 1)
