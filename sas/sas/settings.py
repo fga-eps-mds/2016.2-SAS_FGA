@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'pt-BR'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'America/Sao_Paulo'
 
@@ -146,7 +146,8 @@ NOSE_ARGS = [
 ]
 
 PROJECT_DIR = os.path.dirname(__file__)
-TEST_PEP8_DIRS = [os.path.join(BASE_DIR,'booking'), os.path.join(BASE_DIR,'user'),]
+
+TEST_PEP8_DIRS = [os.path.join(BASE_DIR,'booking'), os.path.join(BASE_DIR,'user'), ]
 
 TEST_PEP8_EXCLUDE = ['migrations', ] # Exclude this paths from tests
 TEST_PEP8_IGNORE = ['W191', ]

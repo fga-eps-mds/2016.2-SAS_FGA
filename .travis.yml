@@ -21,7 +21,7 @@ before_script:
 # command to run tests
 script:
     - cd sas
-    - python manage.py makemigrations
+    - python manage.py makemigrations booking user
     - coverage run manage.py harvest 
     - python manage.py test
 
