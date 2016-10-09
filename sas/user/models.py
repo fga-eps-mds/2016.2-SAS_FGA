@@ -14,10 +14,11 @@ class UserProfile(models.Model):
 
     def name(self, name):
         if not hasattr(self, 'user'):
+ 
             self.user = User()
-            names = name.split()
-            self.user.first_name = names.pop(0)
-            self.user.last_name = str.join(" ", names)
+        names = name.split()
+        self.user.first_name = names.pop(0)
+        self.user.last_name = str.join(" ", names)
 
     def full_name(self):
         name = str.join(" ", [self.user.first_name, self.user.last_name])

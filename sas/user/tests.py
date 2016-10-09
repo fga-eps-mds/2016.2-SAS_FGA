@@ -100,12 +100,15 @@ class UserProfileTest(TestCase):
         self.userprofile = UserProfile()
 
     def test_set_name(self):
-        self.userprofile.name("Gustavo Rodrigues Coelho")
-        self.assertEqual(self.userprofile.user.first_name, "Gustavo")
-        self.assertEqual(self.userprofile.user.last_name, "Rodrigues Coelho")
+        self.userprofile.name("Pedro Pereira Pinto")
+        self.assertEqual(self.userprofile.user.first_name, "Pedro")
+        self.assertEqual(self.userprofile.user.last_name, "Pereira Pinto")
 
     def test_get_full_name(self):
         name = "Pedro Pereira Pinto"
+        self.userprofile.name(name)
+        self.assertEqual(self.userprofile.full_name(), name)
+        name = "Renan Calheiros"
         self.userprofile.name(name)
         self.assertEqual(self.userprofile.full_name(), name)
 
