@@ -54,7 +54,7 @@ class UserProfile(models.Model):
             academic_staff = Group.objects.get(name="academic_staff")
         except:
             academic_staff, created = Group.objects.get_or_create(name="academic_staff")
-            
+
         self.create_user()
         self.user.groups.add(academic_staff)
 
@@ -63,7 +63,7 @@ class UserProfile(models.Model):
             admin = Group.objects.get(name="admin")
         except:
             admin, created = Group.objects.get_or_create(name="admin")
-            
+
         self.create_user()
         self.user.groups.add(admin)
 
@@ -72,14 +72,14 @@ class UserProfile(models.Model):
             group = self.user.groups.get(name="admin")
             return True
         except Group.DoesNotExist:
-            return False     
+            return False
 
     def is_academic_staff(self):
         try:
             group = self.user.groups.get(name="academic_staff")
             return True
         except Group.DoesNotExist:
-            return False   
+            return False
 
 class Validation():
 
