@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import Group, Permission, User
 from django.conf import settings
-from subprocess import call,STDOUT 
+from subprocess import call,STDOUT
 from user.models import UserProfile
 from sas.basic import Configuration
 import os
@@ -10,16 +10,16 @@ class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
 
     def add_arguments(self, parser):
-       parser.add_argument("--not-create-groups", 
+       parser.add_argument("--not-create-groups",
                             dest="create_groups",
                             action="store_false",
                             default=True,
-                            help="It do not create the groups of users") 
+                            help="It do not create the groups of users")
 
     def db_sqlite_path(self):
         return settings.DATABASES['default']['NAME']
 
-    def manage_path(self):	
+    def manage_path(self):
         return os.path.join(settings.BASE_DIR,"manage.py")
 
     def is_sqlite(self):
@@ -83,4 +83,4 @@ class Command(BaseCommand):
                     conf.create_groups()
 
                 self.stdout.write(self.style.SUCCESS("It will create the users"))
-                self.create_users()	
+                self.create_users()
