@@ -24,3 +24,19 @@
 		</div>
 	</div>
 {% endblock %}
+
+{% block extrajs %}
+<script>
+$(document).ready(function () {
+    $('#id_building').change(function () {
+				$("#id_place").prop('selectedIndex',0);
+        var selected_building = $(this).find(":selected").text();
+				console.log(selected_building);
+				$("#id_place option").hide();
+				$("#id_place option").filter(function(){
+				    return $.trim($(this).text()).contains(selected_building)
+				}).show();
+    });
+});
+</script>
+{% endblock %}
