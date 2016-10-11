@@ -30,10 +30,11 @@ class Place(models.Model):
 	is_laboratory = models.BooleanField(default=False)
 
 	def __str__(self):
-		return self.name
+		try:
+			return self.building.name + " | " + self.name
+		except:
+			return self.name
 
-	def get_buildings(self):
-		return self.objects.values_list('building', flat=True)
 
 
 class BookTime(models.Model):
