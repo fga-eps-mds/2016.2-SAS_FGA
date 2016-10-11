@@ -212,8 +212,9 @@ class LoginTest(TestCase):
 
     def test_valid_user(self):
         logout(self.client)
-        response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1234567'})
+        response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1234567'}, follow = True)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.redirect_chain, [('/', 302)])
         self.assertContains(response, 'Hi, %s' % (self.user.full_name()))
 
 
