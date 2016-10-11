@@ -9,19 +9,19 @@ def new_booking(request):
 	if request.user.is_authenticated():
 		if request.method == "POST":
 			form_booking = BookingForm(request.POST)
-			if not(form_booking.is_valid()):
-				return render(request, 'booking/newBooking.html', {'form_booking': form_booking})
-			else:
+			if (form_booking.is_valid()):
 				booking = form_booking.save(request.user)
-				if not booking:
+				if booking:
+					request.session['booking'] = booking.pk
+					return render(request, 'booking/showDates.html',
+									{'booking': booking})
+				else:
 					messages.error(request, _("Booking alread exists"))
-					return render(request, 'booking/newBooking.html', {'form_booking': form_booking})
-				request.session['booking'] = booking.pk
-				return render(request, 'booking/showDates.html', {'booking': booking})
 		else:
 			form_booking = BookingForm()
-			return render(request, 'booking/newBooking.html', {'form_booking': form_booking})
 
+		return render(request, 'booking/newBooking.html',
+							{'form_booking': form_booking})
 	else:
 		return index(request)
 
@@ -29,7 +29,8 @@ def new_booking(request):
 def search_booking(request):
     if request.user.is_authenticated():
         bookings = Booking.objects.filter(user=request.user)
-        return render(request, 'booking/searchBooking.html', {'bookings': bookings})
+        return render(request, 'booking/searchBooking.html',
+						{'bookings': bookings})
     else:
         form = LoginForm()
         return render(request, 'booking/index.html', {'form': form})
@@ -51,7 +52,7 @@ def cancel_booking(request, id):
 
 
 def confirm_booking(request, id):
-	if request.user.is_authenticated() and request.session['booking']:
+	if request.user.is_authenticated() and request.session.get('booking'):
 		id = int(id)
 		if id == request.session.get('booking'):
 			request.session.pop('booking')
