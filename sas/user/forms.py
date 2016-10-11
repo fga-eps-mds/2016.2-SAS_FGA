@@ -1,4 +1,5 @@
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import Group
 from django.forms import ModelForm
 from .models import UserProfile, Validation
 from .models import CATEGORY
@@ -108,6 +109,11 @@ class UserForm(ModelForm):
         # do custom stuff
         if commit:
             userprofile.save()
+        if not is_edit_form:
+            print("Passou aqui carai")
+            academic_staff = Group.objects.get(name="academic_staff")
+            userprofile.user.groups.add(academic_staff)
+
         return userprofile
 
     def clean(self):
