@@ -1,0 +1,33 @@
+{% extends 'sas/base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 staticfiles %}
+{% bootstrap_messages %}
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static "style/bookingtable.css" %}">
+{% endblock %}
+
+{% block title %} {% trans "Template Bookings Reports" %} {% endblock %}
+
+
+{% block content %}
+<h1>{{ bookings }}</h1>
+<hr class="star-light">
+<br>
+<div class='col-xs-12'>
+  <table border='0' cellpadding='0' cellspacing='0' width=700 height = 700>
+      <tr class='days'>
+        <th></th>
+        <th>11/10</th>
+		<th>12/10</th>
+		{% for book in bookings %}
+		<th>{{book.name}}</th>
+		{% endfor %}
+      </tr>
+    <tr>
+    </tr>
+  </table>
+</div>
+
+{% endblock %}
