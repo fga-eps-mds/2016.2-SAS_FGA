@@ -103,6 +103,21 @@ class UserProfileTest(TestCase):
         self.userprofile.name("Pedro Pereira Pinto")
         self.assertEqual(self.userprofile.user.first_name, "Pedro")
         self.assertEqual(self.userprofile.user.last_name, "Pereira Pinto")
+    
+    def test_create_user(self):
+        self.assertFalse(hasattr(self.userprofile,'user'))
+        self.userprofile.create_user() 
+        self.assertTrue(hasattr(self.userprofile,'user'))
+
+    def test_make_as_academic_staff(self):
+        self.userprofile.name("Pedro Pereira Pinto")
+        self.userprofile.registration_number = "11/0040559"
+        self.userprofile.user.username = "pedrotestec@hotmail.com"
+        self.userprofile.user.email = "perdotestec@hotmail.com"
+        self.userprofile.save()
+        self.userprofile.make_as_academic_staff()
+        group = self.userprofile.user.groups.filter(name="academic_staff")
+        self.assertEqual(group.count(),1)
 
     def test_get_full_name(self):
         name = "Pedro Pereira Pinto"

@@ -7,6 +7,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
+from sas.basic import Configuration
 
 
 class LoginForm(forms.Form):
@@ -110,11 +111,9 @@ class UserForm(ModelForm):
         if commit:
             userprofile.save()
         if not is_edit_form:
-            print("Passou aqui carai")
-            academic_staff = Group.objects.get(name="academic_staff")
-            userprofile.user.groups.add(academic_staff)
-
+            userprofile.make_as_academic_staff()
         return userprofile
+
 
     def clean(self):
         cleaned_data = super(ModelForm, self).clean()
