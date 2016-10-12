@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import BookingForm
+from .forms import BookingForm, SearchBooking
 from .models import Booking
 from django.contrib import messages
 from sas.views import index
@@ -25,11 +25,20 @@ def new_booking(request):
 	else:
 		return index(request)
 
+def search_bookingg(request):
+	if request.method == "POST":
+		bookings = Booking.objects.filter(user=request.user)
+		form_booking = SearchBooking(request.POST)
+		return render(request, 'booking/template_table.html', {'form_booking' : form_booking, 'bookings' : bookings})
+	else:
+		form_booking = SearchBooking()
+		return render(request, 'booking/searchBookingg.html', {'form_booking' : form_booking})
 
 def search_booking(request):
     if request.user.is_authenticated():
         bookings = Booking.objects.filter(user=request.user)
-        return render(request, 'booking/searchBooking.html', {'bookings': bookings})
+        #return render(request, 'booking/searchBooking.html', {'bookings': bookings})
+        return render(request, 'booking/template_table.html', {'bookings': bookings})
     else:
         form = LoginForm()
         return render(request, 'booking/index.html', {'form': form})

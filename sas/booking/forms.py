@@ -11,6 +11,16 @@ from datetime import date
 from django.core.exceptions import ValidationError
 import copy
 
+class SearchBooking(forms.Form):
+    room_name = forms.CharField(
+         label=_('Booking Name:'),
+         widget=forms.TextInput(attrs={'placeholder': ''}))
+    start_date = forms.DateField(
+         label=_('Start Date:'),
+         widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
+    end_date = forms.DateField(
+         label=_('End Date:'),
+         widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
 
 class BookingForm(forms.Form):
 	name = forms.CharField(
