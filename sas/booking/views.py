@@ -29,7 +29,10 @@ def search_bookingg(request):
 	if request.method == "POST":
 		bookings = Booking.objects.filter(user=request.user)
 		form_booking = SearchBooking(request.POST)
-		return render(request, 'booking/template_table.html', {'form_booking' : form_booking, 'bookings' : bookings})
+		if(form_booking.is_valid()):
+			return render(request, 'booking/template_table.html', {'form_booking' : form_booking, 'bookings' : bookings})
+		else:
+			return render(request, 'booking/searchBookingg.html', {'form_booking' : form_booking})
 	else:
 		form_booking = SearchBooking()
 		return render(request, 'booking/searchBookingg.html', {'form_booking' : form_booking})
@@ -37,8 +40,7 @@ def search_bookingg(request):
 def search_booking(request):
     if request.user.is_authenticated():
         bookings = Booking.objects.filter(user=request.user)
-        #return render(request, 'booking/searchBooking.html', {'bookings': bookings})
-        return render(request, 'booking/template_table.html', {'bookings': bookings})
+        return render(request, 'booking/searchBooking.html', {'bookings': bookings})
     else:
         form = LoginForm()
         return render(request, 'booking/index.html', {'form': form})
