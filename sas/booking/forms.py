@@ -12,6 +12,16 @@ from datetime import date, datetime, timedelta
 from booking.models import date_range
 import copy
 
+class SearchBooking(forms.Form):
+    room_name = forms.CharField(
+         label=_('Booking Name:'),
+         widget=forms.TextInput(attrs={'placeholder': ''}))
+    start_date = forms.DateField(
+         label=_('Start Date:'),
+         widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
+    end_date = forms.DateField(
+         label=_('End Date:'),
+         widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
 
 class BookingForm(forms.Form):
 	name = forms.CharField(

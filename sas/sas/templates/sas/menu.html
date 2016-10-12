@@ -14,7 +14,7 @@
        <div class="collapse navbar-collapse navbar-ex1-collapse">
          <ul class="nav navbar-nav">
              <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
-             <li><a href="#">{% trans "Search" %}</a></li>
+             <li><a href="{% url 'booking:searchbookingg' %}"">{% trans "Search" %}</a></li>
              {% if request.user.is_authenticated %}
              <li><a href="{% url 'booking:newbooking' %}">{% trans "Bookings" %}</a></li>
              <!-- IF request.user is ADM
