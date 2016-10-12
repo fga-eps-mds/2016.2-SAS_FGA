@@ -19,9 +19,13 @@ class Command(BaseCommand):
 
 	def exclude_migrations(self):
 		for app in settings.INSTALLED_APPS:
-			path = os.path.join(settings.BASE_DIR,app,"migrations")
-			if os.path.isdir(path):
-				output = call(["rm","-r",path],stderr=STDOUT)
+			path_migrations = os.path.join(settings.BASE_DIR,app,"migrations")
+			path_app = os.path.join(settings.BASE_DIR,app)
+			if os.path.isdir(path_migrations):
+				output = call(["rm","-r",path_migrations],stderr=STDOUT)
+
+			if os.path.isdir(path_app):
+				print("It will migrate %s %s %s %s" % ("python",self.manage_path(),"makemigrations",app))
 				call(["python",self.manage_path(),
 					  "makemigrations",app],stderr=STDOUT)
 
