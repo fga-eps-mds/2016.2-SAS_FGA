@@ -38,10 +38,10 @@ def search_booking_building_day(request,form_booking):
     building = Building.objects.get(id = building_id)
     places = Place.objects.filter(building = building)
     n = len(places) +1
-    
+
     places_ = []
     table =[]
-    
+
     for place in places:
         aux =[]
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
@@ -52,7 +52,7 @@ def search_booking_building_day(request,form_booking):
                 aux.append(aux_tuple)
 
         table.append(aux)
-        
+
         p = place.name.split('-')
         places_.append(p[1])
 
@@ -66,7 +66,7 @@ def search_booking_room_period(request,form_booking):
     n = len(form_days) + 1
 
     table =[]
-    
+
     for form_day in form_days:
         aux =[]
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
@@ -77,7 +77,7 @@ def search_booking_room_period(request,form_booking):
                 print('booking name', booking.name)
                 aux_tuple = (book.start_hour.hour,booking.name)
                 aux.append(aux_tuple)
-                
+
         table.append(aux)
 
     return render(request, 'booking/template_table.html', {'days':form_days, 'table':table, 'hours':hours, 'n':n, 'name': "Room x Period"})
@@ -155,3 +155,15 @@ def confirm_booking(request, id):
             return index(request)
     else:
         return index(request)
+
+def delete_booking(request, id):
+	if request.user.has_permission_to_delete() and request.session['booking']:
+		id = int(id)
+		if id == request.session.get('booking'):
+			request.session.pop('booking')
+			Booking.objects.get(pk=id).delete()
+			messages.success(request, _('Booking deleted!'))
+		else:
+			messages.error(request, _('You cannot delete this booking.'))
+	else:
+		messages.error(request, _('You cannot delete this booking.'))
