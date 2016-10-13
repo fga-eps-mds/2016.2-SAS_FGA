@@ -166,4 +166,4 @@ def delete_booking(request, id):
 		else:
 			messages.error(request, _('You cannot delete this booking.'))
 	else:
-		messages.error(request, _('You cannot delete this booking.'))
+		messages.error(request, _('You cannot delete this booking.')) 
