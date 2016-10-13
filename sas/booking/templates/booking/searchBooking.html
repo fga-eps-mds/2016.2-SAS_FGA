@@ -22,8 +22,8 @@
               <tr>
                 <th>{% trans "Name" %}</th>
                 <th>{% trans "Place" %}</th>
-                <th>{% trans "Start Date" %}</th>
-                <th>{% trans "End Date" %}</th>
+                <th>{% trans "Period" %}</th>
+                <th>{% trans "Date and Time" %}</th>
                 <th class="all">{% trans "Delete" %}</th>
               </tr>
             </thead>
@@ -32,12 +32,22 @@
               <tr>
                 <td>{{ booking.name }}</td>
                 <td>{{ booking.place.name }}</td>
-                <td>{{ booking.start_date }}</td>
-                <td>{{ booking.end_date }}</td>
+                <td class="text-center">{{ booking.start_date }}
+                  <br>{% trans " to " %}<br>
+                  {{ booking.end_date }}</td>
+                <td class="text-center">
+                  {% for time in booking.time.all|slice:":7" %}
+                        <strong>{{ time.date_booking|date:"D, d/M/Y" }}</strong><br>
+                        {{ time.start_hour|date:"H:i" }} {% trans " to " %}
+                        {{ time.end_hour|date:"H:i" }}<br><hr>
+                    {% endfor %}
+                    {% if booking.time.all|length > 7 %}
+                      <strong>...</strong>
+                    {% endif %}
+                </td>
                 <td>
                   <a href="#" class="btn btn-danger">
                     <span class="glyphicon glyphicon-trash"></span>
-                    Excluir
                   </a>
                 </td>
               </tr>
@@ -45,10 +55,10 @@
           </tbody>
           <tfoot>
             <tr>
-              <th class="filterable">{% trans "Name" %}</th>
-              <th class="filterable">{% trans "Place" %}</th>
-              <th class="filterable">{% trans "Start Date" %}</th>
-              <th class="filterable">{% trans "End Date" %}</th>
+              <th>{% trans "Name" %}</th>
+              <th>{% trans "Place" %}</th>
+              <th>{% trans "Period" %}</th>
+              <th>{% trans "Date and Time" %}</th>
               <th></th>
             </tr>
           </tfoot>
@@ -67,13 +77,6 @@
 <!-- page script -->
 <script>
   $(function () {
-    // Setup - add a text input to each footer cell
-    $('.filterable').each( function () {
-        var title = $(this).text();
-        var placeholder = 'FIltrar por';
-        placeholder = placeholder.concat(" "+title);
-        $(this).html( '<input type="text" class="form-control input-sm" placeholder="'+placeholder+'" />' );
-    } );
 
     var table = $('#my_bookings').DataTable({
       "paging": true,
@@ -114,21 +117,6 @@
                 } )
             }
     } );
-
-    $('.filter').click( function() { table.fnDraw(); } );
-      /* Custom filtering function which will filter data in column four between two values */
-      $.fn.dataTableExt.afnFiltering.push(
-        function( oSettings, aData, iDataIndex ) {
-
-        if($('.filter').attr('checked')){
-          if($('input', table.fnGetNodes(iDataIndex)).is(':checked')){
-            return true
-          }
-        }
-        else {
-          return true
-        }
-    });
   });
 </script>
 
