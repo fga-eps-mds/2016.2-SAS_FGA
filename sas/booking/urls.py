@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'^cancelbooking/(\d+)$', cancel_booking, name='cancelbooking'),
 	url(r'^searchbookingquery/$', search_booking_query, name='searchbookingquery'),
 	url(r'^searchbookingg/$', search_booking_query, name='searchbookingtable'),
-
+    url(r'^deletebooking/(\d+)$', delete_booking, name='deletebooking'),
 ]
