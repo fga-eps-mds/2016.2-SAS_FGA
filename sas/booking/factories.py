@@ -24,7 +24,7 @@ class BookingFactory(DjangoModelFactory):
 
 	class Meta:
 		model = Booking
-		django_get_or_create = ('place', 'name', 'start_date', 'end_date')
+		django_get_or_create = ('place', 'name', 'start_date', 'end_date') 
 
 	place = FuzzyChoice(SPACES)
 	time = (lambda : [self.booking_time.add(factory.SubFactory(BookTimeFactory)) for counter in range(5)])()
