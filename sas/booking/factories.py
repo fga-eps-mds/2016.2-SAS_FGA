@@ -3,10 +3,6 @@ from booking.models import *
 from faker import Factory as FakerFactory
 from factory import *
 import factory
-<<<<<<< HEAD
-=======
-import radar
->>>>>>> Created booktime factory and fixed booking factory.
 from factory.fuzzy import FuzzyChoice, FuzzyDate, FuzzyInteger
 from user.factories import UserFactory
 from datetime import date, datetime, time
