@@ -28,10 +28,17 @@ class BookingFactory(DjangoModelFactory):
 
 	user = factory.SubFactory(UserFactory)
 	place = FuzzyChoice(SPACES)
-	time = factory.SubFactory(BookTimeFactory)
+	time = (lambda : [self.booking_time.add(factory.SubFactory(BookTimeFactory)) for counter in range(5)])()
 	name = factory.LazyAttribute(lambda x: fake.name())
 	start_date = FuzzyDate(datetime.date(2017, 01, 01), datetime.date(2017, 12, 31))
 	end_date = FuzzyDate(start_date, datetime.date(2017, 12, 31))
+
+	def booktimes(self, create, extracted, **kwargs):
+		if not create:
+			return
+		if extracted:
+			for booktime in extracted:
+				self.time.add(booktime)
 
 class BookTimeFactory(DjangoModelFactory):
 
