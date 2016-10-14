@@ -24,22 +24,14 @@ class BookingFactory(DjangoModelFactory):
 
 	class Meta:
 		model = Booking
-		django_get_or_create = ('place', 'name', 'start_date', 'end_date') 
+		django_get_or_create = ('place', 'name', 'start_date', 'end_date')
 
 	place = FuzzyChoice(SPACES)
-	time = (lambda : [self.booking_time.add(factory.SubFactory(BookTimeFactory)) for counter in range(5)])()
 	name = factory.LazyAttribute(lambda x: fake.name())
 	start_date = FuzzyDate(datetime(2017, 1, 1), datetime(2017, 5, 31))
 	end_date = FuzzyDate(datetime(2017, 6, 1), datetime(2017, 12, 31))
 
 	@factory.post_generation
-	def booktimes(self, create, extracted, **kwargs):
-		if not create:
-			return
-		if extracted:
-			for booktime in extracted:
-				self.time.add(booktime)
-
 	def booktimes(self, create, extracted, **kwargs):
 		if not create:
 			return
