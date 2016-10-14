@@ -1,9 +1,7 @@
 from django.utils.translation import ugettext_lazy as _, ugettext as __
-from django.db import models
+from django.db import models, connection
 from django.contrib.auth.models import User
 from django.utils import timezone
-from datetime import datetime, timedelta
-from django.db import connection
 from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 import copy
