@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from .views import new_booking, search_booking, search_booking_query, search_booking_table
 from .views import confirm_booking, cancel_booking
+from .views import confirm_booking, cancel_booking, delete_booking
 
 urlpatterns = [
     url(r'^newbooking/$', new_booking, name='newbooking'),
