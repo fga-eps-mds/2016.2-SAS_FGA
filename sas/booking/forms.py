@@ -94,6 +94,21 @@ class SearchBooking(forms.Form):
 
         return bookings
 
+    def days_list(self):
+        cleaned_data = super(SearchBooking,self).clean()
+        end_date = self.cleaned_data.get('end_date')
+        start_date = self.cleaned_data.get('start_date')
+        days = []
+       # start_day = start_date.day()
+
+        while(start_date<=end_date):
+            days.append(start_date)
+            print(start_date)
+            print(start_date.day)
+            start_date += timedelta(days=1)
+
+        return days
+ 
     def clean(self):
         cleaned_data = super(SearchBooking,self).clean()
         today = date.today()

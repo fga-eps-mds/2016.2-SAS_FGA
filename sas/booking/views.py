@@ -36,7 +36,8 @@ def search_booking_table(request):
 		form_booking = SearchBooking(request.POST)
 		if(form_booking.is_valid()):
 			bookings = form_booking.search()
-			return render(request, 'booking/template_table.html', {'form_booking' : form_booking, 'bookings' : bookings})
+			days = form_booking.days_list()
+			return render(request, 'booking/template_table.html', {'form_booking' : form_booking, 'bookings' : bookings, 'days' : days})
 		else:
 			return render(request, 'booking/searchBookingTable.html', {'form_booking' : form_booking})
 	else:
