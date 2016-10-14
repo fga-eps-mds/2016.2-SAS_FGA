@@ -1,9 +1,10 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BookingForm, SearchBooking
-from .models import Booking
+from .models import Booking, BookTime, Place, Building
 from django.contrib import messages
 from sas.views import index
+from datetime import datetime, timedelta
 
 def new_booking(request):
 	if request.user.is_authenticated():
@@ -25,17 +26,17 @@ def new_booking(request):
 	else:
 		return index(request)
 
-def search_bookingg(request):
+def search_booking_table(request):
 	if request.method == "POST":
-		bookings = Booking.objects.filter(user=request.user)
 		form_booking = SearchBooking(request.POST)
 		if(form_booking.is_valid()):
+			bookings = form_booking.search()
 			return render(request, 'booking/template_table.html', {'form_booking' : form_booking, 'bookings' : bookings})
 		else:
-			return render(request, 'booking/searchBookingg.html', {'form_booking' : form_booking})
+			return render(request, 'booking/searchBookingTable.html', {'form_booking' : form_booking})
 	else:
 		form_booking = SearchBooking()
-		return render(request, 'booking/searchBookingg.html', {'form_booking' : form_booking})
+		return render(request, 'booking/searchBookingTable.html', {'form_booking' : form_booking})
 
 def search_booking(request):
     if request.user.is_authenticated():
