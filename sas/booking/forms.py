@@ -94,11 +94,6 @@ class SearchBooking(forms.Form):
 
         return bookings
 
-        except Exception as e:
-            msg = _('Inputs are in invalid format')
-            print(e)
-            raise forms.ValidationError(msg)
-	
 
 class BookingForm(forms.Form):
 	name = forms.CharField(
