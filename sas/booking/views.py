@@ -1,9 +1,14 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import BookingForm, SearchBooking
+from .forms import BookingForm, SearchBooking, SearchBookingForm
 from .models import Booking
 from django.contrib import messages
 from sas.views import index
+
+def search_booking_query(request):
+	form_booking = SearchBookingForm()
+	return render(request, 'booking/searchBookingQuery.html',
+							{'search_booking': form_booking})
 
 def new_booking(request):
 	if request.user.is_authenticated():
