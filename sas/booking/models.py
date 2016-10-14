@@ -40,6 +40,19 @@ class BookTime(models.Model):
 	end_hour = models.TimeField(null=False, blank=False)
 	date_booking = models.DateField(null=False, blank=False)
 
+	def add_days(self, nr_days): 		
+		delta = timedelta(days=nr_days)
+		self.date_booking = self.date_booking + delta  	
+
+	def next_week_day(self, nr_weekday): 		
+		diff_of_weekdays = self.date_booking.weekday() - nr_weekday 		
+		if diff_of_weekdays > 0: 			
+			self.add_days(7 - diff_of_weekdays) 		
+		elif diff_of_weekdays < 0:
+			self.add_days(diff_of_weekdays * (-1)) 		
+		else:
+			self.add_days(7)
+
 	def get_str_weekday(self):
 		return self.date_booking.strftime("%A")
 
