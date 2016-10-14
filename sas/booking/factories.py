@@ -28,6 +28,7 @@ class BookingFactory(DjangoModelFactory):
 
 	user = factory.SubFactory(UserFactory)
 	place = FuzzyChoice(SPACES)
+	time = factory.SubFactory(BookTimeFactory)
 	name = factory.LazyAttribute(lambda x: fake.name())
 	start_date = FuzzyDate(datetime.date(2017, 01, 01), datetime.date(2017, 12, 31))
 	end_date = FuzzyDate(start_date, datetime.date(2017, 12, 31))
