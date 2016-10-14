@@ -48,6 +48,17 @@ class SearchBookingForm(forms.Form):
 			end_date = cleaned_data.get('end_date')
 			room_name = cleaned_data.get('room_name')
 			places = Place.objects.filter(name=room_name)
+
+			if not Place.objects.filter(name=room_name).exists():
+				msg = _('Doesnt exist any room with this name')
+				self.add_error('room_name', msg)
+				raise forms.ValidationError(msg)
+
+			if not Booking.objects.filter(name=booking_name).exists():
+				msg = _('Doesnt exist any booking with this name')
+				self.add_error('booking_name', msg)
+				raise forms.ValidationError(msg)
+
 			if not(today <= start_date <= end_date):
 				msg = _('Invalid booking period: Booking must be in future date')
 				self.add_error('start_date', msg)
