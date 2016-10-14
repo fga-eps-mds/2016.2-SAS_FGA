@@ -48,3 +48,4 @@ class BookTimeFactory(DjangoModelFactory):
 
 	start_hour = datetime.time(hour = FuzzyInteger(23), minute = FuzzyInteger(50, step = 10))
 	end_hour = datetime.time(hour = FuzzyInteger(start_hour.hour, 23), minute = FuzzyInteger(50, step = 10))
+	date_booking = FuzzyDate(datetime.date(2017, 01, 01), datetime.date(2017, 12, 31))
