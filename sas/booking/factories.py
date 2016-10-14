@@ -7,6 +7,7 @@ import radar
 from factory.fuzzy import FuzzyChoice, FuzzyDate, FuzzyInteger
 from user.factories import UserFactory
 from datetime import date, datetime, time
+from random import randrange, randint
 
 fake = FakerFactory.create()
 
@@ -24,15 +25,14 @@ class BookingFactory(DjangoModelFactory):
 
 	class Meta:
 		model = Booking
-		django_get_or_create = ('user', 'time', 'place', 'name', 'start_date', 'end_date')
+		django_get_or_create = ('place', 'name', 'start_date', 'end_date')
 
-	user = factory.SubFactory(UserFactory)
 	place = FuzzyChoice(SPACES)
-	time = (lambda : [self.booking_time.add(factory.SubFactory(BookTimeFactory)) for counter in range(5)])()
 	name = factory.LazyAttribute(lambda x: fake.name())
-	start_date = FuzzyDate(datetime.date(2017, 01, 01), datetime.date(2017, 12, 31))
-	end_date = FuzzyDate(start_date, datetime.date(2017, 12, 31))
+	start_date = FuzzyDate(datetime(2017, 1, 1), datetime(2017, 5, 31))
+	end_date = FuzzyDate(datetime(2017, 6, 1), datetime(2017, 12, 31))
 
+	@factory.post_generation
 	def booktimes(self, create, extracted, **kwargs):
 		if not create:
 			return
@@ -46,6 +46,6 @@ class BookTimeFactory(DjangoModelFactory):
 		model = BookTime
 		django_get_or_create = {'start_hour', 'end_hour', 'date_booking'}
 
-	start_hour = datetime.time(hour = FuzzyInteger(23), minute = FuzzyInteger(50, step = 10))
-	end_hour = datetime.time(hour = FuzzyInteger(start_hour.hour, 23), minute = FuzzyInteger(50, step = 10))
-	date_booking = FuzzyDate(datetime.date(2017, 01, 01), datetime.date(2017, 12, 31))
+	start_hour = time(hour = randint(0, 23), minute = randrange(0, 50, 10))
+	end_hour = time(hour = randint(int(start_hour.hour), 23), minute = randrange(0, 50, 10))
+	date_booking = FuzzyDate(datetime(2017, 1, 1), datetime(2017, 12, 31))
