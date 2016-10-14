@@ -80,39 +80,26 @@ class SearchBooking(forms.Form):
     end_date = forms.DateField(
          label=_('End Date:'),
          widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
-	
-    def clean(self):
+
+    def search(self):
         cleaned_data = super(SearchBooking,self).clean()
-        today = date.today()
-        now = datetime.now()
+        all_bookings = Booking.objects.all()
+        end_date = self.cleaned_data.get('end_date')
+        start_date = self.cleaned_data.get('start_date')
+        bookings = []
 
-        try:
-            start_date = cleaned_data.get('start_date')
-            end_date = cleaned_data.get('end_date')
-            room_name = cleaned_data.get('room_name')
-            places = Place.objects.filter(name=room_name)
-            if not(today <= start_date <= end_date):
-                msg = _('Invalid booking period: Booking must be in future date')
-                self.add_error('start_date', msg)
-                self.add_error('end_date', msg)
-                raise forms.ValidationError(msg)
+        for booking in all_bookings:
+            if not(booking.end_date < start_date or booking.start_date > end_date):
+                bookings.append(booking)
 
-            elif(end_date < start_date):
-                msg = _('End date must be after Start date')
-                self.add_error('start_date', msg)
-                self.add_error('end_date', msg)
-                raise forms.ValidationError(msg)
+        return bookings
 
-            if not(places.count() > 0):
-                msg = _('Doesnt exist any room with this name')
-                self.add_error('room_name', msg)
-                raise forms.ValidationError(msg)
-			
         except Exception as e:
             msg = _('Inputs are in invalid format')
             print(e)
             raise forms.ValidationError(msg)
 	
+
 class BookingForm(forms.Form):
 	name = forms.CharField(
 		label=_('Booking Name:'),
