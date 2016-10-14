@@ -43,7 +43,7 @@ class BookTimeFactory(DjangoModelFactory):
 
 	class Meta:
 		model = BookTime
-		django_get_or_create = {'start_hour', 'end_hour', 'date_booking'}
+		django_get_or_create = {'start_hour', 'end_hour', 'date_booking'} 
 
 	start_hour = time(hour = randint(0, 23), minute = randrange(0, 50, 10))
 	end_hour = time(hour = randint(int(start_hour.hour), 23), minute = randrange(0, 50, 10))
