@@ -12,6 +12,64 @@ from datetime import date, datetime, timedelta
 from booking.models import date_range
 import copy
 
+class SearchBookingForm(forms.Form):
+	SEARCH_CHOICES = (
+        ('opt0', ' Day x Room'),
+        ('opt1', ' Room x Period'),
+		('opt2', ' Booking x Week'),
+		('opt3', ' Room x Week'),
+    )
+
+	search_options = forms.ChoiceField(widget=forms.RadioSelect, choices=SEARCH_CHOICES)
+	
+	booking_name = forms.CharField(
+		label=_('Booking Name:'),
+		widget=forms.TextInput(attrs={'placeholder': ''}), required=False)
+	
+	room_name = forms.CharField(
+         label=_('Room Name:'),
+         widget=forms.TextInput(attrs={'placeholder': ''}), required=False)
+	
+	start_date = forms.DateField(
+		label=_('Start Date:'),
+		widget=forms.widgets.DateInput(attrs={'placeholder': ''}), required=False)
+	
+	end_date = forms.DateField(
+		label=_('End Date:'),
+		widget=forms.widgets.DateInput(attrs={'placeholder': ''}), required=False)
+
+	def clean(self):
+		cleaned_data = super(SearchBooking,self).clean()
+		today = date.today()
+		now = datetime.now()
+
+		try:
+			start_date = cleaned_data.get('start_date')
+			end_date = cleaned_data.get('end_date')
+			room_name = cleaned_data.get('room_name')
+			places = Place.objects.filter(name=room_name)
+			if not(today <= start_date <= end_date):
+				msg = _('Invalid booking period: Booking must be in future date')
+				self.add_error('start_date', msg)
+				self.add_error('end_date', msg)
+				raise forms.ValidationError(msg)
+
+			elif(end_date < start_date):
+				msg = _('End date must be after Start date')
+				self.add_error('start_date', msg)
+				self.add_error('end_date', msg)
+				raise forms.ValidationError(msg)
+
+			if not(places.count() > 0):
+				msg = _('Doesnt exist any room with this name')
+				self.add_error('room_name', msg)
+				raise forms.ValidationError(msg)
+
+		except Exception as e:
+			msg = _('Inputs are in invalid format')
+			print(e)
+			raise forms.ValidationError(msg)
+
 class SearchBooking(forms.Form):
     room_name = forms.CharField(
          label=_('Room Name:'),
