@@ -3,7 +3,9 @@ from booking.models import *
 from faker import Factory as FakerFactory
 from factory import *
 import factory
-from factory.fuzzy import FuzzyChoice
+import radar
+from factory.fuzzy import FuzzyChoice, FuzzyDate
+from user.factories import UserFactory
 
 fake = FakerFactory.create()
 
@@ -16,3 +18,22 @@ class PlaceFactory(DjangoModelFactory):
 	name = factory.Sequence(lambda x: 'I%s' % x)
 	capacity = factory.Sequence(lambda x: '%s' % x)
 	is_laboratory = False
+
+class BookingFactory(DjangoModelFactory):
+
+	class Meta:
+		model = Booking
+		django_get_or_create = ('user', 'time', 'place', 'name', 'start_date', 'end_date')
+
+	userFactory = factory.SubFactory(UserFactory)
+	user = userFactory
+	place = FuzzyChoice(SPACES)
+	name = factory.LazyAttribute(lambda x: fake.name())
+	start_date = factory.FuzzyDate(datetime.date(2017, 01, 01), datetime.date(2017, 12, 31))
+	end_date = factory.FuzzyDate(start_date, datetime.date(2017, 12, 31))
+
+class BookTimeFactory(DjangoModelFactory):
+
+	class Meta:
+		model = BookTime
+		django_get_or_create = {'start_hour', 'end_hour', 'date_booking'}
