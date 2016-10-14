@@ -8,6 +8,24 @@ from datetime import datetime, timedelta
 
 def search_booking_query(request):
 	form_booking = SearchBookingForm()
+	if request.method == "POST":
+		form_booking = SearchBookingForm(request.POST)
+		option = request.POST.get('search_options')
+		if not(form_booking.is_valid()):
+			return render(request, 'booking/searchBookingQuery.html',
+									{'search_booking': form_booking})
+		elif(option == 'opt_day_room'):
+			return index(request)
+			#view method from who was responsable for this table
+		elif(option == 'opt_room_period'):
+			pass
+			#view method from who was responsable for this table
+		elif(option == 'opt_building_day'):
+			pass
+			#view method from who was responsable for this table
+		else:
+			pass
+			#view method from who was responsable for opt_room_week table
 	return render(request, 'booking/searchBookingQuery.html',
 							{'search_booking': form_booking})
 

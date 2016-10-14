@@ -14,67 +14,76 @@ import copy
 
 class SearchBookingForm(forms.Form):
 	SEARCH_CHOICES = (
-        ('opt0', ' Day x Room'),
-        ('opt1', ' Room x Period'),
-		('opt2', ' Booking x Week'),
-		('opt3', ' Room x Week'),
+        ('opt_day_room', ' Day x Room'),
+        ('opt_room_period', ' Room x Period'),
+		('opt_building_day', ' Building x Day'),
+		('opt_room_week', ' Room x Week'),
     )
 
-	search_options = forms.ChoiceField(widget=forms.RadioSelect, choices=SEARCH_CHOICES)
-	
-	booking_name = forms.CharField(
-		label=_('Booking Name:'),
-		widget=forms.TextInput(attrs={'placeholder': ''}), required=False)
-	
-	room_name = forms.CharField(
-         label=_('Room Name:'),
-         widget=forms.TextInput(attrs={'placeholder': ''}), required=False)
-	
+	search_options = forms.ChoiceField(choices=SEARCH_CHOICES,widget=forms.RadioSelect())
+
 	start_date = forms.DateField(
 		label=_('Start Date:'),
 		widget=forms.widgets.DateInput(attrs={'placeholder': ''}), required=False)
-	
+
+	booking_name = forms.CharField(
+		label=_('Booking Name:'),
+		widget=forms.TextInput(attrs={'placeholder': ''}), required=False)
+
+	room_name = forms.ModelChoiceField(queryset=Place.objects, label=_('Place:'), required=False)
+	building_name = forms.ModelChoiceField(
+		queryset=Building.objects,
+		label=_('Building:'), required=False)
+
+	start_date = forms.DateField(
+		label=_('Start Date:'),
+		widget=forms.widgets.DateInput(attrs={'placeholder': ''}), required=False)
+
 	end_date = forms.DateField(
 		label=_('End Date:'),
 		widget=forms.widgets.DateInput(attrs={'placeholder': ''}), required=False)
 
 	def clean(self):
-		cleaned_data = super(SearchBooking,self).clean()
+		cleaned_data = super(SearchBookingForm,self).clean()
 		today = date.today()
 		now = datetime.now()
 
 		try:
+			option = cleaned_data.get('search_options')
 			start_date = cleaned_data.get('start_date')
 			end_date = cleaned_data.get('end_date')
-			room_name = cleaned_data.get('room_name')
-			places = Place.objects.filter(name=room_name)
+			booking_name = cleaned_data.get('booking_name')
+			room_name = cleaned_data.get('room_name').name
+			building_name = cleaned_data.get('building_name').name
 
-			if not Place.objects.filter(name=room_name).exists():
-				msg = _('Doesnt exist any room with this name')
-				self.add_error('room_name', msg)
-				raise forms.ValidationError(msg)
+			if(option == 'opt_building_day'):
+				if not Building.objects.filter(name=building_name).exists():
+					msg = _('Doesnt exist any building with this name')
+					self.add_error('building_name', msg)
+					raise forms.ValidationError(msg)
+			if(option == 'opt_day_room' or option == 'opt_room_week'):
+				if not Place.objects.filter(name=room_name).exists():
+					msg = _('Doesnt exist any room with this name')
+					self.add_error('room_name', msg)
+					raise forms.ValidationError(msg)
 
-			if not Booking.objects.filter(name=booking_name).exists():
-				msg = _('Doesnt exist any booking with this name')
-				self.add_error('booking_name', msg)
-				raise forms.ValidationError(msg)
+			if(option == 'opt_room_period'):
+				if not Booking.objects.filter(name=booking_name).exists():
+					msg = _('Doesnt exist any booking with this name')
+					self.add_error('booking_name', msg)
+					raise forms.ValidationError(msg)
+			if(option == 'opt_room_week'):
+				if not(today <= start_date <= end_date):
+					msg = _('Invalid booking period: Booking must be in future date')
+					self.add_error('start_date', msg)
+					self.add_error('end_date', msg)
+					raise forms.ValidationError(msg)
 
-			if not(today <= start_date <= end_date):
-				msg = _('Invalid booking period: Booking must be in future date')
-				self.add_error('start_date', msg)
-				self.add_error('end_date', msg)
-				raise forms.ValidationError(msg)
-
-			elif(end_date < start_date):
-				msg = _('End date must be after Start date')
-				self.add_error('start_date', msg)
-				self.add_error('end_date', msg)
-				raise forms.ValidationError(msg)
-
-			if not(places.count() > 0):
-				msg = _('Doesnt exist any room with this name')
-				self.add_error('room_name', msg)
-				raise forms.ValidationError(msg)
+				elif(end_date < start_date):
+					msg = _('End date must be after Start date')
+					self.add_error('start_date', msg)
+					self.add_error('end_date', msg)
+					raise forms.ValidationError(msg)
 
 		except Exception as e:
 			msg = _('Inputs are in invalid format')
