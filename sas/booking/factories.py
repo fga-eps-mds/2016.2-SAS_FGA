@@ -6,6 +6,7 @@ import factory
 import radar
 from factory.fuzzy import FuzzyChoice, FuzzyDate, FuzzyInteger
 from user.factories import UserFactory
+from datetime import date, datetime, time
 
 fake = FakerFactory.create()
 
