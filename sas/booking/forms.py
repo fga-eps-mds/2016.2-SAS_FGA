@@ -133,12 +133,12 @@ class SearchBooking(forms.Form):
                 msg = _('Doesnt exist any room with this name')
                 self.add_error('room_name', msg)
                 raise forms.ValidationError(msg)
-            '''booking = super(SearchBooking,self).search()
+            booking = self.search()
             if not booking:
-                msg = _('Doesn exist any booking in this period of time')
+                msg = _('Doesnt exist any booking in this period of time')
                 self.add_error('start_date', msg)
                 self.add_error('end_date', msg)
-                raise forms.ValidationError(msg)'''
+                raise forms.ValidationError(msg)
  
         except Exception as e:
             msg = _('Inputs are in invalid format')
