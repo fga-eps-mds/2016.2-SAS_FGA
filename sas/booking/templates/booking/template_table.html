@@ -19,10 +19,6 @@
   <table border='0' cellpadding='0' cellspacing='0'>
       <tr class='days'>
         <th></th>
-		{% for day in days %}
-		  <th>{{ day }}</th>
-        {% endfor %}
-      </tr>
     <tr>
       <td class='time'>08:00</td>
       <td class='cs335 blue' data-tooltip='Software Engineering &amp; Software Process'>CS335 [JH1]</td>
@@ -98,4 +94,21 @@
   </table>
 </div>
 
+<table border=10>
+  <th>Horário</th>
+  {% for day in days %}
+      <th>{{ day }}</th>
+  {% endfor %}
+  
+  {% for cell in table %}
+  <tr>
+    {% for cell_info in cell %}
+        <td>{{cell_info}}</td>
+    {% endfor %}
+  </tr>        
+    {% endfor %}
+
+  </tr> 
+    
+</table>
 {% endblock %}
