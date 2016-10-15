@@ -100,4 +100,22 @@
   </table>
 </div>
 
+<table border=10>
+  <th>Horário</th>
+  {% for day in days %}
+      <th>{{ day }}</th>
+  {% endfor %}
+  
+  {% for cell in table %}
+  <tr>
+    {% for cell_info in cell %}
+        <td>{{cell_info}}</td>
+    {% endfor %}
+  </tr>        
+    {% endfor %}
+
+  </tr> 
+    
+</table>
+
 {% endblock %}
