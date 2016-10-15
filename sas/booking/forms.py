@@ -15,9 +15,9 @@ import copy
 class SearchBookingForm(forms.Form):
 	SEARCH_CHOICES = (
         ('opt_day_room', ' Day x Room'),
-        ('opt_room_period', ' Room x Period'),
+        ('opt_booking_week', ' Booking x Week'),
 		('opt_building_day', ' Building x Day'),
-		('opt_room_week', ' Room x Week'),
+		('opt_room_period', ' Room x Period'),
     )
 
 	search_options = forms.ChoiceField(choices=SEARCH_CHOICES,widget=forms.RadioSelect())
@@ -51,28 +51,29 @@ class SearchBookingForm(forms.Form):
 		try:
 			option = cleaned_data.get('search_options')
 			start_date = cleaned_data.get('start_date')
-			end_date = cleaned_data.get('end_date')
-			booking_name = cleaned_data.get('booking_name')
-			room_name = cleaned_data.get('room_name').name
-			building_name = cleaned_data.get('building_name').name
 
 			if(option == 'opt_building_day'):
+				building_name = cleaned_data.get('building_name').name
 				if not Building.objects.filter(name=building_name).exists():
 					msg = _('Doesnt exist any building with this name')
 					self.add_error('building_name', msg)
 					raise forms.ValidationError(msg)
-			if(option == 'opt_day_room' or option == 'opt_room_week'):
+			if(option == 'opt_day_room' or option == 'opt_room_period'):
+				room_name = cleaned_data.get('room_name').name
 				if not Place.objects.filter(name=room_name).exists():
 					msg = _('Doesnt exist any room with this name')
 					self.add_error('room_name', msg)
 					raise forms.ValidationError(msg)
 
-			if(option == 'opt_room_period'):
+			if(option == 'opt_booking_week'):
+				booking_name = cleaned_data.get('booking_name')
 				if not Booking.objects.filter(name=booking_name).exists():
 					msg = _('Doesnt exist any booking with this name')
 					self.add_error('booking_name', msg)
 					raise forms.ValidationError(msg)
-			if(option == 'opt_room_week'):
+
+			if(option == 'opt_room_period'):
+				end_date = cleaned_data.get('end_date')
 				if not(today <= start_date <= end_date):
 					msg = _('Invalid booking period: Booking must be in future date')
 					self.add_error('start_date', msg)

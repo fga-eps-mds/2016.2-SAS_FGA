@@ -16,16 +16,16 @@ def search_booking_query(request):
 									{'search_booking': form_booking})
 		elif(option == 'opt_day_room'):
 			return index(request)
-			#view method from who was responsable for this table
-		elif(option == 'opt_room_period'):
+			#view method from who was responsable for this table - Fabiola
+		elif(option == 'opt_booking_week'):
 			pass
-			#view method from who was responsable for this table
+			#view method from who was responsable for this table - Meu
 		elif(option == 'opt_building_day'):
 			pass
-			#view method from who was responsable for this table
+			#view method from who was responsable for this table - Hugo
 		else:
 			pass
-			#view method from who was responsable for opt_room_week table
+			#view method from who was responsable for opt_room_period table - Luis
 	return render(request, 'booking/searchBookingQuery.html',
 							{'search_booking': form_booking})
 
