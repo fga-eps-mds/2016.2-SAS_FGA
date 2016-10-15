@@ -38,8 +38,6 @@ def search_booking_table(request):
             bookings = form_booking.search()
             days = form_booking.days_list()
             booking_name = request.POST.get('room_name')
-            
-            print('ue',days[-1])
 
             column = ['A','B','C','D','E','F']
             cont= timedelta(hours=0)
