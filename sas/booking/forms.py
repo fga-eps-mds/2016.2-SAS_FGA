@@ -31,6 +31,7 @@ class SearchBookingForm(forms.Form):
         widget=forms.TextInput(attrs={'placeholder': ''}), required=False)
 
     room_name = forms.ModelChoiceField(queryset=Place.objects, label=_('Place:'), required=False)
+    
     building_name = forms.ModelChoiceField(
         queryset=Building.objects,
         label=_('Building:'), required=False)
@@ -100,24 +101,32 @@ class SearchBookingForm(forms.Form):
 
             if(option == 'opt_room_period'):
                 end_date = cleaned_data.get('end_date')
+                
                 if not(today <= start_date <= end_date):
                     msg = _('Invalid booking period: Booking must be in future date')
                     self.add_error('start_date', msg)
                     self.add_error('end_date', msg)
                     raise forms.ValidationError(msg)
-
+                
                 elif(end_date < start_date):
                     msg = _('End date must be after Start date')
                     self.add_error('start_date', msg)
                     self.add_error('end_date', msg)
                     raise forms.ValidationError(msg)
+                
+                booking = self.search()
+                if not booking:
+                    msg = _('Doesnt exist any booking in this period of time')
+                    self.add_error('start_date', msg)
+                    self.add_error('end_date', msg)
+                    raise forms.ValidationError(msg)                    
 
         except Exception as e:
             msg = _('Inputs are in invalid format')
             print(e)
             raise forms.ValidationError(msg)
 
-
+    
 class BookingForm(forms.Form):
     name = forms.CharField(
         label=_('Booking Name:'),

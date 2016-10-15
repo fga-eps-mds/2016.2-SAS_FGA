@@ -8,7 +8,6 @@ import copy
 
 CATEGORY = (('', '----'), ('1', _('Student')), ('2', _('Teaching Staff')), ('3', _('Employees')))
 
-
 WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
 			('3', _("Thursday")), ('4', _("Friday")), ('5', _("Saturday")),
 			('6', _("Sunday")))
@@ -20,10 +19,10 @@ class Building(models.Model):
 		return self.name
 
 class Place(models.Model):
-	building = models.ForeignKey(Building, related_name='building')
 	name = models.CharField(max_length=200)
+	capacity = models.PositiveSmallIntegerField()
+	building = models.ForeignKey(Building, related_name='building')
 	location = models.CharField(max_length=50)
-	capacity = models.CharField(max_length=200)
 	place_id = models.CharField(max_length=200)
 	is_laboratory = models.BooleanField(default=False)
 
@@ -106,7 +105,7 @@ class Booking(models.Model):
 			return True
 		else:
 			return False
-
+			
 	def save(self, *args, **kwargs):
 		self.place.is_laboratory = False
 		if Place.objects.filter(name=self.place.name):

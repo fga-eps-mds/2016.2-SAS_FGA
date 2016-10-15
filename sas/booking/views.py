@@ -53,7 +53,7 @@ def search_booking_room_period(request,form_booking):
                     if (booktime.date_booking <= form_days[-1]) and (booktime.date_booking >= form_days[0]):
                         
                         for i in range(0,12):
-                            print('book',booktime.start_hour.timedelta())
+                            #print('book',booktime.start_hour.timedelta())
                             print('cont',cont)                            
                             if (booktime.start_hour == cont):
                                 print('ue')
@@ -112,7 +112,6 @@ def new_booking(request):
                     messages.error(request, _("Booking alread exists"))
         else:
             form_booking = BookingForm()
-
         return render(request, 'booking/newBooking.html',
                             {'form_booking': form_booking})
     else:
