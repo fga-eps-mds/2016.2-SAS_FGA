@@ -24,9 +24,10 @@ class BookingFactory(DjangoModelFactory):
 
 	class Meta:
 		model = Booking
-		django_get_or_create = ('place', 'name', 'start_date', 'end_date')
+		django_get_or_create = ('name', 'start_date', 'end_date')
 
-	place = FuzzyChoice(SPACES)
+
+	#place = factory.SubFactory(PlaceFactory)
 	name = factory.LazyAttribute(lambda x: fake.name())
 	start_date = FuzzyDate(datetime(2017, 1, 1), datetime(2017, 5, 31))
 	end_date = FuzzyDate(datetime(2017, 6, 1), datetime(2017, 12, 31))
@@ -48,3 +49,22 @@ class BookTimeFactory(DjangoModelFactory):
 	start_hour = time(hour = randint(0, 23), minute = randrange(0, 50, 10))
 	end_hour = time(hour = randint(int(start_hour.hour), 23), minute = randrange(0, 50, 10))
 	date_booking = FuzzyDate(datetime(2017, 1, 1), datetime(2017, 12, 31))
+
+"""class BuildingFactory(DjangoModelFactory):
+
+	class Meta:
+		model = Building
+		django_get_or_create = {'name'}
+
+	name = FuzzyChoice(BUILDINGS)
+
+class PlaceFactory(DjangoModelFactory):
+
+	class Meta:
+		model = Place
+		django_get_or_create = {'name', 'location', 'capacity', 'place_id'}
+
+	name = FuzzyChoice(SPACES)
+	location = FuzzyChoice(SPACES)
+	capacity = factory.Sequence(lambda n: "%d" % n)
+	place_id = factory.Sequence(lambda n: "%d" % n)"""

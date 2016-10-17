@@ -157,7 +157,7 @@ def confirm_booking(request, id):
         return index(request)
 
 def delete_booking(request, id):
-	if request.user.has_permission_to_delete() and request.session['booking']:
+	if request.user.has_perm('can_delete') and request.session['booking']:
 		id = int(id)
 		if id == request.session.get('booking'):
 			request.session.pop('booking')
