@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-17 16:05-0200\n"
+"POT-Creation-Date: 2016-10-17 16:49-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,31 +17,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: sas/templates/sas/base.html:39
+#: sas/templates/sas/base.html:61
 msgid "Message"
 msgstr ""
 
-#: sas/templates/sas/base.html:44
+#: sas/templates/sas/base.html:66
 msgid "Important"
 msgstr ""
 
-#: sas/templates/sas/base.html:50
+#: sas/templates/sas/base.html:72
 msgid "Close"
 msgstr ""
 
-#: sas/templates/sas/base.html:86
+#: sas/templates/sas/base.html:108
 msgid "Contact"
 msgstr ""
 
-#: sas/templates/sas/base.html:88
+#: sas/templates/sas/base.html:110
 msgid "Telephone"
 msgstr ""
 
-#: sas/templates/sas/base.html:89
+#: sas/templates/sas/base.html:111
 msgid "secretariat"
 msgstr ""
 
-#: sas/templates/sas/base.html:90
+#: sas/templates/sas/base.html:112
 msgid "direction"
 msgstr ""
 
@@ -125,155 +125,18 @@ msgstr ""
 msgid "Hi"
 msgstr ""
 
-#: sas/templates/sas/menu.html:37 user/templates/user/editUser.html:9
+#: sas/templates/sas/menu.html:38
 msgid "Personal Data"
 msgstr ""
 
-#: sas/templates/sas/menu.html:39
+#: sas/templates/sas/menu.html:41
 msgid "My Bookings"
 msgstr ""
 
-#: sas/templates/sas/menu.html:41
+#: sas/templates/sas/menu.html:45
 msgid "Logout"
 msgstr ""
 
-#: sas/templates/sas/menu.html:49
+#: sas/templates/sas/menu.html:53
 msgid "Sign In | Sign Up"
-msgstr ""
-
-#: user/forms.py:13 user/forms.py:76
-msgid "Email:"
-msgstr ""
-
-#: user/forms.py:16 user/forms.py:35 user/forms.py:81
-msgid "Password:"
-msgstr ""
-
-#: user/forms.py:24
-msgid "Email or Password does not match"
-msgstr ""
-
-#: user/forms.py:38
-msgid "New Password:"
-msgstr ""
-
-#: user/forms.py:41 user/forms.py:85
-msgid "Repeat Password:"
-msgstr ""
-
-#: user/forms.py:54
-msgid "Current password is wrong"
-msgstr ""
-
-#: user/forms.py:64
-msgid "Passwords do not match"
-msgstr ""
-
-#: user/forms.py:73
-msgid "Name:"
-msgstr ""
-
-#: user/forms.py:78
-msgid "Email address must be in a valid format."
-msgstr ""
-
-#: user/forms.py:89
-msgid "Registration number:"
-msgstr ""
-
-#: user/forms.py:91
-msgid "Category:"
-msgstr ""
-
-#: user/forms.py:119
-msgid "Email already used"
-msgstr ""
-
-#: user/forms.py:125
-msgid "Name must be between 2 and 50 characters."
-msgstr ""
-
-#: user/forms.py:128
-msgid "Name cannot contain special characters."
-msgstr ""
-
-#: user/forms.py:131
-msgid "Name cannot contain numbers."
-msgstr ""
-
-#: user/forms.py:156
-msgid "Password must be between 6 and 15 characters."
-msgstr ""
-
-#: user/forms.py:159
-msgid "Passwords do not match."
-msgstr ""
-
-#: user/models.py:6
-msgid "Student"
-msgstr ""
-
-#: user/models.py:7
-msgid "Teaching Staff"
-msgstr ""
-
-#: user/models.py:7
-msgid "Employees"
-msgstr ""
-
-#: user/models.py:11
-msgid "Registration Number already used."
-msgstr ""
-
-#: user/models.py:34
-msgid "Registration number must have 9 digits."
-msgstr ""
-
-#: user/models.py:37
-msgid "Registration number cannot contain letters."
-msgstr ""
-
-#: user/models.py:40
-msgid "Registration number cannot contain special characters."
-msgstr ""
-
-#: user/templates/user/editUser.html:5
-msgid "Edit user data"
-msgstr ""
-
-#: user/templates/user/editUser.html:20 user/templates/user/editUser.html:42
-#: user/templates/user/editUser.html:53
-msgid "Change Password"
-msgstr ""
-
-#: user/templates/user/editUser.html:24
-msgid "Save Data"
-msgstr ""
-
-#: user/templates/user/editUser.html:29
-msgid "Delete my Account"
-msgstr ""
-
-#: user/templates/user/newUser.html:5 user/templates/user/newUser.html:10
-msgid "New User"
-msgstr ""
-
-#: user/templates/user/newUser.html:17
-msgid "Register"
-msgstr ""
-
-#: user/views.py:18
-msgid "You have been registered"
-msgstr ""
-
-#: user/views.py:35
-msgid "Your data has been updated"
-msgstr ""
-
-#: user/views.py:73
-msgid "You have been logged out successfully!"
-msgstr ""
-
-#: user/views.py:92
-msgid "Your password has been changed"
 msgstr ""

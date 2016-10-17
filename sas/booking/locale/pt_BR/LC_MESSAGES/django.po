@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-17 16:05-0200\n"
+"POT-Creation-Date: 2016-10-17 16:49-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,104 +18,113 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: booking/forms.py:27 booking/forms.py:40 booking/forms.py:104
-#: booking/forms.py:135
+#: booking/forms.py:27 booking/forms.py:40 booking/forms.py:101
+#: booking/forms.py:131
 msgid "Start Date:"
 msgstr "Data Inicial"
 
-#: booking/forms.py:31 booking/forms.py:126
+#: booking/forms.py:31 booking/forms.py:122
 msgid "Booking Name:"
 msgstr "Nome da Reserva"
 
-#: booking/forms.py:34 booking/forms.py:145
+#: booking/forms.py:34 booking/forms.py:141
 msgid "Place:"
 msgstr "Espaço"
 
-#: booking/forms.py:37 booking/forms.py:142
+#: booking/forms.py:37 booking/forms.py:138
 msgid "Building:"
 msgstr "Prédio"
 
-#: booking/forms.py:44 booking/forms.py:107 booking/forms.py:138
+#: booking/forms.py:44 booking/forms.py:104 booking/forms.py:134
 msgid "End Date:"
 msgstr "Data Final"
 
-#: booking/forms.py:63
+#: booking/forms.py:60
 msgid "Doesnt exist any building with this name"
 msgstr ""
 
-#: booking/forms.py:69
+#: booking/forms.py:66
 msgid "Doesnt exist any room with this name"
 msgstr ""
 
-#: booking/forms.py:76
+#: booking/forms.py:73
 msgid "Doesnt exist any booking with this name"
 msgstr ""
 
-#: booking/forms.py:83
-msgid "Invalid booking period: Booking must be in future date"
-msgstr ""
-
-#: booking/forms.py:89
+#: booking/forms.py:80
 #, fuzzy
-#| msgid "End date must be after start date."
-msgid "End date must be after Start date"
-msgstr "A data final deve ser posterior a data inicial"
+#| msgid "Invalid booking period: Booking must be in future dates"
+msgid "Invalid booking period: Booking must be in future date"
+msgstr "Período de reserva inválido: Reserva precisa ser em datas futuras"
 
-#: booking/forms.py:95
-msgid "Inputs are in invalid format"
+#: booking/forms.py:86
+msgid "End date must be after Start date"
 msgstr ""
 
-#: booking/forms.py:101
+#: booking/forms.py:92
+#, fuzzy
+#| msgid "Inputs are invalid"
+msgid "Inputs are in invalid format"
+msgstr "Valores informados inválidos"
+
+#: booking/forms.py:98
 #, fuzzy
 #| msgid "Booking Name:"
 msgid "Room Name:"
 msgstr "Nome da Reserva"
 
-#: booking/forms.py:129
+#: booking/forms.py:125
 msgid "Start Time:"
 msgstr "Hora Inicial"
 
-#: booking/forms.py:132
+#: booking/forms.py:128
 msgid "End Time:"
 msgstr "Hora Final"
 
-#: booking/forms.py:146
+#: booking/forms.py:132 booking/forms.py:135
+#: booking/templates/booking/searchBookingQuery.html:40
+msgid "mm/dd/yyyy"
+msgstr "dd/mm/yyyy"
+
+#: booking/forms.py:142
 msgid "Days of week: "
 msgstr "Dias da Semana"
 
-#: booking/forms.py:178
+#: booking/forms.py:174
 msgid "Failed to book selected period"
-msgstr ""
+msgstr "Falha ao reservar no período selecionado"
 
-#: booking/forms.py:190
-msgid "Select a repeating standard for the period you selected"
-msgstr ""
+#: booking/forms.py:188
+msgid "Select a repeating standard for the date interval"
+msgstr "Selecione um padrão de repetição para este intervalo de data"
+
+#: booking/forms.py:195
+msgid "Period invalid"
+msgstr "Período inválido"
 
 #: booking/forms.py:209
 msgid "Invalid booking period: Booking must be in future dates"
-msgstr ""
+msgstr "Período de reserva inválido: Reserva precisa ser em datas futuras"
 
 #: booking/forms.py:216
-#, fuzzy
-#| msgid "End date must be after current date."
 msgid "Invalid booking hours: Time must be after current hour"
-msgstr "A data final deve ser posterior a data atual"
+msgstr "Hora de reserva inválida: Horário precisa ser posterior a hora atual"
 
 #: booking/forms.py:222
-msgid "Inputs are in an invalid format"
-msgstr ""
+msgid "Inputs are invalid"
+msgstr "Valores informados inválidos"
 
 #: booking/models.py:9
 msgid "Student"
-msgstr "Aluno"
+msgstr ""
 
 #: booking/models.py:9
 msgid "Teaching Staff"
-msgstr "Professores"
+msgstr ""
 
 #: booking/models.py:9
 msgid "Employees"
-msgstr "Corpo Acadêmico"
+msgstr ""
 
 #: booking/models.py:11
 msgid "Monday"
@@ -180,14 +189,12 @@ msgstr "Espaço"
 #: booking/templates/booking/searchBooking.html:25
 #: booking/templates/booking/searchBooking.html:60
 msgid "Period"
-msgstr ""
+msgstr "Período"
 
 #: booking/templates/booking/searchBooking.html:26
 #: booking/templates/booking/searchBooking.html:61
-#, fuzzy
-#| msgid "End Time:"
 msgid "Date and Time"
-msgstr "Hora Final"
+msgstr "Data e Hora"
 
 #: booking/templates/booking/searchBooking.html:27
 msgid "Delete"
@@ -196,31 +203,23 @@ msgstr "Excluir"
 #: booking/templates/booking/searchBooking.html:36
 #: booking/templates/booking/searchBooking.html:41
 msgid " to "
-msgstr ""
+msgstr " a "
 
 #: booking/templates/booking/searchBookingQuery.html:7
-#, fuzzy
-#| msgid "New Booking"
 msgid "Search Booking"
-msgstr "Nova Reserva"
+msgstr "Buscar Reservas"
 
 #: booking/templates/booking/searchBookingQuery.html:21
 msgid "Search"
-msgstr "Pesquisar"
-
-#: booking/templates/booking/searchBookingQuery.html:40
-msgid "mm/dd/yyyy"
-msgstr "dd/mm/yyyy"
+msgstr ""
 
 #: booking/templates/booking/searchBookingQuery.html:41
 msgid "en"
 msgstr "pt-BR"
 
 #: booking/templates/booking/searchBookingTable.html:20
-#, fuzzy
-#| msgid "Search"
 msgid "Perform Search"
-msgstr "Pesquisar"
+msgstr ""
 
 #: booking/templates/booking/showDates.html:13
 msgid "Booking Summary"
@@ -269,188 +268,3 @@ msgstr "Reserva salva."
 #: booking/views.py:165
 msgid "You cannot confirm this booking"
 msgstr "Você não pode confirmar esta reserva"
-
-#~ msgid "Email:"
-#~ msgstr "Email"
-
-#~ msgid "Password:"
-#~ msgstr "Senha"
-
-#~ msgid "Email or Password does not match"
-#~ msgstr "Email ou Senha inválidos"
-
-#~ msgid "New Password:"
-#~ msgstr "Nova Senha"
-
-#~ msgid "Repeat Password:"
-#~ msgstr "Confirmar Senha"
-
-#~ msgid "Password is wrong"
-#~ msgstr "A senha está errada"
-
-#~ msgid "Passwords do not match"
-#~ msgstr "Senhas não compatíveis"
-
-#~ msgid "Name:"
-#~ msgstr "Nome"
-
-#~ msgid "Registration number:"
-#~ msgstr "Matrícula"
-
-#~ msgid "Category:"
-#~ msgstr "Categoria"
-
-#~ msgid "Email already used"
-#~ msgstr "Email já está sendo usado"
-
-#~ msgid "Name must be between 2 and 50 characters."
-#~ msgstr "Nome deve conter entre 2 e 50 caracteres."
-
-#~ msgid "Name cannot contain special characters."
-#~ msgstr "Nome não pode conter caracterers especiais."
-
-#~ msgid "Name cannot contain numbers."
-#~ msgstr "Nome não pode conter números."
-
-#~ msgid "Password must be between 6 and 15 characters."
-#~ msgstr "Senha deve ter entre 6 e 15 caracteres."
-
-#~ msgid "Passwords do not match."
-#~ msgstr "Senhas não compatíveis"
-
-#~ msgid "Start date must be after current date."
-#~ msgstr "A data inicial deve ser posterior a data atual"
-
-#~ msgid "End hour must occur after start hour."
-#~ msgstr "Hora final deve ser posterior a hora inicial"
-
-#~ msgid "End hour must occur after current hour for a booking today"
-#~ msgstr "Hora final deve ser posterior a hora atual para reservas hoje"
-
-#~ msgid "Registration number must have 9 digits."
-#~ msgstr "Matrícula deve ter 9 dígitos."
-
-#~ msgid "Registration number cannot contain letters."
-#~ msgstr "Matrícula não pode conter letras."
-
-#~ msgid "Registration number cannot contain special characters."
-#~ msgstr "Matrícula não pode conter caracteres especiais."
-
-#~ msgid "Message"
-#~ msgstr "Mensagem"
-
-#~ msgid "Important"
-#~ msgstr "Importante"
-
-#~ msgid "Close"
-#~ msgstr "Fechar"
-
-#~ msgid "Contact"
-#~ msgstr "Contato"
-
-#~ msgid "Telephone"
-#~ msgstr "Telefone"
-
-#~ msgid "secretariat"
-#~ msgstr "secretaria"
-
-#~ msgid "direction"
-#~ msgstr "direção"
-
-#~ msgid "Edit user data"
-#~ msgstr "Editar dados do usuário"
-
-#~ msgid "Personal Data"
-#~ msgstr "Meus Dados"
-
-#~ msgid "Change Password"
-#~ msgstr "Alterar Senha"
-
-#~ msgid "Save Data"
-#~ msgstr "Salvar Dados"
-
-#~ msgid "Delete my Account"
-#~ msgstr "Excluir minha Conta"
-
-#~ msgid "Welcome"
-#~ msgstr "Bem-Vindo(a)"
-
-#~ msgid "Rooms Allocation System"
-#~ msgstr "Sistema de Alocação de Salas"
-
-#~ msgid ""
-#~ "Booking rooms, auditoriums and laboratories for teachers, students <br> "
-#~ "and all the academic body of the university"
-#~ msgstr ""
-#~ "Reserva de salas, auditórios e laboratórios para professores, alunos <br> "
-#~ "e todo o corpo acadêmico da universidade"
-
-#~ msgid "Homepage"
-#~ msgstr "Página Inicial"
-
-#~ msgid "Remember me"
-#~ msgstr "Lembrar dados"
-
-#~ msgid "Sign In"
-#~ msgstr "Entrar"
-
-#~ msgid "Forgot Password"
-#~ msgstr "Esqueci minha Senha"
-
-#~ msgid "I'm not registered yet"
-#~ msgstr "Ainda não sou cadastrado"
-
-#~ msgid "Registered user can book"
-#~ msgstr "Usuário registrado pode reservar"
-
-#~ msgid " Laboratories"
-#~ msgstr " Laboratórios"
-
-#~ msgid " Auditoriums"
-#~ msgstr " Auditórios"
-
-#~ msgid " Rooms"
-#~ msgstr " Salas"
-
-#~ msgid "Sign Up"
-#~ msgstr "Cadastrar"
-
-#~ msgid ""
-#~ "Type your email and an automatic message will be sent to it containing a "
-#~ "new password. This must be changed posteriorly."
-#~ msgstr ""
-#~ "Escreva seu email e uma mensagem automática será enviada a ele contendo "
-#~ "sua nova senha. A mesma deve ser modificada posteriormente."
-
-#~ msgid "Recover Password"
-#~ msgstr "Recuperar Senha"
-
-#~ msgid "Home"
-#~ msgstr "Início"
-
-#~ msgid "Bookings"
-#~ msgstr "Reservas"
-
-#~ msgid "Hi"
-#~ msgstr "Olá"
-
-#~ msgid "Logout"
-#~ msgstr "Sair"
-
-#~ msgid "Sign In | Sign Up"
-#~ msgstr "Entrar"
-
-#~ msgid "New User"
-#~ msgstr "Novo Usuário"
-
-#~ msgid "Register"
-#~ msgstr "Cadastrar"
-
-#~ msgid "You have been registered"
-#~ msgstr "Seus dados foram registrados"
-
-#~ msgid "Your data has been updated"
-#~ msgstr "Seus dados foram atualizados"
-
-#~ msgid "Your password has been changed"
-#~ msgstr "Sua senha foi modificada"
