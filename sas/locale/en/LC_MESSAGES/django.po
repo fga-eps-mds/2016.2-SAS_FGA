@@ -1,0 +1,279 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-10-16 23:26-0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: sas/templates/sas/base.html:61
+msgid "Message"
+msgstr ""
+
+#: sas/templates/sas/base.html:66
+msgid "Important"
+msgstr ""
+
+#: sas/templates/sas/base.html:72
+msgid "Close"
+msgstr ""
+
+#: sas/templates/sas/base.html:108
+msgid "Contact"
+msgstr ""
+
+#: sas/templates/sas/base.html:110
+msgid "Telephone"
+msgstr ""
+
+#: sas/templates/sas/base.html:111
+msgid "secretariat"
+msgstr ""
+
+#: sas/templates/sas/base.html:112
+msgid "direction"
+msgstr ""
+
+#: sas/templates/sas/home.html:11 sas/templates/sas/index.html:12
+msgid "Welcome"
+msgstr ""
+
+#: sas/templates/sas/home.html:12 sas/templates/sas/index.html:13
+msgid "Rooms Allocation System"
+msgstr ""
+
+#: sas/templates/sas/home.html:14 sas/templates/sas/index.html:15
+msgid ""
+"Booking rooms, auditoriums and laboratories for teachers, students <br> and "
+"all the academic body of the university"
+msgstr ""
+
+#: sas/templates/sas/index.html:6
+msgid "Homepage"
+msgstr ""
+
+#: sas/templates/sas/index.html:40
+msgid "Remember me"
+msgstr ""
+
+#: sas/templates/sas/index.html:46
+msgid "Sign In"
+msgstr ""
+
+#: sas/templates/sas/index.html:50 sas/templates/sas/index.html:75
+msgid "Forgot Password"
+msgstr ""
+
+#: sas/templates/sas/index.html:56
+msgid "I'm not registered yet"
+msgstr ""
+
+#: sas/templates/sas/index.html:58
+msgid "Registered user can book"
+msgstr ""
+
+#: sas/templates/sas/index.html:59
+msgid " Laboratories"
+msgstr ""
+
+#: sas/templates/sas/index.html:60
+msgid " Auditoriums"
+msgstr ""
+
+#: sas/templates/sas/index.html:61
+msgid " Rooms"
+msgstr ""
+
+#: sas/templates/sas/index.html:63
+msgid "Sign Up"
+msgstr ""
+
+#: sas/templates/sas/index.html:80
+msgid ""
+"Type your email and an automatic message will be sent to it containing a new "
+"password. This must be changed posteriorly."
+msgstr ""
+
+#: sas/templates/sas/index.html:86
+msgid "Recover Password"
+msgstr ""
+
+#: sas/templates/sas/menu.html:16
+msgid "Home"
+msgstr ""
+
+#: sas/templates/sas/menu.html:17
+msgid "Search"
+msgstr ""
+
+#: sas/templates/sas/menu.html:19
+msgid "Bookings"
+msgstr ""
+
+#: sas/templates/sas/menu.html:32
+msgid "Hi"
+msgstr ""
+
+#: sas/templates/sas/menu.html:38 user/templates/user/editUser.html:9
+msgid "Personal Data"
+msgstr ""
+
+#: sas/templates/sas/menu.html:41
+msgid "My Bookings"
+msgstr ""
+
+#: sas/templates/sas/menu.html:45
+msgid "Logout"
+msgstr ""
+
+#: sas/templates/sas/menu.html:53
+msgid "Sign In | Sign Up"
+msgstr ""
+
+#: user/forms.py:13 user/forms.py:76
+msgid "Email:"
+msgstr ""
+
+#: user/forms.py:16 user/forms.py:35 user/forms.py:81
+msgid "Password:"
+msgstr ""
+
+#: user/forms.py:24
+msgid "Email or Password does not match"
+msgstr ""
+
+#: user/forms.py:38
+msgid "New Password:"
+msgstr ""
+
+#: user/forms.py:41 user/forms.py:85
+msgid "Repeat Password:"
+msgstr ""
+
+#: user/forms.py:54
+msgid "Current password is wrong"
+msgstr ""
+
+#: user/forms.py:64
+msgid "Passwords do not match"
+msgstr ""
+
+#: user/forms.py:73
+msgid "Name:"
+msgstr ""
+
+#: user/forms.py:78
+msgid "Email address must be in a valid format."
+msgstr ""
+
+#: user/forms.py:89
+msgid "Registration number:"
+msgstr ""
+
+#: user/forms.py:91
+msgid "Category:"
+msgstr ""
+
+#: user/forms.py:119
+msgid "Email already used"
+msgstr ""
+
+#: user/forms.py:125
+msgid "Name must be between 2 and 50 characters."
+msgstr ""
+
+#: user/forms.py:128
+msgid "Name cannot contain special characters."
+msgstr ""
+
+#: user/forms.py:131
+msgid "Name cannot contain numbers."
+msgstr ""
+
+#: user/forms.py:156
+msgid "Password must be between 6 and 15 characters."
+msgstr ""
+
+#: user/forms.py:159
+msgid "Passwords do not match."
+msgstr ""
+
+#: user/models.py:6
+msgid "Student"
+msgstr ""
+
+#: user/models.py:7
+msgid "Teaching Staff"
+msgstr ""
+
+#: user/models.py:7
+msgid "Employees"
+msgstr ""
+
+#: user/models.py:11
+msgid "Registration Number already used."
+msgstr ""
+
+#: user/models.py:34
+msgid "Registration number must have 9 digits."
+msgstr ""
+
+#: user/models.py:37
+msgid "Registration number cannot contain letters."
+msgstr ""
+
+#: user/models.py:40
+msgid "Registration number cannot contain special characters."
+msgstr ""
+
+#: user/templates/user/editUser.html:5
+msgid "Edit user data"
+msgstr ""
+
+#: user/templates/user/editUser.html:20 user/templates/user/editUser.html:42
+#: user/templates/user/editUser.html:53
+msgid "Change Password"
+msgstr ""
+
+#: user/templates/user/editUser.html:24
+msgid "Save Data"
+msgstr ""
+
+#: user/templates/user/editUser.html:29
+msgid "Delete my Account"
+msgstr ""
+
+#: user/templates/user/newUser.html:5 user/templates/user/newUser.html:10
+msgid "New User"
+msgstr ""
+
+#: user/templates/user/newUser.html:17
+msgid "Register"
+msgstr ""
+
+#: user/views.py:18
+msgid "You have been registered"
+msgstr ""
+
+#: user/views.py:35
+msgid "Your data has been updated"
+msgstr ""
+
+#: user/views.py:73
+msgid "You have been logged out successfully!"
+msgstr ""
+
+#: user/views.py:92
+msgid "Your password has been changed"
+msgstr ""

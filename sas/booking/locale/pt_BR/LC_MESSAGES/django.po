@@ -117,6 +117,66 @@ msgstr "Professores"
 msgid "Employees"
 msgstr "Corpo Acadêmico"
 
+#: booking/forms.py:18
+msgid "Booking Name:"
+msgstr "Nome da Reserva"
+
+#: booking/forms.py:21
+msgid "Start Time:"
+msgstr "Hora Inicial"
+
+#: booking/forms.py:24
+msgid "End Time:"
+msgstr "Hora Final"
+
+#: booking/forms.py:27
+msgid "Start Date:"
+msgstr "Data Inicial"
+
+#: booking/forms.py:28 booking/forms.py:31
+msgid "mm/dd/yyyy"
+msgstr "dd/mm/yyyy"
+
+#: booking/forms.py:30
+msgid "End Date:"
+msgstr "Data Final"
+
+#: booking/forms.py:34
+msgid "Building:"
+msgstr "Prédio"
+
+#: booking/forms.py:35
+msgid "Place:"
+msgstr "Espaço"
+
+#: booking/forms.py:36
+msgid "Days of week: "
+msgstr "Dias da Semana"
+
+#: booking/forms.py:68
+msgid "Failed to book selected period"
+msgstr "Falha ao reservar no período selecionado"
+
+#: booking/forms.py:81
+msgid "Select a repeating standard for the date interval"
+msgstr "Selecione um padrão de repetição para este intervalo de data"
+
+#: booking/forms.py:88
+msgid "Period invalid"
+msgstr "Período inválido"
+
+#: booking/forms.py:102
+msgid "Invalid booking period: Booking must be in future dates"
+msgstr "Período de reserva inválido: Reserva precisa ser em datas futuras"
+
+#: booking/forms.py:109
+msgid "Invalid booking hours: Time must be after current hour"
+msgstr "Hora de reserva inválida: Horário precisa ser posterior a hora atual"
+
+#: booking/forms.py:115
+msgid "Inputs are invalid"
+msgstr "Valores informados inválidos"
+
 #: booking/models.py:11
 msgid "Monday"
 msgstr "Segunda"
@@ -180,7 +240,7 @@ msgstr "Espaço"
 #: booking/templates/booking/searchBooking.html:25
 #: booking/templates/booking/searchBooking.html:60
 msgid "Period"
-msgstr ""
+msgstr "Período"
 
 #: booking/templates/booking/searchBooking.html:26
 #: booking/templates/booking/searchBooking.html:61
@@ -189,6 +249,12 @@ msgstr ""
 msgid "Date and Time"
 msgstr "Hora Final"
 
+
+#: booking/templates/booking/searchBooking.html:26
+#: booking/templates/booking/searchBooking.html:61
+msgid "Date and Time"
+msgstr "Data e Hora"
+
 #: booking/templates/booking/searchBooking.html:27
 msgid "Delete"
 msgstr "Excluir"
@@ -196,7 +262,7 @@ msgstr "Excluir"
 #: booking/templates/booking/searchBooking.html:36
 #: booking/templates/booking/searchBooking.html:41
 msgid " to "
-msgstr ""
+msgstr " a "
 
 #: booking/templates/booking/searchBookingQuery.html:7
 #, fuzzy
@@ -246,6 +312,7 @@ msgstr "Cancelar"
 msgid "Confirm"
 msgstr "Confirmar"
 
+
 #: booking/templates/booking/template_table.html:11
 msgid "Template Bookings Reports"
 msgstr ""
@@ -270,6 +337,23 @@ msgstr "Reserva salva."
 msgid "You cannot confirm this booking"
 msgstr "Você não pode confirmar esta reserva"
 
+#: booking/views.py:19
+msgid "Booking alread exists"
+msgstr "Esta reserva já existe"
+
+#: booking/views.py:45
+msgid "Booking has been canceled"
+msgstr "Esta reserva foi cancelada"
+
+#: booking/views.py:48
+msgid "You cannot cancel this booking"
+msgstr "Você não pode cancelar esta reserva"
+
+#: booking/views.py:59
+msgid "Booking has been saved."
+msgstr "Reserva salva."
+
+#: booking/views.py:62
 #~ msgid "Email:"
 #~ msgstr "Email"
 
