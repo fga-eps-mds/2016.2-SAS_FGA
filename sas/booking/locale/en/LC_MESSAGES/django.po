@@ -1,0 +1,258 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-10-17 16:05-0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: booking/forms.py:27 booking/forms.py:40 booking/forms.py:104
+#: booking/forms.py:135
+msgid "Start Date:"
+msgstr ""
+
+#: booking/forms.py:31 booking/forms.py:126
+msgid "Booking Name:"
+msgstr ""
+
+#: booking/forms.py:34 booking/forms.py:145
+msgid "Place:"
+msgstr ""
+
+#: booking/forms.py:37 booking/forms.py:142
+msgid "Building:"
+msgstr ""
+
+#: booking/forms.py:44 booking/forms.py:107 booking/forms.py:138
+msgid "End Date:"
+msgstr ""
+
+#: booking/forms.py:63
+msgid "Doesnt exist any building with this name"
+msgstr ""
+
+#: booking/forms.py:69
+msgid "Doesnt exist any room with this name"
+msgstr ""
+
+#: booking/forms.py:76
+msgid "Doesnt exist any booking with this name"
+msgstr ""
+
+#: booking/forms.py:83
+msgid "Invalid booking period: Booking must be in future date"
+msgstr ""
+
+#: booking/forms.py:89
+msgid "End date must be after Start date"
+msgstr ""
+
+#: booking/forms.py:95
+msgid "Inputs are in invalid format"
+msgstr ""
+
+#: booking/forms.py:101
+msgid "Room Name:"
+msgstr ""
+
+#: booking/forms.py:129
+msgid "Start Time:"
+msgstr ""
+
+#: booking/forms.py:132
+msgid "End Time:"
+msgstr ""
+
+#: booking/forms.py:146
+msgid "Days of week: "
+msgstr ""
+
+#: booking/forms.py:178
+msgid "Failed to book selected period"
+msgstr ""
+
+#: booking/forms.py:190
+msgid "Select a repeating standard for the period you selected"
+msgstr ""
+
+#: booking/forms.py:209
+msgid "Invalid booking period: Booking must be in future dates"
+msgstr ""
+
+#: booking/forms.py:216
+msgid "Invalid booking hours: Time must be after current hour"
+msgstr ""
+
+#: booking/forms.py:222
+msgid "Inputs are in an invalid format"
+msgstr ""
+
+#: booking/models.py:9
+msgid "Student"
+msgstr ""
+
+#: booking/models.py:9
+msgid "Teaching Staff"
+msgstr ""
+
+#: booking/models.py:9
+msgid "Employees"
+msgstr ""
+
+#: booking/models.py:11
+msgid "Monday"
+msgstr ""
+
+#: booking/models.py:11
+msgid "Tuesday"
+msgstr ""
+
+#: booking/models.py:11
+msgid "Wednesday"
+msgstr ""
+
+#: booking/models.py:12
+msgid "Thursday"
+msgstr ""
+
+#: booking/models.py:12
+msgid "Friday"
+msgstr ""
+
+#: booking/models.py:12
+msgid "Saturday"
+msgstr ""
+
+#: booking/models.py:13
+msgid "Sunday"
+msgstr ""
+
+#: booking/templates/booking/newBooking.html:7
+#: booking/templates/booking/searchBookingTable.html:7
+#: booking/templates/booking/showDates.html:7
+msgid "New Booking"
+msgstr ""
+
+#: booking/templates/booking/newBooking.html:13
+#: booking/templates/booking/searchBookingQuery.html:12
+#: booking/templates/booking/searchBookingTable.html:13
+msgid "Rooms Booking"
+msgstr ""
+
+#: booking/templates/booking/newBooking.html:20
+msgid "Perform Booking"
+msgstr ""
+
+#: booking/templates/booking/searchBooking.html:13
+#: booking/templates/booking/searchBooking.html:17
+msgid "My Bookings"
+msgstr ""
+
+#: booking/templates/booking/searchBooking.html:23
+#: booking/templates/booking/searchBooking.html:58
+msgid "Name"
+msgstr ""
+
+#: booking/templates/booking/searchBooking.html:24
+#: booking/templates/booking/searchBooking.html:59
+#: booking/templates/booking/showDates.html:17
+msgid "Place"
+msgstr ""
+
+#: booking/templates/booking/searchBooking.html:25
+#: booking/templates/booking/searchBooking.html:60
+msgid "Period"
+msgstr ""
+
+#: booking/templates/booking/searchBooking.html:26
+#: booking/templates/booking/searchBooking.html:61
+msgid "Date and Time"
+msgstr ""
+
+#: booking/templates/booking/searchBooking.html:27
+msgid "Delete"
+msgstr ""
+
+#: booking/templates/booking/searchBooking.html:36
+#: booking/templates/booking/searchBooking.html:41
+msgid " to "
+msgstr ""
+
+#: booking/templates/booking/searchBookingQuery.html:7
+msgid "Search Booking"
+msgstr ""
+
+#: booking/templates/booking/searchBookingQuery.html:21
+msgid "Search"
+msgstr ""
+
+#: booking/templates/booking/searchBookingQuery.html:40
+msgid "mm/dd/yyyy"
+msgstr ""
+
+#: booking/templates/booking/searchBookingQuery.html:41
+msgid "en"
+msgstr ""
+
+#: booking/templates/booking/searchBookingTable.html:20
+msgid "Perform Search"
+msgstr ""
+
+#: booking/templates/booking/showDates.html:13
+msgid "Booking Summary"
+msgstr ""
+
+#: booking/templates/booking/showDates.html:15
+msgid "Booking"
+msgstr ""
+
+#: booking/templates/booking/showDates.html:18
+msgid "Start Date"
+msgstr ""
+
+#: booking/templates/booking/showDates.html:19
+msgid "End Date"
+msgstr ""
+
+#: booking/templates/booking/showDates.html:41
+msgid "Cancel"
+msgstr ""
+
+#: booking/templates/booking/showDates.html:45
+msgid "Confirm"
+msgstr ""
+
+#: booking/templates/booking/template_table.html:11
+msgid "Template Bookings Reports"
+msgstr ""
+
+#: booking/views.py:112
+msgid "Booking alread exists"
+msgstr ""
+
+#: booking/views.py:148
+msgid "Booking has been canceled"
+msgstr ""
+
+#: booking/views.py:151
+msgid "You cannot cancel this booking"
+msgstr ""
+
+#: booking/views.py:162
+msgid "Booking has been saved."
+msgstr ""
+
+#: booking/views.py:165
+msgid "You cannot confirm this booking"
+msgstr ""
