@@ -43,13 +43,12 @@
         });
     });
 		$(document).ready(function () {
-		    $('#id_building').change(function () {
-						$("#id_place").prop('selectedIndex',0);
+		    $('#id_building_name').change(function () {
+						$("#id_room_name").prop('selectedIndex',0);
 		        var selected_building = $(this).find(":selected").text();
-						console.log(selected_building);
-						$("#id_place option").hide();
-						$("#id_place option").filter(function(){
-						    return $.trim($(this).text()).contains(selected_building)
+						$("#id_room_name option").hide();
+						$("#id_room_name option").filter(function(){
+						    return $.trim($(this).text()).indexOf(selected_building) != -1
 						}).show();
 		    });
 		});

@@ -44,18 +44,18 @@ def search_booking_room_period(request,form_booking):
     table =[]
     skip = 0
     aux_rows = []
-    
+
     for form_day in form_days:
-        i=0              
+        i=0
         for booktime in BookTime.objects.filter(date_booking = str(form_day)):
             if booktime is not None:
                 booking = Booking.objects.get(time__pk = booktime.pk)
                 if (booking.place.name == booking_place.name):
                     if (booktime.date_booking <= form_days[-1]) and (booktime.date_booking >= form_days[0]):
-                        
+
                         for i in range(0,12):
                             #print('book',booktime.start_hour.timedelta())
-                            print('cont',cont)                            
+                            print('cont',cont)
                             if (booktime.start_hour == cont):
                                 print('ue')
                                 time.insert(i,cont)
@@ -63,20 +63,20 @@ def search_booking_room_period(request,form_booking):
                                 aux = 1
                             cont += timedelta(hours=2)
                             aux = 0
-                        cont = timedelta(hours=0)        
+                        cont = timedelta(hours=0)
 
                         days.append(booktime.date_booking)
                         aux_rows.append(booking.name)
-                        skip += 1 
-                            
-        
+                        skip += 1
+
+
         if aux == 1:
             print('aux_rows',aux_rows)
             rows.insert(i,aux_rows)
-        
+
         aux_rows = []
-        aux_rows = next(skip,aux_rows)    
-        
+        aux_rows = next(skip,aux_rows)
+
         aux = 0
     i=0
     aux_table = []
@@ -85,21 +85,19 @@ def search_booking_room_period(request,form_booking):
         aux_table = []
         if times:
             aux_table.append(times)
-            for row in rows[i]:  
+            for row in rows[i]:
                 aux_table.append(row)
-            i+=1        
-        table.append(aux_table)        
-    days = [x for x in range(8)]
-    table = [ [],[(1,'asdf'),(2,'a')],[(0,'oij')],[(3,'e'),(4,'ee')],[(2,'m'),(3,'oi')],[],[(0,'odi')],[]]
-    hours = ("8-10","10-12","12-14","14-16","16-18")
-    print('table',table)    
+            i+=1
+        table.append(aux_table)
 
-    return render(request, 'booking/template_table.html', {'n':9,'hours':hours,'days' : days, 'table':table})
+    print('table',table)
+
+    return render(request, 'booking/template_table.html', {'days' : days, 'table':table})
 
 def next(skip,aux_rows):
     for i in range(skip):
         aux_rows.append(" ")
-    return aux_rows    
+    return aux_rows
 
 def new_booking(request):
     if request.user.is_authenticated():
