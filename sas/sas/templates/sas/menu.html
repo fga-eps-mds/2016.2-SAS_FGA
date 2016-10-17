@@ -32,13 +32,17 @@
                      {% trans "Hi" %}, {{ user.profile_user.full_name }}
                      <span class="caret"></span>
                  </a>
-                 <ul class="dropdown-menu left" aria-labelledby="user-link">
+                 <ul class="dropdown-menu pull-right" aria-labelledby="user-link">
                      <li class="user-menu-info"><a href="{% url 'user:edituser' %}">
+                       <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                       {% trans "Personal Data" %}</a></li>
                      <li class="user-menu-info"><a href="{% url 'booking:searchbooking' %}">
+                       <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
                       {% trans "My Bookings" %}</a></li>
                      <li role="separator" class="divider"></li>
-                     <li class="user-menu-info"><a href="{% url 'user:logout' %}">{% trans "Logout" %}</a></li>
+                     <li class="user-menu-info"><a href="{% url 'user:logout' %}">
+                       <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                       {% trans "Logout" %}</a></li>
                  </ul>
              </li>
          </ul>

@@ -1,16 +1,16 @@
-from django.utils.translation import ugettext as _
-from django.forms import ModelForm
-from .models import Booking, BookTime, Place, Building
-from .models import WEEKDAYS
+from django.utils.translation import ugettext_lazy as _
+from booking.models import (WEEKDAYS, Booking, BookTime, Place, Building,
+							date_range)
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
-from django.utils import timezone
 from django.core.exceptions import ValidationError
 from datetime import date, datetime, timedelta
-from booking.models import date_range
+from django.conf import settings
+from django.utils import formats
 import copy
+import traceback
 
 
 class BookingForm(forms.Form):
@@ -19,16 +19,16 @@ class BookingForm(forms.Form):
 		widget=forms.TextInput(attrs={'placeholder': ''}))
 	start_hour = forms.TimeField(
 		label=_('Start Time:'),
-		widget=forms.widgets.TimeInput(attrs={'placeholder': ''}))
+		widget=forms.widgets.TimeInput(attrs={'placeholder': '__:__'}))
 	end_hour = forms.TimeField(
 		label=_('End Time:'),
-		widget=forms.widgets.TimeInput(attrs={'placeholder': ''}))
+		widget=forms.widgets.TimeInput(attrs={'placeholder': '__:__'}))
 	start_date = forms.DateField(
 		label=_('Start Date:'),
-		widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
+		widget=forms.widgets.DateInput(attrs={'placeholder': _("mm/dd/yyyy")}))
 	end_date = forms.DateField(
 		label=_('End Date:'),
-		widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
+		widget=forms.widgets.DateInput(attrs={'placeholder': _("mm/dd/yyyy")}))
 	building = forms.ModelChoiceField(
 		queryset=Building.objects,
 		label=_('Building:'))
@@ -73,25 +73,29 @@ class BookingForm(forms.Form):
 
 	def clean_week_days(self):
 		weekdays = self.cleaned_data['week_days']
-		start_date = self.cleaned_data['start_date']
-		end_date = self.cleaned_data['end_date']
-		if((end_date-start_date).days > 7 and not weekdays):#7 days in a week
-			msg = _('Select a repeating standard for the period you selected')
-			self.add_error('week_days', msg)
-		elif not weekdays:
-			period = date_range(start_date, end_date)
-			for day in period:
-				weekdays.append(day.weekday())
+		try:
+			start_date = self.cleaned_data['start_date']
+			end_date = self.cleaned_data['end_date']
+			if( (end_date-start_date).days > 7 and
+					not weekdays):#7 days in a week
+				msg = _('Select a repeating standard for the date interval')
+				self.add_error('week_days', msg)
+			elif not weekdays:
+				period = date_range(start_date, end_date)
+				for day in period:
+					weekdays.append(day.weekday())
+		except:
+			msg = _('Period invalid')
+			raise forms.ValidationError(msg)
 		return weekdays
 
 	def clean(self):
-		cleaned_data = super(BookingForm, self).clean()
-		today = date.today()
-		now = datetime.now()
-
 		try:
-			start_date = cleaned_data.get('start_date')
-			end_date = cleaned_data.get('end_date')
+			cleaned_data = super(BookingForm, self).clean()
+			today = date.today()
+			now = datetime.now()
+			start_date = self.cleaned_data['start_date']
+			end_date = self.cleaned_data['end_date']
 			start_hour = cleaned_data.get('start_hour')
 			end_hour = cleaned_data.get('end_hour')
 			if not (today <= start_date <= end_date):
@@ -108,6 +112,7 @@ class BookingForm(forms.Form):
 				self.add_error('end_hour', msg)
 				raise forms.ValidationError(msg)
 		except Exception as e:
-			msg = _('Inputs are in an invalid format')
+			msg = _('Inputs are invalid')
 			print(e)
+			traceback.print_exc()
 			raise forms.ValidationError(msg)

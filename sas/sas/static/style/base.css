@@ -46,7 +46,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar-nav li .user-menu-info {
-    text-align: center;
+    text-align: left;
     text-transform: none;
 }
 
@@ -56,14 +56,12 @@ h1, h2, h3, h4, h5, h6 {
 
 #enter-button {
   padding: 10px;
+  margin-top: 20px;
+  border: none;
 }
 
 #enter-button:hover, #enter-button:focus {
     background-color: green;
-}
-
-.dropdown-menu {
-    width: 100%;
 }
 
 .navbar-custom {
@@ -72,12 +70,22 @@ h1, h2, h3, h4, h5, h6 {
     border: none;
 }
 
-.navbar .navbar-nav > li > a, .navbar .navbar-nav > li > a {
+.navbar .navbar-nav > li > a{
     border-bottom: solid 3px transparent;
+    margin-top: 10px;
+    margin-bottom: -10px;
+}
+
+#user-link:hover, #user-link:focus {
+  border: none;
+}
+
+.dropdown-menu {
+    width: 200px;
 }
 
 .navbar .navbar-nav > li > a:hover, .navbar .navbar-nav > li > a:focus {
-    background-color: transparent;;
+    background-color: transparent;
     color: white;
     border-bottom: solid 3px #FFF;
 }

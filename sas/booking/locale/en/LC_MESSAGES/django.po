@@ -16,184 +16,183 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: booking/forms.py:18
 msgid "Booking Name:"
-msgstr "Nome da Reserva"
+msgstr ""
 
 #: booking/forms.py:21
 msgid "Start Time:"
-msgstr "Hora Inicial"
+msgstr ""
 
 #: booking/forms.py:24
 msgid "End Time:"
-msgstr "Hora Final"
+msgstr ""
 
 #: booking/forms.py:27
 msgid "Start Date:"
-msgstr "Data Inicial"
+msgstr ""
 
 #: booking/forms.py:28 booking/forms.py:31
 msgid "mm/dd/yyyy"
-msgstr "dd/mm/yyyy"
+msgstr ""
 
 #: booking/forms.py:30
 msgid "End Date:"
-msgstr "Data Final"
+msgstr ""
 
 #: booking/forms.py:34
 msgid "Building:"
-msgstr "Prédio"
+msgstr ""
 
 #: booking/forms.py:35
 msgid "Place:"
-msgstr "Espaço"
+msgstr ""
 
 #: booking/forms.py:36
 msgid "Days of week: "
-msgstr "Dias da Semana"
+msgstr ""
 
 #: booking/forms.py:68
 msgid "Failed to book selected period"
-msgstr "Falha ao reservar no período selecionado"
+msgstr ""
 
 #: booking/forms.py:81
 msgid "Select a repeating standard for the date interval"
-msgstr "Selecione um padrão de repetição para este intervalo de data"
+msgstr ""
 
 #: booking/forms.py:88
 msgid "Period invalid"
-msgstr "Período inválido"
+msgstr ""
 
 #: booking/forms.py:102
 msgid "Invalid booking period: Booking must be in future dates"
-msgstr "Período de reserva inválido: Reserva precisa ser em datas futuras"
+msgstr ""
 
 #: booking/forms.py:109
 msgid "Invalid booking hours: Time must be after current hour"
-msgstr "Hora de reserva inválida: Horário precisa ser posterior a hora atual"
+msgstr ""
 
 #: booking/forms.py:115
 msgid "Inputs are invalid"
-msgstr "Valores informados inválidos"
+msgstr ""
 
 #: booking/models.py:11
 msgid "Monday"
-msgstr "Segunda"
+msgstr ""
 
 #: booking/models.py:11
 msgid "Tuesday"
-msgstr "Terça"
+msgstr ""
 
 #: booking/models.py:11
 msgid "Wednesday"
-msgstr "Quarta"
+msgstr ""
 
 #: booking/models.py:12
 msgid "Thursday"
-msgstr "Quinta"
+msgstr ""
 
 #: booking/models.py:12
 msgid "Friday"
-msgstr "Sexta"
+msgstr ""
 
 #: booking/models.py:12
 msgid "Saturday"
-msgstr "Sábado"
+msgstr ""
 
 #: booking/models.py:13
 msgid "Sunday"
-msgstr "Domingo"
+msgstr ""
 
 #: booking/templates/booking/newBooking.html:7
 #: booking/templates/booking/showDates.html:7
 msgid "New Booking"
-msgstr "Nova Reserva"
+msgstr ""
 
 #: booking/templates/booking/newBooking.html:13
 msgid "Rooms Booking"
-msgstr "Reserva de Espaços"
+msgstr ""
 
 #: booking/templates/booking/newBooking.html:20
 msgid "Perform Booking"
-msgstr "Efetuar Reserva"
+msgstr ""
 
 #: booking/templates/booking/searchBooking.html:13
 #: booking/templates/booking/searchBooking.html:17
 msgid "My Bookings"
-msgstr "Minhas Reservas"
+msgstr ""
 
 #: booking/templates/booking/searchBooking.html:23
 #: booking/templates/booking/searchBooking.html:58
 msgid "Name"
-msgstr "Nome"
+msgstr ""
 
 #: booking/templates/booking/searchBooking.html:24
 #: booking/templates/booking/searchBooking.html:59
 #: booking/templates/booking/showDates.html:17
 msgid "Place"
-msgstr "Espaço"
+msgstr ""
 
 #: booking/templates/booking/searchBooking.html:25
 #: booking/templates/booking/searchBooking.html:60
 msgid "Period"
-msgstr "Período"
+msgstr ""
 
 #: booking/templates/booking/searchBooking.html:26
 #: booking/templates/booking/searchBooking.html:61
 msgid "Date and Time"
-msgstr "Data e Hora"
+msgstr ""
 
 #: booking/templates/booking/searchBooking.html:27
 msgid "Delete"
-msgstr "Excluir"
+msgstr ""
 
 #: booking/templates/booking/searchBooking.html:36
 #: booking/templates/booking/searchBooking.html:41
 msgid " to "
-msgstr " a "
+msgstr ""
 
 #: booking/templates/booking/showDates.html:13
 msgid "Booking Summary"
-msgstr "Resumo da Reserva"
+msgstr ""
 
 #: booking/templates/booking/showDates.html:15
 msgid "Booking"
-msgstr "Reserva"
+msgstr ""
 
 #: booking/templates/booking/showDates.html:18
 msgid "Start Date"
-msgstr "Data Inicial"
+msgstr ""
 
 #: booking/templates/booking/showDates.html:19
 msgid "End Date"
-msgstr "Data Final"
+msgstr ""
 
 #: booking/templates/booking/showDates.html:41
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #: booking/templates/booking/showDates.html:45
 msgid "Confirm"
-msgstr "Confirmar"
+msgstr ""
 
 #: booking/views.py:19
 msgid "Booking alread exists"
-msgstr "Esta reserva já existe"
+msgstr ""
 
 #: booking/views.py:45
 msgid "Booking has been canceled"
-msgstr "Esta reserva foi cancelada"
+msgstr ""
 
 #: booking/views.py:48
 msgid "You cannot cancel this booking"
-msgstr "Você não pode cancelar esta reserva"
+msgstr ""
 
 #: booking/views.py:59
 msgid "Booking has been saved."
-msgstr "Reserva salva."
+msgstr ""
 
 #: booking/views.py:62
 msgid "You cannot confirm this booking"
-msgstr "Você não pode confirmar esta reserva"
+msgstr ""
