@@ -14,7 +14,8 @@ def search_booking_query(request):
         if not(form_booking.is_valid()):
             return render(request, 'booking/searchBookingQuery.html',
                                     {'search_booking': form_booking})
-        elif(option == 'opt_day_room'):S
+        elif(option == 'opt_day_room'):
+            pass
             #view method from who was responsable for this table - Fabiola
         elif(option == 'opt_booking_week'):
             pass
@@ -88,10 +89,12 @@ def search_booking_room_period(request,form_booking):
                 aux_table.append(row)
             i+=1        
         table.append(aux_table)        
-
+    days = [x for x in range(8)]
+    table = [ [],[(1,'asdf'),(2,'a')],[(0,'oij')],[(3,'e'),(4,'ee')],[(2,'m'),(3,'oi')],[],[(0,'odi')],[]]
+    hours = ("8-10","10-12","12-14","14-16","16-18")
     print('table',table)    
 
-    return render(request, 'booking/template_table.html', {'days' : days, 'table':table})
+    return render(request, 'booking/template_table.html', {'n':9,'hours':hours,'days' : days, 'table':table})
 
 def next(skip,aux_rows):
     for i in range(skip):
