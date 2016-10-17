@@ -96,20 +96,35 @@
 </div>
 
 <table border=10>
-  <th>Horário</th>
-  {% for day in days %}
-      <th>{{ day }}</th>
-  {% endfor %}
-  
-  {% for cell in table %}
-  <tr>
-    {% for cell_info in cell %}
-        <td>{{cell_info}}</td>
-    {% endfor %}
-  </tr>        
-    {% endfor %}
+	<thead>
+		<tr><th colspan="{{ n  }}">Horário</th></tr>
+		<tr>
+		<th></th>
+			{% for day in days %}
+				<th>{{ day }}</th>
+			{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+		  {% for hour in hours %}
+		{% with forloop.counter0 as actual_line %}
+		  <tr>
+			<td> <strong>{{hour}}</strong></td>
+			{% for cell_table in table %}
+				{% for idx_hour,book in cell_table %}
+					{% if idx_hour == actual_line %}
+						<td>{{book}} </td>
+					{% else %}
+						<td> Livre . </td>
+					
+					{% endif %} 
+				{% endfor %}
+			{% endfor %}
+		  </tr>        
+		{% endwith %}
+			{% endfor %}
 
-  </tr> 
+	</tbody>
     
 </table>
 {% endblock %}
