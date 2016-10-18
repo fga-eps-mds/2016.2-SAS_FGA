@@ -44,6 +44,8 @@ class TestSearchBooking(TestCase):
 	def test_get_request(self):
 		response = self.client.get('/booking/searchbookingg/')
 		self.assertEqual(response.status_code, 200)
+		self.assertTemplateUsed(response, 'booking/searchBookingQuery.html')
+		
 
 	def test_search_booking_post_not_valid(self):
 		client = self.client
