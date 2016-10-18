@@ -54,6 +54,17 @@ class Command(BaseCommand):
         self.userprofile.user.email = "michel@planalt.gov.com"
         self.userprofile.user.set_password('123456')
         self.userprofile.save()
+        self.userprofile = UserProfile()
+        self.userprofile.name("Fernando Henrique Cardoso")
+        self.userprofile.registration_number = "110030989"
+        self.userprofile.category = 'Student'
+        self.userprofile.user.username = "fhc@planalto.gov.com"
+        self.userprofile.user.email = "fhc@planalt.gov.com"
+        self.userprofile.user.set_password('123456')
+        self.userprofile.save()
+        group = Group.objects.get(name="admin")
+        self.userprofile.user.groups.add(group)
+        self.userprofile.save()
         superuser = User.objects.create_superuser(username="admin",password="123", email="t@t.com")
         superuser.save()
 
@@ -67,9 +78,9 @@ class Command(BaseCommand):
             output = call(["python",self.manage_path(),"migrate"],stderr=STDOUT)
             if output == 0:
                 conf = Configuration()
-                self.stdout.write(self.style.SUCCESS("It will create the users"))
-                self.create_users()	
                 if options["create_groups"]:
                     self.stdout.write(self.style.SUCCESS("It will create the groups"))
                     conf.create_groups()
 
+                self.stdout.write(self.style.SUCCESS("It will create the users"))
+                self.create_users()	
