@@ -106,8 +106,8 @@
 		</tr>
 	</thead>
 	<tbody>
-		  {% for hour in hours %}
-		{% with forloop.counter0 as actual_line %}
+		  {% for hour in hours %}	
+       {% with forloop.counter0 as actual_line %}
 		  <tr>
 			<td> <strong>{{hour}}</strong></td>
 			{% for cell_table in table %}
@@ -116,7 +116,6 @@
 						<td>{{book}} </td>
 					{% else %}
 						<td> Livre . </td>
-					
 					{% endif %} 
 				{% endfor %}
 			{% endfor %}

@@ -5,6 +5,8 @@ from .models import Booking, BookTime, Place, Building
 from django.contrib import messages
 from sas.views import index
 from datetime import datetime, timedelta
+import operator
+from collections import OrderedDict
 
 def search_booking_query(request):
     form_booking = SearchBookingForm()
@@ -30,6 +32,7 @@ def search_booking_query(request):
                             {'search_booking': form_booking})
 
 def search_booking_room_period(request,form_booking):
+    HOURS = {"8-10":8,'10-12':10,'12-14':12,'14-16':14,'16-18':16,'18-20':18,'20-22':20,'22-00':22}
     bookings = form_booking.search()
     form_days = form_booking.days_list()
     place_id = form_booking["room_name"].data
@@ -40,59 +43,29 @@ def search_booking_room_period(request,form_booking):
     days = []
     rows = []
     time = []
-    aux=0
     table =[]
     skip = 0
     aux_rows = []
 
     for form_day in form_days:
-        i=0
-        for booktime in BookTime.objects.filter(date_booking = str(form_day)):
-            if booktime is not None:
-                booking = Booking.objects.get(time__pk = booktime.pk)
-                if (booking.place.name == booking_place.name):
-                    if (booktime.date_booking <= form_days[-1]) and (booktime.date_booking >= form_days[0]):
+        aux =[]
+        bookings = Booking.objects.filter(time__date_booking=str(form_day))
+        for booking in bookings:
+            if (booking.place.name == booking_place.name):
+                book = booking.time.get(date_booking = str(form_day))
+                print('hours',book.start_hour.hour)
+                print('booking name', booking.name)
+                aux_tuple = (book.start_hour.hour,booking.name)
+                aux.append(aux_tuple)
+                
+        table.append(aux)
 
-                        for i in range(0,12):
-                            #print('book',booktime.start_hour.timedelta())
-                            print('cont',cont)
-                            if (booktime.start_hour == cont):
-                                print('ue')
-                                time.insert(i,cont)
-                                i += 1
-                                aux = 1
-                            cont += timedelta(hours=2)
-                            aux = 0
-                        cont = timedelta(hours=0)
-
-                        days.append(booktime.date_booking)
-                        aux_rows.append(booking.name)
-                        skip += 1
-
-
-        if aux == 1:
-            print('aux_rows',aux_rows)
-            rows.insert(i,aux_rows)
-
-        aux_rows = []
-        aux_rows = next(skip,aux_rows)
-
-        aux = 0
-    i=0
-    aux_table = []
-
-    for times in time:
-        aux_table = []
-        if times:
-            aux_table.append(times)
-            for row in rows[i]:
-                aux_table.append(row)
-            i+=1
-        table.append(aux_table)
-
+    days = [x for x in range(8)]
     print('table',table)
-
-    return render(request, 'booking/template_table.html', {'days' : days, 'table':table})
+   # table = [ [],[(1,'asdf'),(2,'a')],[(0,'oij')],[(3,'e'),(4,'ee')],[(2,'m'),(3,'oi')],[],[(9,'odi')],[]]
+    hours = ("8-10","10-12","12-14","14-16","16-18")
+	
+    return render(request, 'booking/template_table.html', {'days':days, 'table':table, 'hours':hours, 'n':9})
 
 def next(skip,aux_rows):
     for i in range(skip):
