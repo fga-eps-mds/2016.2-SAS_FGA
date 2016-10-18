@@ -42,16 +42,48 @@
 						autoclose: true,
         });
     });
+
 		$(document).ready(function () {
-		    $('#id_building_name').change(function () {
-						$("#id_room_name").prop('selectedIndex',0);
-		        var selected_building = $(this).find(":selected").text();
-						$("#id_room_name option").hide();
-						$("#id_room_name option").filter(function(){
-						    return $.trim($(this).text()).indexOf(selected_building) != -1
-						}).show();
-		    });
+			$('#id_building_name').change(function () {
+				$("#id_room_name").prop('selectedIndex',0);
+				var selected_building = $(this).find(":selected").text();
+				$("#id_room_name option").hide();
+				$("#id_room_name option").filter(function(){
+					return $.trim($(this).text()).indexOf(selected_building) != -1
+				}).show();
+			});
+
+			$('#id_search_options_0').click(function () {
+
+				$('.form-horizontal input').prop('disabled', false);
+				$('.form-horizontal select').prop('disabled', false);
+				$("#id_booking_name").prop('disabled',true);
+				$("#id_end_date").prop('disabled',true);
+			});
+
+			$('#id_search_options_1').click(function () {
+				$('.form-horizontal input').prop('disabled', false);
+				$('.form-horizontal select').prop('disabled', false);
+				$("#id_room_name").prop('disabled',true);
+				$("#id_building_name").prop('disabled',true);
+				$("#id_end_date").prop('disabled',true);
+			});
+
+			$('#id_search_options_2').click(function () {
+				$('input').prop('disabled', false);
+				$('select').prop('disabled', false);
+				$("#id_room_name").prop('disabled',true);
+				$("#id_booking_name").prop('disabled',true);
+				$("#id_end_date").prop('disabled',true);
+			});
+
+			$('#id_search_options_3').click(function () {
+				$('input').prop('disabled', false);
+				$('select').prop('disabled', false);
+				$("#id_booking_name").prop('disabled',true);
+			});
 		});
+
 </script>
 <script src= "{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
 <script src= "{% static 'plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
