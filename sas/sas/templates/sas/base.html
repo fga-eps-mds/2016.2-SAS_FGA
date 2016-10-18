@@ -1,7 +1,7 @@
 {% load staticfiles bootstrap3 %}
 {% load i18n %}
-<!DOCTYPE html>
-<html>
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,7 +19,30 @@
 
   <!-- Main Header -->
   <header class="main-header">
-    {% include "sas/menu.html" %}
+    <div class="container" style="position:absolute;right:0;">
+      <div class="col-md-4 col-md-offset-8" style="float:right; padding-top:5px;">
+        <form action="{% url 'set_language' %}" method="post">
+          {% csrf_token %}
+          <input name="next" type="hidden" value="{{ redirect_to }}" />
+          <div class="input-group input-group-sm"  style="max-width:250px;">
+            <select class="form-control" style="padding:5px" name="language">
+              {% get_current_language as LANGUAGE_CODE %}
+              {% get_available_languages as LANGUAGES %}
+              {% get_language_info_list for LANGUAGES as languages %}
+              {% for language in languages %}
+                <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected="selected" {% endif %}>
+                  {{ language.name_local }} ({{ language.code }})
+                </option>
+              {% endfor %}
+            </select>
+            <span class="input-group-btn">
+              <button style="margin-left:1px" class="btn btn-success" type="submit">OK</button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  {% include "sas/menu.html" %}
   </header>
 
   <!-- page content -->

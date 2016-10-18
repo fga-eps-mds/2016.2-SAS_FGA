@@ -11,6 +11,7 @@
   -moz-border-radius: 4px;
   border-radius: 4px;
   direction: ltr;
+  width: 235px;
 }
 .datepicker-inline {
   width: 220px;
@@ -73,7 +74,7 @@
   border-top: 6px solid #fff;
 }
 .datepicker table {
-  margin: 0;
+  margin: 0 10px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;

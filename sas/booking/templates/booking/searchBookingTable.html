@@ -17,25 +17,11 @@
 					{% csrf_token %}
 					{% bootstrap_form form_booking %}
 					{% buttons %}
-						<button class="btn btn-info btn-block" type = 'submit'>{% trans "Perform Booking" %}</button>
+						<button class="btn btn-info btn-block" type = 'submit'>{% trans "Perform Search" %}</button>
 					{% endbuttons %}
 				</form>
 			</div>
 		</div>
 	</div>
-{% endblock %}
 
-{% block extrajs %}
-<script>
-$(document).ready(function () {
-    $('#id_building').change(function () {
-				$("#id_place").prop('selectedIndex',0);
-        var selected_building = $(this).find(":selected").text();
-				$("#id_place option").hide();
-				$("#id_place option").filter(function(){
-				    return $.trim($(this).text()).indexOf(selected_building) != -1
-				}).show();
-    });
-});
-</script>
 {% endblock %}
