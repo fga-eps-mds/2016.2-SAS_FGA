@@ -6,6 +6,7 @@ from user.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.test import Client
+from django.core.management import call_command
 
 
 @step(r'I type in "(.*)" to "(.*)"')
@@ -71,3 +72,8 @@ def disabled_element(step, element_id):
 
     if (element.isEnabled()):
         raise AssertionError("Element is not disabled.".format(id))
+
+@step(r'I run loaddata to populate dropdowns')
+def run_command_line(step):
+    call_command('loaddata', 'buildings', 'places')
+
