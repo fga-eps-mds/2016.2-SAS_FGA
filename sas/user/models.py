@@ -65,9 +65,16 @@ class UserProfile(models.Model):
         try:
             group = self.user.groups.get(name="admin")
             return True
-        except DoesNotExists:
+        except Group.DoesNotExist:
             return False     
-        
+
+    def is_academic_staff(self):
+        try:
+            group = self.user.groups.get(name="academic_staff")
+            return True
+        except Group.DoesNotExist:
+            return False   
+
 class Validation():
 
     def hasNumbers(self, string):
