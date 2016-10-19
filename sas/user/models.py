@@ -52,14 +52,20 @@ class UserProfile(models.Model):
     def make_as_academic_staff(self):
         try:
             academic_staff = Group.objects.get(name="academic_staff")
-
         except:
-            conf = Configuration()
-            conf.create_groups()
-            academic_staff = Group.objects.get(name="academic_staff")
+            academic_staff, created = Group.objects.get_or_create(name="academic_staff")
             
         self.create_user()
         self.user.groups.add(academic_staff)
+
+    def make_as_admin(self):
+        try:
+            admin = Group.objects.get(name="admin")
+        except:
+            admin, created = Group.objects.get_or_create(name="admin")
+            
+        self.create_user()
+        self.user.groups.add(admin)
 
     def is_admin(self):
         try:

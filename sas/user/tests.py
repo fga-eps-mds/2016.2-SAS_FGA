@@ -108,17 +108,7 @@ class UserProfileTest(TestCase):
         self.assertFalse(hasattr(self.userprofile,'user'))
         self.userprofile.create_user() 
         self.assertTrue(hasattr(self.userprofile,'user'))
-
-    def test_make_as_academic_staff(self):
-        self.userprofile.name("Pedro Pereira Pinto")
-        self.userprofile.registration_number = "11/0040559"
-        self.userprofile.user.username = "pedrotestec@hotmail.com"
-        self.userprofile.user.email = "perdotestec@hotmail.com"
-        self.userprofile.save()
-        self.userprofile.make_as_academic_staff()
-        group = self.userprofile.user.groups.filter(name="academic_staff")
-        self.assertEqual(group.count(),1)
-
+    
     def test_get_full_name(self):
         name = "Pedro Pereira Pinto"
         self.userprofile.name(name)
@@ -157,6 +147,17 @@ class UserProfileTest(TestCase):
         self.userprofile.save()
         self.assertEqual(self.userprofile.pk, 1)
 
+    def test_is_admin(self):
+        userprofile = UserProfileFactory.create()
+        self.assertFalse(userprofile.is_admin())
+        userprofile.make_as_admin()
+        self.assertTrue(userprofile.is_admin())
+         
+    def test_is_academic_staff(self):
+        userprofile = UserProfileFactory.create()
+        self.assertFalse(userprofile.is_academic_staff())
+        userprofile.make_as_academic_staff()
+        self.assertTrue(userprofile.is_academic_staff())
 
 class ValidationTest(TestCase):
     def setUp(self):

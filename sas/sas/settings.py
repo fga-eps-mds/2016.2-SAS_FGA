@@ -147,7 +147,8 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # Tell nose to measure coverage on the 'foo' and 'bar' apps
 NOSE_ARGS = [
     '--with-coverage',
-	'--cover-package=sas,booking,user',
+	'--cover-package=booking,user',
+    '--cover-html',
 ]
 
 PROJECT_DIR = os.path.dirname(__file__)
