@@ -115,6 +115,10 @@ class Booking(models.Model):
 			self.place_id = self.place.pk
 		super(Booking, self).save(*args, **kwargs)
 
+	def delete(self):
+		self.time.all().delete()
+		super().delete()
+
 class Validation():
 
 	def hasNumbers(self, string):
