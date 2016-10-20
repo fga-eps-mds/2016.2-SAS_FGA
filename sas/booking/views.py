@@ -23,13 +23,40 @@ def search_booking_query(request):
             pass
             #view method from who was responsable for this table - Meu
         elif(option == 'opt_building_day'):
-            pass
             #view method from who was responsable for this table - Hugo
+            return (search_booking_building_day(request,form_booking))
         else:
             return (search_booking_room_period(request,form_booking))
             #view method from who was responsable for opt_room_period table - Luis
     return render(request, 'booking/searchBookingQuery.html',
                             {'search_booking': form_booking})
+
+def search_booking_building_day(request,form_booking):
+    hours = [(6,"06-08"),(8,"08-10"),(10,"10-12"),(12,"12-14"),(14,"14-16"),(16,"16-18"),(18,"18-20"),(20,"20-22"),(22,("22-00"))]
+    form_day = form_booking.get_day()
+    building_id = form_booking["building_name"].data
+    building = Building.objects.get(id = building_id)
+    places = Place.objects.filter(building = building)
+    n = len(places) +1
+    
+    places_ = []
+    table =[]
+    
+    for place in places:
+        aux =[]
+        bookings = Booking.objects.filter(time__date_booking=str(form_day))
+        for booking in bookings:
+            if (booking.place.name == place.name):
+                book = booking.time.get(date_booking = str(form_day))
+                aux_tuple = (book.start_hour.hour,booking.name)
+                aux.append(aux_tuple)
+
+        table.append(aux)
+        
+        p = place.name.split('-')
+        places_.append(p[1])
+
+    return render(request, 'booking/template_table.html', {'days':places_, 'table':table, 'hours':hours, 'n':n, 'name': "Building x Day"})
 
 def search_booking_room_period(request,form_booking):
     form_days = form_booking.days_list()
