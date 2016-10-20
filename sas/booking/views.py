@@ -32,21 +32,14 @@ def search_booking_query(request):
                             {'search_booking': form_booking})
 
 def search_booking_room_period(request,form_booking):
-    HOURS = {"8-10":8,'10-12':10,'12-14':12,'14-16':14,'16-18':16,'18-20':18,'20-22':20,'22-00':22}
-    bookings = form_booking.search()
     form_days = form_booking.days_list()
     place_id = form_booking["room_name"].data
     booking_place = Place.objects.get(id = place_id)
+    hours = [(6,"06-08"),(8,"08-10"),(10,"10-12"),(12,"12-14"),(14,"14-16"),(16,"16-18"),(18,"18-20"),(20,"20-22"),(22,("22-00"))]
+    n = len(form_days) + 1
 
-    cont= timedelta(hours=0)
-    auxs = []
-    days = []
-    rows = []
-    time = []
     table =[]
-    skip = 0
-    aux_rows = []
-
+    
     for form_day in form_days:
         aux =[]
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
@@ -60,12 +53,7 @@ def search_booking_room_period(request,form_booking):
                 
         table.append(aux)
 
-    days = [x for x in range(8)]
-    print('table',table)
-   # table = [ [],[(1,'asdf'),(2,'a')],[(0,'oij')],[(3,'e'),(4,'ee')],[(2,'m'),(3,'oi')],[],[(9,'odi')],[]]
-    hours = ("8-10","10-12","12-14","14-16","16-18")
-	
-    return render(request, 'booking/template_table.html', {'days':days, 'table':table, 'hours':hours, 'n':9})
+    return render(request, 'booking/template_table.html', {'days':form_days, 'table':table, 'hours':hours, 'n':n, 'name': "Room x Period"})
 
 def next(skip,aux_rows):
     for i in range(skip):
