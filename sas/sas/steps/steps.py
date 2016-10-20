@@ -2,12 +2,14 @@ from aloe import step, world
 from aloe_webdriver.util import find_field_by_id, find_any_field, find_field_by_value
 from aloe_webdriver import TEXT_FIELDS
 from selenium.common.exceptions import NoSuchElementException
-from booking.models import Booking, Place, BookTime, Building
+from booking.models import Booking, Place, BookTime, Building, date_range
 from user.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.test import Client
 from django.core.management import call_command
+from datetime import date, datetime, timedelta
+from dateutil import parser
 
 @step(r'I type in "(.*)" to "(.*)"')
 def fill_bootstrap_field(step, text, field):
@@ -53,15 +55,11 @@ def register_user(step, username, password,registration_number):
 	user.user.set_password(password)
 	user.save()
 
-@step(r'I register the booking "(.*)" with the building "(.*)" with the place name "(.*)" and start_date "(.*)" and end_date "(.*)"')
-def new_booking(step, booking_name, building, place_name, start_date, end_date):
+@step(r'I register the booking "(.*)" with the building "(.*)" with the place name "(.*)" and start_date "(.*)" and end_date "(.*)" of user "(.*)"')
+def new_booking(step, booking_name, building, place_name, start_date, end_date, username):
 	booking = Booking()
 	booking.user = User()
-	booking.user.email = "user@email.com"
-	booking.user.username = "user@email.com"
-	booking.user.first_name = "Silva"
-	booking.user.set_password("123456")
-	booking.user.save()
+	booking.user = User.objects.get(username=username)
 	booking.name = booking_name
 	booking.start_date = start_date
 	booking.end_date = end_date
@@ -70,10 +68,13 @@ def new_booking(step, booking_name, building, place_name, start_date, end_date):
 	booking.place.building = Building()
 	booking.place.building.name = building
 	booking.save()
-	book = BookTime()
-	book.start_hour = "20:00"
-	book.end_hour = "22:00"
-	booking.time.add(book)
+	for day in range(0, 10):
+		book = BookTime()
+		book.date_booking = parser.parse(start_date) + timedelta(days=day)
+		book.start_hour = "20:00"
+		book.end_hour = "22:00"
+		book.save()
+		booking.time.add(book)
 	booking.save()
 
 
