@@ -158,21 +158,32 @@ def confirm_booking(request, id):
         return index(request)
 
 def delete_booking(request, id):
-	if has_permission_to_delete(request):
+	if request.user.is_authenticated() and has_permission_to_delete(request):
 		id = int(id)
-		booking = Booking.objects.get(pk=id)
+		booking = Booking.objects.get(pk = id)
 		booktimes = booking.time.all()
 		for booktime in booktimes:
 			if not booktime.booking_time.all().exclude(pk = id).exists():
 				booktime.delete()
 		booking.delete()
-		messages.success(request, _('Booking deleted!'), {})
+		messages.success(request, _('Booking deleted!'))
 		return render(request, 'booking/searchBooking.html', {})
 	else:
 		messages.error(request, _('You cannot delete this booking.'))
 		return render(request, 'booking/searchBooking.html', {})
 
-def delete_specific_booktime(request, id):
-	if has_permission_to_delete(request):
-		id = int(id)
-		BookTime.objects.get(pk = id).delete()
+def delete_booktime(request, booking_id, booktime_id):
+	if request.user.is_authenticated and has_permission_to_delete(request):
+		booking_id = int(booking_id)
+		booktime_id = int(booktime_id)
+		booktime = BookTime.objects.get(pk = booktime_id)
+		booking = Booking.objects.get(pk = booking_id)
+		booking.time.remove(booktime)
+		if not booktime.booking_time.all().exclude(pk = booking_id).exists():
+			booktime.delete()
+		Booking.objects.filter(time = None).delete()
+		messages.success(request, _('Booking deleted!'))
+		return render(request, 'booking/searchBooking.html', {})
+	else:
+		messages.error(request, _('You cannot delete this booking.'))
+		return render(request, 'booking/searchBooking.html', {})
