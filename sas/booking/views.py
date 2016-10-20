@@ -7,6 +7,7 @@ from sas.views import index
 from datetime import datetime, timedelta
 import operator
 from collections import OrderedDict
+from user.views import has_permission_to_delete
 
 def search_booking_query(request):
     form_booking = SearchBookingForm()
@@ -157,13 +158,15 @@ def confirm_booking(request, id):
         return index(request)
 
 def delete_booking(request, id):
-	if request.user.has_perm('can_delete') and request.session['booking']:
+	if has_permission_to_delete(request):
 		id = int(id)
-		if id == request.session.get('booking'):
-			request.session.pop('booking')
-			Booking.objects.get(pk=id).delete()
-			messages.success(request, _('Booking deleted!'))
-		else:
-			messages.error(request, _('You cannot delete this booking.'))
+		booking = Booking.objects.get(pk=id)
+		booktimes = booking.time.all()
+		for booktime in booktimes:
+			booktime.delete()
+		booking.delete()
+		messages.success(request, _('Booking deleted!'), {})
+		return render(request, 'booking/searchBooking.html', {})
 	else:
-		messages.error(request, _('You cannot delete this booking.')) 
+		messages.error(request, _('You cannot delete this booking.'))
+		return render(request, 'booking/searchBooking.html', {})
