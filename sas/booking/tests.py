@@ -18,7 +18,7 @@ class TestBookTime(TestCase):
 		book.date_booking = datetime.strptime("21092016", "%d%m%Y")
 		self.assertEqual(book.get_str_weekday(), "Wednesday")
 
-class BookingTest(TestCase):
+class DeleteBookingTest(TestCase):
 
     def setUp(self):
         self.user = UserFactory.create()
@@ -40,6 +40,7 @@ class BookingTest(TestCase):
         self.assertContains(response, 'Booking deleted!')
 
     def test_not_delete_booktimes_related_to_other(self):
+        self.client.login(username = self.user.username, password = '1234567')
         booking = BookingFactory.create(booktimes = (self.booktimes[0],))
         url = reverse('booking:deletebooking', args = (self.booking.id,))
         response = self.client.get(url)
@@ -48,3 +49,14 @@ class BookingTest(TestCase):
         self.assertTrue(BookTime.objects.filter(pk = self.booktimes[0].id).exists())
         self.assertFalse(Booking.objects.filter(pk = self.booking.id).exists())
         self.assertContains(response, 'Booking deleted!')
+
+    def test_doesnt_have_permission(self):
+        #self.client.login(username = self.user.username, password = '1234567')
+        url = reverse('booking:deletebooking', args = (self.booking.id,))
+        response = self.client.get(url)
+        self.assertContains(response, 'You cannot delete this booking.')
+
+    def test_user_not_logged_in(self):
+        url = reverse('booking:deletebooking', args = (self.booking.id,))
+        response = self.client.get(url)
+        self.assertContains(response, 'You cannot delete this booking.')
