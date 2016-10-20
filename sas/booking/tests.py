@@ -33,9 +33,18 @@ class BookingTest(TestCase):
     def test_has_permission_delete_booking(self):
         self.client.login(username = self.user.username, password = '1234567')
         url = reverse('booking:deletebooking', args = (self.booking.id,))
-        #print(Booking.objects.get(pk = self.booking.id))
         response = self.client.get(url)
         for booktime in self.booktimes:
             self.assertFalse(BookTime.objects.filter(pk = booktime.id).exists())
+        self.assertFalse(Booking.objects.filter(pk = self.booking.id).exists())
+        self.assertContains(response, 'Booking deleted!')
+
+    def test_not_delete_booktimes_related_to_other(self):
+        booking = BookingFactory.create(booktimes = (self.booktimes[0],))
+        url = reverse('booking:deletebooking', args = (self.booking.id,))
+        response = self.client.get(url)
+        for count in range(1, len(self.booktimes)):
+            self.assertFalse(BookTime.objects.filter(pk = self.booktimes[count].id).exists())
+        self.assertTrue(BookTime.objects.filter(pk = self.booktimes[0].id).exists())
         self.assertFalse(Booking.objects.filter(pk = self.booking.id).exists())
         self.assertContains(response, 'Booking deleted!')
