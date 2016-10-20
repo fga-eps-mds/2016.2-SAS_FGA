@@ -90,3 +90,9 @@ class DeleteBooktimeTest(TestCase):
         self.assertFalse(BookTime.objects.filter(pk = self.booktimes[0].id).exists())
         self.assertTrue(Booking.objects.filter(pk = self.booking.id).exists())
         self.assertContains(response, 'Booking deleted!')
+
+    def test_doesnt_have_permission(self):
+        #self.client.login(username = self.user.username, password = '1234567')
+        url = reverse('booking:deletebooktime', args = (self.booking.id, self.booktimes[0].id))
+        response = self.client.get(url)
+        self.assertContains(response, 'You cannot delete this booking.')
