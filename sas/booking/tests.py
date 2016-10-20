@@ -96,3 +96,8 @@ class DeleteBooktimeTest(TestCase):
         url = reverse('booking:deletebooktime', args = (self.booking.id, self.booktimes[0].id))
         response = self.client.get(url)
         self.assertContains(response, 'You cannot delete this booking.')
+
+    def test_user_not_logged_in(self):
+        url = reverse('booking:deletebooktime', args = (self.booking.id, self.booktimes[0].id))
+        response = self.client.get(url)
+        self.assertContains(response, 'You cannot delete this booking.')
