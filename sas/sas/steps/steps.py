@@ -2,11 +2,12 @@ from aloe import step, world
 from aloe_webdriver.util import find_field_by_id, find_any_field, find_field_by_value
 from aloe_webdriver import TEXT_FIELDS
 from selenium.common.exceptions import NoSuchElementException
+from booking.models import Booking, Place, BookTime, Building
 from user.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.test import Client
-
+from django.core.management import call_command
 
 @step(r'I type in "(.*)" to "(.*)"')
 def fill_bootstrap_field(step, text, field):
@@ -52,6 +53,29 @@ def register_user(step, username, password,registration_number):
 	user.user.set_password(password)
 	user.save()
 
+@step(r'I register the booking "(.*)" with the building "(.*)" with the place name "(.*)" and start_date "(.*)" and end_date "(.*)"')
+def new_booking(step, booking_name, building, place_name, start_date, end_date):
+	booking = Booking()
+	booking.user = User()
+	booking.user.email = "user@email.com"
+	booking.user.username = "user@email.com"
+	booking.user.first_name = "Silva"
+	booking.user.set_password("123456")
+	booking.user.save()
+	booking.name = booking_name
+	booking.start_date = start_date
+	booking.end_date = end_date
+	booking.place = Place()
+	booking.place.name = place_name
+	booking.place.building = Building()
+	booking.place.building.name = building
+	booking.save()
+	book = BookTime()
+	book.start_hour = "20:00"
+	book.end_hour = "22:00"
+	booking.time.add(book)
+	booking.save()
+
 
 @step(r'I login in with email "(.*)" and password "(.*)"')
 def login_user(step, email, password):
@@ -64,3 +88,7 @@ def login_user(step, email, password):
 		cookies['value'] = co.value
 		world.browser.add_cookie(cookies)
 	world.browser.refresh()
+
+@step(r'I run loaddata to populate dropdowns')
+def run_command_line(step):
+	call_command('loaddata', 'buildings', 'places')
