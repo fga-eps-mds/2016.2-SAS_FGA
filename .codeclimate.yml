@@ -11,8 +11,10 @@ engines:
   eslint:
     enabled: false  
   fixme:
-    enabled: true
+    enabled: false
   radon:
+    enabled: true
+  pep8:
     enabled: true
 ratings:
   paths:
@@ -26,3 +28,4 @@ exclude_paths:
 - "tests/"
 - "spec/"
 - "**/vendor/"
+- "static/"
