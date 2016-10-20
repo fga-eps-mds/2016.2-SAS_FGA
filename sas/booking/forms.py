@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
-from booking.models import (WEEKDAYS, Booking, BookTime, Place, Building,
-							date_range)
+from booking.models import (WEEKDAYS, Booking, BookTime, Place)
+from booking.models import (Building, date_range)
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
@@ -12,6 +12,7 @@ from django.utils import formats
 import copy
 import traceback
 
+
 class SearchBookingForm(forms.Form):
     SEARCH_CHOICES = (
         ('opt_day_room', ' Day x Room'),
@@ -20,7 +21,7 @@ class SearchBookingForm(forms.Form):
         ('opt_room_period', ' Room x Period'),
     )
 
-    search_options = forms.ChoiceField(choices=SEARCH_CHOICES,widget=forms.RadioSelect())
+    search_options = forms.ChoiceField(choices=SEARCH_CHOICES, widget=forms.RadioSelect())
 
     booking_name = forms.CharField(
         label=_('Booking Name:'),

@@ -12,11 +12,13 @@ WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
 			('3', _("Thursday")), ('4', _("Friday")), ('5', _("Saturday")),
 			('6', _("Sunday")))
 
+
 class Building(models.Model):
 	name = models.CharField(max_length=200)
 
 	def __str__(self):
 		return self.name
+
 
 class Place(models.Model):
 	name = models.CharField(max_length=200)
@@ -39,16 +41,16 @@ class BookTime(models.Model):
 	end_hour = models.TimeField(null=False, blank=False)
 	date_booking = models.DateField(null=False, blank=False)
 
-	def add_days(self, nr_days): 		
+	def add_days(self, nr_days):
 		delta = timedelta(days=nr_days)
-		self.date_booking = self.date_booking + delta  	
+		self.date_booking = self.date_booking + delta
 
-	def next_week_day(self, nr_weekday): 		
-		diff_of_weekdays = self.date_booking.weekday() - nr_weekday 		
-		if diff_of_weekdays > 0: 			
-			self.add_days(7 - diff_of_weekdays) 		
+	def next_week_day(self, nr_weekday):
+		diff_of_weekdays = self.date_booking.weekday() - nr_weekday
+		if diff_of_weekdays > 0:
+			self.add_days(7 - diff_of_weekdays)
 		elif diff_of_weekdays < 0:
-			self.add_days(diff_of_weekdays * (-1)) 		
+			self.add_days(diff_of_weekdays * (-1))
 		else:
 			self.add_days(7)
 
@@ -105,7 +107,7 @@ class Booking(models.Model):
 			return True
 		else:
 			return False
-			
+
 	def save(self, *args, **kwargs):
 		self.place.is_laboratory = False
 		if Place.objects.filter(name=self.place.name):
@@ -114,6 +116,7 @@ class Booking(models.Model):
 			self.place.save()
 			self.place_id = self.place.pk
 		super(Booking, self).save(*args, **kwargs)
+
 
 class Validation():
 

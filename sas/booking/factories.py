@@ -7,6 +7,7 @@ from factory.fuzzy import FuzzyChoice
 
 fake = FakerFactory.create()
 
+
 class PlaceFactory(DjangoModelFactory):
 
 	class Meta:
