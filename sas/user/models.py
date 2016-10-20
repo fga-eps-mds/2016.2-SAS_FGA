@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.core.exceptions import ValidationError
+from sas.basic import Configuration
+from django.contrib.auth.models import Group
 
 CATEGORY = (('', '----'), ('1', _('Student')),
             ('2', _('Teaching Staff')), ('3', _('Employees')))
@@ -12,15 +14,18 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile_user")
     category = models.CharField(choices=CATEGORY, max_length=20)
 
-    def name(self, name):
-        if not hasattr(self, 'user'):
- 
+    def create_user(self):
+        if not hasattr(self,"user"):
             self.user = User()
+
+    def name(self, name):
+        self.create_user()
         names = name.split()
         self.user.first_name = names.pop(0)
         self.user.last_name = str.join(" ", names)
 
     def full_name(self):
+        self.create_user()
         name = str.join(" ", [self.user.first_name, self.user.last_name])
         return name
 
@@ -44,6 +49,37 @@ class UserProfile(models.Model):
         self.user_id = self.user.pk
         super(UserProfile, self).save(*args, **kwargs)
 
+    def make_as_academic_staff(self):
+        try:
+            academic_staff = Group.objects.get(name="academic_staff")
+        except:
+            academic_staff, created = Group.objects.get_or_create(name="academic_staff")
+            
+        self.create_user()
+        self.user.groups.add(academic_staff)
+
+    def make_as_admin(self):
+        try:
+            admin = Group.objects.get(name="admin")
+        except:
+            admin, created = Group.objects.get_or_create(name="admin")
+            
+        self.create_user()
+        self.user.groups.add(admin)
+
+    def is_admin(self):
+        try:
+            group = self.user.groups.get(name="admin")
+            return True
+        except Group.DoesNotExist:
+            return False     
+
+    def is_academic_staff(self):
+        try:
+            group = self.user.groups.get(name="academic_staff")
+            return True
+        except Group.DoesNotExist:
+            return False   
 
 class Validation():
 

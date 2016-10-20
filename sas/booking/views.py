@@ -105,13 +105,13 @@ def search_booking_table(request):
 
 def search_booking(request):
     if request.user.is_authenticated():
-        bookings = Booking.objects.filter(user=request.user)
-        return render(request, 'booking/searchBooking.html',
-                        {'bookings': bookings})
+        if request.user.profile_user.is_admin():
+            bookings = Booking.objects.all()
+        else:
+            bookings = Booking.objects.filter(user=request.user)
+        return render(request, 'booking/searchBooking.html', {'bookings': bookings})
     else:
-        form = LoginForm()
-        return render(request, 'booking/index.html', {'form': form})
-
+        return redirect("index")
 
 def cancel_booking(request, id):
     if request.user.is_authenticated() and request.session['booking']:
