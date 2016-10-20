@@ -60,3 +60,23 @@ class DeleteBookingTest(TestCase):
         url = reverse('booking:deletebooking', args = (self.booking.id,))
         response = self.client.get(url)
         self.assertContains(response, 'You cannot delete this booking.')
+
+class DeleteBooktimeTest(TestCase):
+
+    def setUp(self):
+        self.user = UserFactory.create()
+        self.user.set_password('1234567')
+        self.user.save()
+        self.booktimes = [BookTimeFactory.create()]
+        self.booking = BookingFactory.create(booktimes = self.booktimes)
+        self.booking.user = self.user
+        self.booking.save()
+        self.client = Client()
+
+    def test_delete_booktime(self):
+        self.client.login(username = self.user.username, password = '1234567')
+        url = reverse('booking:deletebooktime', args = [self.booking.id, self.booktimes[0].id])
+        response = self.client.get(url)
+        self.assertFalse(BookTime.objects.filter(pk = self.booktimes[0].id).exists())
+        self.assertFalse(Booking.objects.filter(pk = self.booking.id).exists())
+        self.assertContains(response, 'Booking deleted!')
