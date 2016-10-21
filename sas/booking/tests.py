@@ -26,10 +26,7 @@ class DeleteBookingTest(TestCase):
         self.user.user.set_password('1234567')
         self.user.save()
         self.booking = BookingFactory.create()
-        print(self.booking.user.id)
         self.booking.user = self.user.user
-        print(self.user.id)
-        print(self.booking.user.id)
         self.booktimes = [BookTimeFactory.create() for x in range(5)]
         self.booking = BookingFactory.create(booktimes = self.booktimes)
         self.booking.save()
@@ -37,6 +34,7 @@ class DeleteBookingTest(TestCase):
 
     def test_admin_delete_booking(self):
         self.user.make_as_admin()
+        self.user.save()
         self.client.login(username = self.user.user.username, password = '1234567')
         url = reverse('booking:deletebooking', args = (self.booking.id,))
         response = self.client.get(url)
@@ -57,6 +55,7 @@ class DeleteBookingTest(TestCase):
 
     def test_doesnt_have_permission(self):
         self.user.make_as_academic_staff()
+        self.user.save()
         self.client.login(username = self.user.user.username, password = '1234567')
         booking = BookingFactory.create()
         url = reverse('booking:deletebooking', args = (booking.id,))
@@ -66,7 +65,7 @@ class DeleteBookingTest(TestCase):
     def test_user_not_logged_in(self):
         url = reverse('booking:deletebooking', args = (self.booking.id,))
         response = self.client.get(url)
-        self.assertContains(response, 'You are not logged in.')
+        self.assertContains(response, 'You must log in to delete a booking.')
 
     def test_booking_does_not_exist(self):
         self.client.login(username = self.user.user.username, password = '1234567')
@@ -77,30 +76,50 @@ class DeleteBookingTest(TestCase):
 class DeleteBooktimeTest(TestCase):
 
     def setUp(self):
-        self.user = UserFactory.create()
-        self.user.set_password('1234567')
+        self.user = UserProfileFactory.create()
+        self.user.user.set_password('1234567')
         self.user.save()
+        self.booking = BookingFactory.create()
+        self.booking.user = self.user.user
         self.booktimes = [BookTimeFactory.create()]
         self.booking = BookingFactory.create(booktimes = self.booktimes)
-        self.booking.user = self.user
         self.booking.save()
         self.client = Client()
 
-    def test_delete_booktime(self):
-        self.client.login(username = self.user.username, password = '1234567')
+    def test_admin_delete_booktime(self):
+        self.user.make_as_admin()
+        self.user.save()
+        self.client.login(username = self.user.user.username, password = '1234567')
         url = reverse('booking:deletebooktime', args = [self.booking.id, self.booktimes[0].id])
         response = self.client.get(url)
         self.assertFalse(BookTime.objects.filter(pk = self.booktimes[0].id).exists())
         self.assertFalse(Booking.objects.filter(pk = self.booking.id).exists())
         self.assertContains(response, 'Booking deleted!')
 
-    def test_doesnt_have_permission(self):
-        #self.client.login(username = self.user.username, password = '1234567')
+    def test_academic_staff_delete_their_own_booktime(self):
+        self.user.make_as_academic_staff()
+        self.user.save()
+        self.booking.user = self.user.user
+        self.booking.save()
+        self.client.login(username = self.user.user.username, password = '1234567')
         url = reverse('booking:deletebooktime', args = (self.booking.id, self.booktimes[0].id))
         response = self.client.get(url)
+        self.assertContains(response, 'Booking deleted!')
+
+    def test_doesnt_have_permission(self):
+        self.user.make_as_academic_staff()
+        self.user.save()
+        booktime = [BookTimeFactory.create()]
+        booking = BookingFactory.create(booktimes = booktime)
+        print(booking.user.id)
+        print(self.user.id)
+        self.client.login(username = self.user.user.username, password = '1234567')
+        url = reverse('booking:deletebooktime', args = (booking.id, booktime[0].id))
+        response = self.client.get(url)
+        print(response.content)
         self.assertContains(response, 'You cannot delete this booking.')
 
     def test_user_not_logged_in(self):
         url = reverse('booking:deletebooktime', args = (self.booking.id, self.booktimes[0].id))
         response = self.client.get(url)
-        self.assertContains(response, 'You cannot delete this booking.')
+        self.assertContains(response, 'You must log in to delete a booking.')
