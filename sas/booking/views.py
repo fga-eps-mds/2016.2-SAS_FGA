@@ -16,12 +16,13 @@ def search_booking_query(request):
         if not(form_booking.is_valid()):
             return render(request, 'booking/searchBookingQuery.html',
                                     {'search_booking': form_booking})
-        elif(option == 'opt_day_room'):
-            pass
+        #elif(option == 'opt_day_room'):
+
             #view method from who was responsable for this table - Fabiola
-        elif(option == 'opt_booking_week'):
-            pass
+
+        #elif(option == 'opt_booking_week'):
             #view method from who was responsable for this table - Meu
+
         elif(option == 'opt_building_day'):
             #view method from who was responsable for this table - Hugo
             return (search_booking_building_day(request,form_booking))
@@ -38,10 +39,10 @@ def search_booking_building_day(request,form_booking):
     building = Building.objects.get(id = building_id)
     places = Place.objects.filter(building = building)
     n = len(places) +1
-    
+
     places_ = []
     table =[]
-    
+
     for place in places:
         aux =[]
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
@@ -52,7 +53,7 @@ def search_booking_building_day(request,form_booking):
                 aux.append(aux_tuple)
 
         table.append(aux)
-        
+
         p = place.name.split('-')
         places_.append(p[1])
 
@@ -66,7 +67,7 @@ def search_booking_room_period(request,form_booking):
     n = len(form_days) + 1
 
     table =[]
-    
+
     for form_day in form_days:
         aux =[]
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
@@ -77,10 +78,15 @@ def search_booking_room_period(request,form_booking):
                 print('booking name', booking.name)
                 aux_tuple = (book.start_hour.hour,booking.name)
                 aux.append(aux_tuple)
-                
+
         table.append(aux)
 
-    return render(request, 'booking/template_table.html', {'days':form_days, 'table':table, 'hours':hours, 'n':n, 'name': "Room x Period"})
+    days = [x for x in range(8)]
+    print('table',table)
+   # table = [ [],[(1,'asdf'),(2,'a')],[(0,'oij')],[(3,'e'),(4,'ee')],[(2,'m'),(3,'oi')],[],[(9,'odi')],[]]
+    hours = ("8-10","10-12","12-14","14-16","16-18")
+
+    return render(request, 'booking/template_table.html', {'days':days, 'table':table, 'hours':hours, 'n':9})
 
 def next(skip,aux_rows):
     for i in range(skip):
