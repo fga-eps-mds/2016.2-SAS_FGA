@@ -70,9 +70,9 @@ class SearchBookingForm(forms.Form):
     def get_day(self):
         cleaned_data = super(SearchBookingForm,self).clean()
         start_date = self.cleaned_data.get('start_date')
-        
-        return start_date    
-     
+
+        return start_date
+
 
 
     def clean(self):
@@ -233,10 +233,10 @@ class BookingForm(forms.Form):
 		widget=forms.widgets.TimeInput(attrs={'placeholder': '__:__'}))
 	start_date = forms.DateField(
 		label=_('Start Date:'),
-		widget=forms.widgets.DateInput(attrs={'placeholder': _("mm/dd/yyyy")}))
+		widget=forms.widgets.DateInput(attrs={'class':'datepicker1','placeholder': _("mm/dd/yyyy")}))
 	end_date = forms.DateField(
 		label=_('End Date:'),
-		widget=forms.widgets.DateInput(attrs={'placeholder': _("mm/dd/yyyy")}))
+		widget=forms.widgets.DateInput(attrs={'class':'datepicker1','placeholder': _("mm/dd/yyyy")}))
 	building = forms.ModelChoiceField(
 		queryset=Building.objects,
 		label=_('Building:'))

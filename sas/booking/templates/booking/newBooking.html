@@ -1,7 +1,7 @@
 {% extends 'sas/base.html' %}
 
 {% load i18n %}
-{% load bootstrap3 %}
+{% load bootstrap3 staticfiles %}
 {% bootstrap_messages %}
 
 {% block title %} {% trans "New Booking" %} {% endblock %}
@@ -25,9 +25,23 @@
 	</div>
 {% endblock %}
 
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'plugins/datepicker/bootstrap-datepicker.css' %}" />
+{% endblock %}
+
 {% block extrajs %}
 <script>
 $(document).ready(function () {
+
+	$('.datepicker1').datepicker({
+			inline: true,
+			useCurrent: true,
+			format: '{% trans "mm/dd/yyyy" %}',
+			language: '{% trans "en" %}',
+			autoclose: true,
+	});
+
     $('#id_building').change(function () {
 				$("#id_place").prop('selectedIndex',0);
         var selected_building = $(this).find(":selected").text();
@@ -38,4 +52,6 @@ $(document).ready(function () {
     });
 });
 </script>
+<script src= "{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+<script src= "{% static 'plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
 {% endblock %}
