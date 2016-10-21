@@ -65,7 +65,9 @@ class DeleteBookingTest(TestCase):
     def test_user_not_logged_in(self):
         url = reverse('booking:deletebooking', args = (self.booking.id,))
         response = self.client.get(url)
-        self.assertContains(response, 'You must log in to delete a booking.')
+        for booktime in self.booktimes:
+            self.assertTrue(BookTime.objects.filter(pk = booktime.id).exists())
+        self.assertTrue(Booking.objects.filter(pk = self.booking.id).exists())
 
     def test_booking_does_not_exist(self):
         self.client.login(username = self.user.user.username, password = '1234567')
@@ -122,4 +124,11 @@ class DeleteBooktimeTest(TestCase):
     def test_user_not_logged_in(self):
         url = reverse('booking:deletebooktime', args = (self.booking.id, self.booktimes[0].id))
         response = self.client.get(url)
-        self.assertContains(response, 'You must log in to delete a booking.')
+        self.assertTrue(BookTime.objects.filter(pk = self.booktimes[0].id).exists())
+        self.assertTrue(Booking.objects.filter(pk = self.booking.id).exists())
+
+    def test_booktime_does_not_exist(self):
+        self.client.login(username = self.user.user.username, password = '1234567')
+        url = reverse('booking:deletebooktime', args = (9999, 9999))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
