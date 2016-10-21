@@ -2,9 +2,9 @@ from django.test import TestCase, RequestFactory
 from booking.models import *
 from django.test import Client
 from booking.factories import *
-from datetime import datetime
 from user.factories import UserFactory
 from booking.forms import SearchBookingForm
+from booking.views import search_booking_day_room
 from datetime import datetime, timedelta
 
 class TestBookTime(TestCase):
@@ -54,7 +54,6 @@ class TestSearchBookingQuery(TestCase):
         days = [start_date,end_date]
         days2 = form.count_days(start_date=start_date,end_date=end_date)
         self.assertEqual(days,days2)
-
 
     def test_search_booking_day_room(self):
         factory = self.factory
