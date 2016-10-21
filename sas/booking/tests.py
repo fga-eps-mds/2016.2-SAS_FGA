@@ -85,13 +85,6 @@ class TestSearchBooking(TestCase):
         self.assertTemplateUsed(response, 'booking/searchBookingQuery.html')
 
 
-<<<<<<< a6b6e1b09e034ca642e8224549098829633b2a21
-=======
-
-
-
-
->>>>>>> Added unit test for table method
 class TestSearchBookingQuery(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -102,7 +95,6 @@ class TestSearchBookingQuery(TestCase):
         days = [start_date,end_date]
         days2 = form.count_days(start_date=start_date,end_date=end_date)
         self.assertEqual(days,days2)
-
 
     def test_search_booking_day_room(self):
         factory = self.factory
