@@ -63,13 +63,34 @@ class SearchBookingForm(forms.Form):
 
          return days
 
+
     def days_list(self):
          cleaned_data = super(SearchBookingForm,self).clean()
          end_date = self.cleaned_data.get('end_date')
          start_date = self.cleaned_data.get('start_date')
          days = self.count_days(start_date=start_date,end_date=end_date)
-
          return days
+
+    def week_day(self):
+        cleaned_data = super(SearchBookingForm,self).clean()
+        start_date = self.cleaned_data.get('start_date')
+        weekday_start_date = start_date.weekday()
+        monday = start_date - timedelta(days=weekday_start_date)
+        sunday = monday + timedelta(days=6)
+        days = []
+
+        while(monday<=sunday):
+            days.append(monday)
+            monday += timedelta(days=1)
+        print(days)
+        return days
+
+    def get_day(self):
+        cleaned_data = super(SearchBookingForm,self).clean()
+        start_date = self.cleaned_data.get('start_date')
+
+        return start_date
+
 
     def week_day(self):
         cleaned_data = super(SearchBookingForm,self).clean()
