@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, time
 from django.conf import settings
 from django.utils import formats
 import copy
@@ -222,15 +222,26 @@ class SearchBooking(forms.Form):
             raise forms.ValidationError(msg)
 
 class BookingForm(forms.Form):
+	hour = datetime.strptime("08:00", "%H:%M").time()
+	hour2 = datetime.strptime("10:00", "%H:%M").time()
+	hour3 = datetime.strptime("12:00", "%H:%M").time()
+	hour4 = datetime.strptime("14:00", "%H:%M").time()
+	hour5 = datetime.strptime("16:00", "%H:%M").time()
+	hour6 = datetime.strptime("18:00", "%H:%M").time()
+	hour7 = datetime.strptime("20:00", "%H:%M").time()
+	hour8 = datetime.strptime("22:00", "%H:%M").time()
+	hour9 = datetime.strptime("00:00", "%H:%M").time()
+	HOURS = (('', '----'), (hour,'08:00'), (hour2, ('10:00')), (hour3, ('12:00')), (hour4, ('14:00')),\
+				(hour5, ('16:00')), (hour6, ('18:00')), (hour7, ('20:00')), (hour8, ('22:00')), (hour9, ('00:00')))
 	name = forms.CharField(
 		label=_('Booking Name:'),
 		widget=forms.TextInput(attrs={'placeholder': ''}))
 	start_hour = forms.TimeField(
 		label=_('Start Time:'),
-		widget=forms.widgets.TimeInput(attrs={'placeholder': '__:__'}))
+		widget=forms.Select(choices=HOURS))
 	end_hour = forms.TimeField(
 		label=_('End Time:'),
-		widget=forms.widgets.TimeInput(attrs={'placeholder': '__:__'}))
+		widget=forms.Select(choices=HOURS))
 	start_date = forms.DateField(
 		label=_('Start Date:'),
 		widget=forms.widgets.DateInput(attrs={'class':'datepicker1','placeholder': _("mm/dd/yyyy")}))
@@ -246,6 +257,8 @@ class BookingForm(forms.Form):
 	week_days = forms.MultipleChoiceField(label=_("Days of week: "),
 						required=False, choices=WEEKDAYS,
 						widget=forms.CheckboxSelectMultiple())
+
+
 
 	def save(self, user, force_insert=False, force_update=False, commit=True):
 		booking = Booking()
