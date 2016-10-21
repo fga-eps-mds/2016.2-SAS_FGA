@@ -69,9 +69,13 @@ class SearchBookingForm(forms.Form):
          start_date = self.cleaned_data.get('start_date')
          days = self.count_days(start_date=start_date,end_date=end_date)
 
+<<<<<<< HEAD
          return days
 
     def week_day(self):
+=======
+    def clean(self):
+>>>>>>> Updated test for building day
         cleaned_data = super(SearchBookingForm,self).clean()
         start_date = self.cleaned_data.get('start_date')
         weekday_start_date = start_date.weekday()
