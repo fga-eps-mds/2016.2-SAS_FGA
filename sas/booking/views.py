@@ -20,7 +20,7 @@ def search_booking_query(request):
             pass
             #view method from who was responsable for this table - Fabiola
         elif(option == 'opt_booking_week'):
-            pass
+            return (search_booking_booking_name_week(request, form_booking))
             #view method from who was responsable for this table - Meu
         elif(option == 'opt_building_day'):
             #view method from who was responsable for this table - Hugo
@@ -58,6 +58,28 @@ def search_booking_building_day(request,form_booking):
 
     return render(request, 'booking/template_table.html', {'days':places_, 'table':table, 'hours':hours, 'n':n, 'name': "Building x Day"})
 
+def search_booking_booking_name_week(request, form_booking):
+    form_days = form_booking.days_list()
+    booking_name = form_booking["booking_name"].data
+    hours = [(6,"06-08"),(8,"08-10"),(10,"10-12"),(12,"12-14"),(14,"14-16"),(16,"16-18"),(18,"18-20"),(20,"20-22"),(22,("22-00"))]
+    n = len(form_days) + 1
+
+    table =[]
+    
+    for form_day in form_days:
+        aux =[]
+        bookings = Booking.objects.filter(time__date_booking=str(form_day))
+        for booking in bookings:
+            if (booking.name == booking_name):
+                book = booking.time.get(date_booking = str(form_day))
+                aux_tuple = (book.start_hour.hour,booking.place.name)
+                aux.append(aux_tuple)
+                
+        table.append(aux)
+
+    return render(request, 'booking/template_table.html', {'days':form_days, 'table':table, 'hours':hours, 'n':n, 'name': booking_name})
+
+
 def search_booking_room_period(request,form_booking):
     form_days = form_booking.days_list()
     place_id = form_booking["room_name"].data
@@ -73,8 +95,6 @@ def search_booking_room_period(request,form_booking):
         for booking in bookings:
             if (booking.place.name == booking_place.name):
                 book = booking.time.get(date_booking = str(form_day))
-                print('hours',book.start_hour.hour)
-                print('booking name', booking.name)
                 aux_tuple = (book.start_hour.hour,booking.name)
                 aux.append(aux_tuple)
                 

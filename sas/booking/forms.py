@@ -104,7 +104,7 @@ class SearchBookingForm(forms.Form):
                     self.add_error('booking_name', msg)
                     raise forms.ValidationError(msg)
 
-            if(option == 'opt_room_period'):
+            if(option == 'opt_room_period' or option == 'opt_booking_week'):
                 end_date = cleaned_data.get('end_date')
                 if not(today <= start_date and today <= end_date):
                     msg = _('Invalid booking period: Booking must be in future date')
@@ -194,7 +194,7 @@ class SearchBooking(forms.Form):
                     self.add_error('booking_name', msg)
                     raise forms.ValidationError(msg)
 
-            if(option == 'opt_room_period'):
+            if(option == 'opt_room_period' or option == 'opt_booking_week'):
                 end_date = self.cleaned_data.get('end_date')
 
                 if not(today <= start_date and today <= end_date):
