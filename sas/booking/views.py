@@ -23,30 +23,50 @@ def search_booking_query(request):
         #elif(option == 'opt_booking_week'):
             #view method from who was responsable for this table - Meu
 
-        #elif(option == 'opt_building_day'):
-        
+        elif(option == 'opt_building_day'):
             #view method from who was responsable for this table - Hugo
+            return (search_booking_building_day(request,form_booking))
         else:
             return (search_booking_room_period(request,form_booking))
             #view method from who was responsable for opt_room_period table - Luis
     return render(request, 'booking/searchBookingQuery.html',
                             {'search_booking': form_booking})
 
+def search_booking_building_day(request,form_booking):
+    hours = [(6,"06-08"),(8,"08-10"),(10,"10-12"),(12,"12-14"),(14,"14-16"),(16,"16-18"),(18,"18-20"),(20,"20-22"),(22,("22-00"))]
+    form_day = form_booking.get_day()
+    building_id = form_booking["building_name"].data
+    building = Building.objects.get(id = building_id)
+    places = Place.objects.filter(building = building)
+    n = len(places) +1
+
+    places_ = []
+    table =[]
+
+    for place in places:
+        aux =[]
+        bookings = Booking.objects.filter(time__date_booking=str(form_day))
+        for booking in bookings:
+            if (booking.place.name == place.name):
+                book = booking.time.get(date_booking = str(form_day))
+                aux_tuple = (book.start_hour.hour,booking.name)
+                aux.append(aux_tuple)
+
+        table.append(aux)
+
+        p = place.name.split('-')
+        places_.append(p[1])
+
+    return render(request, 'booking/template_table.html', {'days':places_, 'table':table, 'hours':hours, 'n':n, 'name': "Building x Day"})
+
 def search_booking_room_period(request,form_booking):
-    HOURS = {"8-10":8,'10-12':10,'12-14':12,'14-16':14,'16-18':16,'18-20':18,'20-22':20,'22-00':22}
-    bookings = form_booking.search()
     form_days = form_booking.days_list()
     place_id = form_booking["room_name"].data
     booking_place = Place.objects.get(id = place_id)
+    hours = [(6,"06-08"),(8,"08-10"),(10,"10-12"),(12,"12-14"),(14,"14-16"),(16,"16-18"),(18,"18-20"),(20,"20-22"),(22,("22-00"))]
+    n = len(form_days) + 1
 
-    cont= timedelta(hours=0)
-    auxs = []
-    days = []
-    rows = []
-    time = []
     table =[]
-    skip = 0
-    aux_rows = []
 
     for form_day in form_days:
         aux =[]
@@ -106,13 +126,13 @@ def search_booking_table(request):
 
 def search_booking(request):
     if request.user.is_authenticated():
-        bookings = Booking.objects.filter(user=request.user)
-        return render(request, 'booking/searchBooking.html',
-                        {'bookings': bookings})
+        if request.user.profile_user.is_admin():
+            bookings = Booking.objects.all()
+        else:
+            bookings = Booking.objects.filter(user=request.user)
+        return render(request, 'booking/searchBooking.html', {'bookings': bookings})
     else:
-        form = LoginForm()
-        return render(request, 'booking/index.html', {'form': form})
-
+        return redirect("index")
 
 def cancel_booking(request, id):
     if request.user.is_authenticated() and request.session['booking']:

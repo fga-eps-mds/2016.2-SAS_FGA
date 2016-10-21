@@ -1,4 +1,5 @@
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import Group
 from django.forms import ModelForm
 from .models import UserProfile, Validation
 from .models import CATEGORY
@@ -6,6 +7,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
+from sas.basic import Configuration
 
 
 class LoginForm(forms.Form):
@@ -108,7 +110,10 @@ class UserForm(ModelForm):
         # do custom stuff
         if commit:
             userprofile.save()
+        if not is_edit_form:
+            userprofile.make_as_academic_staff()
         return userprofile
+
 
     def clean(self):
         cleaned_data = super(ModelForm, self).clean()
