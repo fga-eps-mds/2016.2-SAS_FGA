@@ -7,7 +7,6 @@ from sas.views import index
 from datetime import datetime, timedelta
 import operator
 from collections import OrderedDict
-from user.views import has_permission_to_delete
 import traceback
 
 def search_booking_query(request):

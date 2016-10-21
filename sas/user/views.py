@@ -97,6 +97,3 @@ def change_password(request):
 		return index(request)
 	else:
 		return render_edit_user(request)
-
-def has_permission_to_delete(request):
-	return True
