@@ -53,7 +53,6 @@ def search_booking_building_day(request,form_booking):
                 aux.append(aux_tuple)
                 
         table.append(aux)
-
         p = place.name.split('-')
         places_.append(p[1])
 

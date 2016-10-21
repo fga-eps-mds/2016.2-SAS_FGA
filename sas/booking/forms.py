@@ -74,7 +74,6 @@ class SearchBookingForm(forms.Form):
         return start_date    
      
 
-
     def clean(self):
         cleaned_data = super(SearchBookingForm,self).clean()
         today = date.today()
