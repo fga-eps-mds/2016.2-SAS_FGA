@@ -85,6 +85,13 @@ class TestSearchBooking(TestCase):
         self.assertTemplateUsed(response, 'booking/searchBookingQuery.html')
 
 
+<<<<<<< a6b6e1b09e034ca642e8224549098829633b2a21
+=======
+
+
+
+
+>>>>>>> Added unit test for table method
 class TestSearchBookingQuery(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -114,6 +121,6 @@ class TestSearchBookingQuery(TestCase):
         building_name = Building.objects.filter(name='UAC')
         room_name = Place.objects.filter(pk=8)
         parameters = {'search_options': 'opt_day_room','building_name': building_name,
-			'room_name' : room_name, 'start_date' : start_date}
+            'room_name' : room_name, 'start_date' : start_date}
         form = SearchBookingForm(data=parameters)
         self.assertTrue(form.is_valid())
