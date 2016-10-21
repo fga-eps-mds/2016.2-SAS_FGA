@@ -110,7 +110,7 @@ def new_booking(request):
         return render(request, 'booking/newBooking.html',
                             {'form_booking': form_booking})
     else:
-        return index(request)
+        return redirect("index")
 
 def search_booking_table(request):
     if request.method == "POST":
