@@ -3,7 +3,7 @@ from faker import Factory as FakerFactory
 from factory import *
 import factory
 from factory.fuzzy import FuzzyChoice
-from .models import User, UserProfile
+from .models import User, UserProfile, CATEGORY
 
 fake = FakerFactory.create()
 
