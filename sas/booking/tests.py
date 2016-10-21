@@ -1,12 +1,10 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase,RequestFactory
 from booking.models import *
 from django.test import Client
 from booking.factories import *
-from datetime import datetime
-from booking.views import search_booking_booking_name_week
+from booking.views import search_booking_booking_name_week, search_booking_building_day
 from datetime import datetime, timedelta
 from user.factories import UserFactory, UserProfileFactory
-from booking.factories import BookingFactory, BookTimeFactory
 from django.urls import reverse
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
@@ -264,3 +262,37 @@ class TestSearchBookingQuery(TestCase):
 			'room_name' : room_name, 'start_date' : start_date}
         form = SearchBookingForm(data=parameters)
         self.assertTrue(form.is_valid())
+        
+
+class TestSearchBookingForm(TestCase):
+	
+	def setUp(self):
+		self.factory = RequestFactory()
+
+	def test_get_day(self):
+
+		start_date = datetime.strptime("12/31/2016", "%m/%d/%Y")
+		parameters = {'start_date':start_date}
+		booking = SearchBookingForm(data=parameters)
+
+		if booking.is_valid():
+			aux = booking.get_day()
+			self.assertEqual(start_date,day)
+
+	def test_search_booking_building_day(self):
+		factory = self.factory
+		
+		start_date = datetime.now().date()
+		building_name = Building.objects.filter(name='UAC')
+		parameters = {'search_options': 'opt_building_day','building_name': building_name,
+		'start_date' : start_date}
+
+		form = SearchBookingForm(data=parameters)
+		
+		if form.is_valid():
+			request = self.factory.post('/booking/searchbookingg/', parameters)
+			page = search_booking_building_day(request=request,form_booking=form)
+			
+			self.assertTemplateUsed(page, 'booking/template_table.html')
+
+
