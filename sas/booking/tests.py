@@ -6,7 +6,7 @@ from user.factories import UserFactory
 from datetime import datetime, timedelta
 from user.factories import UserFactory, UserProfileFactory
 from booking.views import new_booking
-from booking.forms import BookingForm
+from booking.forms import BookingForm, SearchBookingForm
 
 class TestNewBooking(TestCase):
     def setUp(self):
@@ -82,3 +82,13 @@ class TestSearchBooking(TestCase):
             'room_name' : room_name, 'start_date' : start_date}
         response = client.post('/booking/searchbookingg/', parameters)
         self.assertTemplateUsed(response, 'booking/searchBookingQuery.html')
+
+
+class TestSearchBookingQuery(TestCase):
+    def test_count_days(self):
+        form = SearchBookingForm()
+        start_date=datetime.strptime("21092016", "%d%m%Y")
+        end_date=datetime.strptime("22092016", "%d%m%Y")
+        days = [start_date,end_date]
+        days2 = form.count_days(start_date=start_date,end_date=end_date)
+        self.assertEqual(days,days2)
