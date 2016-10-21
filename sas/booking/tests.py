@@ -16,8 +16,8 @@ class TestNewBooking(TestCase):
         self.client = Client()
         self.factory = RequestFactory()
         self.week_days = ['3', '5']
-        self.start_date = datetime.strptime("12/31/2016", "%m/%d/%Y")
-        self.end_date = datetime.strptime("01/09/2017", "%m/%d/%Y")
+        self.start_date=datetime.strptime("21092017", "%d%m%Y")
+        self.end_date=datetime.strptime("22092017", "%d%m%Y")
         self.hour = datetime.strptime("08:00", "%H:%M").time()
         self.hour2 = datetime.strptime("10:00", "%H:%M").time()
         self.building_name = Building.objects.filter(name='UAC')
