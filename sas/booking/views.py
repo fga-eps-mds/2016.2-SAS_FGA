@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BookingForm, SearchBookingForm
 from .models import Booking, BookTime, Place, Building
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from sas.views import index
 from datetime import datetime, timedelta
 import operator
@@ -157,35 +158,31 @@ def confirm_booking(request, id):
     else:
         return index(request)
 
+@login_required(login_url = '/?showLoginModal=yes')
 def delete_booking(request, id):
-    if request.user.is_authenticated():
-        try:
-            booking = Booking.objects.get(pk = id)
-            if request.user.profile_user.is_admin() or booking.user.id == request.user.id:
-                booking.delete()
-                messages.success(request, _('Booking deleted!'))
-            else:
-                messages.error(request, _('You cannot delete this booking.'))
-        except:
-            messages.error(request, _('Booking not found.'))
-    else:
-        messages.error(request, _('You must log in to delete a booking.'))
+    try:
+        booking = Booking.objects.get(pk = id)
+        if request.user.profile_user.is_admin() or booking.user.id == request.user.id:
+            booking.delete()
+            messages.success(request, _('Booking deleted!'))
+        else:
+            messages.error(request, _('You cannot delete this booking.'))
+    except:
+        messages.error(request, _('Booking not found.'))
     return render(request, 'booking/searchBooking.html', {})
 
+@login_required(login_url = '/?showLoginModal=yes')
 def delete_booktime(request, booking_id, booktime_id):
-    if request.user.is_authenticated:
-        try:
-            booktime = BookTime.objects.get(pk = booktime_id)
-            booking = Booking.objects.get(pk = booking_id)
-            if request.user.profile_user.is_admin() or booking.user.id == request.user.id:
-                booking.time.remove(booktime)
-                booktime.delete()
-                Booking.objects.filter(time = None).delete()
-                messages.success(request, _('Booking deleted!'))
-            else:
-                messages.error(request, _('You cannot delete this booking.'))
-        except:
-            messages.error(request, _('Booking not found.'))
-    else:
-        messages.error(request, _('You must log in to delete a booking.'))
+    try:
+        booktime = BookTime.objects.get(pk = booktime_id)
+        booking = Booking.objects.get(pk = booking_id)
+        if request.user.profile_user.is_admin() or booking.user.id == request.user.id:
+            booking.time.remove(booktime)
+            booktime.delete()
+            Booking.objects.filter(time = None).delete()
+            messages.success(request, _('Booking deleted!'))
+        else:
+            messages.error(request, _('You cannot delete this booking.'))
+    except:
+        messages.error(request, _('Booking not found.'))
     return render(request, 'booking/searchBooking.html', {})
