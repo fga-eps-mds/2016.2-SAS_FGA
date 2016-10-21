@@ -22,3 +22,14 @@ class TestSearchBookingQuery(TestCase):
         days = [start_date,end_date]
         days2 = form.count_days(start_date=start_date,end_date=end_date)
         self.assertEqual(days,days2)
+
+
+
+    def test_form_is_valid(self):
+        start_date = datetime.now().date()
+        building_name = Building.objects.filter(name='UAC')
+        room_name = Place.objects.filter(pk=8)
+        parameters = {'search_options': 'opt_day_room','building_name': building_name,
+			'room_name' : room_name, 'start_date' : start_date}
+        form = SearchBookingForm(data=parameters)
+        self.assertTrue(form.is_valid())
