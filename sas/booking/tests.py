@@ -103,6 +103,7 @@ class TestSearchBookingQuery(TestCase):
         days2 = form.count_days(start_date=start_date,end_date=end_date)
         self.assertEqual(days,days2)
 
+
     def test_search_booking_day_room(self):
         factory = self.factory
         start_date = datetime.now().date()
