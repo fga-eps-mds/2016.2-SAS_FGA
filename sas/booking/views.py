@@ -159,16 +159,25 @@ def confirm_booking(request, id):
         return index(request)
 
 def delete_booking(request, id):
-    if request.user.is_authenticated() and has_permission_to_delete(request):
-        try:
-            Booking.objects.get(pk = id).delete()
-            messages.success(request, _('Booking deleted!'))
-        except Exception as e:
-            messages.error(request, _('Booking not found.'))
-            print(e)
-            traceback.print_exc()
+    if request.user.is_authenticated():
+        if request.user.profile_user.is_admin():
+            try:
+                Booking.objects.get(pk = id).delete()
+                messages.success(request, _('Booking deleted!'))
+            except:
+                messages.error(request, _('Booking not found.'))
+        else:
+            try:
+                booking = Booking.objects.get(pk = id)
+                if booking.user.id == request.user.id:
+                    Booking.objects.get(pk = id).delete()
+                    messages.success(request, _('Booking deleted!'))
+                else:
+                    messages.error(request, _('You cannot delete this booking.'))
+            except:
+                messages.error(request, _('Booking not found.'))
     else:
-        messages.error(request, _('You cannot delete this booking.'))
+        messages.error(request, _('You are not logged in.'))
     return render(request, 'booking/searchBooking.html', {})
 
 def delete_booktime(request, booking_id, booktime_id):
