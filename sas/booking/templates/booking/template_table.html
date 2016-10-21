@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load bootstrap3 staticfiles %}
+{% load check_table %}
 {% bootstrap_messages %}
 
 {% block extrastyle %}
@@ -12,118 +13,33 @@
 
 
 {% block content %}
-<h1>{{ bookings }}</h1>
-
-<hr class="star-light">
-<br>
-<div class='col-xs-12'>
-  <table border='0' cellpadding='0' cellspacing='0'>
-      <tr class='days'>
-        <th></th>
-    <tr>
-      <td class='time'>08:00</td>
-      <td class='cs335 blue' data-tooltip='Software Engineering &amp; Software Process'>CS335 [JH1]</td>
-      <td class='cs426 purple' data-tooltip='Computer Graphics'>CS426 [CS1]</td>
-      <td></td>
-      <td></td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td class='time'>10:00</td>
-      <td></td>
-      <td class='cs335 blue lab' data-tooltip='Software Engineering &amp; Software Process'>CS335 [Lab]</td>
-      <td class='md352 green' data-tooltip='Multimedia Production &amp; Management'>MD352 [Kairos]</td>
-      <td></td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td class='time'>12:00</td>
-      <td></td>
-      <td class='cs335 blue lab' data-tooltip='Software Engineering &amp; Software Process'>CS335 [Lab]</td>
-      <td class='md352 green' data-tooltip='Multimedia Production &amp; Management'>MD352 [Kairos]</td>
-      <td class='cs240 orange' data-tooltip='Operating Systems'>CS240 [CH]</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td class='time'>14:00</td>
-      <td></td>
-      <td class='md303 navy' data-tooltip='Media &amp; Globalisation'>MD303 [CS2]</td>
-      <td class='md313 red' data-tooltip='Special Topic: Multiculturalism &amp; Nationalism'>MD313 [Iontas]</td>
-      <td></td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td class='time'>16:00</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td class='time'>18:00</td>
-      <td></td>
-      <td></td>
-      <td class='cs426 purple' data-tooltip='Computer Graphics'>CS426 [CS2]</td>
-      <td class='cs240 orange' data-tooltip='Operating Systems'>CS240 [TH1]</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td class='time'>20:00</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td class='cs240 orange lab' data-tooltip='Operating Systems'>CS240 [Lab]</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td class='time'>22:00</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td class='cs240 orange lab' data-tooltip='Operating Systems'>CS240 [Lab]</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <td class='time'>24:00</td>
-      <td class='cs335 blue' data-tooltip='Software Engineering &amp; Software Process'>CS335 [TH1]</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>-</td>
-    </tr>
-  </table>
-</div>
+<h1>{{ name }}</h1>
 
 <table border=10>
-	<thead>
-		<tr><th colspan="{{ n  }}">Horário</th></tr>
-		<tr>
-		<th></th>
-			{% for day in days %}
-				<th>{{ day }}</th>
-			{% endfor %}
-		</tr>
-	</thead>
-	<tbody>
-		  {% for hour in hours %}	
-       {% with forloop.counter0 as actual_line %}
-		  <tr>
-			<td> <strong>{{hour}}</strong></td>
-			{% for cell_table in table %}
-				{% for idx_hour,book in cell_table %}
-					{% if idx_hour == actual_line %}
-						<td>{{book}} </td>
-					{% else %}
-						<td> Livre . </td>
-					{% endif %} 
-				{% endfor %}
-			{% endfor %}
-		  </tr>        
-		{% endwith %}
-			{% endfor %}
-
-	</tbody>
-    
+  <thead>
+    <tr><th colspan="{{ n  }}">Horário</th></tr>
+    <tr>
+    <th></th>
+      {% for day in days %}
+        <th>{{ day }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  
+  <tbody>
+    {% for id,hour in hours %}  
+      <tr>
+         <td> <strong>{{hour}}</strong></td>
+           {% for cell_table in table %}
+              {% if not cell_table%}
+                <td> Livre.</td>
+              {% else%}
+                <td>{% check_table cell_table id %}</td>  
+              {% endif %}
+           {% endfor %}
+      </tr>        
+    {% endfor %}
+  </tbody>
 </table>
+
 {% endblock %}

@@ -67,6 +67,13 @@ class SearchBookingForm(forms.Form):
 
          return days
 
+    def get_day(self):
+        cleaned_data = super(SearchBookingForm,self).clean()
+        start_date = self.cleaned_data.get('start_date')
+        
+        return start_date    
+     
+
 
     def clean(self):
         cleaned_data = super(SearchBookingForm,self).clean()
