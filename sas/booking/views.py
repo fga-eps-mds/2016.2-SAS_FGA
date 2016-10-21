@@ -77,7 +77,7 @@ def search_booking_building_day(request,form_booking):
                 book = booking.time.get(date_booking = str(form_day))
                 aux_tuple = (book.start_hour.hour,booking.name)
                 aux.append(aux_tuple)
-
+                
         table.append(aux)
 
         p = place.name.split('-')
