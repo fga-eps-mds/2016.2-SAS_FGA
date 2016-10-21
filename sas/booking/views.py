@@ -38,9 +38,8 @@ def search_booking_day_room(request,form_booking):
     form_days = form_booking.week_day()
     place_id = form_booking["room_name"].data
     booking_place = Place.objects.get(id = place_id)
-    weekday = [( _("Monday")), ( _("Tuesday")), ( _("Wednesday")),
-    			( _("Thursday")), ( _("Friday")), ( _("Saturday")),
-    			( _("Sunday"))]
+    weekday = [( _("Monday")), ( _("Tuesday")), ( _("Wednesday")),( _("Thursday")), ( _("Friday")), ( _("Saturday")),( _("Sunday"))]
+
     n = len(form_days) + 1
 
     table =[]
