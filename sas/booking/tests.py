@@ -36,6 +36,7 @@ class TestSearchBooking(TestCase):
 
 
 
+
 class TestBookTime(TestCase):
 
 	def test_get_str_weekday(self):
@@ -68,12 +69,11 @@ class TestSearchBookingQuery(TestCase):
             page = search_booking_day_room(request=request,form_booking=form)
             self.assertEqual(page.status_code,200)
             self.assertContains(page, "Room x Day")
-
     def test_form_is_valid(self):
         start_date = datetime.now().date()
         building_name = Building.objects.filter(name='UAC')
         room_name = Place.objects.filter(pk=8)
         parameters = {'search_options': 'opt_day_room','building_name': building_name,
-            'room_name' : room_name, 'start_date' : start_date}
+			'room_name' : room_name, 'start_date' : start_date}
         form = SearchBookingForm(data=parameters)
         self.assertTrue(form.is_valid())
