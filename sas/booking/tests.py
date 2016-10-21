@@ -320,5 +320,3 @@ class TestSearchBookingForm(TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, "Building x Day")
 
-            
-
