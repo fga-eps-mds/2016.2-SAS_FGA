@@ -21,23 +21,9 @@ class TestBookTime(TestCase):
         self.assertEqual(book.get_str_weekday(), "Wednesday")
 
 class TestSearchBookingQuery(TestCase):
-    '''def test_count_days(self):
-        form = SearchBookingForm()
-        start_date=datetime.strptime("21092016", "%d%m%Y")
-        end_date=datetime.strptime("22092016", "%d%m%Y")
-        days = [start_date,end_date]
-        days2 = form.count_days(start_date=start_date,end_date=end_date)
-        self.assertEqual(days,days2)'''
- 
-    def test_form_is_valid(self):
-        start_date = datetime.now().date()
-        building_name = Building.objects.filter(name='UAC')
-        room_name = Place.objects.filter(pk=8)
-        parameters = {'search_options': 'opt_day_room','building_name': building_name,
-            'room_name' : room_name, 'start_date' : start_date}
-        form = SearchBookingForm(data=parameters)
-        self.assertTrue(form.is_valid())
-
+    def setUp(self):
+        self.factory = RequestFactory()
+  
     def test_days_list(self):
         start_date=datetime.strptime("21092017", "%d%m%Y")
         end_date=datetime.strptime("22092017", "%d%m%Y")
@@ -46,11 +32,12 @@ class TestSearchBookingQuery(TestCase):
         parameters = {'search_options' : 'opt_room_period', 'building_name': building_name, 'room_name' : room_name,
             'start_date' : start_date, 'end_date' : end_date}
         form = SearchBookingForm(data=parameters)
-        days_test = []
-        days_test.append(start_date)
-        days_test.append(end_date)
-        days = form.days_list()
-        self.assertEqual(days_test,days)
+        form.is_valid()
+        days = []
+        days.append(start_date)
+        days.append(end_date)
+        days2 = form.days_list()
+        self.assertEqual(days,days2)
    
     def test_search(self):
         start_date = parser.parse(2018-10-10)
