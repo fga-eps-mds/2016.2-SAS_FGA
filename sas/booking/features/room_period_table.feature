@@ -11,7 +11,7 @@ Scenario: Inexistent booking between start date and end date
 	And I choose "Room x Period"
 	And I select "UAC" from "Building"
 	And I select "UAC | FGA-I1" from "Place"
-	And I fill in "Start Date" with "10/20/2016"
+	And I fill in "Start Date" with "10/29/2016"
 	And I fill in "End Date" with "10/30/2016"
 	Then I press "Search"
 	Then I should see "Doesnt exist any booking in this period of time"
