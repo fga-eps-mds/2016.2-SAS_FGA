@@ -64,11 +64,11 @@ class TestSearchBookingQuery(TestCase):
         parameters = {'search_options': 'opt_day_room','building_name': building_name,
             'room_name' : room_name, 'start_date' : start_date}
         form = SearchBookingForm(data=parameters)
-        if form.is_valid():
-            request = factory.post('/booking/searchbookingg', parameters)
-            page = search_booking_day_room(request=request,form_booking=form)
-            self.assertEqual(page.status_code,200)
-            self.assertContains(page, "Room x Day")
+        form.is_valid()
+        request = factory.post('/booking/searchbookingg', parameters)
+        page = search_booking_day_room(request=request,form_booking=form)
+        self.assertEqual(page.status_code,200)
+        self.assertContains(page, "Room x Day")
     def test_form_is_valid(self):
         start_date = datetime.now().date()
         building_name = Building.objects.filter(name='UAC')
