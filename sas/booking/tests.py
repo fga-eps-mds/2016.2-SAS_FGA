@@ -288,7 +288,6 @@ class TestSearchBookingQuery(TestCase):
 
 
 class TestSearchBookingForm(TestCase):
-    
     def setUp(self):
         self.factory = RequestFactory()
 
@@ -318,7 +317,4 @@ class TestSearchBookingForm(TestCase):
             
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, "Building x Day")
-
-        
-
 

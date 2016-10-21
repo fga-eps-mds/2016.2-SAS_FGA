@@ -71,11 +71,10 @@ class SearchBookingForm(forms.Form):
     def days_list(self):
         cleaned_data = super(SearchBookingForm, self).clean()
         end_date = self.cleaned_data.get('end_date')
-        start_date = self.cleaned_data.get('start_date')
+         start_date = self.cleaned_data.get('start_date')
+         days = self.count_days(start_date=start_date,end_date=end_date)
 
-        days = self.count_days(start_date=start_date, end_date=end_date)
-
-        return days
+         return days
 
 
     def week_day(self):
