@@ -15,8 +15,8 @@ class TestNewBooking(TestCase):
         self.client = Client()
         self.factory = RequestFactory()
         self.week_days = ['3', '5']
-        self.start_date=datetime.strptime("21092017", "%d%m%Y")
-        self.end_date=datetime.strptime("22092017", "%d%m%Y")
+        self.start_date = datetime.strptime("12/31/2016", "%m/%d/%Y")
+        self.end_date = datetime.strptime("01/09/2017", "%m/%d/%Y")
         self.hour = datetime.strptime("08:00", "%H:%M").time()
         self.hour2 = datetime.strptime("10:00", "%H:%M").time()
         self.building_name = Building.objects.filter(name='UAC')
@@ -35,6 +35,21 @@ class TestNewBooking(TestCase):
         url = '/booking/newbooking/'
         response = self.client.get(url, follow = True)
         self.assertTemplateUsed(response, 'sas/index.html')
+
+
+    def test_post_not_valid(self):
+        start_date=datetime.strptime("21091999", "%d%m%Y")
+        parameters = {'name': 'Reservaoiasd','start_hour': self.hour, \
+            'end_hour' : self.hour2, 'start_date' : start_date,
+            'end_date': self.end_date,'building': self.building_name,'place': self.place_name, 'week_days': self.week_days}
+        request = self.factory.get('/booking/newbooking/', follow=True)
+        client = self.client
+        username = self.user.user.username
+        print(username)
+        client.login(username=username, password='1234567')
+        response = client.post('/booking/newbooking/', parameters)
+        print(response)
+        self.assertTemplateUsed(response, 'booking/newBooking.html')
 
     def test_form_is_valid(self):
         form = BookingForm(data=self.parameters)
