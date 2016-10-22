@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 import operator
 from collections import OrderedDict
 import traceback
+from django.utils import formats
 
 HOURS = [(6,"06-08"),(8,"08-10"),(10,"10-12"),(12,"12-14"),
             (14,"14-16"),(16,"16-18"),(18,"18-20"),(20,"20-22"),(22,("22-00"))]
@@ -57,7 +58,12 @@ def search_booking_day_room(request,form_booking):
 
         table.append(aux)
 
-    return render(request, 'booking/template_table.html', {'days':weekday, 'table':table, 'hours':HOURS, 'n':n, 'name': "Room x Day"})
+    period = (formats.date_format(form_days[0], "SHORT_DATE_FORMAT") + " - " +
+                    formats.date_format(form_days[-1], "SHORT_DATE_FORMAT"))
+
+    table_header = str(booking_place) + ": " + period
+
+    return render(request, 'booking/template_table.html', {'days':weekday, 'table':table, 'hours':HOURS, 'n':n, 'name': "Room x Day", 'table_header':table_header})
 
 def search_booking_building_day(request,form_booking):
     form_day = form_booking.get_day()
@@ -83,7 +89,9 @@ def search_booking_building_day(request,form_booking):
         p = place.name.split('-')
         places_.append(p[1])
 
-    return render(request, 'booking/template_table.html', {'days':places_, 'table':table, 'hours':HOURS, 'n':n, 'name': "Building x Day"})
+    table_header = str(building) + " | " + formats.date_format(form_day, "SHORT_DATE_FORMAT")
+
+    return render(request, 'booking/template_table.html', {'days':places_, 'table':table, 'hours':HOURS, 'n':n, 'name': "Building x Day", 'table_header':table_header})
 
 def search_booking_room_period(request,form_booking):
     form_days = form_booking.days_list()
@@ -96,7 +104,7 @@ def search_booking_room_period(request,form_booking):
 
     for form_day in form_days:
         aux =[]
-        bookings = Booking.objects.filter(time__date_booking=str(form_day))
+        bookings = Booking.objects.filter(time__date_booking=form_day)
         for booking in bookings:
             if (booking.place.name == booking_place.name):
                 book = booking.time.get(date_booking = str(form_day))
@@ -104,9 +112,11 @@ def search_booking_room_period(request,form_booking):
                 aux.append(aux_tuple)
 
         table.append(aux)
+    period = (formats.date_format(form_days[0], "SHORT_DATE_FORMAT") + " - " +
+                    formats.date_format(form_days[-1], "SHORT_DATE_FORMAT"))
+    table_header = (str(booking_place) + " | " + period)
 
-
-    return render(request, 'booking/template_table.html', {'days':form_days, 'table':table, 'hours':HOURS, 'n':n, 'name': "Room x Period"})
+    return render(request, 'booking/template_table.html', {'days':form_days, 'table':table, 'hours':HOURS, 'n':n, 'name': "Room x Period", 'table_header':table_header})
 
 
 def next(skip,aux_rows):
