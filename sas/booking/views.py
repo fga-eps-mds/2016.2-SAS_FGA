@@ -160,6 +160,7 @@ def confirm_booking(request, id):
 
 @login_required(login_url = '/?showLoginModal=yes')
 def delete_booking(request, id):
+    print(id)
     try:
         booking = Booking.objects.get(pk = id)
         if request.user.profile_user.is_admin() or booking.user.id == request.user.id:
@@ -169,7 +170,7 @@ def delete_booking(request, id):
             messages.error(request, _('You cannot delete this booking.'))
     except:
         messages.error(request, _('Booking not found.'))
-    return render(request, 'booking/searchBooking.html', {})
+    return search_booking(request)
 
 @login_required(login_url = '/?showLoginModal=yes')
 def delete_booktime(request, booking_id, booktime_id):
@@ -185,4 +186,4 @@ def delete_booktime(request, booking_id, booktime_id):
             messages.error(request, _('You cannot delete this booking.'))
     except:
         messages.error(request, _('Booking not found.'))
-    return render(request, 'booking/searchBooking.html', {})
+    return search_booking(request)
