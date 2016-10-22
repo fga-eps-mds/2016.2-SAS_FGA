@@ -56,14 +56,13 @@ class BookTime(models.Model):
 
     def __str__(self):
         return (str(self.date_booking) + " | " +
-                str(self.start_hour)+" - "+str(self.end_hour))
+                str(self.start_hour) + " - " + str(self.end_hour))
 
 
 class Booking(models.Model):
-    user = models.ForeignKey(
-                    User,
-                    related_name="bookings",
-                    on_delete=models.CASCADE)
+    user = models.ForeignKey(User,
+                             related_name="bookings",
+                             on_delete=models.CASCADE)
     time = models.ManyToManyField(
                     BookTime,
                     related_name="booking_time")

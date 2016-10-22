@@ -1,12 +1,11 @@
 from django.utils.translation import ugettext_lazy as _
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from .forms import BookingForm, SearchBookingForm
-from .models import Booking, BookTime, Place, Building
+from .models import Booking, Place
 from django.contrib import messages
 from sas.views import index
-from datetime import datetime, timedelta
-import operator
-from collections import OrderedDict
+from datetime import timedelta
+
 
 def search_booking_query(request):
     form_booking = SearchBookingForm()
@@ -14,38 +13,43 @@ def search_booking_query(request):
         form_booking = SearchBookingForm(request.POST)
         option = request.POST.get('search_options')
         if not(form_booking.is_valid()):
-            return render(request, 'booking/searchBookingQuery.html',
-                                    {'search_booking': form_booking})
+            return render(request,
+                          'booking/searchBookingQuery.html',
+                          {'search_booking': form_booking})
         elif(option == 'opt_day_room'):
             pass
-            #view method from who was responsable for this table - Fabiola
+            '''view method from who was responsable for this table - Fabiola'''
         elif(option == 'opt_booking_week'):
             pass
-            #view method from who was responsable for this table - Meu
+            '''view method from who was responsable for this table - Meu'''
         elif(option == 'opt_building_day'):
             pass
-            #view method from who was responsable for this table - Hugo
+            '''view method from who was responsable for this table - Hugo'''
         else:
-            return (search_booking_room_period(request,form_booking))
-            #view method from who was responsable for opt_room_period table - Luis
-    return render(request, 'booking/searchBookingQuery.html',
-                            {'search_booking': form_booking})
+            return (search_booking_room_period(request, form_booking))
+            '''view method from who was responsable for
+               opt_room_period table - Luis'''
+    return render(request,
+                  'booking/searchBookingQuery.html',
+                  {'search_booking': form_booking})
 
-def search_booking_room_period(request,form_booking):
-    HOURS = {"8-10":8,'10-12':10,'12-14':12,'14-16':14,'16-18':16,'18-20':18,'20-22':20,'22-00':22}
+
+def search_booking_room_period(request, form_booking):
+    '''HOURS = {'8-10': 8, '10-12': 10, '12-14': 12, '14-16': 14,
+             '16-18': 16, '18-20': 18, '20-22': 20, '22-00': 22}'''
     bookings = form_booking.search()
     form_days = form_booking.days_list()
     place_id = form_booking["room_name"].data
-    booking_place = Place.objects.get(id = place_id)
+    booking_place = Place.objects.get(id=place_id)
 
-    cont= timedelta(hours=0)
-    auxs = []
+    cont = timedelta(hours=0)
+    '''auxs = []
     days = []
     rows = []
     time = []
     table =[]
     skip = 0
-    aux_rows = []
+    aux_rows = []'''
 
     for form_day in form_days:
         aux =[]
@@ -64,13 +68,15 @@ def search_booking_room_period(request,form_booking):
     print('table',table)
    # table = [ [],[(1,'asdf'),(2,'a')],[(0,'oij')],[(3,'e'),(4,'ee')],[(2,'m'),(3,'oi')],[],[(9,'odi')],[]]
     hours = ("8-10","10-12","12-14","14-16","16-18")
-	
+
     return render(request, 'booking/template_table.html', {'days':days, 'table':table, 'hours':hours, 'n':9})
+
 
 def next(skip,aux_rows):
     for i in range(skip):
         aux_rows.append(" ")
     return aux_rows
+
 
 def new_booking(request):
     if request.user.is_authenticated():
@@ -91,6 +97,7 @@ def new_booking(request):
     else:
         return index(request)
 
+
 def search_booking_table(request):
     if request.method == "POST":
         form_booking = SearchBooking(request.POST)
@@ -103,6 +110,7 @@ def search_booking_table(request):
         form_booking = SearchBooking()
         return render(request, 'booking/searchBookingTable.html', {'form_booking' : form_booking})
 
+
 def search_booking(request):
     if request.user.is_authenticated():
         if request.user.profile_user.is_admin():
@@ -112,6 +120,7 @@ def search_booking(request):
         return render(request, 'booking/searchBooking.html', {'bookings': bookings})
     else:
         return redirect("index")
+
 
 def cancel_booking(request, id):
     if request.user.is_authenticated() and request.session['booking']:
