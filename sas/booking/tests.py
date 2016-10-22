@@ -13,7 +13,6 @@ from booking.views import new_booking, search_booking_day_room
 from booking.views import search_booking_building_day
 from booking.urls import *
 from user.models import UserProfile
-from booking.views import new_booking, search_booking_day_room,search_booking_booking_name_week
 from booking.forms import BookingForm, SearchBookingForm
 from dateutil import parser
 from booking.views import search_booking_room_period
@@ -261,16 +260,19 @@ class TestSearchBooking(TestCase):
         end_date = start_date + timedelta(days=7)
         booking_name = Booking.objects.get(name='PI 1 - Projeto Integrador 1')
 
-        parameters = {'search_options': 'opt_booking_week','booking_name': booking_name,
-        'start_date' : start_date, 'end_date': end_date}
+        parameters = {'search_options': 'opt_booking_week',
+                      'booking_name': booking_name,
+                      'start_date': start_date,
+                      'end_date': end_date}
 
         form = SearchBookingForm(data=parameters)
 
         form.is_valid()
         request = factory.post('/booking/searchbookingg', parameters)
-        page = search_booking_booking_name_week(request=request,form_booking=form)
-        self.assertEqual(page.status_code,200)
-        self.assertContains(page,'Booking x Week')
+        page = search_booking_booking_name_week(request=request,
+                                                form_booking=form)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, 'Booking x Week')
 
     def test_search_booking_post_not_valid(self):
         client = self.client
@@ -319,16 +321,19 @@ class TestSearchBookingQuery(TestCase):
         end_date = start_date + timedelta(days=7)
         booking_name = Booking.objects.get(name='PI 1 - Projeto Integrador 1')
 
-        parameters = {'search_options': 'opt_booking_week','booking_name': booking_name,
-        'start_date' : start_date, 'end_date': end_date}
+        parameters = {'search_options': 'opt_booking_week',
+                      'booking_name': booking_name,
+                      'start_date': start_date,
+                      'end_date': end_date}
 
         form = SearchBookingForm(data=parameters)
 
         form.is_valid()
         request = factory.post('/booking/searchbookingg', parameters)
-        page = search_booking_booking_name_week(request=request,form_booking=form)
-        self.assertEqual(page.status_code,200)
-        self.assertContains(page,'Booking x Week')
+        page = search_booking_booking_name_week(request=request,
+                                                form_booking=form)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, 'Booking x Week')
 
     def test_form_is_valid(self):
         start_date = datetime.now().date()

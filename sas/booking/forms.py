@@ -54,7 +54,8 @@ class SearchBookingForm(forms.Form):
         bookings = []
 
         for booking in all_bookings:
-            if not(booking.end_date < start_date or booking.start_date > end_date):
+            if not(booking.end_date < start_date or
+                   booking.start_date > end_date):
                 bookings.append(booking)
 
         return bookings
