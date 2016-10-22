@@ -104,7 +104,7 @@ def search_booking_booking_name_week(request, form_booking):
                 
         table.append(aux)
 
-    return render(request, 'booking/template_table.html', {'days':form_days, 'table':table, 'hours':hours, 'n':n, 'name': booking_name})
+    return render(request, 'booking/template_table.html', {'days':form_days, 'table':table, 'hours':hours, 'n':n, 'name':'Booking x Week'})
 
 
 def search_booking_room_period(request,form_booking):
