@@ -36,7 +36,8 @@ class TestSearchBookingForm(TestCase):
 		'start_date' : start_date}
 		form = SearchBookingForm(data=parameters)
 		
-		if form.is_valid():
-			request = self.factory.post('/booking/searchbookingg/', parameters)
-			page = search_booking_building_day(request=request,form_booking=form)
-			self.assertTemplateUsed(page, 'booking/template_table.html')
+		form.is_valid()
+		request = self.factory.post('/booking/searchbookingg/', parameters)
+		page = search_booking_building_day(request=request,form_booking=form)
+		self.assertEqual(page.status_code, 200)
+		self.assertContains(page,'Building x Day')
