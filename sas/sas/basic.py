@@ -1,4 +1,6 @@
 from django.contrib.auth.models import Group, Permission, User
+from user.models import UserProfile
+from booking.factories import BookingFactory
 
 class Configuration():
 
@@ -65,7 +67,7 @@ class Configuration():
         userprofile.registration_number = "110030988"
         userprofile.category = 'Student'
         userprofile.user.username = "michel@planalto.gov.com"
-        userprofile.user.email = "michel@planalt.gov.com"
+        userprofile.user.email = "michel@planalto.gov.com"
         userprofile.user.set_password('123456')
         userprofile.save()
         userprofile.make_as_academic_staff()
@@ -82,3 +84,17 @@ class Configuration():
         userprofile.save()
         superuser = User.objects.create_superuser(username="admin",password="123", email="t@t.com")
         superuser.save()
+
+    def create_bookings(self):
+        try:
+            user = User.objects.get(username="fhc@planalto.gov.com")
+        except User.DoesNotExist:
+            self.create_groups()
+            self.create_users()
+            user = User.objects.get(username="fhc@planalto.gov.com")
+
+        b = BookingFactory(name="Teste Fhc",user=user)    
+        user = User.objects.get(username="michel@planalto.gov.com")
+        b = BookingFactory(name="Teste Michel",user=user)
+        user = User.objects.get(username="test@test.com")
+        b = BookingFactory(name="Teste Test",user=user)

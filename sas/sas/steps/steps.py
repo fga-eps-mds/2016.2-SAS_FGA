@@ -10,6 +10,8 @@ from django.test import Client
 from django.core.management import call_command
 from datetime import date, datetime, timedelta
 from dateutil import parser
+from sas.basic import Configuration
+
 
 @step(r'I type in "(.*)" to "(.*)"')
 def fill_bootstrap_field(step, text, field):
@@ -93,3 +95,8 @@ def login_user(step, email, password):
 @step(r'I run loaddata to populate dropdowns')
 def run_command_line(step):
 	call_command('loaddata', 'buildings', 'places')
+
+@step(r'I create bookings')
+def login_user(step):
+    conf = Configuration() 
+    conf.create_bookings()
