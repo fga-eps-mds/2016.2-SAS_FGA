@@ -55,7 +55,10 @@ class Command(BaseCommand):
             self.exclude_sqlite()            
 
         self.exclude_migrations()
-        call_command('migrate')
+        if options["create_groups"] and  options["create_users"]:
+            call_command('migrate','--not-create-user-fixture')
+        else: 
+            call_command('migrate')
         conf = Configuration()
         if options["create_groups"]:
             self.stdout.write(self.style.SUCCESS("It will create the groups"))
