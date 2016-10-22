@@ -9,9 +9,12 @@ from datetime import datetime, timedelta
 import operator
 from collections import OrderedDict
 import traceback
+from django.utils import formats
 
-HOURS = [(6,"06-08"),(8,"08-10"),(10,"10-12"),(12,"12-14"),
-            (14,"14-16"),(16,"16-18"),(18,"18-20"),(20,"20-22"),(22,("22-00"))]
+HOURS = [(6, "06-08"), (8, "08-10"), (10, "10-12"), (12, "12-14"),
+         (14, "14-16"), (16, "16-18"), (18, "18-20"), (20, "20-22"),
+         (22, ("22-00"))]
+
 
 def search_booking_query(request):
     form_booking = SearchBookingForm()
@@ -20,70 +23,87 @@ def search_booking_query(request):
         option = request.POST.get('search_options')
         if not(form_booking.is_valid()):
             return render(request, 'booking/searchBookingQuery.html',
-                                    {'search_booking': form_booking})
+                          {'search_booking': form_booking})
         elif(option == 'opt_day_room'):
-            return (search_booking_day_room(request,form_booking))
+            return (search_booking_day_room(request, form_booking))
         elif(option == 'opt_booking_week'):
             return (search_booking_booking_name_week(request, form_booking))
-            #view method from who was responsable for this table - Meu
-
         elif(option == 'opt_building_day'):
-            #view method from who was responsable for this table - Hugo
-            return (search_booking_building_day(request,form_booking))
+            # view method from who was responsable for this table - Hugo
+            return (search_booking_building_day(request, form_booking))
         else:
-            return (search_booking_room_period(request,form_booking))
-            #view method from who was responsable for opt_room_period table - Luis
+            return (search_booking_room_period(request, form_booking))
+            ''' view method from who was responsable for opt_room_period
+            table - Luis '''
     return render(request, 'booking/searchBookingQuery.html',
-                            {'search_booking': form_booking})
+                  {'search_booking': form_booking})
 
-def search_booking_day_room(request,form_booking):
+
+def search_booking_day_room(request, form_booking):
     form_days = form_booking.week_day()
     place_id = form_booking["room_name"].data
-    booking_place = Place.objects.get(id = place_id)
-    weekday = [( _("Monday")), ( _("Tuesday")), ( _("Wednesday")),( _("Thursday")), ( _("Friday")), ( _("Saturday")),( _("Sunday"))]
+    booking_place = Place.objects.get(id=place_id)
+    weekday = [(_("Monday")), (_("Tuesday")), (_("Wednesday")),
+               (_("Thursday")), (_("Friday")), (_("Saturday")),
+               (_("Sunday"))]
 
     n = len(form_days) + 1
 
-    table =[]
+    table = []
 
     for form_day in form_days:
-        aux =[]
+        aux = []
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
         for booking in bookings:
             if (booking.place.name == booking_place.name):
-                book = booking.time.get(date_booking = str(form_day))
-                aux_tuple = (book.start_hour.hour,booking.name)
+                book = booking.time.get(date_booking=str(form_day))
+                aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
 
         table.append(aux)
 
-    return render(request, 'booking/template_table.html', {'days':weekday, 'table':table, 'hours':HOURS, 'n':n, 'name': "Room x Day"})
+    period = (formats.date_format(form_days[0], "SHORT_DATE_FORMAT") + " - " +
+              formats.date_format(form_days[-1], "SHORT_DATE_FORMAT"))
 
-def search_booking_building_day(request,form_booking):
+    table_header = str(booking_place) + ": " + period
+
+    return render(request, 'booking/template_table.html',
+                  {'days': weekday, 'table': table, 'hours': HOURS,
+                   'n': n, 'name': "Room x Day", 'table_header': table_header})
+
+
+def search_booking_building_day(request, form_booking):
     form_day = form_booking.get_day()
     building_id = form_booking["building_name"].data
-    building = Building.objects.get(id = building_id)
-    places = Place.objects.filter(building = building)
-    n = len(places) +1
+    building = Building.objects.get(id=building_id)
+    places = Place.objects.filter(building=building)
+    n = len(places) + 1
 
     places_ = []
-    table =[]
+    table = []
 
     for place in places:
-        aux =[]
+        aux = []
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
         for booking in bookings:
             if (booking.place.name == place.name):
-                book = booking.time.get(date_booking = str(form_day))
-                aux_tuple = (book.start_hour.hour,booking.name)
+
+                book = booking.time.get(date_booking=str(form_day))
+                aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
 
         table.append(aux)
-
         p = place.name.split('-')
         places_.append(p[1])
 
-    return render(request, 'booking/template_table.html', {'days':places_, 'table':table, 'hours':HOURS, 'n':n, 'name': "Building x Day"})
+    table_header = (str(building) + " | " +
+                    formats.date_format(form_day, "SHORT_DATE_FORMAT"))
+
+    return render(request, 'booking/template_table.html',
+                  {'days': places_, 'table': table, 'hours': HOURS,
+                   'n': n, 'name': "Building x Day",
+                   'table_header': table_header})
+
 
 def search_booking_booking_name_week(request, form_booking):
     form_days = form_booking.days_list()
@@ -92,7 +112,7 @@ def search_booking_booking_name_week(request, form_booking):
     n = len(form_days) + 1
 
     table =[]
-    
+
     for form_day in form_days:
         aux =[]
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
@@ -101,40 +121,47 @@ def search_booking_booking_name_week(request, form_booking):
                 book = booking.time.get(date_booking = str(form_day))
                 aux_tuple = (book.start_hour.hour,booking.place.name)
                 aux.append(aux_tuple)
-                
+
         table.append(aux)
 
     return render(request, 'booking/template_table.html', {'days':form_days, 'table':table, 'hours':hours, 'n':n, 'name':'Booking x Week'})
 
 
-def search_booking_room_period(request,form_booking):
+
+def search_booking_room_period(request, form_booking):
     form_days = form_booking.days_list()
     place_id = form_booking["room_name"].data
-    booking_place = Place.objects.get(id = place_id)
+    booking_place = Place.objects.get(id=place_id)
 
     n = len(form_days) + 1
 
-    table =[]
+    table = []
 
     for form_day in form_days:
-        aux =[]
-        bookings = Booking.objects.filter(time__date_booking=str(form_day))
+        aux = []
+        bookings = Booking.objects.filter(time__date_booking=form_day)
         for booking in bookings:
             if (booking.place.name == booking_place.name):
-                book = booking.time.get(date_booking = str(form_day))
-                aux_tuple = (book.start_hour.hour,booking.name)
+                book = booking.time.get(date_booking=str(form_day))
+                aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
 
         table.append(aux)
+    period = (formats.date_format(form_days[0], "SHORT_DATE_FORMAT") + " - " +
+              formats.date_format(form_days[-1], "SHORT_DATE_FORMAT"))
+    table_header = (str(booking_place) + " | " + period)
+
+    return render(request, 'booking/template_table.html',
+                  {'days': form_days, 'table': table, 'hours': HOURS,
+                   'n': n, 'name': "Room x Period",
+                   'table_header': table_header})
 
 
-    return render(request, 'booking/template_table.html', {'days':form_days, 'table':table, 'hours':HOURS, 'n':n, 'name': "Room x Period"})
-
-
-def next(skip,aux_rows):
+def next(skip, aux_rows):
     for i in range(skip):
         aux_rows.append(" ")
     return aux_rows
+
 
 def new_booking(request):
     if request.user.is_authenticated():
@@ -145,27 +172,33 @@ def new_booking(request):
                 if booking:
                     request.session['booking'] = booking.pk
                     return render(request, 'booking/showDates.html',
-                                    {'booking': booking})
+                                  {'booking': booking})
                 else:
                     messages.error(request, _("Booking alread exists"))
         else:
             form_booking = BookingForm()
         return render(request, 'booking/newBooking.html',
-                            {'form_booking': form_booking})
+                      {'form_booking': form_booking})
     else:
         return redirect("index")
+
 
 def search_booking_table(request):
     if request.method == "POST":
         form_booking = SearchBooking(request.POST)
         if(form_booking.is_valid()):
             bookings = form_booking.search()
-            return render(request, 'booking/template_table.html', {'form_booking' : form_booking, 'bookings' : bookings})
+            return render(request, 'booking/template_table.html',
+                          {'form_booking': form_booking,
+                           'bookings': bookings})
         else:
-            return render(request, 'booking/searchBookingTable.html', {'form_booking' : form_booking})
+            return render(request, 'booking/searchBookingTable.html',
+                          {'form_booking': form_booking})
     else:
         form_booking = SearchBooking()
-        return render(request, 'booking/searchBookingTable.html', {'form_booking' : form_booking})
+        return render(request, 'booking/searchBookingTable.html',
+                      {'form_booking': form_booking})
+
 
 def search_booking(request):
     if request.user.is_authenticated():
@@ -173,9 +206,11 @@ def search_booking(request):
             bookings = Booking.objects.all()
         else:
             bookings = Booking.objects.filter(user=request.user)
-        return render(request, 'booking/searchBooking.html', {'bookings': bookings})
+        return render(request, 'booking/searchBooking.html',
+                      {'bookings': bookings})
     else:
         return redirect("index")
+
 
 def cancel_booking(request, id):
     if request.user.is_authenticated() and request.session['booking']:
@@ -205,11 +240,12 @@ def confirm_booking(request, id):
     else:
         return index(request)
 
-@login_required(login_url = '/?showLoginModal=yes')
+
+@login_required(login_url='/?showLoginModal=yes')
 def delete_booking(request, id):
     print(id)
     try:
-        booking = Booking.objects.get(pk = id)
+        booking = Booking.objects.get(pk=id)
         if request.user.profile_user.is_admin() or booking.user.id == request.user.id:
             booking.delete()
             messages.success(request, _('Booking deleted!'))
@@ -219,15 +255,16 @@ def delete_booking(request, id):
         messages.error(request, _('Booking not found.'))
     return search_booking(request)
 
-@login_required(login_url = '/?showLoginModal=yes')
+
+@login_required(login_url='/?showLoginModal=yes')
 def delete_booktime(request, booking_id, booktime_id):
     try:
-        booktime = BookTime.objects.get(pk = booktime_id)
-        booking = Booking.objects.get(pk = booking_id)
+        booktime = BookTime.objects.get(pk=booktime_id)
+        booking = Booking.objects.get(pk=booking_id)
         if request.user.profile_user.is_admin() or booking.user.id == request.user.id:
             booking.time.remove(booktime)
             booktime.delete()
-            Booking.objects.filter(time = None).delete()
+            Booking.objects.filter(time=None).delete()
             messages.success(request, _('Booking deleted!'))
         else:
             messages.error(request, _('You cannot delete this booking.'))

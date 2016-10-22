@@ -16,14 +16,14 @@
 <h1>{{ name }}</h1>
 <hr class="star-light">
 <br>
-<div class='col-xs-12'>
+<div class='col-xs-12' style="overflow-x:scroll">
  <table border='0' cellpadding='0' cellspacing='0'>
   <thead>
-    <tr class='days'><th colspan="{{ n  }}">Horário</th></tr>
+    <tr class='days'><th></th><th colspan="{{ n  }}" class="text-center">{{ table_header }}</th></tr>
     <tr class='days'>
-    <th></th>
+    <th class='days'>{% trans "Time" %}</th>
       {% for day in days %}
-        <th class='days'>{{ day }}</th>
+        <th class='days'><big>{{ day }}</big></th>
       {% endfor %}
     </tr>
   </thead>
@@ -34,14 +34,19 @@
          <td class='time'> <strong>{{hour}}</strong></td>
            {% for cell_table in table %}
               {% if not cell_table%}
-                <td class='cs335 blue'> Livre.</td>
+                <td class='cs335'>&nbsp;</td>
               {% else%}
-                <td class='cs335 blue'>{% check_table cell_table id %}</td>
+                <td class="cs335 small text-center" {% if cell_table|check_tooltip:id %}
+                    data-tooltip="{{ cell_table|check_tooltip:id }}"{% endif %}
+                    style="color:black">
+                  {% check_table cell_table id %}
+                </td>
               {% endif %}
            {% endfor %}
       </tr>
     {% endfor %}
   </tbody>
 </table>
+<br>
 </div>
 {% endblock %}
