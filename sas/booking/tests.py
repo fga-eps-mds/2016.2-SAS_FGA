@@ -2,7 +2,8 @@ from django.test import TestCase, RequestFactory
 from booking.models import *
 from django.test import Client
 from booking.factories import *
-from booking.views import search_booking_booking_name_week, search_booking_building_day
+from booking.views import search_booking_building_day
+from booking.views import search_booking_booking_name_week
 from datetime import datetime, timedelta
 from user.factories import UserFactory, UserProfileFactory
 from django.urls import reverse
@@ -31,7 +32,7 @@ class DeleteBookingTest(TestCase):
     def test_admin_delete_booking(self):
         self.user.make_as_admin()
         self.user.save()
-        self.client.login(username=self.user.user.username, 
+        self.client.login(username=self.user.user.username,
                           password='1234567')
         url = reverse('booking:deletebooking', args=(self.booking.id,))
         response = self.client.get(url)
@@ -161,8 +162,6 @@ class TestNewBooking(TestCase):
             'end_date': self.end_date, 'building': self.building_name,
             'place': self.place_name, 'week_days': self.week_days}
 
-
-
     def test_get_request_logged(self):
         request = self.factory.get('/booking/newbooking/')
         request.user = self.user.user
@@ -182,7 +181,6 @@ class TestNewBooking(TestCase):
             'end_date': self.end_date, 'building': self.building_name,
             'place': self.place_name, 'week_days': self.week_days}
 
-
         request = self.factory.get('/booking/newbooking/', follow=True)
         client = self.client
         username = self.user.user.username
@@ -197,10 +195,10 @@ class TestNewBooking(TestCase):
         self.assertTrue(form.is_valid())
 
 
-
 class TestBookTime(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
+
     def test_get_str_weekday(self):
         book = BookTime()
         book.date_booking = datetime.strptime("21092016", "%d%m%Y")
@@ -210,16 +208,17 @@ class TestBookTime(TestCase):
         factory = RequestFactory()
         start_date = datetime.now().date()
         end_date = start_date + timedelta(days=7)
-
-        parameters = {'search_options': 'opt_booking_week','booking_name': 'GPP',
-        'start_date' : start_date , 'end_date':end_date}
+        parameters = {'search_options': 'opt_booking_week',
+                      'booking_name': 'GPP',
+                      'start_date': start_date,
+                      'end_date': end_date}
         form = SearchBookingForm(data=parameters)
-        
         form.is_valid()
         request = factory.post('/booking/searchbookingg/', parameters)
-        page = search_booking_booking_name_week(request=request,form_booking=form)
+        page = search_booking_booking_name_week(request=request,
+                                                form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page,'GPP')
+        self.assertContains(page, 'GPP')
 
     def test_search_booking_post_not_valid(self):
         client = self.client
@@ -232,7 +231,6 @@ class TestBookTime(TestCase):
             'room_name': room_name, 'start_date': start_date}
         response = client.post('/booking/searchbookingg/', parameters)
         self.assertTemplateUsed(response, 'booking/searchBookingQuery.html')
-
 
 
 class TestSearchBookingQuery(TestCase):
@@ -277,26 +275,26 @@ class TestSearchBookingQuery(TestCase):
 
 
 class TestSearchBookingForm(TestCase):
-    
     def setUp(self):
         self.factory = RequestFactory()
 
     def test_get_day(self):
         start_date = datetime.strptime("12/31/2016", "%m/%d/%Y")
-        parameters = {'start_date':start_date}
+        parameters = {'start_date': start_date}
         booking = SearchBookingForm(data=parameters)
         if booking.is_valid():
             aux = booking.get_day()
-            self.assertEqual(start_date,day)
-
+            self.assertEqual(start_date, day)
 
     def test_search_booking_post_not_valid(self):
         client = self.client
         start_date = datetime.now().date() - timedelta(days=6)
         building_name = Building.objects.filter(name='UAC')
         room_name = Place.objects.filter(pk=8)
-        parameters = {'search_options': 'opt_day_room','building_name': building_name,
-            'room_name' : room_name, 'start_date' : start_date}
+        parameters = {'search_options': 'opt_day_room',
+                      'building_name': building_name,
+                      'room_name': room_name,
+                      'start_date': start_date}
         response = client.post('/booking/searchbookingg/', parameters)
         self.assertTemplateUsed(response, 'booking/searchBookingQuery.html')
 
@@ -304,11 +302,12 @@ class TestSearchBookingForm(TestCase):
         factory = RequestFactory()
         start_date = datetime.now().date()
         building_name = Building.objects.filter(name='UAC')
-        parameters = {'search_options': 'opt_building_day','building_name': building_name,
-        'start_date' : start_date}
+        parameters = {'search_options': 'opt_building_day',
+                      'building_name': building_name,
+                      'start_date': start_date}
         form = SearchBookingForm(data=parameters)
         form.is_valid()
         request = factory.post('/booking/searchbookingg/', parameters)
-        page = search_booking_building_day(request=request,form_booking=form)
+        page = search_booking_building_day(request=request, form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page,'Building x Day')
+        self.assertContains(page, 'Building x Day')
