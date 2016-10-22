@@ -90,6 +90,7 @@ def search_booking_building_day(request, form_booking):
 
                 book = booking.time.get(date_booking=str(form_day))
                 aux_tuple = (book.start_hour.hour, booking)
+                aux.append(aux_tuple)
 
 
         table.append(aux)

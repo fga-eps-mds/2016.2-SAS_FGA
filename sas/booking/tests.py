@@ -1,4 +1,4 @@
-from django.test import TestCase,RequestFactory
+from django.test import TestCase, RequestFactory
 from booking.models import *
 from django.test import Client
 from booking.factories import *
@@ -13,7 +13,6 @@ from booking.views import search_booking_building_day
 from booking.urls import *
 from user.models import UserProfile
 from booking.forms import BookingForm, SearchBookingForm
-
 
 
 class DeleteBookingTest(TestCase):
@@ -32,7 +31,7 @@ class DeleteBookingTest(TestCase):
     def test_admin_delete_booking(self):
         self.user.make_as_admin()
         self.user.save()
-        self.client.login(username=self.user.user.username,
+        self.client.login(username=self.user.user.username, 
                           password='1234567')
         url = reverse('booking:deletebooking', args=(self.booking.id,))
         response = self.client.get(url)

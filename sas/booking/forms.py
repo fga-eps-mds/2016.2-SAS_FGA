@@ -69,13 +69,12 @@ class SearchBookingForm(forms.Form):
         return days
 
     def days_list(self):
-         cleaned_data = super(SearchBookingForm,self).clean()
-         end_date = self.cleaned_data.get('end_date')
-         start_date = self.cleaned_data.get('start_date')
-         days = self.count_days(start_date=start_date,end_date=end_date)
+        cleaned_data = super(SearchBookingForm, self).clean()
+        end_date = self.cleaned_data.get('end_date')
+        start_date = self.cleaned_data.get('start_date')
+        days = self.count_days(start_date=start_date, end_date=end_date)
 
-         return days
-
+        return days
 
     def week_day(self):
         cleaned_data = super(SearchBookingForm, self).clean()
@@ -92,7 +91,6 @@ class SearchBookingForm(forms.Form):
         start_date = self.cleaned_data.get('start_date')
 
         return start_date
-
 
     def clean(self):
         cleaned_data = super(SearchBookingForm, self).clean()
@@ -122,16 +120,9 @@ class SearchBookingForm(forms.Form):
                     msg = _('Doesnt exist any booking with this name')
                     self.add_error('booking_name', msg)
                     raise forms.ValidationError(msg)
-<<<<<<< HEAD
-            if(option == 'opt_room_period' or option == 'opt_booking_week'):
-                end_date = self.cleaned_data.get('end_date')
-
-=======
-
 
             if(option == 'opt_room_period' or option == 'opt_booking_week'):
                 end_date = self.cleaned_data.get('end_date')
->>>>>>> dev
                 if not(today <= start_date and today <= end_date):
                     msg = _('Invalid booking period: \
                              Booking must be in future date')
