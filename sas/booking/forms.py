@@ -69,46 +69,8 @@ class SearchBookingForm(forms.Form):
          start_date = self.cleaned_data.get('start_date')
          days = self.count_days(start_date=start_date,end_date=end_date)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
          return days
 
-    def week_day(self):
-=======
-=======
->>>>>>> 2a64d4b2e131e92c9f961471482d9dd87ca0bea2
-    def clean(self):
->>>>>>> Updated test for building day
-        cleaned_data = super(SearchBookingForm,self).clean()
-        start_date = self.cleaned_data.get('start_date')
-        weekday_start_date = start_date.weekday()
-        monday = start_date - timedelta(days=weekday_start_date)
-        sunday = monday + timedelta(days=6)
-        days = self.count_days(start_date=monday,end_date=sunday)
-
-<<<<<<< HEAD
-            if(option == 'opt_room_period' or option == 'opt_booking_week'):
-                end_date = cleaned_data.get('end_date')
-                if not(today <= start_date and today <= end_date):
-                    msg = _('Invalid booking period: Booking must be in future date')
-                    self.add_error('start_date', msg)
-                    self.add_error('end_date', msg)
-                    raise forms.ValidationError(msg)
-                elif(end_date < start_date):
-                    msg = _('End date must be equal or greater then Start date')
-                    self.add_error('start_date', msg)
-                    self.add_error('end_date', msg)
-                    raise forms.ValidationError(msg)
-                booking = self.search()
-                if not booking:
-                    msg = _('Doesnt exist any booking in this period of time')
-                    self.add_error('start_date', msg)
-                    self.add_error('end_date', msg)
-                    raise forms.ValidationError(msg)
-=======
-        return days
->>>>>>> 10baa8c800b0c38e8a7f0decf32d410d54c72622
-
     def get_day(self):
         cleaned_data = super(SearchBookingForm,self).clean()
         start_date = self.cleaned_data.get('start_date')
@@ -125,14 +87,6 @@ class SearchBookingForm(forms.Form):
         days = self.count_days(start_date=monday,end_date=sunday)
 
         return days
-
-    def get_day(self):
-        cleaned_data = super(SearchBookingForm,self).clean()
-        start_date = self.cleaned_data.get('start_date')
-
-        return start_date
-
-
 
     def clean(self):
         cleaned_data = super(SearchBookingForm,self).clean()
@@ -163,14 +117,9 @@ class SearchBookingForm(forms.Form):
                     self.add_error('booking_name', msg)
                     raise forms.ValidationError(msg)
 
-<<<<<<< HEAD
             if(option == 'opt_room_period' or option == 'opt_booking_week'):
                 end_date = self.cleaned_data.get('end_date')
 
-=======
-            if(option == 'opt_room_period'):
-                end_date = cleaned_data.get('end_date')
->>>>>>> 10baa8c800b0c38e8a7f0decf32d410d54c72622
                 if not(today <= start_date and today <= end_date):
                     msg = _('Invalid booking period: Booking must be in future date')
                     self.add_error('start_date', msg)
@@ -193,8 +142,7 @@ class SearchBookingForm(forms.Form):
             print(e)
             raise forms.ValidationError(msg)
 
-
-
+            
 class BookingForm(forms.Form):
 	hour = datetime.strptime("08:00", "%H:%M").time()
 	hour2 = datetime.strptime("10:00", "%H:%M").time()
