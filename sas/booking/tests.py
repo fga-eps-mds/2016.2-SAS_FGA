@@ -42,10 +42,10 @@ class TestSearchBookingQuery(TestCase):
         days2 = form.days_list()
         self.assertEqual(days,days2)
 
-	def test_get_str_weekday(self):
-		book = BookTime()
-		book.date_booking = datetime.strptime("21092016", "%d%m%Y")
-		self.assertEqual(book.get_str_weekday(), "Wednesday")
+    def test_get_str_weekday(self):
+        book = BookTime()
+        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
+        self.assertEqual(book.get_str_weekday(), "Wednesday")
 
 class DeleteBookingTest(TestCase):
 
@@ -177,7 +177,7 @@ class TestNewBooking(TestCase):
         self.place_name = Place.objects.filter(pk=3)
         self.parameters = {'name': 'Reservaoiasd','start_hour': self.hour, \
             'end_hour' : self.hour2, 'start_date' : self.start_date,
-			'end_date': self.end_date,'building': self.building_name,'place': self.place_name, 'week_days': self.week_days}
+            'end_date': self.end_date,'building': self.building_name,'place': self.place_name, 'week_days': self.week_days}
 
     def test_get_request_logged(self):
         request = self.factory.get('/booking/newbooking/')
@@ -270,7 +270,7 @@ class TestSearchBookingQuery(TestCase):
         building_name = Building.objects.filter(name='UAC')
         room_name = Place.objects.filter(pk=8)
         parameters = {'search_options': 'opt_day_room','building_name': building_name,
-			'room_name' : room_name, 'start_date' : start_date}
+            'room_name' : room_name, 'start_date' : start_date}
         form = SearchBookingForm(data=parameters)
         self.assertTrue(form.is_valid())
   
