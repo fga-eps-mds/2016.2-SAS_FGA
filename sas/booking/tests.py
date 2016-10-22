@@ -4,7 +4,7 @@ from django.test import Client
 from booking.factories import *
 from datetime import datetime, timedelta
 from user.factories import UserFactory, UserProfileFactory
-from booking.views import new_booking, search_booking_day_room
+from booking.views import new_booking, search_booking_day_room,search_booking_booking_name_week
 from booking.forms import BookingForm, SearchBookingForm
 
 class TestNewBooking(TestCase):
@@ -85,9 +85,6 @@ class TestSearchBooking(TestCase):
         self.assertTemplateUsed(response, 'booking/searchBookingQuery.html')
 
 
-
-
-
 class TestSearchBookingQuery(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -97,7 +94,7 @@ class TestSearchBookingQuery(TestCase):
         end_date=datetime.strptime("22092016", "%d%m%Y")
         days = [start_date,end_date]
         days2 = form.count_days(start_date=start_date,end_date=end_date)
-        self.assertEqual(days,days2)
+        self.assertEqual(days,days2)    
 
     def test_search_booking_day_room(self):
         factory = self.factory
@@ -112,6 +109,24 @@ class TestSearchBookingQuery(TestCase):
         page = search_booking_day_room(request=request,form_booking=form)
         self.assertEqual(page.status_code,200)
         self.assertContains(page, "Room x Day")
+
+    def test_search_booking_booking_name_week(self):
+        factory = self.factory
+        start_date = datetime.now().date()
+        end_date = start_date + timedelta(days=7)
+        booking_name = Booking.objects.get(name='PI 1 - Projeto Integrador 1')
+
+        parameters = {'search_options': 'opt_booking_week','booking_name': booking_name,
+        'start_date' : start_date, 'end_date': end_date}
+        
+        form = SearchBookingForm(data=parameters)
+        
+        form.is_valid()
+        request = factory.post('/booking/searchbookingg', parameters)
+        page = search_booking_booking_name_week(request=request,form_booking=form)
+        self.assertEqual(page.status_code,200)
+        self.assertContains(page,'Booking x Week')
+
     def test_form_is_valid(self):
         start_date = datetime.now().date()
         building_name = Building.objects.filter(name='UAC')
