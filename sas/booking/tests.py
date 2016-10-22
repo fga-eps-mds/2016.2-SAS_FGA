@@ -15,6 +15,7 @@ from booking.forms import BookingForm, SearchBookingForm
 from dateutil import parser
 from booking.views import search_booking_room_period
 
+
 class TestBookTime(TestCase):
     def test_get_str_weekday(self):
         book = BookTime()
