@@ -59,7 +59,7 @@ def search_booking_day_room(request, form_booking):
         for booking in bookings:
             if (booking.place.name == booking_place.name):
                 book = booking.time.get(date_booking=str(form_day))
-                aux_tuple = (book.start_hour.hour, booking.name)
+                aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
 
         table.append(aux)
