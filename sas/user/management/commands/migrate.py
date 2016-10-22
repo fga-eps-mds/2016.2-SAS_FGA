@@ -8,8 +8,10 @@ class Command(BaseCommand):
         output = super(Command,self).handle(*args,**options)
         call_command('loaddata','user/fixtures/group.json')
         call_command('loaddata','user/fixtures/users.json')
+        call_command('loaddata','user/fixtures/userProfiles.json')
         call_command('loaddata','booking/fixtures/buildings.json')
         call_command('loaddata','booking/fixtures/places.json')
         call_command('loaddata','booking/fixtures/bookTimes.json')
         call_command('loaddata','booking/fixtures/bookings.json')
+        
         return output
