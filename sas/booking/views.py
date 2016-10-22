@@ -160,12 +160,12 @@ def cancel_booking(request, id):
             request.session.pop('booking')
             Booking.objects.get(pk=id).delete()
             messages.success(request, _("Booking has been canceled"))
-            return index(request)
+            return redirect("index")
         else:
             messages.error(request, _("You cannot cancel this booking"))
             return index(request)
     else:
-        return index(request)
+        return redirect("index")
 
 
 def confirm_booking(request, id):
@@ -179,4 +179,4 @@ def confirm_booking(request, id):
             messages.error(request, _("You cannot confirm this booking"))
             return index(request)
     else:
-        return index(request)
+        return redirect("index")
