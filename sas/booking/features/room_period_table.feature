@@ -33,10 +33,10 @@ Scenario: Start date lower than actual date
     And I choose "Room x Period"
 	And I select "UAC" from "Building"
 	And I select "UAC | FGA-I1" from "Place"
-    And I fill in "Start Date" with "11/10/2015"
+    And I fill in "Start Date" with "10/10/2015"
     And I fill in "End Date" with "12/30/2016"
     Then I press "Search"
-    Then I should see "Start date must be from future date"
+    Then I should see "Invalid booking period: Booking must be in future date"
 
 Scenario: End date lower than actual date
     When I login in with email "lucas@gmail.com" and password "123456"
@@ -45,9 +45,9 @@ Scenario: End date lower than actual date
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
     And I fill in "Start Date" with "12/30/2020"
-    And I fill in "End Date" with "11/30/2015"
+    And I fill in "End Date" with "10/10/2015"
     Then I press "Search"
-    Then I should see "End date must be from future date"
+    Then I should see "Invalid booking period: Booking must be in future date"
 
 Scenario: Start Date greater then End Date
     When I login in with email "lucas@gmail.com" and password "123456"
