@@ -71,6 +71,7 @@ class DeleteBookingTest(TestCase):
         response = self.client.get(url)
         self.assertContains(response, 'Booking not found.')
 
+
 class DeleteBooktimeTest(TestCase):
 
     def setUp(self):
@@ -129,6 +130,7 @@ class DeleteBooktimeTest(TestCase):
         response = self.client.get(url)
         self.assertContains(response, 'Booking not found.')
 
+
 class TestNewBooking(TestCase):
     def setUp(self):
         self.user = UserProfileFactory.create()
@@ -145,7 +147,7 @@ class TestNewBooking(TestCase):
         self.place_name = Place.objects.filter(pk=3)
         self.parameters = {'name': 'Reservaoiasd','start_hour': self.hour, \
             'end_hour' : self.hour2, 'start_date' : self.start_date,
-			'end_date': self.end_date,'building': self.building_name,'place': self.place_name, 'week_days': self.week_days}
+            'end_date': self.end_date,'building': self.building_name,'place': self.place_name, 'week_days': self.week_days}
 
     def test_get_request_logged(self):
         request = self.factory.get('/booking/newbooking/')
@@ -158,11 +160,10 @@ class TestNewBooking(TestCase):
         response = self.client.get(url, follow = True)
         self.assertTemplateUsed(response, 'sas/index.html')
 
-
     def test_post_not_valid(self):
         start_date=datetime.strptime("21091999", "%d%m%Y")
         parameters = {'name': 'Reservaoiasd','start_hour': self.hour, \
-            'end_hour' : self.hour2, 'start_date' : start_date,
+            'end_hour' : self.hour2, 'start_date' : start_date, \
             'end_date': self.end_date,'building': self.building_name,'place': self.place_name, 'week_days': self.week_days}
         request = self.factory.get('/booking/newbooking/', follow=True)
         client = self.client
@@ -179,16 +180,15 @@ class TestNewBooking(TestCase):
 
 
 class TestBookTime(TestCase):
-    def setup(self):
+    def setUp(self):
         self.factory = RequestFactory()
-
     def test_get_str_weekday(self):
         book = BookTime()
         book.date_booking = datetime.strptime("21092016", "%d%m%Y")
         self.assertEqual(book.get_str_weekday(), "Wednesday")
 
     def test_search_booking_booking_name_week(self):
-        factory = self.factory
+        factory = RequestFactory()
         start_date = datetime.now().date()
         end_date = start_date + timedelta(days=7)
 
@@ -201,8 +201,8 @@ class TestBookTime(TestCase):
         form.is_valid()
         request = self.factory.post('/booking/searchbookingg/', parameters)
         page = search_booking_booking_name_week(request=request,form_booking=form)
-        self.assertEqual(page.status_code, 202)
-        self.assertContains(page,'GPPP')
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page,'GPP')
 
 
 
@@ -239,23 +239,23 @@ class TestSearchBookingQuery(TestCase):
         building_name = Building.objects.filter(name='UAC')
         room_name = Place.objects.filter(pk=8)
         parameters = {'search_options': 'opt_day_room','building_name': building_name,
-			'room_name' : room_name, 'start_date' : start_date}
+            'room_name' : room_name, 'start_date' : start_date}
         form = SearchBookingForm(data=parameters)
         self.assertTrue(form.is_valid())
         
 
 class TestSearchBookingForm(TestCase):
-	
-	def setUp(self):
-		self.factory = RequestFactory()
+    
+    def setUp(self):
+        self.factory = RequestFactory()
 
-	def test_get_day(self):
-		start_date = datetime.strptime("12/31/2016", "%m/%d/%Y")
-		parameters = {'start_date':start_date}
-		booking = SearchBookingForm(data=parameters)
-		if booking.is_valid():
-			aux = booking.get_day()
-			self.assertEqual(start_date,day)
+    def test_get_day(self):
+        start_date = datetime.strptime("12/31/2016", "%m/%d/%Y")
+        parameters = {'start_date':start_date}
+        booking = SearchBookingForm(data=parameters)
+        if booking.is_valid():
+            aux = booking.get_day()
+            self.assertEqual(start_date,day)
 
     def test_search_booking_post_not_valid(self):
         client = self.client
@@ -267,15 +267,15 @@ class TestSearchBookingForm(TestCase):
         response = client.post('/booking/searchbookingg/', parameters)
         self.assertTemplateUsed(response, 'booking/searchBookingQuery.html')
 
-	def test_search_booking_building_day(self):
-		factory = self.factory
-		start_date = datetime.now().date()
-		building_name = Building.objects.filter(name='UAC')
-		parameters = {'search_options': 'opt_building_day','building_name': building_name,
-		'start_date' : start_date}
-		form = SearchBookingForm(data=parameters)
-		form.is_valid()
-		request = self.factory.post('/booking/searchbookingg/', parameters)
-		page = search_booking_building_day(request=request,form_booking=form)
-		self.assertEqual(page.status_code, 200)
-		self.assertContains(page,'Building x Day')
+    def test_search_booking_building_day(self):
+        factory = RequestFactory()
+        start_date = datetime.now().date()
+        building_name = Building.objects.filter(name='UAC')
+        parameters = {'search_options': 'opt_building_day','building_name': building_name,
+        'start_date' : start_date}
+        form = SearchBookingForm(data=parameters)
+        form.is_valid()
+        request = factory.post('/booking/searchbookingg/', parameters)
+        page = search_booking_building_day(request=request,form_booking=form)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page,'Building x Day')
