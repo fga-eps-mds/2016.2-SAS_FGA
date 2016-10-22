@@ -199,16 +199,29 @@ class TestNewBooking(TestCase):
         request = self.factory.get('/booking/newbooking/', follow=True)
         client = self.client
         username = self.user.user.username
-        print(username)
         client.login(username=username, password='1234567')
         response = client.post('/booking/newbooking/', parameters)
-        print(response)
         self.assertTemplateUsed(response, 'booking/newBooking.html')
 
     def test_form_is_valid(self):
         form = BookingForm(data=self.parameters)
         self.assertTrue(form.is_valid())
 
+<<<<<<< HEAD
+=======
+
+class TestBookTime(TestCase):
+    def test_get_str_weekday(self):
+        book = BookTime()
+        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
+        self.assertEqual(book.get_str_weekday(), "Wednesday")
+
+    def test_get_str_weekday(self):
+        book = BookTime()
+        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
+        self.assertEqual(book.get_str_weekday(), "Wednesday")
+
+>>>>>>> Updated unit test for booking period
 class TestSearchBooking(TestCase):
     def setUp(self):
         self.client = Client()
@@ -229,6 +242,10 @@ class TestSearchBooking(TestCase):
         response = client.post('/booking/searchbookingg/', parameters)
         self.assertTemplateUsed(response, 'booking/searchBookingQuery.html')
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Updated unit test for booking period
 class TestSearchBookingQuery(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
