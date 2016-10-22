@@ -100,9 +100,9 @@ class UserProfileTest(TestCase):
         self.assertEqual(self.userprofile.user.last_name, "Pereira Pinto")
 
     def test_create_user(self):
-        self.assertFalse(hasattr(self.userprofile, 'user'))
+        self.assertFalse(hasattr(self.userprofile,'user'))
         self.userprofile.create_user()
-        self.assertTrue(hasattr(self.userprofile, 'user'))
+        self.assertTrue(hasattr(self.userprofile,'user'))
 
     def test_get_full_name(self):
         name = "Pedro Pereira Pinto"

@@ -192,3 +192,19 @@ hr.star-light:after {
 .intro-text .skills {
     font-size: 1.5em;
 }
+
+/* Modal */
+.modal-header.delete-header,
+.modal-body.delete-body {
+    p {
+        text-transform: none;
+    }
+}
+
+.modal-body.delete-body {
+    text-align: center;
+}
+
+.modal-footer.delete-footer {
+    text-align: center;
+}

@@ -1,22 +1,22 @@
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext as __
 from django.db import models, connection
 from django.contrib.auth.models import User
-from datetime import timedelta
+from django.utils import timezone
+from django.core.exceptions import ValidationError
+from datetime import datetime, timedelta
+import copy
 
-CATEGORY = (('', '----'), ('1', _('Student')), ('2', _('Teaching Staff')),
-            ('3', _('Employees')))
+CATEGORY = (('', '----'), ('1', _('Student')), ('2', _('Teaching Staff')), ('3', _('Employees')))
 
 WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
             ('3', _("Thursday")), ('4', _("Friday")), ('5', _("Saturday")),
             ('6', _("Sunday")))
-
 
 class Building(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name
-
 
 class Place(models.Model):
     name = models.CharField(max_length=200)
@@ -31,6 +31,7 @@ class Place(models.Model):
             return self.building.name + " | " + self.name
         except:
             return self.name
+
 
 
 class BookTime(models.Model):
@@ -55,27 +56,22 @@ class BookTime(models.Model):
         return self.date_booking.strftime("%A")
 
     def __str__(self):
-        return (str(self.date_booking) + " | " +
-                str(self.start_hour) + " - " + str(self.end_hour))
+        return (str(self.date_booking)+" | "+
+                str(self.start_hour)+" - "+str(self.end_hour))
 
 
 class Booking(models.Model):
-    user = models.ForeignKey(User,
-                             related_name="bookings",
-                             on_delete=models.CASCADE)
-    time = models.ManyToManyField(
-                    BookTime,
-                    related_name="booking_time")
-    place = models.ForeignKey(
-                    Place,
-                    related_name="booking_place")
+    user = models.ForeignKey(User, related_name="bookings",
+                            on_delete=models.CASCADE)
+    time = models.ManyToManyField(BookTime, related_name="booking_time")
+    place = models.ForeignKey(Place, related_name="booking_place")
     name = models.CharField(max_length=50)
     start_date = models.DateField(null=False, blank=False)
     end_date = models.DateField(null=False, blank=False)
 
     def __str__(self):
-        return ((self.user.email) + " | " + str(self.place) +
-                " - " + str(self.start_date) + " - " + str(self.end_date))
+        return ( (self.user.email)+" | "+ str(self.place) +
+                " - "+str(self.start_date) + " - " +str(self.end_date))
 
     def exists(self, start_hour, end_hour, week_days):
         str_weekdays = []
@@ -119,6 +115,9 @@ class Booking(models.Model):
             self.place_id = self.place.pk
         super(Booking, self).save(*args, **kwargs)
 
+    def delete(self):
+        self.time.all().delete()
+        super().delete()
 
 class Validation():
 
@@ -135,7 +134,6 @@ class Validation():
             if character in string:
                 return True
 
-
 def date_range(start_date, end_date):
     return [start_date +
-            timedelta(days=x) for x in range(0, (end_date-start_date).days+1)]
+            timedelta(days=x) for x in range(0, (end_date-start_date ).days+1)]
