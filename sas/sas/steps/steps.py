@@ -13,47 +13,47 @@ from dateutil import parser
 
 @step(r'I type in "(.*)" to "(.*)"')
 def fill_bootstrap_field(step, text, field):
-	words_list = field.lower().split()
-	words_list.insert(0, "id")
-	id_field = "_".join(words_list)
-	date_field = find_any_field(world.browser, TEXT_FIELDS, id_field)
-	date_field.send_keys(text)
+    words_list = field.lower().split()
+    words_list.insert(0, "id")
+    id_field = "_".join(words_list)
+    date_field = find_any_field(world.browser, TEXT_FIELDS, id_field)
+    date_field.send_keys(text)
 
 
 @step(r'I type in "(.*)" to id "(.*)"')
 def fill_bootstrap_field(step, text, id_field):
-	date_field = find_any_field(world.browser, TEXT_FIELDS, id_field)
-	date_field.send_keys(text)
+    date_field = find_any_field(world.browser, TEXT_FIELDS, id_field)
+    date_field.send_keys(text)
 
 
 @step(r'I click on an element with id of "(.*)"')
 def click_on_element_by_id(step, id):
-	try:
-		elem = world.browser.find_element_by_id(id)
-	except NoSuchElementException:
-		raise AssertionError("Element with ID '{}' not found.".format(id))
-	elem.click()
+    try:
+        elem = world.browser.find_element_by_id(id)
+    except NoSuchElementException:
+        raise AssertionError("Element with ID '{}' not found.".format(id))
+    elem.click()
 
 
 @step(r'I click on an element "(.*)" called "(.*)"')
 def click_on_element_by_value(step, value, typeelement):
-	try:
-		text = find_field_by_value(world.browser, typeelement, elementtext)
-	except NoSuchElementException:
-		raise AssertionError("Element not found.")
-	text.click()
+    try:
+        text = find_field_by_value(world.browser, typeelement, elementtext)
+    except NoSuchElementException:
+        raise AssertionError("Element not found.")
+    text.click()
 
 
 @step(r'I register the user "(.*)" with the password "(.*)" and registration number "(.*)"')
 def register_user(step, username, password,registration_number):
-	user = UserProfile()
-	user.user = User()				
-	user.registration_number = registration_number	
-	user.user.email = username
-	user.user.username = username
-	user.user.first_name = "Usuário"
-	user.user.set_password(password)
-	user.save()
+    user = UserProfile()
+    user.user = User()
+    user.registration_number = registration_number
+    user.user.email = username
+    user.user.username = username
+    user.user.first_name = "Usuário"
+    user.user.set_password(password)
+    user.save()
 
 @step(r'I register the booking "(.*)" with the building "(.*)" with the place name "(.*)" and start_date "(.*)" and end_date "(.*)" of user "(.*)"')
 def new_booking(step, booking_name, building, place_name, start_date, end_date, username):

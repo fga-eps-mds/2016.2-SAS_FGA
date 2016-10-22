@@ -14,32 +14,34 @@
 
 {% block content %}
 <h1>{{ name }}</h1>
-
-<table border=10>
+<hr class="star-light">
+<br>
+<div class='col-xs-12'>
+ <table border='0' cellpadding='0' cellspacing='0'>
   <thead>
-    <tr><th colspan="{{ n  }}">Horário</th></tr>
-    <tr>
+    <tr class='days'><th colspan="{{ n  }}">Horário</th></tr>
+    <tr class='days'>
     <th></th>
       {% for day in days %}
-        <th>{{ day }}</th>
+        <th class='days'>{{ day }}</th>
       {% endfor %}
     </tr>
   </thead>
-  
+
   <tbody>
-    {% for id,hour in hours %}  
+    {% for id,hour in hours %}
       <tr>
-         <td> <strong>{{hour}}</strong></td>
+         <td class='time'> <strong>{{hour}}</strong></td>
            {% for cell_table in table %}
               {% if not cell_table%}
-                <td> Livre.</td>
+                <td class='cs335 blue'> Livre.</td>
               {% else%}
-                <td>{% check_table cell_table id %}</td>  
+                <td class='cs335 blue'>{% check_table cell_table id %}</td>
               {% endif %}
            {% endfor %}
-      </tr>        
+      </tr>
     {% endfor %}
   </tbody>
 </table>
-
+</div>
 {% endblock %}
