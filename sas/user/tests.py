@@ -140,7 +140,7 @@ class UserProfileTest(TestCase):
         self.userprofile.user.username = "gutorc@hotmail.com"
         self.userprofile.user.email = "gutorc@hotmail.com"
         self.userprofile.save()
-        self.assertEqual(self.userprofile.pk, 1)
+        self.assertEqual(self.userprofile.pk, 3)
 
     def test_is_admin(self):
         userprofile = UserProfileFactory.create()
