@@ -11,6 +11,7 @@ from django.core.management import call_command
 from datetime import date, datetime, timedelta
 from dateutil import parser
 from sas.basic import Configuration
+from booking.models import Booking
 
 
 @step(r'I type in "(.*)" to "(.*)"')
@@ -97,6 +98,8 @@ def run_command_line(step):
 	call_command('loaddata', 'buildings', 'places')
 
 @step(r'I create bookings')
-def login_user(step):
+def create_bookings(step):
+    for b in Booking.objects.all():
+        b.delete()
     conf = Configuration() 
     conf.create_bookings()

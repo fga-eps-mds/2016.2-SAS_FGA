@@ -1,6 +1,7 @@
 from django.contrib.auth.models import Group, Permission, User
 from user.models import UserProfile
 from booking.factories import BookingFactory
+from user.factories import *
 
 class Configuration():
 
@@ -50,18 +51,26 @@ class Configuration():
         academic_staff.permissions.add(permission8)
         academic_staff.permissions.add(permission9)
         academic_staff.save()
+    
+    def check_registration_number(self,number):
+        try:
+            u = UserProfile.objects.filter(registration_number=number)
+            return False
+        except User.DoesNotExist:
+            return True
 
-    def create_users(self):
-        userprofile = UserProfile()
-        userprofile.name("Teste Testando")
-        userprofile.registration_number = "110030987"
-        userprofile.category = 'Student'
-        userprofile.user.username = "test@test.com"
-        userprofile.user.email = "test@test.com"
-        userprofile.user.set_password('123456')
-        userprofile.save()
-        userprofile.make_as_academic_staff()
-        userprofile.save()
+    def create_users_factories(self,username,name):
+        try:
+            user = UserFactory(usename=username,
+                               name=name,
+                               email=username)
+            userprofile = UserProfileFactory(user=user)
+        except:
+            user = User.objects.get(username=username)
+
+        return user
+
+    def create_michel_temer(self):
         userprofile = UserProfile()
         userprofile.name("Michel Temer")
         userprofile.registration_number = "110030988"
@@ -69,9 +78,34 @@ class Configuration():
         userprofile.user.username = "michel@planalto.gov.com"
         userprofile.user.email = "michel@planalto.gov.com"
         userprofile.user.set_password('123456')
+        if(not self.check_registration_number(userprofile.registration_number)):
+            userprofile.registration_number = "101030988"
         userprofile.save()
         userprofile.make_as_academic_staff()
         userprofile.save()
+        
+    def check_user_exists(self,username):
+        try:
+            user = User.objects.get(username=username)
+            return True
+        except User.DoesNotExist:
+            return False
+
+    def create_test_testando(self):
+        userprofile = UserProfile()
+        userprofile.name("Teste Testando")
+        userprofile.registration_number = "110030987"
+        userprofile.category = 'Student'
+        userprofile.user.username = "test@test.com"
+        userprofile.user.email = "test@test.com"
+        userprofile.user.set_password('123456')
+        if(not self.check_registration_number(userprofile.registration_number)):
+            userprofile.registration_number = "101030987"
+        userprofile.save()
+        userprofile.make_as_academic_staff()
+        userprofile.save()
+
+    def create_fhc(self):
         userprofile = UserProfile()
         userprofile.name("Fernando Henrique Cardoso")
         userprofile.registration_number = "110030989"
@@ -79,22 +113,30 @@ class Configuration():
         userprofile.user.username = "fhc@planalto.gov.com"
         userprofile.user.email = "fhc@planalt.gov.com"
         userprofile.user.set_password('123456')
+        if(not self.check_registration_number(userprofile.registration_number)):
+            userprofile.registration_number = "101030989"
         userprofile.save()
         userprofile.make_as_admin()
         userprofile.save()
+
+    def create_users(self):
+        self.create_test_testanto()
+        self.create_michel_temer()
+        self.create_fhc() 
         superuser = User.objects.create_superuser(username="admin",password="123", email="t@t.com")
         superuser.save()
 
     def create_bookings(self):
-        try:
-            user = User.objects.get(username="fhc@planalto.gov.com")
-        except User.DoesNotExist:
-            self.create_groups()
-            self.create_users()
+        if(not self.check_user_exists("fhc@planalto.gov.com")):
+            self.create_fhc()
             user = User.objects.get(username="fhc@planalto.gov.com")
 
         b = BookingFactory(name="Teste Fhc",user=user)    
-        user = User.objects.get(username="michel@planalto.gov.com")
+        if(not self.check_user_exists("michel@planalto.gov.com")):
+            self.create_michel_temer()
+            user = User.objects.get(username="michel@planalto.gov.com") 
         b = BookingFactory(name="Teste Michel",user=user)
-        user = User.objects.get(username="test@test.com")
+        if(not self.check_user_exists("test@test.com")):
+            self.create_test_testando()
+            user = User.objects.get(username="test@test.com")
         b = BookingFactory(name="Teste Test",user=user)
