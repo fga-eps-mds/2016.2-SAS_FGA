@@ -2,7 +2,6 @@ from django.test import TestCase,RequestFactory
 from booking.models import *
 from django.test import Client
 from booking.factories import *
-<<<<<<< HEAD
 from booking.views import search_booking_booking_name_week, search_booking_building_day
 from datetime import datetime, timedelta
 from user.factories import UserFactory, UserProfileFactory
