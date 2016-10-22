@@ -119,7 +119,7 @@ class Booking(models.Model):
 
     def delete(self):
         self.time.all().delete()
-        super().delete()
+        super(Booking, self).delete()
 
 
 class Validation():
