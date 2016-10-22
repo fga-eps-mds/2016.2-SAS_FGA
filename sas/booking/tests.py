@@ -50,10 +50,8 @@ class TestNewBooking(TestCase):
         request = self.factory.get('/booking/newbooking/', follow=True)
         client = self.client
         username = self.user.user.username
-        print(username)
         client.login(username=username, password='1234567')
         response = client.post('/booking/newbooking/', parameters)
-        print(response)
         self.assertTemplateUsed(response, 'booking/newBooking.html')
 
     def test_form_is_valid(self):
@@ -67,7 +65,6 @@ class TestBookTime(TestCase):
         book.date_booking = datetime.strptime("21092016", "%d%m%Y")
         self.assertEqual(book.get_str_weekday(), "Wednesday")
 
-<<<<<<< HEAD
     def test_get_str_weekday(self):
         book = BookTime()
         book.date_booking = datetime.strptime("21092016", "%d%m%Y")
@@ -92,9 +89,6 @@ class TestSearchBooking(TestCase):
             'room_name' : room_name, 'start_date' : start_date}
         response = client.post('/booking/searchbookingg/', parameters)
         self.assertTemplateUsed(response, 'booking/searchBookingQuery.html')
-
-
-
 
 
 class TestSearchBookingQuery(TestCase):
@@ -160,48 +154,3 @@ class TestSearchBookingQuery(TestCase):
         page = search_booking_room_period(request=request,form_booking=form)
         self.assertEqual(page.status_code,200)
         self.assertContains(page, "Room x Period")
-
-
-    def test_search(self):
-        user = UserProfile()
-        user.user = User()
-        user.registration_number = "123456789"
-        user.user.email = "email@email.com"
-        user.user.username = "email@email.com"
-        user.user.first_name = "email"
-        user.user.set_password("123456")
-        user.save()
-
-        booking = Booking()
-        booking.user = User()
-        booking.user = User.objects.get(username="email@email.com")
-        booking.name = "monitoria"
-        booking.start_date = parser.parse("2017-09-21")
-        booking.end_date = parser.parse("2017-09-22")
-        booking.place = Place()
-        booking.place.name = "FGA-I9"
-        booking.place.building = Building()
-        booking.place.building.name = "UAC"
-        booking.save()
-
-        book = BookTime()
-        book.date_booking = parser.parse("2017-09-21")
-        book.start_hour = "20:00"
-        book.end_hour = "22:00"
-        book.save()
-        booking.time.add(book)
-        booking.save()
-        
-        start_date=datetime.strptime("21092017", "%d%m%Y")
-        end_date=datetime.strptime("22092017", "%d%m%Y")
-        building_name = Building.objects.get(name='UAC')
-        room_name = Place.objects.get(pk=9)
-        parameters = {'search_options' : 'opt_room_period', 'building_name': building_name, 'room_name' : room_name,'start_date' : start_date, 'end_date' : end_date}
-        form = SearchBookingForm(data=parameters)
-        form.is_valid()
-
-        test = []
-        test.append(booking)
-        test2 = form.search()
-        self.assertEqual(test,test2)
-

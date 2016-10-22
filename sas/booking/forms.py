@@ -43,36 +43,37 @@ class SearchBookingForm(forms.Form):
 
 
     def search(self):
-         cleaned_data = super(SearchBookingForm,self).clean()
-         room_name = self.cleaned_data.get('room_name')
-         print(room_name)
-         room_name = room_name.pk
-         all_bookings = Booking.objects.filter(place__pk=room_name)
-         end_date = self.cleaned_data.get('end_date')
-         start_date = self.cleaned_data.get('start_date')
-         bookings = []
+        cleaned_data = super(SearchBookingForm,self).clean()
+        room_name = self.cleaned_data.get('room_name')
+        print(room_name)
+        room_name = room_name.pk
+        all_bookings = Booking.objects.filter(place__pk=room_name)
+        end_date = self.cleaned_data.get('end_date')
+        start_date = self.cleaned_data.get('start_date')
+        bookings = []
 
-         for booking in all_bookings:
-             if not(booking.end_date < start_date or booking.start_date > end_date):
+        for booking in all_bookings:
+            if not(booking.end_date < start_date or booking.start_date > end_date):
                  bookings.append(booking)
 
-         return bookings
+
+        return bookings
 
     def count_days(self,start_date,end_date):
-         days = []
-         while(start_date<=end_date):
-             days.append(start_date)
-             start_date += timedelta(days=1)
+        days = []
+        while(start_date<=end_date):
+            days.append(start_date)
+            start_date += timedelta(days=1)
 
-         return days
+        return days
 
     def days_list(self):
-         cleaned_data = super(SearchBookingForm,self).clean()
-         end_date = self.cleaned_data.get('end_date')
-         start_date = self.cleaned_data.get('start_date')
-         days = self.count_days(start_date=start_date,end_date=end_date)
+        cleaned_data = super(SearchBookingForm,self).clean()
+        end_date = self.cleaned_data.get('end_date')
+        start_date = self.cleaned_data.get('start_date')
+        days = self.count_days(start_date=start_date,end_date=end_date)
 
-         return days
+        return days
 
     def week_day(self):
         cleaned_data = super(SearchBookingForm,self).clean()
