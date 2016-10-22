@@ -47,7 +47,7 @@
                 </td>
                 <td>
                   <a id="delete-booking" href="javascript:void(0);" class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteBooking">
-                    <span class="glyphicon glyphicon-trash" ></span> Excluir
+                    <span class="glyphicon glyphicon-trash" ></span> {% trans "Delete" %}
                   </a>
                 </td>
               </tr>
@@ -139,8 +139,5 @@
     } );
   });
 
-  $('#delete-booking'){
-    $('#modalDeleteBooking').modal('show');
-  });
 </script>
 {% endblock %}
