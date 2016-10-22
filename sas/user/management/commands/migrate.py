@@ -14,5 +14,5 @@ class Command(BaseCommand):
         call_command('loaddata','booking/fixtures/places.json')
         call_command('loaddata','booking/fixtures/bookTimes.json')
         call_command('loaddata','booking/fixtures/bookings.json')
-        
+
         return output
