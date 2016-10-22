@@ -44,7 +44,10 @@ class SearchBookingForm(forms.Form):
 
     def search(self):
          cleaned_data = super(SearchBookingForm,self).clean()
-         all_bookings = Booking.objects.all()
+         room_name = self.cleaned_data.get('room_name')
+         print(room_name)
+         room_name = room_name.pk
+         all_bookings = Booking.objects.filter(place__pk=room_name)
          end_date = self.cleaned_data.get('end_date')
          start_date = self.cleaned_data.get('start_date')
          bookings = []
