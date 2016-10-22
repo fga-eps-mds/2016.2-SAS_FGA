@@ -207,8 +207,6 @@ class TestNewBooking(TestCase):
         form = BookingForm(data=self.parameters)
         self.assertTrue(form.is_valid())
 
-<<<<<<< HEAD
-=======
 
 class TestBookTime(TestCase):
     def test_get_str_weekday(self):
@@ -221,7 +219,6 @@ class TestBookTime(TestCase):
         book.date_booking = datetime.strptime("21092016", "%d%m%Y")
         self.assertEqual(book.get_str_weekday(), "Wednesday")
 
->>>>>>> Updated unit test for booking period
 class TestSearchBooking(TestCase):
     def setUp(self):
         self.client = Client()
@@ -242,13 +239,11 @@ class TestSearchBooking(TestCase):
         response = client.post('/booking/searchbookingg/', parameters)
         self.assertTemplateUsed(response, 'booking/searchBookingQuery.html')
 
-<<<<<<< HEAD
-=======
 
->>>>>>> Updated unit test for booking period
 class TestSearchBookingQuery(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
+    
     def test_count_days(self):
         form = SearchBookingForm()
         start_date=datetime.strptime("21092016", "%d%m%Y")
@@ -278,7 +273,22 @@ class TestSearchBookingQuery(TestCase):
 			'room_name' : room_name, 'start_date' : start_date}
         form = SearchBookingForm(data=parameters)
         self.assertTrue(form.is_valid())
-
+  
+    def test_days_list(self):
+        start_date=datetime.strptime("21092017", "%d%m%Y")
+        end_date=datetime.strptime("22092017", "%d%m%Y")
+        building_name = Building.objects.get(name='UAC')
+        room_name = Place.objects.get(pk=9)
+        parameters = {'search_options' : 'opt_room_period', 'building_name': building_name, 'room_name' : room_name,
+            'start_date' : start_date, 'end_date' : end_date}
+        form = SearchBookingForm(data=parameters)
+        form.is_valid()
+        days = []
+        days.append(start_date.date())
+        days.append(end_date.date())
+        days2 = form.days_list()
+        self.assertEqual(days,days2)
+   
     def test_search_booking_room_period(self):
         factory = self.factory
         start_date = datetime.now().date()
