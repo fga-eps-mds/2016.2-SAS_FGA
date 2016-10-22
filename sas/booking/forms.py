@@ -54,6 +54,14 @@ class SearchBookingForm(forms.Form):
         bookings = []
 
         for booking in all_bookings:
+            if not(booking.end_date < start_date or booking.start_date > end_date):
+                bookings.append(booking)
+
+        return bookings
+
+    def count_days(self, start_date, end_date):
+        days = []
+        while(start_date <= end_date):
             if not(booking.end_date < start_date or
                    booking.start_date > end_date):
                 bookings.append(booking)
@@ -61,6 +69,7 @@ class SearchBookingForm(forms.Form):
         return bookings
 
     def count_days(self, start_date, end_date):
+
         days = []
         while(start_date <= end_date):
             days.append(start_date)
@@ -69,6 +78,15 @@ class SearchBookingForm(forms.Form):
         return days
 
     def days_list(self):
+
+        cleaned_data = super(SearchBookingForm, self).clean()
+        end_date = self.cleaned_data.get('end_date')
+        start_date = self.cleaned_data.get('start_date')
+        days = self.count_days(start_date=start_date, end_date=end_date)
+
+        return days
+
+    def week_day(self):
         cleaned_data = super(SearchBookingForm, self).clean()
         end_date = self.cleaned_data.get('end_date')
         start_date = self.cleaned_data.get('start_date')
@@ -126,12 +144,18 @@ class SearchBookingForm(forms.Form):
                 if not(today <= start_date and today <= end_date):
                     msg = _('Invalid booking period: \
                              Booking must be in future date')
+
                     self.add_error('start_date', msg)
+                    raise forms.ValidationError(msg)
+                if not(today <= end_date):
+                    msg = _('End date must be from future date')
                     self.add_error('end_date', msg)
                     raise forms.ValidationError(msg)
+
                 elif(end_date < start_date):
                     msg = _('End date must be equal or \
                              greater then Start date')
+
                     self.add_error('start_date', msg)
                     self.add_error('end_date', msg)
                     raise forms.ValidationError(msg)
