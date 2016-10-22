@@ -14,6 +14,7 @@ from user.models import UserProfile
 from booking.forms import BookingForm, SearchBookingForm
 from dateutil import parser
 from booking.views import search_booking_room_period
+from django.db.models import Q
 
 
 class TestBookTime(TestCase):
