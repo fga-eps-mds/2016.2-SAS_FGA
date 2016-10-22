@@ -54,7 +54,8 @@ class SearchBookingForm(forms.Form):
         bookings = []
 
         for booking in all_bookings:
-            if not(booking.end_date < start_date or booking.start_date > end_date):
+            if not(booking.end_date < start_date or
+                   booking.start_date > end_date):
                 bookings.append(booking)
 
         return bookings
@@ -141,6 +142,7 @@ class SearchBookingForm(forms.Form):
 
             if(option == 'opt_room_period' or option == 'opt_booking_week'):
                 end_date = self.cleaned_data.get('end_date')
+
                 if not(today <= start_date and today <= end_date):
                     msg = _('Invalid booking period: \
                              Booking must be in future date')

@@ -108,9 +108,9 @@ def search_booking_building_day(request, form_booking):
 def search_booking_booking_name_week(request, form_booking):
     form_days = form_booking.days_list()
     booking_name = form_booking["booking_name"].data
-    hours = [(6, "06-08"), (8, "08-10"), (10, "10-12"), (12, "12-14"),
-             (14, "14-16"), (16, "16-18"), (18, "18-20"), (20, "20-22"),
-             (22, ("22-00"))]
+    hours = [(6, "06-08"), (8, "08-10"), (10, "10-12"),
+             (12, "12-14"), (14, "14-16"), (16, "16-18"),
+             (18, "18-20"), (20, "20-22"), (22, ("22-00"))]
     n = len(form_days) + 1
 
     table = []
@@ -127,8 +127,8 @@ def search_booking_booking_name_week(request, form_booking):
         table.append(aux)
 
     return render(request, 'booking/template_table.html',
-                  {'days': form_days, 'table': table, 'hours': hours,
-                   'n': n, 'name': booking_name})
+                  {'days': form_days, 'table': table,
+                   'hours': hours, 'n': n, 'name': 'Booking x Week'})
 
 
 def search_booking_room_period(request, form_booking):
@@ -249,7 +249,7 @@ def delete_booking(request, id):
     print(id)
     try:
         booking = Booking.objects.get(pk=id)
-        if request.user.profile_user.is_admin() or booking.user.id == request.user.id:
+        if (request.user.profile_user.is_admin() or booking.user.id == request.user.id):
             booking.delete()
             messages.success(request, _('Booking deleted!'))
         else:

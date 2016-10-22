@@ -7,7 +7,8 @@ from user.factories import UserFactory, UserProfileFactory
 from django.urls import reverse
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
-from booking.views import delete_booking, search_booking_booking_name_week
+from booking.views import delete_booking
+from booking.views import search_booking_booking_name_week
 from booking.views import new_booking, search_booking_day_room
 from booking.views import search_booking_building_day
 from booking.urls import *
@@ -254,20 +255,24 @@ class TestSearchBooking(TestCase):
         self.assertEqual(book.get_str_weekday(), "Wednesday")
 
     def test_search_booking_booking_name_week(self):
-        factory = RequestFactory()
+        factory = self.factory
         start_date = datetime.now().date()
         end_date = start_date + timedelta(days=7)
+        booking_name = Booking.objects.get(name='PI 1 - Projeto Integrador 1')
+
         parameters = {'search_options': 'opt_booking_week',
-                      'booking_name': 'GPP',
+                      'booking_name': booking_name,
                       'start_date': start_date,
                       'end_date': end_date}
+
         form = SearchBookingForm(data=parameters)
+
         form.is_valid()
-        request = factory.post('/booking/searchbookingg/', parameters)
+        request = factory.post('/booking/searchbookingg', parameters)
         page = search_booking_booking_name_week(request=request,
                                                 form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, 'GPP')
+        self.assertContains(page, 'Booking x Week')
 
     def test_search_booking_post_not_valid(self):
         client = self.client
@@ -309,6 +314,26 @@ class TestSearchBookingQuery(TestCase):
         page = search_booking_day_room(request=request, form_booking=form)
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, "Room x Day")
+
+    def test_search_booking_booking_name_week(self):
+        factory = self.factory
+        start_date = datetime.now().date()
+        end_date = start_date + timedelta(days=7)
+        booking_name = Booking.objects.get(name='PI 1 - Projeto Integrador 1')
+
+        parameters = {'search_options': 'opt_booking_week',
+                      'booking_name': booking_name,
+                      'start_date': start_date,
+                      'end_date': end_date}
+
+        form = SearchBookingForm(data=parameters)
+
+        form.is_valid()
+        request = factory.post('/booking/searchbookingg', parameters)
+        page = search_booking_booking_name_week(request=request,
+                                                form_booking=form)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, 'Booking x Week')
 
     def test_form_is_valid(self):
         start_date = datetime.now().date()
