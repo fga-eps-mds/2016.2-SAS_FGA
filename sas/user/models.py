@@ -9,8 +9,9 @@ CATEGORY = (('', '----'), ('1', _('Student')),
 
 
 class UserProfile(models.Model):
-    registration_number = models.CharField(max_length=20, unique=True,
-                                           error_messages={'unique': _('Registration Number already used.')})
+    registration_number = models.CharField(
+        max_length=20, unique=True,
+        error_messages={'unique': _('Registration Number already used.')})
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 related_name="profile_user")
     category = models.CharField(choices=CATEGORY, max_length=20)

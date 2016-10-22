@@ -27,7 +27,7 @@ class EditUserTest(TestCase):
 
     def test_get_request_anonymous(self):
         url = '/user/edituser/'
-        response = self.client.get(url, follow = True)
+        response = self.client.get(url, follow=True)
         self.assertTemplateUsed(response, 'sas/index.html')
 
     def test_edit_post_registration_number(self):
@@ -58,19 +58,19 @@ class DeleteUserTest(TestCase):
     def test_get_request_logged(self):
         client = self.client
         client.login(username='gutorc@hotmail.com', password='123456')
-        response = self.client.get(self.url, follow = True)
+        response = self.client.get(self.url, follow=True)
         self.assertTemplateUsed(response, 'sas/index.html')
         self.assertEqual(response.status_code, 200)
 
     def test_get_request_anonymous(self):
-        response = self.client.get(self.url, follow = True)
+        response = self.client.get(self.url, follow=True)
         self.assertTemplateUsed(response, 'sas/index.html')
         self.assertEqual(response.status_code, 200)
 
     def test_delete_user(self):
         client = self.client
         client.login(username='gutorc@hotmail.com', password='123456')
-        self.client.get(self.url, follow = True)
+        self.client.get(self.url, follow=True)
         self.assertEqual(False,
                          UserProfile.objects.filter(registration_number="110030559").exists())
 
@@ -100,9 +100,9 @@ class UserProfileTest(TestCase):
         self.assertEqual(self.userprofile.user.last_name, "Pereira Pinto")
 
     def test_create_user(self):
-        self.assertFalse(hasattr(self.userprofile,'user'))
+        self.assertFalse(hasattr(self.userprofile, 'user'))
         self.userprofile.create_user()
-        self.assertTrue(hasattr(self.userprofile,'user'))
+        self.assertTrue(hasattr(self.userprofile, 'user'))
 
     def test_get_full_name(self):
         name = "Pedro Pereira Pinto"
@@ -208,7 +208,7 @@ class LoginTest(TestCase):
         self.client = Client()
 
     def test_get_request(self):
-        response = self.client.get('/user/login/', follow = True)
+        response = self.client.get('/user/login/', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.redirect_chain, [('/', 302)])
 
@@ -230,7 +230,7 @@ class LoginTest(TestCase):
         response = self.client.post('/user/login/',
                                     {'email': self.user.user.email,
                                      'password': '1234567'},
-                                    follow = True)
+                                    follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.redirect_chain, [('/', 302)])
         self.assertContains(response, 'Hi, %s' % (self.user.full_name()))
@@ -244,14 +244,14 @@ class LogoutTest(TestCase):
         self.client = Client()
 
     def test_logout(self):
-        self.client.login(username= self.user.user.email, password= '1234567')
-        response = self.client.get('/user/logout/', follow = True)
+        self.client.login(username=self.user.user.email, password='1234567')
+        response = self.client.get('/user/logout/', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.redirect_chain, [('/', 302)])
         self.assertContains(response, 'You have been logged out successfully!')
 
     def test_invalid_logout(self):
-        response = self.client.get('/user/logout/', follow = True)
+        response = self.client.get('/user/logout/', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.redirect_chain, [('/', 302)])
         self.assertNotContains(response,
