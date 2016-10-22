@@ -3,10 +3,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BookingForm, SearchBookingForm
 from .models import Booking, BookTime, Place, Building
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from sas.views import index
 from datetime import datetime, timedelta
 import operator
 from collections import OrderedDict
+import traceback
 
 HOURS = [(6,"06-08"),(8,"08-10"),(10,"10-12"),(12,"12-14"),
             (14,"14-16"),(16,"16-18"),(18,"18-20"),(20,"20-22"),(22,("22-00"))]
@@ -201,4 +203,34 @@ def confirm_booking(request, id):
             messages.error(request, _("You cannot confirm this booking"))
             return index(request)
     else:
-        return redirect("index")
+        return index(request)
+
+@login_required(login_url = '/?showLoginModal=yes')
+def delete_booking(request, id):
+    print(id)
+    try:
+        booking = Booking.objects.get(pk = id)
+        if request.user.profile_user.is_admin() or booking.user.id == request.user.id:
+            booking.delete()
+            messages.success(request, _('Booking deleted!'))
+        else:
+            messages.error(request, _('You cannot delete this booking.'))
+    except:
+        messages.error(request, _('Booking not found.'))
+    return search_booking(request)
+
+@login_required(login_url = '/?showLoginModal=yes')
+def delete_booktime(request, booking_id, booktime_id):
+    try:
+        booktime = BookTime.objects.get(pk = booktime_id)
+        booking = Booking.objects.get(pk = booking_id)
+        if request.user.profile_user.is_admin() or booking.user.id == request.user.id:
+            booking.time.remove(booktime)
+            booktime.delete()
+            Booking.objects.filter(time = None).delete()
+            messages.success(request, _('Booking deleted!'))
+        else:
+            messages.error(request, _('You cannot delete this booking.'))
+    except:
+        messages.error(request, _('Booking not found.'))
+    return search_booking(request)

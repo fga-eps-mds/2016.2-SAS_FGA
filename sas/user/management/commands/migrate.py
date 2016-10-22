@@ -6,6 +6,7 @@ class Command(BaseCommand):
 
     def handle(self,*args,**options):
         output = super(Command,self).handle(*args,**options)
+        call_command('loaddata','user/fixtures/permissions.json')
         call_command('loaddata','user/fixtures/group.json')
         call_command('loaddata','user/fixtures/users.json')
         call_command('loaddata','booking/fixtures/buildings.json')
