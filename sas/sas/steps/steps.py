@@ -95,7 +95,10 @@ def login_user(step, email, password):
 
 @step(r'I run loaddata to populate dropdowns')
 def run_command_line(step):
-	call_command('loaddata', 'buildings', 'places')
+    call_command('loaddata', 'buildings', 'places')
+    call_command('loaddata','user/fixtures/users.json')
+    call_command('loaddata','booking/fixtures/bookTimes.json')
+    call_command('loaddata','booking/fixtures/bookings.json')
 
 @step(r'I create bookings')
 def create_bookings(step):
