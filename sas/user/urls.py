@@ -1,7 +1,6 @@
 from django.conf.urls import url
-from django.contrib import admin
 from .views import new_user, login_user, logout_user
-from .views import delete_user, list_user, edit_user
+from .views import delete_user, edit_user
 from .views import change_password
 
 urlpatterns = [

@@ -1,5 +1,4 @@
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import Group
 from django.forms import ModelForm
 from .models import UserProfile, Validation
 from .models import CATEGORY
@@ -7,7 +6,6 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
-from sas.basic import Configuration
 
 
 class LoginForm(forms.Form):
@@ -23,7 +21,7 @@ class LoginForm(forms.Form):
         password = self.cleaned_data.get("password")
         user = authenticate(username=username, password=password)
         if user is None:
-            raise ValidationError({'password': [_('Email or Password does not match'),]})
+            raise ValidationError({'password': [_('Email or Password does not match'), ]})
         return user
 
     def clean(self):
@@ -63,7 +61,8 @@ class PasswordForm(ModelForm):
         password1 = cleaned_data.get('new_password')
         password2 = cleaned_data.get('renew_password')
         if password1 and password2 and password1 != password2:
-            raise ValidationError({'renew_password': [_('Passwords do not match'),]})
+            raise ValidationError({'renew_password': [_('Passwords \
+                                                         do not match'), ]})
 
     class Meta:
         model = User
@@ -77,7 +76,8 @@ class UserForm(ModelForm):
     email = forms.EmailField(
         label=_('Email:'),
         widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}),
-        error_messages= {'invalid': _('Email address must be in a valid format.')})
+        error_messages={'invalid': _('Email address must \
+                                       be in a valid format.')})
 
     password = forms.CharField(
         label=_('Password:'),
@@ -92,7 +92,8 @@ class UserForm(ModelForm):
         widget=forms.TextInput(attrs={'placeholder': ''}))
     category = forms.ChoiceField(choices=CATEGORY, label=_('Category:'))
 
-    def save(self, force_insert=False, force_update=False, commit=True, is_edit_form=False):
+    def save(self, force_insert=False, force_update=False,
+             commit=True, is_edit_form=False):
         userprofile = super(UserForm, self).save(commit=False)
 
         # if it is a new user
@@ -114,33 +115,37 @@ class UserForm(ModelForm):
             userprofile.make_as_academic_staff()
         return userprofile
 
-
     def clean(self):
         cleaned_data = super(ModelForm, self).clean()
         validation = Validation()
 
         if not hasattr(self.instance, 'user') or self.instance.user.email != cleaned_data.get('email'):
             if User.objects.filter(username=cleaned_data.get('email')).exists():
-                raise ValidationError({'email': [_('Email already used'),]})
+                raise ValidationError({'email': [_('Email already used'), ]})
 
         # Name validation
         name = cleaned_data.get('name')
 
         if (len(name) < 2 or len(name) > 50):
-            raise ValidationError({'name': [_('Name must be between 2 and 50 characters.'),]})
+            raise ValidationError({'name': [_('Name must be \
+                                               between 2 and \
+                                               50 characters.'), ]})
 
         if validation.hasSpecialCharacters(name):
-            raise ValidationError({'name': [_('Name cannot contain special characters.'),]})
+            raise ValidationError({'name': [_('Name cannot \
+                                               contain special \
+                                               characters.'), ]})
 
         if validation.hasNumbers(name):
-            raise ValidationError({'name': [_('Name cannot contain numbers.'),]})
+            raise ValidationError({'name': [_('Name cannot \
+                                               contain numbers.'), ]})
 
         return cleaned_data
 
     class Meta:
         model = UserProfile
-        fields = ['name', 'registration_number', 'category', 'email', 'password', 'repeat_password']
-
+        fields = ['name', 'registration_number',
+                  'category', 'email', 'password', 'repeat_password']
 
 
 class EditUserForm(UserForm):
@@ -158,7 +163,10 @@ class NewUserForm(UserForm):
         password2 = cleaned_data.get('repeat_password')
 
         if len(password1) < 6 or len(password1) > 15:
-            raise ValidationError({'password': [_('Password must be between 6 and 15 characters.'), ]})
+            raise ValidationError({'password': [_('Password must be \
+                                                   between 6 and 15 \
+                                                   characters.'), ]})
 
         if password1 and password2 and password1 != password2:
-            raise ValidationError({'repeat_password': [_('Passwords do not match.'), ]})
+            raise ValidationError({'repeat_password': [_('Passwords do \
+                                                          not match.'), ]})

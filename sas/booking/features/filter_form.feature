@@ -14,7 +14,7 @@ Scenario: Filtering by Booking x Week
   When I login in with email "lucas@gmail.com" and password "123456"
   Then I visit site page "/booking/searchbookingg/"
   Then I choose "Booking x Week"
-  Then There should be exactly 3 elements matching $(":disabled")
+  Then There should be exactly 2 elements matching $(":disabled")
 
 Scenario: Filtering by Building x Day
   When I login in with email "lucas@gmail.com" and password "123456"
