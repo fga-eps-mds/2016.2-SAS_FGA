@@ -12,5 +12,5 @@ class Command(BaseCommand):
         call_command('loaddata','user/fixtures/users.json')
         call_command('loaddata','user/fixtures/userProfiles.json')
         call_command('loaddata','booking/fixtures/bookTimes.json')
-        call_command('loaddata','booking/fixtures/bookings.json')s
+        call_command('loaddata','booking/fixtures/bookings.json')
         return output

@@ -71,20 +71,11 @@ class SearchBookingForm(forms.Form):
     def days_list(self):
         cleaned_data = super(SearchBookingForm, self).clean()
         end_date = self.cleaned_data.get('end_date')
-         start_date = self.cleaned_data.get('start_date')
-         days = self.count_days(start_date=start_date,end_date=end_date)
-
-         return days
-
-<<<<<<< HEAD
-=======
-    def get_day(self):
-        cleaned_data = super(SearchBookingForm,self).clean()
         start_date = self.cleaned_data.get('start_date')
+        days = self.count_days(start_date=start_date,end_date=end_date)
 
-        return start_date
+        return days
 
->>>>>>> Updated booking forms
 
     def week_day(self):
         cleaned_data = super(SearchBookingForm, self).clean()
@@ -96,15 +87,14 @@ class SearchBookingForm(forms.Form):
 
         return days
 
-<<<<<<< HEAD
     def get_day(self):
         cleaned_data = super(SearchBookingForm, self).clean()
         start_date = self.cleaned_data.get('start_date')
 
         return start_date
 
-=======
->>>>>>> Updated booking forms
+
+
     def clean(self):
         cleaned_data = super(SearchBookingForm, self).clean()
         today = date.today()
@@ -134,17 +124,11 @@ class SearchBookingForm(forms.Form):
                     self.add_error('booking_name', msg)
                     raise forms.ValidationError(msg)
 
-<<<<<<< HEAD
+
 
             if(option == 'opt_room_period' or option == 'opt_booking_week'):
                 end_date = self.cleaned_data.get('end_date')
 
-
-=======
-            if(option == 'opt_room_period' or option == 'opt_booking_week'):
-                end_date = self.cleaned_data.get('end_date')
-
->>>>>>> Updated booking forms
                 if not(today <= start_date and today <= end_date):
                     msg = _('Invalid booking period: \
                              Booking must be in future date')
@@ -170,11 +154,6 @@ class SearchBookingForm(forms.Form):
             print(e)
             raise forms.ValidationError(msg)
 
-<<<<<<< HEAD
-
-=======
-            
->>>>>>> Updated booking forms
 class BookingForm(forms.Form):
     hour = datetime.strptime("08:00", "%H:%M").time()
     hour2 = datetime.strptime("10:00", "%H:%M").time()
