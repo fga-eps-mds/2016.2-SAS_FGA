@@ -36,7 +36,9 @@
               {% if not cell_table%}
                 <td class='cs335'>&nbsp;</td>
               {% else%}
-                <td class="cs335 small text-center" data-tooltip="{% check_tooltip cell_table id %}" style="color:black">
+                <td class="cs335 small text-center" {% if cell_table|check_tooltip:id %}
+                    data-tooltip="{{ cell_table|check_tooltip:id }}"{% endif %}
+                    style="color:black">
                   {% check_table cell_table id %}
                 </td>
               {% endif %}
@@ -45,5 +47,6 @@
     {% endfor %}
   </tbody>
 </table>
+<br>
 </div>
 {% endblock %}

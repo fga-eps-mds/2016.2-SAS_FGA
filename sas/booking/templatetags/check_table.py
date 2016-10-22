@@ -11,11 +11,11 @@ def check_table(cell_table,id):
             aux = 1
             booking = book
     if aux == 1:
-        return booking
+        return booking.name
     else:
         return ''
 
-@register.assignment_tag
+@register.filter(name='check_tooltip')
 def check_tooltip(cell_table,id):
     aux = 0
 
@@ -24,6 +24,6 @@ def check_tooltip(cell_table,id):
             aux = 1
             booking = book
     if aux == 1:
-        return cell_table
+        return booking.user.get_full_name()
     else:
         return None
