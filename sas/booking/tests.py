@@ -8,7 +8,7 @@ from booking.factories import BookingFactory, BookTimeFactory
 from django.urls import reverse
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
-from booking.views import delete_booking, new_booking, search_booking_day_room
+from booking.views import delete_booking
 from booking.urls import *
 from user.models import UserProfile
 from booking.views import new_booking, search_booking_day_room,search_booking_booking_name_week
