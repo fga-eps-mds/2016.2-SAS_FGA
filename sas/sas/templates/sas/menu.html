@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n user_extras %}
 
 <!-- Menu -->
 <div class="navbar navbar-custom" role="navigation">
@@ -14,14 +14,35 @@
        <div class="collapse navbar-collapse navbar-ex1-collapse">
          <ul class="nav navbar-nav">
              <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
-             <li><a href="{% url 'booking:searchbookingtable' %}"">{% trans "Search" %}</a></li>
-             {% if request.user.is_authenticated %}
-             <li><a href="{% url 'booking:newbooking' %}">{% trans "Bookings" %}</a></li>
-             <!-- IF request.user is ADM
-             <li><a href="#">Solicitações</a></li>
-             <li><a href="#">Usuarios</a></li>
-              -->
+             <li><a href="{% url 'booking:searchbookingtable' %}">{% trans "Search" %}</a></li>
+             {% if not request.user|is_admin and request.user.is_authenticated %}
+             <li><a href="{% url 'booking:newbooking' %}">{% trans "Book a Place" %}</a></li>
              {% endif %}
+             <!-- IF request.user is ADM -->
+               {% if request.user|is_admin %}
+               <ul class="nav navbar-nav pull-right">
+                   <li class="dropdown">
+                       <a href="#" class="dropdown-toggle" type="button" id="user-link"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          {% trans "Bookings" %}
+                           <span class="caret"></span>
+                       </a>
+                       <ul class="dropdown-menu pull-right" aria-labelledby="user-link">
+                         <li class="user-menu-info"><a href="{% url 'booking:newbooking' %}">
+                           <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                            {% trans "Book a Place" %}</a></li>
+                           <li class="user-menu-info"><a href="{% url 'booking:allbookings' %}">
+                             <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                            {% trans "View All Bookings" %}</a></li>
+                           <li class="user-menu-info"><a href="#">
+                             <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                            {% trans "Requests" %}</a></li>
+                           <li role="separator" class="divider"></li>
+                       </ul>
+                   </li>
+               </ul>
+               <li><a href="#">Usuarios</a></li>
+               {% endif %}
              <li><a href="#">FAQ</a></li>
          </ul>
          {% if request.user.is_authenticated %}
