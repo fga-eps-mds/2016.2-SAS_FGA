@@ -155,13 +155,10 @@ class DeleteBooktimeTest(TestCase):
         self.user.save()
         booktime = [BookTimeFactory.create()]
         booking = BookingFactory.create(booktimes=booktime)
-        print(booking.user.id)
-        print(self.user.id)
         self.client.login(username=self.user.user.username, password='1234567')
         url = reverse('booking:deletebooktime',
                       args=(booking.id, booktime[0].id))
         response = self.client.get(url)
-        print(response.content)
         self.assertContains(response, 'You cannot delete this booking.')
 
     def test_user_not_logged_in(self):
