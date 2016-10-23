@@ -249,7 +249,8 @@ def delete_booking(request, id):
     print(id)
     try:
         booking = Booking.objects.get(pk=id)
-        if (request.user.profile_user.is_admin() or booking.user.id == request.user.id):
+        if request.user.profile_user.is_admin() or \
+                booking.user.id == request.user.id:
             booking.delete()
             messages.success(request, _('Booking deleted!'))
         else:
@@ -264,7 +265,8 @@ def delete_booktime(request, booking_id, booktime_id):
     try:
         booktime = BookTime.objects.get(pk=booktime_id)
         booking = Booking.objects.get(pk=booking_id)
-        if request.user.profile_user.is_admin() or booking.user.id == request.user.id:
+        if request.user.profile_user.is_admin() or \
+                booking.user.id == request.user.id:
             booking.time.remove(booktime)
             booktime.delete()
             Booking.objects.filter(time=None).delete()
