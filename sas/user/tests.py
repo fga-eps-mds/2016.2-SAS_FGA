@@ -258,6 +258,7 @@ class LogoutTest(TestCase):
         self.assertNotContains(response,
                                'You have been logged out sucessfully!')
 
+
 class MakeUserAnAdminTest(TestCase):
 
     def setUp(self):
@@ -268,34 +269,40 @@ class MakeUserAnAdminTest(TestCase):
         self.user = UserProfileFactory.create()
         self.client = Client()
 
-    def test_make_academic_staff_an_admin(self):
-        self.client.login(username=self.admin.user.username, password='1234567')
+    def test_academic_staff_to_admin(self):
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
         self.user.make_as_academic_staff()
-        url = reverse('user:usertoadmin', args = (self.user.id,))
+        url = reverse('user:usertoadmin', args=(self.user.id,))
         response = self.client.get(url)
-        self.assertContains(response, 'User ' + self.user.full_name() + ' is now an admin.')
+        self.assertContains(response, 'User ' + self.user.full_name() +
+                            ' is now an admin.')
         self.assertFalse(self.user.is_academic_staff())
         self.assertTrue(self.user.is_admin())
 
-    def test_user_is_already_an_admin(self):
-        self.client.login(username=self.admin.user.username, password='1234567')
+    def test_user_is_already_admin(self):
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
         self.user.make_as_admin()
-        url = reverse('user:usertoadmin', args = (self.user.id,))
+        url = reverse('user:usertoadmin', args=(self.user.id,))
         response = self.client.get(url)
-        self.assertContains(response, 'User ' + self.user.full_name() + ' is already an admin.')
+        self.assertContains(response, 'User ' + self.user.full_name() +
+                            ' is already an admin.')
         self.assertFalse(self.user.is_academic_staff())
         self.assertTrue(self.user.is_admin())
 
     def test_user_does_not_exist(self):
-        self.client.login(username=self.admin.user.username, password='1234567')
-        url = reverse('user:usertoadmin', args = (9999,))
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
+        url = reverse('user:usertoadmin', args=(9999,))
         response = self.client.get(url)
         self.assertContains(response, 'User not found.')
 
     def test_user_doesnt_have_permission(self):
         self.admin.user.groups.clear()
         self.admin.make_as_academic_staff()
-        self.client.login(username=self.admin.user.username, password='1234567')
-        url = reverse('user:usertoadmin', args = (9999,))
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
+        url = reverse('user:usertoadmin', args=(9999,))
         response = self.client.get(url)
         self.assertContains(response, 'You cannot access this page.')
