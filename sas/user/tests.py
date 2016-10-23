@@ -285,3 +285,9 @@ class MakeUserAnAdminTest(TestCase):
         self.assertContains(response, 'User ' + self.user.full_name() + ' is already an admin.')
         self.assertFalse(self.user.is_academic_staff())
         self.assertTrue(self.user.is_admin())
+
+    def test_user_does_not_exist(self):
+        self.client.login(username=self.admin.user.username, password='1234567')
+        url = reverse('user:usertoadmin', args = (9999,))
+        response = self.client.get(url)
+        self.assertContains(response, 'User not found.')
