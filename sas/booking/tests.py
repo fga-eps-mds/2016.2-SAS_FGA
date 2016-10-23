@@ -225,6 +225,7 @@ class TestNewBooking(TestCase):
         client.login(username=username, password='1234567')
         response = client.post('/booking/newbooking/', parameters)
         self.assertTemplateUsed(response, 'booking/newBooking.html')
+        self.assertContains(response, 'Inputs are invalid')
 
     def test_form_is_valid(self):
         form = BookingForm(data=self.parameters)
