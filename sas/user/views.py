@@ -116,13 +116,15 @@ def search_user(request):
 def make_user_an_admin(request, id):
     if request.user.profile_user.is_admin():
         try:
-            user = UserProfile.objects.get(pk = id)
+            user = UserProfile.objects.get(pk=id)
             if user.is_academic_staff():
                 user.user.groups.clear()
                 user.make_as_admin()
-                messages.success(request, _('User ' + user.full_name() + ' is now an admin.'))
+                messages.success(request, _('User ' + user.full_name() +
+                                            ' is now an admin.'))
             else:
-                messages.error(request, _('User ' + user.full_name() + ' is already an admin.'))
+                messages.error(request, _('User ' + user.full_name() +
+                                          ' is already an admin.'))
         except:
             messages.error(request, _('User not found.'))
         finally:
