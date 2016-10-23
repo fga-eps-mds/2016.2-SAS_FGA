@@ -277,8 +277,8 @@ class BookingForm(forms.Form):
             cleaned_data = super(BookingForm, self).clean()
             today = date.today()
             now = datetime.now()
-            start_date = self.cleaned_data['start_date']
-            end_date = self.cleaned_data['end_date']
+            start_date = cleaned_data.get('start_date')
+            end_date = cleaned_data.get('end_date')
             start_hour = cleaned_data.get('start_hour')
             end_hour = cleaned_data.get('end_hour')
             if not (today <= start_date <= end_date):
@@ -296,6 +296,4 @@ class BookingForm(forms.Form):
                 raise forms.ValidationError(msg)
         except Exception as e:
             msg = _('Inputs are invalid')
-            print(e)
-            traceback.print_exc()
             raise forms.ValidationError(msg)
