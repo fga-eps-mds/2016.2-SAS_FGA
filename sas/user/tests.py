@@ -324,3 +324,11 @@ class MakeUserAnAdminTest(TestCase):
         url = reverse('user:usertoadmin', args = (9999,))
         response = self.client.get(url)
         self.assertContains(response, 'User not found.')
+
+    def test_user_doesnt_have_permission(self):
+        self.admin.user.groups.clear()
+        self.admin.make_as_academic_staff()
+        self.client.login(username=self.admin.user.username, password='1234567')
+        url = reverse('user:usertoadmin', args = (9999,))
+        response = self.client.get(url)
+        self.assertContains(response, 'You cannot access this page.')
