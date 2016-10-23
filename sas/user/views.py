@@ -117,4 +117,4 @@ def make_user_an_admin(request, id):
             return render(request, 'user/searchUser.html', {})
     else:
         messages.error(request, _('You cannot access this page.'))
-        redirect('index')
+        return index(request)
