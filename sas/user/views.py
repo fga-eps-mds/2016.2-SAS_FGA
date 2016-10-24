@@ -9,6 +9,7 @@ from django.contrib import messages
 from sas.views import index
 from django.contrib.auth.decorators import login_required
 from sas.decorators.decorators import required_to_be_admin
+from django.views.generic.edit import FormView
 
 
 def new_user(request):
@@ -57,16 +58,20 @@ def render_edit_user(request, user_form=None, change_form=PasswordForm()):
                   {'form_user': user_form, 'change_form': change_form})
 
 
-def login_user(request):
-    if request.method == "POST":
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            user = form.authenticate_user()
-            login(request, user)
-            return redirect('index')
-        else:
-            return index(request, login_form=form)
-    else:
+class LoginView(FormView):
+    template_name = "user/newUser.html"
+    form_class = LoginForm
+    success_url = "/"
+
+    def form_valid(self, form):
+        user = form.authenticate_user()
+        login(self.request, user)
+        return super(LoginView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        return index(self.request, login_form=form)
+
+    def get(self, request, *args, **kwargs):
         return redirect('index')
 
 
