@@ -80,8 +80,8 @@ def delete_user(request):
         request.user.delete()
         logout(request)
         return index(request)
-    else:
-        return index(request)
+    
+    return index(request)
 
 
 def change_password(request):

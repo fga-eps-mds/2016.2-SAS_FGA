@@ -121,7 +121,7 @@ def search_booking_booking_name_week(request, form_booking):
         for booking in bookings:
             if (booking.name == booking_name):
                 book = booking.time.get(date_booking=str(form_day))
-                aux_tuple = (book.start_hour.hour, booking.place.name)
+                aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
 
         table.append(aux)
