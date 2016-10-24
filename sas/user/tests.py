@@ -4,6 +4,7 @@ from django.test import Client
 from user.views import edit_user
 from user.factories import UserProfileFactory
 from django.contrib.auth import logout
+from django.urls import reverse
 
 
 class EditUserTest(TestCase):
@@ -256,3 +257,22 @@ class LogoutTest(TestCase):
         self.assertEqual(response.redirect_chain, [('/', 302)])
         self.assertNotContains(response,
                                'You have been logged out sucessfully!')
+
+
+class AdminSearchUserTest(TestCase):
+    def setUp(self):
+        self.admin = UserProfileFactory.create()
+        self.admin.user.set_password('1234567')
+        self.admin.make_as_admin()
+        self.admin.save()
+        self.client = Client()
+        self.users = [UserProfileFactory.create() for x in range(5)]
+        for user in self.users:
+            user.make_as_academic_staff()
+
+    def test_search_users(self):
+        self.client.login(username=self.admin.user.username, password='1234567')
+        response = self.client.get(reverse('user:searchuser'))
+        for user in self.users:
+            self.assertContains(response, user.full_name())
+            self.assertContains(response, user.registration_number)
