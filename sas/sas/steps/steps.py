@@ -46,6 +46,17 @@ def click_on_element_by_value(step, value, typeelement):
         raise AssertionError("Element not found.")
     text.click()
 
+@step(r'I register the user "(.*)" with the password "(.*)" and registration number "(.*)"')
+def register_user(step, username, password, registration_number, category):
+    user = UserProfile()
+    user.user = User()
+    user.registration_number = registration_number
+    user.user.email = username
+    user.user.username = username
+    user.user.first_name = "Usuário"
+    user.user.set_password(password)
+    user.save()
+    user.make_as_academic_staff()
 
 @step(r'I register the user "(.*)" with the password "(.*)" and registration number "(.*)" and category "(.*)"')
 def register_user(step, username, password, registration_number, category):
