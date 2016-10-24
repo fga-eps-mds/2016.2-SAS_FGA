@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from .models import UserProfile
 from django.contrib import messages
 from sas.views import index
+from django.contrib.auth.decorators import login_required
 
 
 def new_user(request):
@@ -98,3 +99,13 @@ def change_password(request):
         return index(request)
     else:
         return render_edit_user(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+def search_user(request):
+    if request.user.profile_user.is_admin():
+        users = UserProfile.objects.all().exclude(pk=request.user.profile_user.id)
+        return render(request, 'user/searchUser.html', {'users': users})
+    else:
+        messages.error(request, _('You cannot access this page.'))
+        return index(request)
