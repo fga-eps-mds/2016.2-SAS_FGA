@@ -283,3 +283,7 @@ class AdminSearchUserTest(TestCase):
         self.client.login(username=self.users[0].user.username, password='1234567')
         response = self.client.get(reverse('user:searchuser'), follow=True)
         self.assertContains(response, 'You cannot access this page.')
+
+    def test_user_not_logged_in(self):
+        response = self.client.get(reverse('user:searchuser'), follow=True)
+        self.assertNotContains(response, 'Make an Admin')
