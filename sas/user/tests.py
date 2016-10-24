@@ -271,7 +271,8 @@ class AdminSearchUserTest(TestCase):
             user.make_as_academic_staff()
 
     def test_search_users(self):
-        self.client.login(username=self.admin.user.username, password='1234567')
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
         response = self.client.get(reverse('user:searchuser'))
         for user in self.users:
             self.assertContains(response, user.full_name())
@@ -280,7 +281,8 @@ class AdminSearchUserTest(TestCase):
     def test_user_doesnt_have_permission(self):
         self.users[0].user.set_password('1234567')
         self.users[0].save()
-        self.client.login(username=self.users[0].user.username, password='1234567')
+        self.client.login(username=self.users[0].user.username,
+                          password='1234567')
         response = self.client.get(reverse('user:searchuser'), follow=True)
         self.assertContains(response, 'You cannot access this page.')
 
