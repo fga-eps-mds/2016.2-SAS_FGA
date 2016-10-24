@@ -6,8 +6,8 @@ Background:
   And this user with email "lucas@gmail.com" is an admin
 
 Scenario: Make an user an admin
-    And I register the user "usuario@gmail.com" with the password "1234567" and registration number "140017815" and category "Student"
-	When I login in with email "lucas@gmail.com" and password "123456"
+    When I register the user "usuario@gmail.com" with the password "1234567" and registration number "140017815" and category "Student"
+	Then I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/searchuser/"
   Then I should see an element with id of "make-an-admin"
   Then I click on an element with id of "make-an-admin"
