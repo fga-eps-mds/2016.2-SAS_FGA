@@ -276,3 +276,10 @@ class AdminSearchUserTest(TestCase):
         for user in self.users:
             self.assertContains(response, user.full_name())
             self.assertContains(response, user.registration_number)
+
+    def test_user_doesnt_have_permission(self):
+        self.users[0].user.set_password('1234567')
+        self.users[0].save()
+        self.client.login(username=self.users[0].user.username, password='1234567')
+        response = self.client.get(reverse('user:searchuser'), follow=True)
+        self.assertContains(response, 'You cannot access this page.')
