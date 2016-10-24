@@ -61,7 +61,7 @@ class BookTime(models.Model):
         return (str(self.date_booking) + " | " +
                 str(self.start_hour) + " - " + str(self.end_hour))
 
-    def delete(self, booking):
+    def delete_booktime(self, booking):
         if booking.time.count() == 1:
             booking.delete()
         else:
