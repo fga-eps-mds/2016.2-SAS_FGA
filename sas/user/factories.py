@@ -4,6 +4,7 @@ from factory import *
 import factory
 from factory.fuzzy import FuzzyChoice
 from .models import User, UserProfile, CATEGORY
+from random import randint
 
 fake = FakerFactory.create()
 
@@ -26,6 +27,6 @@ class UserProfileFactory(DjangoModelFactory):
         model = UserProfile
         django_get_or_create = ('registration_number', 'user', 'category')
 
-    category = FuzzyChoice(CATEGORY)
+    category = randint(1, 3)
     user = factory.SubFactory(UserFactory)
     registration_number = factory.Sequence(lambda x: '11003055%s' % x)
