@@ -10,6 +10,9 @@ from django.test import Client
 from django.core.management import call_command
 from datetime import date, datetime, timedelta
 from dateutil import parser
+from sas.basic import Configuration
+from booking.models import Booking
+
 
 @step(r'I type in "(.*)" to "(.*)"')
 def fill_bootstrap_field(step, text, field):
@@ -97,7 +100,12 @@ def login_user(step, email, password):
 
 @step(r'I run loaddata to populate dropdowns')
 def run_command_line(step):
-	call_command('loaddata', 'buildings', 'places', 'bookTimes', 'bookings', 'group', 'users', 'userProfiles')
+    call_command('loaddata', 'buildings', 'places')
+    call_command('loaddata', 'user/fixtures/group.json')
+    call_command('loaddata', 'user/fixtures/users.json')
+    call_command('loaddata', 'user/fixtures/userProfiles.json')
+    call_command('loaddata', 'booking/fixtures/bookTimes.json')
+    call_command('loaddata', 'booking/fixtures/bookings.json')
 
 @step(r'this user with email "(.*)" is an admin')
 def make_admin(step, email):
@@ -105,3 +113,10 @@ def make_admin(step, email):
     user.groups.clear()
     user.profile_user.make_as_admin()
     user.save()
+
+@step(r'I create bookings')
+def create_bookings(step):
+    for b in Booking.objects.all():
+        b.delete()
+    conf = Configuration()
+    conf.create_bookings()

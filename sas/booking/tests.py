@@ -60,10 +60,7 @@ class DeleteBookingTest(TestCase):
         self.user = UserProfileFactory.create()
         self.user.user.set_password('1234567')
         self.user.save()
-        self.booking = BookingFactory.create()
-        self.booking.user = self.user.user
-        self.booktimes = [BookTimeFactory.create() for x in range(5)]
-        self.booking = BookingFactory.create(booktimes=self.booktimes)
+        self.booking = BookingFactory.create(user=self.user.user)
         self.booking.save()
         self.client = Client()
 
@@ -74,16 +71,12 @@ class DeleteBookingTest(TestCase):
                           password='1234567')
         url = reverse('booking:deletebooking', args=(self.booking.id,))
         response = self.client.get(url)
-        for booktime in self.booktimes:
-            self.assertFalse(BookTime.objects.filter(pk=booktime.id).exists())
         self.assertFalse(Booking.objects.filter(pk=self.booking.id).exists())
         self.assertContains(response, 'Booking deleted!')
 
     def test_academic_staff_delete_their_own_booking(self):
         self.user.make_as_academic_staff()
         self.user.save()
-        self.booking.user = self.user.user
-        self.booking.save()
         self.client.login(username=self.user.user.username, password='1234567')
         url = reverse('booking:deletebooking', args=(self.booking.id,))
         response = self.client.get(url)
@@ -101,8 +94,6 @@ class DeleteBookingTest(TestCase):
     def test_user_not_logged_in(self):
         url = reverse('booking:deletebooking', args=(self.booking.id,))
         response = self.client.get(url)
-        for booktime in self.booktimes:
-            self.assertTrue(BookTime.objects.filter(pk=booktime.id).exists())
         self.assertTrue(Booking.objects.filter(pk=self.booking.id).exists())
 
     def test_booking_does_not_exist(self):
@@ -118,12 +109,10 @@ class DeleteBooktimeTest(TestCase):
         self.user = UserProfileFactory.create()
         self.user.user.set_password('1234567')
         self.user.save()
-        self.booking = BookingFactory.create()
-        self.booking.user = self.user.user
-        self.booktimes = [BookTimeFactory.create()]
-        self.booking = BookingFactory.create(booktimes=self.booktimes)
-        self.booking.save()
+        self.booking = BookingFactory(user=self.user.user)
         self.client = Client()
+        self.id_booking = self.booking.id
+        self.id_booktime = self.booking.time.all()[0].id
 
     def test_admin_delete_booktime(self):
         self.user.make_as_admin()
@@ -131,44 +120,40 @@ class DeleteBooktimeTest(TestCase):
         self.client.login(username=self.user.user.username,
                           password='1234567')
         url = reverse('booking:deletebooktime',
-                      args=[self.booking.id, self.booktimes[0].id])
+                      args=[self.id_booking, self.id_booktime])
         response = self.client.get(url)
         self.assertFalse(BookTime.objects.filter(
-            pk=self.booktimes[0].id).exists())
-        self.assertFalse(Booking.objects.filter(pk=self.booking.id).exists())
+            pk=self.id_booktime).exists())
+        self.assertTrue(Booking.objects.filter(pk=self.id_booking).exists())
         self.assertContains(response, 'Booking deleted!')
 
     def test_academic_staff_delete_their_own_booktime(self):
         self.user.make_as_academic_staff()
-        self.user.save()
-        self.booking.user = self.user.user
-        self.booking.save()
         self.client.login(username=self.user.user.username,
                           password='1234567')
         url = reverse('booking:deletebooktime',
-                      args=(self.booking.id, self.booktimes[0].id))
+                      args=[self.id_booking, self.id_booktime])
         response = self.client.get(url)
         self.assertContains(response, 'Booking deleted!')
 
     def test_doesnt_have_permission(self):
         self.user.make_as_academic_staff()
         self.user.save()
-        booktime = [BookTimeFactory.create()]
-        booking = BookingFactory.create(booktimes=booktime)
+        booking = BookingFactory.create()
         self.client.login(username=self.user.user.username, password='1234567')
         url = reverse('booking:deletebooktime',
-                      args=(booking.id, booktime[0].id))
+                      args=[booking.id, booking.time.all()[0].id])
         response = self.client.get(url)
         self.assertContains(response, 'You cannot delete this booking.')
 
     def test_user_not_logged_in(self):
         url = reverse('booking:deletebooktime',
-                      args=(self.booking.id, self.booktimes[0].id))
+                      args=[self.id_booking, self.id_booktime])
         response = self.client.get(url)
         self.assertTrue(BookTime.objects.filter(
-            pk=self.booktimes[0].id).exists())
+            pk=self.id_booktime).exists())
         self.assertTrue(Booking.objects.filter(
-            pk=self.booking.id).exists())
+            pk=self.id_booking).exists())
 
     def test_booktime_does_not_exist(self):
         self.client.login(username=self.user.user.username, password='1234567')

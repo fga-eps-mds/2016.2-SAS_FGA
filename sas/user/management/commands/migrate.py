@@ -4,13 +4,24 @@ from django.core.management import call_command
 
 class Command(BaseCommand):
 
+    def add_arguments(self, parser):
+        super(Command, self).add_arguments(parser)
+        parser.add_argument("--not-create-user-fixture",
+                            dest="user_fixtures",
+                            action="store_false",
+                            default=True,
+                            help="it create user fixture")
+
     def handle(self, *args, **options):
         output = super(Command, self).handle(*args, **options)
-        call_command('loaddata', 'user/fixtures/group.json')
+        if options["user_fixtures"]:
+            call_command('loaddata', 'user/fixtures/permissions.json')
+            call_command('loaddata', 'user/fixtures/group.json')
+            call_command('loaddata', 'user/fixtures/user.json')
+            call_command('loaddata', 'user/fixtures/users.json')
+            call_command('loaddata', 'user/fixtures/userprofile.json')
         call_command('loaddata', 'booking/fixtures/buildings.json')
         call_command('loaddata', 'booking/fixtures/places.json')
-        call_command('loaddata', 'user/fixtures/users.json')
-        call_command('loaddata', 'user/fixtures/userProfiles.json')
         call_command('loaddata', 'booking/fixtures/bookTimes.json')
         call_command('loaddata', 'booking/fixtures/bookings.json')
         return output
