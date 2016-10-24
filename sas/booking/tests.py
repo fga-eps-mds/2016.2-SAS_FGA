@@ -124,7 +124,6 @@ class DeleteBooktimeTest(TestCase):
         response = self.client.get(url)
         self.assertFalse(BookTime.objects.filter(
             pk=self.id_booktime).exists())
-        self.assertTrue(Booking.objects.filter(pk=self.id_booking).exists())
         self.assertContains(response, 'Booking deleted!')
 
     def test_academic_staff_delete_their_own_booktime(self):
