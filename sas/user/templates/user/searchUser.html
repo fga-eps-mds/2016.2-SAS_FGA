@@ -1,6 +1,6 @@
 {% extends 'sas/base.html' %}
 
-{% load i18n %}
+{% load i18n user_extras %}
 {% load bootstrap3 staticfiles %}
 {% bootstrap_messages %}
 
@@ -10,46 +10,41 @@
   <link rel="stylesheet" href="{% static "plugins/datatables/extensions/Responsive/css/dataTables.responsive.css" %}">
 {% endblock %}
 
-{% block title %}{% trans "My Bookings" %}{% endblock %}
+{% block title %}{% trans "Users" %}{% endblock %}
 {% block content %}
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1 col-sm-offset-1">
-      <h1 class="text-center">{% trans "My Bookings" %}</h1>
+      <h1 class="text-center">{% trans "Users" %}</h1>
       <hr class="star-light">
       <div>
-        <table id="my_bookings" class="table table-striped table-bordered " cellspacing="0" width="100%">
+        <table id="users" class="table table-striped table-bordered " cellspacing="0" width="100%">
             <thead>
               <tr>
                 <th>{% trans "Name" %}</th>
-                <th>{% trans "Place" %}</th>
-                <th>{% trans "Period" %}</th>
-                <th>{% trans "Date and Time" %}</th>
-                <th class="all">{% trans "Delete" %}</th>
+                <th>{% trans "Registration Number" %}</th>
+                <th>{% trans "Category" %}</th>
+                <th>{% trans "Type" %}</th>
+                <th class="all">{% trans "Make an Admin" %}</th>
               </tr>
             </thead>
             <tbody>
-            {% for booking in bookings %}
+            {% for user in users %}
               <tr>
-                <td>{{ booking.name }}</td>
-                <td>{{ booking.place.name }}</td>
-                <td class="text-center">{{ booking.start_date }}
-                  <br>{% trans " to " %}<br>
-                  {{ booking.end_date }}</td>
-                <td class="text-center">
-                  {% for time in booking.time.all|slice:":7" %}
-                        <strong>{{ time.date_booking|date:"D, d/M/Y" }}</strong><br>
-                        {{ time.start_hour|date:"H:i" }} {% trans " to " %}
-                        {{ time.end_hour|date:"H:i" }}<br><hr>
-                    {% endfor %}
-                    {% if booking.time.all|length > 7 %}
-                      <strong>...</strong>
-                    {% endif %}
+                <td>{{ user.full_name }}</td>
+                <td>{{ user.registration_number }}</td>
+                <td>
+                    {{ user|category }}
                 </td>
                 <td>
-                    <button class="btn btn-danger" data-href="{% url 'booking:deletebooking' booking.id %}"
-                        data-toggle="modal" data-target="#modalDeleteBooking" id="delete-booking">
-                        <span class="glyphicon glyphicon-trash" ></span> {% trans "Delete" %}
+                    {{ user|type }}
+                </td>
+                <td>
+                    {% if user.is_academic_staff %}
+                    <button class="btn btn-primary" data-href="{% url 'user:usertoadmin' user.id %}"
+                        data-toggle="modal" data-target="#modalMakeAnAdmin" id="make-an-admin">
+                        <span class="glyphicon glyphicon-user" ></span> {% trans "Make an Admin" %}
                     </button>
+                    {% endif %}
                 </td>
               </tr>
             {% endfor %}
@@ -57,28 +52,28 @@
           <tfoot>
             <tr>
               <th>{% trans "Name" %}</th>
-              <th>{% trans "Place" %}</th>
-              <th>{% trans "Period" %}</th>
-              <th>{% trans "Date and Time" %}</th>
-              <th class="all">{% trans "Delete" %}</th>
+              <th>{% trans "Registration Number" %}</th>
+              <th>{% trans "Category" %}</th>
+              <th>{% trans "Type" %}</th>
+              <th class="all">{% trans "Make an Admin" %}</th>
             </tr>
           </tfoot>
         </table>
 
           <!-- Modal -->
-          <div class="modal fade" id="modalDeleteBooking" tabindex="-1" role="dialog">
+          <div class="modal fade" id="modalMakeAnAdmin" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="dialog">
               <div class="modal-content">
                 <div class="modal-header delete-header">
                   <button class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <p class="modal-title" id="myModalLabel">{% trans "Confirm booking deletion" %}</p>
+                  <p class="modal-title" id="myModalLabel">{% trans "Confirm making user an admin" %}</p>
                 </div>
-                <div class="modal-body delete-body">
-                  <p>{% trans "Are you sure you want to delete this booking?" %}</p>
+                <div class="modal-body make-user-an-admin-body">
+                  <p>{% trans "Are you sure you want to make this user an admin?" %}</p>
                 </div>
-                <div class="modal-footer delete-footer">
-                   <a class="btn btn-danger btn-ok" id="action-delete">
-                    {% trans "Delete" %}</a>
+                <div class="modal-footer make-user-an-admin-footer">
+                   <a class="btn btn-primary btn-ok" id="action-make-admin">
+                    {% trans "Make an Admin" %}</a>
                   <a class="btn btn-default" data-dismiss="modal">{% trans "Cancel" %}</a>
                 </div>
               </div>
@@ -97,12 +92,12 @@
 <script src="{% static 'plugins/datatables/extensions/Responsive/js/responsive.bootstrap.min.js' %}"></script>
 <!-- page script -->
 <script>
-$('#modalDeleteBooking').on('show.bs.modal', function(e) {
+$('#modalMakeAnAdmin').on('show.bs.modal', function(e) {
     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 });
   $(function () {
 
-    var table = $('#my_bookings').DataTable({
+    var table = $('#users').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,

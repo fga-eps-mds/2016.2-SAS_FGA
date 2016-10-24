@@ -2,7 +2,7 @@ Feature: Room_Period_Table
 
 Background:
 	Given I run loaddata to populate dropdowns
-	And I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574"
+	And I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574" and category "Student"
 	And I register the booking "monitoria" with the building "UAC" with the place name "FGA-I1" and start_date "2016-11-20" and end_date "2016-11-30" of user "lucas@gmail.com"
 
 Scenario: Inexistent booking between start date and end date
@@ -59,4 +59,3 @@ Scenario: Start Date greater then End Date
     And I fill in "End Date" with "12/30/2016"
     Then I press "Search"
     Then I should see "End date must be equal or greater then Start date"
-

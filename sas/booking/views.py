@@ -206,14 +206,17 @@ def search_booking_table(request):
 def search_booking(request):
     if request.user.is_authenticated():
         bookings = Booking.objects.filter(user=request.user)
-        return render(request, 'booking/searchBooking.html', {'bookings': bookings})
+        return render(request, 'booking/searchBooking.html',
+                      {'bookings': bookings})
     else:
         return redirect("index")
+
 
 def all_bookings(request):
     if request.user.profile_user.is_admin():
         bookings = Booking.objects.all()
-        return render(request, 'booking/searchBooking.html', {'bookings': bookings})
+        return render(request, 'booking/searchBooking.html',
+                      {'bookings': bookings})
     else:
         return redirect("index")
 
@@ -252,7 +255,8 @@ def delete_booking(request, id):
     print(id)
     try:
         booking = Booking.objects.get(pk=id)
-        if (request.user.profile_user.is_admin() or booking.user.id == request.user.id):
+        if request.user.profile_user.is_admin() or \
+                booking.user.id == request.user.id:
             booking.delete()
             messages.success(request, _('Booking deleted!'))
         else:
