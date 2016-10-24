@@ -3,7 +3,7 @@ from aloe_webdriver.util import find_field_by_id, find_any_field, find_field_by_
 from aloe_webdriver import TEXT_FIELDS
 from selenium.common.exceptions import NoSuchElementException
 from booking.models import Booking, Place, BookTime, Building, date_range
-from user.models import UserProfile
+from user.models import UserProfile, CATEGORY
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.test import Client
@@ -44,8 +44,8 @@ def click_on_element_by_value(step, value, typeelement):
     text.click()
 
 
-@step(r'I register the user "(.*)" with the password "(.*)" and registration number "(.*)"')
-def register_user(step, username, password,registration_number):
+@step(r'I register the user "(.*)" with the password "(.*)" and registration number "(.*)" and category "(.*)"')
+def register_user(step, username, password,registration_number, category):
     user = UserProfile()
     user.user = User()
     user.registration_number = registration_number
@@ -54,7 +54,11 @@ def register_user(step, username, password,registration_number):
     user.user.first_name = "Usuário"
     user.user.set_password(password)
     user.save()
-
+    user.make_as_academic_staff()
+    for number, category_type in CATEGORY:
+        if category_type == category:
+            user.category = number
+    user.save()
 @step(r'I register the booking "(.*)" with the building "(.*)" with the place name "(.*)" and start_date "(.*)" and end_date "(.*)" of user "(.*)"')
 def new_booking(step, booking_name, building, place_name, start_date, end_date, username):
 	booking = Booking()
