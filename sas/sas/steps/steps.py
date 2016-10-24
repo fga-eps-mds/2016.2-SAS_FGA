@@ -47,7 +47,7 @@ def click_on_element_by_value(step, value, typeelement):
     text.click()
 
 @step(r'I register the user "(.*)" with the password "(.*)" and registration number "(.*)"')
-def register_user(step, username, password, registration_number, category):
+def register_user(step, username, password, registration_number):
     user = UserProfile()
     user.user = User()
     user.registration_number = registration_number
