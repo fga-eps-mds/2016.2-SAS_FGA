@@ -104,7 +104,8 @@ def change_password(request):
 @login_required(login_url='/?showLoginModal=yes')
 def search_user(request):
     if request.user.profile_user.is_admin():
-        users = UserProfile.objects.all().exclude(pk=request.user.profile_user.id)
+        id = request.user.profile_user.id
+        users = UserProfile.objects.all().exclude(pk=id)
         return render(request, 'user/searchUser.html', {'users': users})
     else:
         messages.error(request, _('You cannot access this page.'))
