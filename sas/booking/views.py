@@ -268,9 +268,11 @@ def delete_booktime(request, booking_id, booktime_id):
         booktime = BookTime.objects.get(pk=booktime_id)
         booking = Booking.objects.get(pk=booking_id)
         if request.user.profile_user.is_admin() or booking.user.id == request.user.id:
-            booking.time.remove(booktime)
-            booktime.delete()
-            Booking.objects.filter(time=None).delete()
+            if booking.time.count() == 1 and booking.time.all()[0].id == booktime.id:
+                booking.delete()
+            else:
+                booking.time.remove(booktime)
+                booktime.delete()
             messages.success(request, _('Booking deleted!'))
         else:
             messages.error(request, _('You cannot delete this booking.'))
