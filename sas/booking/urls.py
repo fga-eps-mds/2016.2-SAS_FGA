@@ -8,6 +8,7 @@ from .views import confirm_booking
 from .views import cancel_booking
 from .views import delete_booking
 from .views import delete_booktime
+from .views import all_bookings
 
 urlpatterns = [
     url(r'^newbooking/$',
@@ -26,5 +27,7 @@ urlpatterns = [
     url(r'^deletebooking/(\d+)$',
         delete_booking, name='deletebooking'),
     url(r'^deletebooktime/(\d+)/(\d+)$',
-        delete_booktime, name='deletebooktime')
+        delete_booktime, name='deletebooktime'),
+    url(r'^allbookings/$',
+        all_bookings, name='allbookings'),
 ]

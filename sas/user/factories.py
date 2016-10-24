@@ -28,4 +28,5 @@ class UserProfileFactory(DjangoModelFactory):
 
     category = FuzzyChoice(CATEGORY)
     user = factory.SubFactory(UserFactory)
-    registration_number = factory.Sequence(lambda x: '11003055%s' % x)
+    registration_number = factory.Sequence(lambda x: '11123055%s' % x)
+

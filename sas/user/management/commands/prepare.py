@@ -47,7 +47,12 @@ class Command(BaseCommand):
                 output = call(["rm", "-r", path_migrations], stderr=STDOUT)
 
             if os.path.isdir(path_app):
-                self.stdout.write("It will create migrations %s %s %s %s" % ("python", self.manage_path(), "makemigrations", app))
+                msg = "It will create migrations %s %s %s %s".format(
+                                    "python",
+                                    self.manage_path(),
+                                    "makemigrations",
+                                    app)
+                self.stdout.write(msg)
                 call_command('makemigrations', app)
 
     def handle(self, *args, **options):
@@ -56,9 +61,15 @@ class Command(BaseCommand):
             self.exclude_sqlite()
 
         self.exclude_migrations()
-        call_command('migrate')
+        if options["create_groups"] and options["create_users"]:
+            call_command('migrate', '--not-create-user-fixture')
+        else:
+            call_command('migrate')
         conf = Configuration()
-
         if options["create_groups"]:
             self.stdout.write(self.style.SUCCESS("It will create the groups"))
             conf.create_groups()
+
+        if options["create_users"]:
+            self.stdout.write(self.style.SUCCESS("It will create the users"))
+            self.create_users()
