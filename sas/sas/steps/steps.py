@@ -125,6 +125,11 @@ def login_user(step, email, password):
 		world.browser.add_cookie(cookies)
 	world.browser.refresh()
 
+@step(r'This user with email "(.*)" is an admin')
+def make_admin(step, email):
+	user = User.objects.get(email=email)
+	user.profile_user.make_as_admin()
+
 @step(r'I run loaddata to populate dropdowns')
 def run_command_line(step):
     call_command('loaddata', 'buildings', 'places')
