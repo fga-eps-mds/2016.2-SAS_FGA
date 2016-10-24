@@ -61,6 +61,13 @@ class BookTime(models.Model):
         return (str(self.date_booking) + " | " +
                 str(self.start_hour) + " - " + str(self.end_hour))
 
+    def delete(self, booking):
+        if booking.time.count() == 1:
+            booking.delete()
+        else:
+            booking.time.remove(self)
+            super(BookTime, self).delete()
+
 
 class Booking(models.Model):
     user = models.ForeignKey(User, related_name="bookings",
