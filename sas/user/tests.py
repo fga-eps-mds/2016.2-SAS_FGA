@@ -290,9 +290,8 @@ class AdminSearchUserTest(TestCase):
         response = self.client.get(reverse('user:searchuser'), follow=True)
         self.assertNotContains(response, 'Make an Admin')
 
-        
-class MakeUserAnAdminTest(TestCase):
 
+class MakeUserAnAdminTest(TestCase):
     def setUp(self):
         self.admin = UserProfileFactory.create()
         self.admin.user.set_password('1234567')
