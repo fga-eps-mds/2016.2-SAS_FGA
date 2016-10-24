@@ -40,7 +40,7 @@
                 </td>
                 <td>
                     {% if user.is_academic_staff %}
-                    <button class="btn btn-primary" data-href="#"
+                    <button class="btn btn-primary" data-href="{% url 'user:usertoadmin' user.id %}"
                         data-toggle="modal" data-target="#modalMakeAnAdmin" id="make-an-admin">
                         <span class="glyphicon glyphicon-user" ></span> {% trans "Make an Admin" %}
                     </button>
@@ -72,7 +72,7 @@
                   <p>{% trans "Are you sure you want to make this user an admin?" %}</p>
                 </div>
                 <div class="modal-footer delete-footer">
-                   <a class="btn btn-danger btn-ok" id="action-delete">
+                   <a class="btn btn-primary btn-ok" id="action-delete">
                     {% trans "Make an Admin" %}</a>
                   <a class="btn btn-default" data-dismiss="modal">{% trans "Cancel" %}</a>
                 </div>
@@ -139,4 +139,4 @@ $('#modalMakeAnAdmin').on('show.bs.modal', function(e) {
   });
 
 </script>
-{% endblock %} 
+{% endblock %}
