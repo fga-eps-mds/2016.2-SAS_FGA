@@ -290,7 +290,7 @@ class AdminSearchUserTest(TestCase):
         response = self.client.get(reverse('user:searchuser'), follow=True)
         self.assertNotContains(response, 'Make an Admin')
 
-
+        
 class MakeUserAnAdminTest(TestCase):
 
     def setUp(self):
