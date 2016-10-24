@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from .views import new_user, login_user, logout_user
 from .views import delete_user, edit_user
-from .views import change_password
+from .views import change_password, search_user
 
 urlpatterns = [
     url(r'newuser/', new_user, name='newuser'),
@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'delete/$', delete_user, name='deleteuser'),
     url(r'^edituser/$', edit_user, name='edituser'),
     url(r'^change/$', change_password, name='changepassword'),
+    url(r'^searchuser/$', search_user, name='searchuser'),
 ]
