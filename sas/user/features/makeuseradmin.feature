@@ -2,8 +2,7 @@ Feature: Admin make an User an Admin
 
 Background:
     Given I run loaddata to populate dropdowns
-  And I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574" and category "Student"
-  And this user with email "lucas@gmail.com" is an admin
+  And I register an admin with email "lucas@gmail.com" and password "123456" and registration number "140016574" and category "Teaching Staff"
 
 Scenario: Make an user an admin
     When I register the user "usuario@gmail.com" with the password "1234567" and registration number "140017815" and category "Student"
