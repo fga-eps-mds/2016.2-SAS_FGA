@@ -1,0 +1,16 @@
+Feature: Admin make an User an Admin
+
+Background:
+    Given I run loaddata to populate dropdowns
+  And I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574"
+  And this user with email "lucas@gmail.com" is an admin
+  And I register the user "usuario@gmail.com" with the password "1234567" and registration number "140017815"
+
+Scenario: Make an user an admin
+	When I login in with email "lucas@gmail.com" and password "123456"
+	Then I visit site page "/user/searchuser/"
+	Then I should see an element with id of "make-an-admin"
+  Then I click on an element with id of "make-an-admin"
+  And I should see "Are you sure you want to make this user an admin?"
+  Then I click on an element with id of "action-make-admin"
+  Then I should not see an element with id of "make-an-admin"
