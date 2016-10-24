@@ -128,7 +128,7 @@ def make_user_an_admin(request, id):
         except:
             messages.error(request, _('User not found.'))
         finally:
-            return render(request, 'user/searchUser.html', {})
+            return search_user(request)
     else:
         messages.error(request, _('You cannot access this page.'))
         return index(request)
