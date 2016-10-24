@@ -22,7 +22,7 @@ Scenario: User do not inform Registration Number
   Then I should see an alert with text "Please fill out this field."
 
 Scenario: Repeated Email
-  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
+  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574" and category "Student"
   And I visit site page "/user/newuser"
   And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
@@ -34,7 +34,7 @@ Scenario: Repeated Email
   Then I should see "Email already used"
 
 Scenario: Repeated Registration Number
-  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
+  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574" and category "Student"
   And I visit site page "/user/newuser"
   And I type in "100200300" to "Registration Number"
   And I select "Student" from "Category"
@@ -46,7 +46,7 @@ Scenario: Repeated Registration Number
   Then I should see an alert with text "Registration Number already used."
 
 Scenario: User do not inform Email
-  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
+  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574" and category "Student"
   And I visit site page "/user/newuser"
   And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
@@ -57,7 +57,7 @@ Scenario: User do not inform Email
   Then I should see an alert with text "Please fill out this field."
 
 Scenario: User Informed an Invalid Email
-  When I register the user "sender" with the password "123456" and registration number "140016574"
+  When I register the user "sender" with the password "123456" and registration number "140016574" and category "Student"
   And I visit site page "/user/newuser"
   And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
@@ -69,7 +69,7 @@ Scenario: User Informed an Invalid Email
   Then I should see an alert with text "Email address must be in a valid format."
 
 Scenario: User do not Inform Password
-  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
+  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574" and category "Student"
   And I visit site page "/user/newuser"
   And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
@@ -80,7 +80,7 @@ Scenario: User do not Inform Password
   Then I should see an alert with text "Please fill out this field."
 
 Scenario: User do not Inform Repeat Password
-  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
+  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574" and category "Student"
   And I visit site page "/user/newuser"
   And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
@@ -91,7 +91,7 @@ Scenario: User do not Inform Repeat Password
   Then I should see an alert with text "Please fill out this field."
 
 Scenario: User Informs Different Password and Repeat Password fields
-  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574"
+  When I register the user "test123@gmail.com" with the password "123456" and registration number "140016574" and category "Teaching Staff"
   And I visit site page "/user/newuser"
   And I type in "120030559" to "Registration Number"
   And I select "Student" from "Category"
@@ -222,5 +222,3 @@ Scenario: User informs a password with size bigger than fifteen characters
   And I type in "teste12345678901" to "Repeat Password"
   Then I press "Register"
   Then I should see an alert with text "Password must be between 6 and 15 characters."
-
-

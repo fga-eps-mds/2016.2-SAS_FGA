@@ -2,7 +2,7 @@ Feature: Search Bookings
 
 Background:
   Given I run loaddata to populate dropdowns
-  And I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574"
+  And I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574" and category "Student"
 
 Scenario: Filtering by Day x Room
   When I login in with email "lucas@gmail.com" and password "123456"

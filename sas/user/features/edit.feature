@@ -1,7 +1,7 @@
 Feature: EditUser
 
 Background:
-	Given I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574"
+	Given I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574" and category "Student"
 
 Scenario: Invalid email
 	When I login in with email "lucas@gmail.com" and password "123456"
@@ -48,7 +48,7 @@ Scenario: User empties category
 	Then I should see an alert with text "Please select an item on the list."
 
 Scenario: Duplicated email
-	When I register the user "pedro@gmail.com" with the password "123456" and registration number "150016572"
+	When I register the user "pedro@gmail.com" with the password "123456" and registration number "150016572" and category "Student"
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/user/edituser/"
 	And I fill in "Email" with "pedro@gmail.com"
