@@ -7,7 +7,10 @@ register = template.Library()
 
 @register.filter(name='category')
 def category(user):
-    return _(CATEGORY[int(user.category)][1])
+    try:
+        return _(CATEGORY[int(user.category)][1])
+    except:
+        return ""
 
 
 @register.filter(name='type')
