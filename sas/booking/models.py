@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 import copy
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 
 CATEGORY = (('', '----'), ('1', _('Student')),
             ('2', _('Teaching Staff')), ('3', _('Employees')))
@@ -120,6 +121,17 @@ class Booking(models.Model):
     def delete(self):
         self.time.all().delete()
         super(Booking, self).delete()
+
+    def delete_booktime(self, id_booktime, user):
+        booktime = BookTime.objects.get(pk=id_booktime)
+        if (user.profile_user.is_admin() or self.user.id == user.id) and \
+                    booktime in self.time.all():
+            if self.time.count() == 1:
+                self.delete()
+            else:
+                booktime.delete()
+        else:
+            raise PermissionDenied()
 
 
 class Validation():
