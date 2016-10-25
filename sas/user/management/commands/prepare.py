@@ -34,7 +34,7 @@ class Command(BaseCommand):
         return "sqlite" in settings.DATABASES['default']['ENGINE']
 
     def exclude_sqlite(self):
-        if os.path.isfile(self.db_sqlite_path()):
+        if (os.path.isfile(self.db_sqlite_path())):
             self.stdout.write("Deleting db")
             call(["rm", self.db_sqlite_path()], stderr=STDOUT)
 
@@ -43,21 +43,18 @@ class Command(BaseCommand):
             path_migrations = os.path.join(settings.BASE_DIR,
                                            app, "migrations")
             path_app = os.path.join(settings.BASE_DIR, app)
-            if os.path.isdir(path_migrations):
+            if (os.path.isdir(path_migrations)):
                 output = call(["rm", "-r", path_migrations], stderr=STDOUT)
 
-            if os.path.isdir(path_app):
-                msg = "It will create migrations %s %s %s %s".format(
-                      "python",
-                      self.manage_path(),
-                      "makemigrations",
-                      app)
-                self.stdout.write(msg)
+            if (os.path.isdir(path_app)):
+                self.stdout.write("It will create migrations %s %s %s %s" %
+                                  ("python", self.manage_path(),
+                                   "makemigrations", app))
                 call_command('makemigrations', app)
 
     def handle(self, *args, **options):
         self.stdout.write("Prepare command")
-        if self.is_sqlite():
+        if (self.is_sqlite()):
             self.exclude_sqlite()
 
         self.exclude_migrations()
@@ -66,7 +63,8 @@ class Command(BaseCommand):
         else:
             call_command('migrate')
         conf = Configuration()
-        if options["create_groups"]:
+
+        if (options["create_groups"]):
             self.stdout.write(self.style.SUCCESS("It will create the groups"))
             conf.create_groups()
 
