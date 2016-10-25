@@ -61,7 +61,8 @@ class UserProfile(models.Model):
         try:
             academic_staff = Group.objects.get(name="academic_staff")
         except:
-            academic_staff, created = Group.objects.get_or_create(name="academic_staff")
+            academic_staff, created = (Group.objects.
+                                       get_or_create(name="academic_staff"))
 
         self.create_user()
         self.user.groups.add(academic_staff)
