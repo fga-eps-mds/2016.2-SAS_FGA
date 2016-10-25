@@ -48,10 +48,10 @@ class Command(BaseCommand):
 
             if os.path.isdir(path_app):
                 msg = "It will create migrations %s %s %s %s".format(
-                                    "python",
-                                    self.manage_path(),
-                                    "makemigrations",
-                                    app)
+                      "python",
+                      self.manage_path(),
+                      "makemigrations",
+                      app)
                 self.stdout.write(msg)
                 call_command('makemigrations', app)
 

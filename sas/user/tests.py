@@ -4,6 +4,7 @@ from django.test import Client
 from user.views import edit_user
 from user.factories import UserProfileFactory
 from django.contrib.auth import logout
+from django.urls import reverse
 
 
 class EditUserTest(TestCase):
@@ -256,3 +257,83 @@ class LogoutTest(TestCase):
         self.assertEqual(response.redirect_chain, [('/', 302)])
         self.assertNotContains(response,
                                'You have been logged out sucessfully!')
+
+
+class AdminSearchUserTest(TestCase):
+    def setUp(self):
+        self.admin = UserProfileFactory.create()
+        self.admin.user.set_password('1234567')
+        self.admin.make_as_admin()
+        self.admin.save()
+        self.client = Client()
+        self.users = [UserProfileFactory.create() for x in range(5)]
+        for user in self.users:
+            user.make_as_academic_staff()
+
+    def test_search_users(self):
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
+        response = self.client.get(reverse('user:searchuser'))
+        for user in self.users:
+            self.assertContains(response, user.full_name())
+            self.assertContains(response, user.registration_number)
+
+    def test_user_doesnt_have_permission(self):
+        self.users[0].user.set_password('1234567')
+        self.users[0].save()
+        self.client.login(username=self.users[0].user.username,
+                          password='1234567')
+        response = self.client.get(reverse('user:searchuser'), follow=True)
+        self.assertContains(response, 'You cannot access this page.')
+
+    def test_user_not_logged_in(self):
+        response = self.client.get(reverse('user:searchuser'), follow=True)
+        self.assertNotContains(response, 'Make an Admin')
+
+
+class MakeUserAnAdminTest(TestCase):
+    def setUp(self):
+        self.admin = UserProfileFactory.create()
+        self.admin.user.set_password('1234567')
+        self.admin.make_as_admin()
+        self.admin.save()
+        self.user = UserProfileFactory.create()
+        self.client = Client()
+
+    def test_academic_staff_to_admin(self):
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
+        self.user.make_as_academic_staff()
+        url = reverse('user:usertoadmin', args=(self.user.id,))
+        response = self.client.get(url)
+        self.assertContains(response, 'User ' + self.user.full_name() +
+                            ' is now an admin.')
+        self.assertFalse(self.user.is_academic_staff())
+        self.assertTrue(self.user.is_admin())
+
+    def test_user_is_already_admin(self):
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
+        self.user.make_as_admin()
+        url = reverse('user:usertoadmin', args=(self.user.id,))
+        response = self.client.get(url)
+        self.assertContains(response, 'User ' + self.user.full_name() +
+                            ' is already an admin.')
+        self.assertFalse(self.user.is_academic_staff())
+        self.assertTrue(self.user.is_admin())
+
+    def test_user_does_not_exist(self):
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
+        url = reverse('user:usertoadmin', args=(9999,))
+        response = self.client.get(url)
+        self.assertContains(response, 'User not found.')
+
+    def test_user_doesnt_have_permission(self):
+        self.admin.user.groups.clear()
+        self.admin.make_as_academic_staff()
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
+        url = reverse('user:usertoadmin', args=(9999,))
+        response = self.client.get(url)
+        self.assertContains(response, 'You cannot access this page.')

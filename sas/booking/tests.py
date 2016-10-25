@@ -110,6 +110,8 @@ class DeleteBooktimeTest(TestCase):
         self.user.user.set_password('1234567')
         self.user.save()
         self.booking = BookingFactory(user=self.user.user)
+        print(self.booking)
+        print(self.booking.time.all())
         self.client = Client()
         self.id_booking = self.booking.id
         self.id_booktime = self.booking.time.all()[0].id
@@ -124,7 +126,6 @@ class DeleteBooktimeTest(TestCase):
         response = self.client.get(url)
         self.assertFalse(BookTime.objects.filter(
             pk=self.id_booktime).exists())
-        self.assertTrue(Booking.objects.filter(pk=self.id_booking).exists())
         self.assertContains(response, 'Booking deleted!')
 
     def test_academic_staff_delete_their_own_booktime(self):
@@ -134,6 +135,7 @@ class DeleteBooktimeTest(TestCase):
         url = reverse('booking:deletebooktime',
                       args=[self.id_booking, self.id_booktime])
         response = self.client.get(url)
+        self.assertFalse(BookTime.objects.filter(pk=self.id_booktime).exists())
         self.assertContains(response, 'Booking deleted!')
 
     def test_doesnt_have_permission(self):
@@ -144,7 +146,6 @@ class DeleteBooktimeTest(TestCase):
         url = reverse('booking:deletebooktime',
                       args=[booking.id, booking.time.all()[0].id])
         response = self.client.get(url)
-        print(response.content)
         self.assertContains(response, 'You cannot delete this booking.')
 
     def test_user_not_logged_in(self):

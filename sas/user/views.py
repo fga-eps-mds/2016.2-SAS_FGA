@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from .models import UserProfile
 from django.contrib import messages
 from sas.views import index
+from django.contrib.auth.decorators import login_required
+from sas.decorators.decorators import required_to_be_admin
 
 
 def new_user(request):
@@ -98,3 +100,30 @@ def change_password(request):
         return index(request)
     else:
         return render_edit_user(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
+def search_user(request):
+    id = request.user.profile_user.id
+    users = UserProfile.objects.all().exclude(pk=id)
+    return render(request, 'user/searchUser.html', {'users': users})
+
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
+def make_user_an_admin(request, id):
+    try:
+        user = UserProfile.objects.get(pk=id)
+        if user.is_academic_staff():
+            user.user.groups.clear()
+            user.make_as_admin()
+            messages.success(request, _('User ' + user.full_name() +
+                                        ' is now an admin.'))
+        else:
+            messages.error(request, _('User ' + user.full_name() +
+                                      ' is already an admin.'))
+    except:
+        messages.error(request, _('User not found.'))
+    finally:
+        return search_user(request)
