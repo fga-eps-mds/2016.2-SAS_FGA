@@ -268,6 +268,8 @@ def delete_booktime(request, booking_id, booktime_id):
     try:
         booking = Booking.objects.get(pk=booking_id)
         booking.delete_booktime(booktime_id, request.user)
+        if booking.time.count() == 0:
+            booking.delete()
         messages.success(request, _('Booking deleted!'))
     except PermissionDenied:
         messages.error(request, _('You cannot delete this booking.'))
