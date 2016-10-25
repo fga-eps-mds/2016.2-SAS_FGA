@@ -21,8 +21,7 @@ class SearchBookingForm(forms.Form):
             choices=Booking.get_bookings(),
             label=_('Booking:'),
             required=False,
-            widget=forms.widgets.Select(
-                    attrs={'class': 'select2 optional'})
+            widget=forms.widgets.Select(attrs={'class': 'select2 optional'})
         )
     SEARCH_CHOICES = (
         ('opt_day_room', _("Room's Week Timetable")),
@@ -35,19 +34,18 @@ class SearchBookingForm(forms.Form):
                                        choices=SEARCH_CHOICES,
                                        widget=forms.RadioSelect())
 
-
     building_name = forms.ModelChoiceField(
         queryset=Building.objects,
         label=_('Building:'), required=False,
         widget=forms.widgets.Select(
-            attrs={'class': 'optional'}) )
+            attrs={'class': 'optional'}))
 
     room_name = forms.ModelChoiceField(
         queryset=Place.objects,
         label=_('Place:'),
         required=False,
         widget=forms.widgets.Select(
-            attrs={'class': 'optional'}) )
+            attrs={'class': 'optional'}))
 
     start_date = forms.DateField(
         label=_('Date:'),
@@ -171,8 +169,6 @@ class SearchBookingForm(forms.Form):
             msg = _('Fill all the fields correctly')
             print(e)
             raise forms.ValidationError(msg)
-
-
 
 
 class BookingForm(forms.Form):
