@@ -126,10 +126,7 @@ class Booking(models.Model):
         booktime = BookTime.objects.get(pk=id_booktime)
         if (user.profile_user.is_admin() or self.user.id == user.id) and \
                     booktime in self.time.all():
-            if self.time.count() == 1:
-                self.delete()
-            else:
-                booktime.delete()
+            booktime.delete()
         else:
             raise PermissionDenied()
 
