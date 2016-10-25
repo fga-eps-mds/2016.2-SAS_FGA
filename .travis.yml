@@ -22,7 +22,7 @@ before_script:
 script:
     - cd sas
     - python manage.py prepare
-    - coverage run manage.py harvest -v 3
+    - coverage run manage.py harvest 
     - python manage.py test
 
 after_success:
