@@ -2,7 +2,7 @@ from factory.django import DjangoModelFactory
 from faker import Factory as FakerFactory
 from factory import *
 import factory
-from factory.fuzzy import FuzzyChoice
+from factory.fuzzy import FuzzyChoice, FuzzyInteger
 from .models import User, UserProfile, CATEGORY
 from random import randint
 
