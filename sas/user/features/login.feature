@@ -1,7 +1,7 @@
 Feature: Login
 
 Background:
-	Given I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574" and category "Student"
+	Given I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574"
 
 Scenario: Login successfully
 	When I visit site page "/"
