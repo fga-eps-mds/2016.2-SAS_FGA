@@ -1,0 +1,81 @@
+{% extends 'sas/base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 staticfiles %}
+{% bootstrap_messages %}
+
+{% block title %} {% trans "New Booking" %} {% endblock %}
+
+
+{% block content %}
+    <div class="row">
+	    <div id="con" class="col-xs-8 col-sm-6 col-md-6 col-md-offset-3 col-xs-offset-2 col-sm-offset-3">
+            <h1 class="text-center">{% trans "New Booking" %}</h1>
+            <hr class="star-light"></hr>
+            <div id="breadcrumbs">
+                <ul class="bread-crumbs">
+                <!-- Add checklist -->
+                    <li class="active">
+                        {% trans "Data" %}
+                    </li>
+
+              <!-- Share -->
+                    <li class="active">
+                        {% trans "Date" %}
+                    </li>
+                    <li class="active">
+                        {% trans "Building" %}
+                    </li>
+                    <li class="active">
+                        {% trans "Espace" %}
+                    </li>
+              <!-- Job complete -->
+                    <li>
+                        {% trans "Finish" %}
+                    </li>
+                </ul> 
+            </div>
+            <div id="page1" class="form-content">
+                <div class="form-group">
+                    <label class="control-label" id="id_name">Nome da reserva</label>
+                    <input class="form-control" type="text" \>
+                </div>
+            </div>
+            <div id="page2" class="form-content">
+                <canvas id="booking_canvas"></canvas>    
+            </div>
+		</div>
+	</div>
+{% endblock %}
+
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'plugins/datepicker/bootstrap-datepicker.css' %}" />
+<link rel="stylesheet" href="{% static 'booking/css/newbooking.css' %}" />
+{% endblock %}
+
+{% block extrajs %}
+<script>
+$(document).ready(function () {
+
+	$('.datepicker1').datepicker({
+			inline: true,
+			useCurrent: true,
+			format: '{% trans "mm/dd/yyyy" %}',
+			language: '{% trans "en" %}',
+			autoclose: true,
+	});
+
+    $('#id_building').change(function () {
+				$("#id_place").prop('selectedIndex',0);
+        var selected_building = $(this).find(":selected").text();
+				$("#id_place option").hide();
+				$("#id_place option").filter(function(){
+				    return $.trim($(this).text()).indexOf(selected_building) != -1
+				}).show();
+    });
+});
+</script>
+<script src= "{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+<script src= "{% static 'plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
+{% endblock %}

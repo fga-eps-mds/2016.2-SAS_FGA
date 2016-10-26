@@ -11,6 +11,7 @@ from collections import OrderedDict
 import traceback
 from django.utils import formats
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.views import View
 
 HOURS = [(6, "06-08"), (8, "08-10"), (10, "10-12"), (12, "12-14"),
          (14, "14-16"), (16, "16-18"), (18, "18-20"), (20, "20-22"),
@@ -166,6 +167,10 @@ def next(skip, aux_rows):
         aux_rows.append(" ")
     return aux_rows
 
+class NewBooking(View):
+    
+    def get(self, request):
+        return render(request, 'booking/newBooking2.html')
 
 def new_booking(request):
     if request.user.is_authenticated():

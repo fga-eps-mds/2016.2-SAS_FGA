@@ -1,0 +1,84 @@
+#booking_canvas{
+    width: 100%;
+}
+
+#breadcrumbs{
+    margin: 10px;
+}
+ul.bread-crumbs {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  *zoom: 1;
+}
+ul.bread-crumbs li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  *zoom: 1;
+  *display: inline;
+  white-space: nowrap;
+}
+ul.bread-crumbs li {
+  position: relative;
+  padding: 10px 15px 10px 30px;
+  margin-bottom: 5px;
+  font-size: 16px;
+  color: #4e8aa5;
+  text-align: center;
+}
+ul.bread-crumbs li:after {
+  -moz-transform: skew(45deg, 0);
+  -ms-transform: skew(45deg, 0);
+  -webkit-transform: skew(45deg, 0);
+  transform: skew(45deg, 0);
+  content: "";
+  height: 50%;
+  width: 1px;
+  background: #d2e6e6;
+  border-right: 1px solid #d2e6e6;
+  position: absolute;
+  top: 0;
+  right: -15px;
+  z-index: 1;
+}
+ul.bread-crumbs li:before {
+  -moz-transform: skew(-45deg, 0);
+  -ms-transform: skew(-45deg, 0);
+  -webkit-transform: skew(-45deg, 0);
+  transform: skew(-45deg, 0);
+  content: "";
+  height: 51%;
+  width: 1px;
+  background: #d2e6e6;
+  border-right: 1px solid #d2e6e6;
+  position: absolute;
+  bottom: 0;
+  right: -15px;
+  z-index: 1;
+}
+ul.bread-crumbs li.active {
+  color: white;
+  background: #417323;
+  border: 1px solid #d2e6e6;
+  border-left: none;
+  padding-left: 35px;
+  left: -5px;
+}
+ul.bread-crumbs li.active:first-child {
+  border-left: 1px solid #d2e6e6;
+  left: 0;
+  padding-left: 30px;
+}
+ul.bread-crumbs li.active:after {
+  width: 25px;
+  background: #417323;
+}
+ul.bread-crumbs li.active:before {
+  width: 25px;
+  background: #417323;
+}
