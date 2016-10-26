@@ -122,8 +122,8 @@ USE_L10N = True
 USE_TZ = True
 
 LANGUAGES = (
-	('en', u'English'),
-	('pt-br', u'Portugues')
+	('en-US', u'English'),
+	('pt-BR', u'Portugues')
 )
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
