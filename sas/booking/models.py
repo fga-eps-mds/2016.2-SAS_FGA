@@ -80,7 +80,7 @@ class Booking(models.Model):
     end_date = models.DateField(null=False, blank=False)
 
     def __str__(self):
-        return ((self.user.email) + " | " + str(self.place) +
+        return (self.name + " " + self.user.email + " | " + str(self.place) +
                 " - " + str(self.start_date) + " - " + str(self.end_date))
 
     def exists(self, start_hour, end_hour, week_days):

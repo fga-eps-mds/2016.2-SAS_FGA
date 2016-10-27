@@ -5,6 +5,7 @@ from booking.models import Booking, BookTime, Place, Building
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from sas.views import index
+from django.views import View
 from datetime import datetime, timedelta
 import operator
 from collections import OrderedDict
@@ -81,28 +82,26 @@ def search_booking_building_day(request, form_booking):
 
 def search_booking_booking_name_week(request, form_booking):
     form_days = form_booking.days_list()
-    booking_name = form_booking["booking_name"].data
-    hours = [(6, "06-08"), (8, "08-10"), (10, "10-12"),
-             (12, "12-14"), (14, "14-16"), (16, "16-18"),
-             (18, "18-20"), (20, "20-22"), (22, ("22-00"))]
+    in_search_booking_name = form_booking["booking_name"].data
     n = len(form_days) + 1
 
     table = []
 
     for form_day in form_days:
         aux = []
-        bookings = Booking.objects.filter(time__date_booking=str(form_day))
+        bookings = Booking.objects.filter(time__date_booking=str(form_day),
+                                          name__contains=in_search_booking_name)
+        print(bookings)
         for booking in bookings:
-            if (booking.name == booking_name):
-                book = booking.time.get(date_booking=str(form_day))
-                aux_tuple = (book.start_hour.hour, booking.place.name)
-                aux.append(aux_tuple)
+            book = booking.time.get(date_booking=str(form_day))
+            aux_tuple = (book.start_hour.hour, booking)
+            aux.append(aux_tuple)
 
         table.append(aux)
 
     return render(request, 'booking/template_table.html',
                   {'days': form_days, 'table': table,
-                   'hours': hours, 'n': n, 'name': 'Booking x Week'})
+                   'hours': HOURS, 'n': n, 'name': 'Booking x Week'})
 
 def search_booking_room_period(request, form_booking):
     form_days = form_booking.days_list()
@@ -137,19 +136,39 @@ search_options = {'opt_day_room': search_booking_day_room,
                   'opt_building_day': search_booking_building_day,
                   'opt_room_period': search_booking_room_period}
 
-def search_booking_query(request):
-    if request.method == "POST":
-        form_booking = SearchBookingForm(request.POST)
-        if form_booking.is_valid():
+class SearchBookingQueryView(View):
+    form_class = SearchBookingForm
+    template_name = 'booking/searchBookingQuery.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class
+        return render(request, self.template_name, {'search_booking': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
             option = request.POST.get('search_options')
             try:
-                return search_options[option](request, form_booking)
-            except:
+                return search_options[option](request, form)
+            except Exception as e:
                 messages.error(request, _('Invalid option'))
-    else:
-        form_booking = SearchBookingForm()
-    return render(request, 'booking/searchBookingQuery.html',
-                  {'search_booking': form_booking})
+                print(e)
+                traceback.print_exc()
+        return render(request, self.template_name, {'search_booking': form})
+
+# def search_booking_query(request):
+#     if request.method == "POST":
+#         form_booking = SearchBookingForm(request.POST)
+#         if form_booking.is_valid():
+#             option = request.POST.get('search_options')
+#             try:
+#                 return search_options[option](request, form_booking)
+#             except:
+#                 messages.error(request, _('Invalid option'))
+#     else:
+#         form_booking = SearchBookingForm()
+#     return render(request, 'booking/searchBookingQuery.html',
+#                   {'search_booking': form_booking})
 
 def next(skip, aux_rows):
     for i in range(skip):

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-17 16:49-0200\n"
+"POT-Creation-Date: 2016-10-26 15:35-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,26 +117,42 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: sas/templates/sas/menu.html:19
+#: sas/templates/sas/menu.html:19 sas/templates/sas/menu.html:33
+msgid "Book a Place"
+msgstr ""
+
+#: sas/templates/sas/menu.html:27
 msgid "Bookings"
 msgstr ""
 
-#: sas/templates/sas/menu.html:32
-msgid "Hi"
+#: sas/templates/sas/menu.html:36
+msgid "View All Bookings"
 msgstr ""
 
-#: sas/templates/sas/menu.html:38
-msgid "Personal Data"
+#: sas/templates/sas/menu.html:39
+msgid "Requests"
 msgstr ""
 
-#: sas/templates/sas/menu.html:41
-msgid "My Bookings"
-msgstr ""
-
-#: sas/templates/sas/menu.html:45
-msgid "Logout"
+#: sas/templates/sas/menu.html:44
+msgid "Users"
 msgstr ""
 
 #: sas/templates/sas/menu.html:53
+msgid "Hi"
+msgstr ""
+
+#: sas/templates/sas/menu.html:59
+msgid "Personal Data"
+msgstr ""
+
+#: sas/templates/sas/menu.html:62
+msgid "My Bookings"
+msgstr ""
+
+#: sas/templates/sas/menu.html:66
+msgid "Logout"
+msgstr ""
+
+#: sas/templates/sas/menu.html:74
 msgid "Sign In | Sign Up"
 msgstr ""
