@@ -14,6 +14,7 @@ def category(user):
 
 
 
+
 @register.filter(name='type')
 def is_admin(user):
     if user.is_admin():
