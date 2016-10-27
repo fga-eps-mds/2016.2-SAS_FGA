@@ -14,19 +14,16 @@
             <hr class="star-light"></hr>
             <div id="breadcrumbs">
                 <ul class="bread-crumbs">
-                <!-- Add checklist -->
-                    <li class="active">
+                    <li>
                         {% trans "Data" %}
                     </li>
-
-              <!-- Share -->
-                    <li class="active">
+                    <li>
                         {% trans "Date" %}
                     </li>
-                    <li class="active">
+                    <li>
                         {% trans "Building" %}
                     </li>
-                    <li class="active">
+                    <li>
                         {% trans "Espace" %}
                     </li>
               <!-- Job complete -->
@@ -42,7 +39,22 @@
                 </div>
             </div>
             <div id="page2" class="form-content">
-                <canvas id="booking_canvas"></canvas>    
+                <table class="place">
+                    <tr>
+                        <td class="place-span">UAC</td>
+                        <td class="place-span">UED</td>
+                    </tr>
+                </table>
+                <button id="next-place" class="btn btn-primary" value="Next">Next</button>
+            </div>
+             <div id="page3" class="form-content">
+                <table id="booking-places" class="place">
+                    <tr>
+                        <td class="place-span">UAC</td>
+                        <td class="place-span">UED</td>
+                        <td class="place-span">TES</td>
+                    </tr>
+                </table>
             </div>
 		</div>
 	</div>
@@ -55,27 +67,4 @@
 {% endblock %}
 
 {% block extrajs %}
-<script>
-$(document).ready(function () {
-
-	$('.datepicker1').datepicker({
-			inline: true,
-			useCurrent: true,
-			format: '{% trans "mm/dd/yyyy" %}',
-			language: '{% trans "en" %}',
-			autoclose: true,
-	});
-
-    $('#id_building').change(function () {
-				$("#id_place").prop('selectedIndex',0);
-        var selected_building = $(this).find(":selected").text();
-				$("#id_place option").hide();
-				$("#id_place option").filter(function(){
-				    return $.trim($(this).text()).indexOf(selected_building) != -1
-				}).show();
-    });
-});
-</script>
-<script src= "{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
-<script src= "{% static 'plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
 {% endblock %}

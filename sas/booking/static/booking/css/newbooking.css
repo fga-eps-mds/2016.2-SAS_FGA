@@ -1,6 +1,31 @@
 #booking_canvas{
     width: 100%;
 }
+#breadcrumbs{
+    margin-bottom: 20px;
+}
+ 
+#page2{
+    width: 100%;
+    height: 350px;
+}
+.place-span{
+  vertical-align: middle;
+  border-style: solid;
+  border-color: #417323;
+  border-size: 1px;
+  text-align: center;
+}
+.place{
+   border-style: solid;
+   width: 100%;
+   font-size: 48px;
+   font-size: 1.5vw;
+   padding: 10px;
+   height: 200px;
+   border-color: #417323;
+   border-size: 1px;
+}
 
 #breadcrumbs{
     margin: 10px;
