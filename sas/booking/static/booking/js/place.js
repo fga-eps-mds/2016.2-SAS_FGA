@@ -21,12 +21,47 @@ function Place(pk, name){
         });
         return all;
     }
+   
+    this.make_places = function(id, callback){
+        all = new Array()
+        callback(all);
+        url = "/buildings/places/" +id + "/";
+        $.when($.getJSON(url)).then(function(data){
+            for(var i = 0; i < data.length; i++){
+                p = new Place(data[i].pk, data[i].name);
+                all.push(p);
+            }
+            callback(all);
+        });
+    }
+ 
+    this.by_building = function(id){
+        all = new Array()
+        url = "/buildings/places/" +id + "/";
+        $.when($.getJSON(url)).then(function(data){
+            for(var i = 0; i < data.length; i++){
+                p = new Place(data[i].pk, data[i].name);
+                all.push(p);
+            }
+        });
+        return all;
+    }
 }
 
 Place.all = function(){
     p = new Place();
-    return p.all()
+    return p.all();
 
 }
 
+Place.by_building = function(id){
+    p = new Place();
+    return p.by_building(id);
+
+}
+Place.make_places = function(id, callback){
+    p = new Place();
+    return p.make_places(id, callback);
+
+}
 

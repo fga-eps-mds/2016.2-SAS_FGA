@@ -1,6 +1,17 @@
 #booking_canvas{
     width: 100%;
 }
+.building-selected{
+   background-color: #417323;
+}
+.place-selected{
+   background-color: #417323;
+}
+.btn-newbooking{
+   margin-top: 20px;
+   background-color: #417323;
+   
+}
 #breadcrumbs{
     margin-bottom: 20px;
 }
