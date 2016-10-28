@@ -63,7 +63,7 @@ class PasswordForm(forms.Form):
         if password1 and password2 and password1 != password2:
             raise ValidationError({'renew_password': [_('Passwords \
                                                          do not match'), ]})
-    
+
 
 class UserForm(ModelForm):
     name = forms.CharField(

@@ -90,6 +90,7 @@ def delete_user(request):
     else:
         return index(request)
 
+
 class ChangePasswordView(FormView):
     form_class = PasswordForm
 
@@ -97,7 +98,7 @@ class ChangePasswordView(FormView):
         if(form.is_password_valid(self.request.user.username)):
             form.save(self.request.user)
             login(self.request, self.request.user)
-            messages.success(self.request, 
+            messages.success(self.request,
                              _('Your password has been changed'))
             return render_edit_user(self.request)
         else:
