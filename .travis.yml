@@ -27,3 +27,6 @@ script:
 
 after_success:
   coveralls
+
+after_script:
+    - python manage.py test test_pep8
