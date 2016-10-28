@@ -90,21 +90,24 @@ def delete_user(request):
     else:
         return index(request)
 
+class ChangePasswordView(FormView):
+    form_class = PasswordForm
 
-def change_password(request):
-    if request.user.is_authenticated() and request.POST:
-        form = PasswordForm(request.POST)
-        if form.is_valid() and form.is_password_valid(request.user.username):
-            form.save(request.user)
-            login(request, request.user)
-            messages.success(request, _('Your password has been changed'))
-            return render_edit_user(request)
+    def form_valid(self, form):
+        if(form.is_password_valid(self.request.user.username)):
+            form.save(self.request.user)
+            login(self.request, self.request.user)
+            messages.success(self.request, 
+                             _('Your password has been changed'))
+            return render_edit_user(self.request)
         else:
-            return render_edit_user(request, change_form=form)
-    if not request.user.is_authenticated():
-        return index(request)
-    else:
-        return render_edit_user(request)
+            return render_edit_user(self.request, change_form=form)
+
+    def form_invalid(self, form):
+        return render_edit_user(self.request, change_form=form)
+
+    def get(self, request, *args, **kwargs):
+        return redirect('index')
 
 
 @login_required(login_url='/?showLoginModal=yes')
