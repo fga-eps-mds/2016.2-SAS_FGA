@@ -19,6 +19,7 @@ from booking.views import search_booking_room_period
 from django.db.models import Q
 from booking.factories import BookTimeFactory
 
+
 class TestBookTime(TestCase):
     def test_get_str_weekday(self):
         book = BookTime()
@@ -460,6 +461,7 @@ class PlaceTest(TestCase):
 
     def setUp(self):
         self.place = Place()
+
     def test_set_name(self):
         self.place.name = "Sala 2"
         self.assertEqual(self.place.__str__(), "Sala 2")
