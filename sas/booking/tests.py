@@ -19,14 +19,6 @@ from booking.views import search_booking_room_period
 from django.db.models import Q
 from booking.factories import BookTimeFactory
 
-
-class TestBookTime(TestCase):
-    def test_get_str_weekday(self):
-        book = BookTime()
-        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
-        self.assertEqual(book.get_str_weekday(), "Wednesday")
-
-
 class TestSearchBookingQuery(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -215,20 +207,6 @@ class TestNewBooking(TestCase):
     def test_form_is_valid(self):
         form = BookingForm(data=self.parameters)
         self.assertTrue(form.is_valid())
-
-
-class TestBookTime(TestCase):
-
-    def test_get_str_weekday(self):
-        book = BookTime()
-        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
-        self.assertEqual(book.get_str_weekday(), "Wednesday")
-
-    def test_get_str_weekday(self):
-        book = BookTime()
-        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
-        self.assertEqual(book.get_str_weekday(), "Wednesday")
-
 
 class TestSearchBooking(TestCase):
 
@@ -466,7 +444,6 @@ class PlaceTest(TestCase):
         self.place.name = "Sala 2"
         self.assertEqual(self.place.__str__(), "Sala 2")
 
-
 class BookingTimeTest(TestCase):
 
     def setUp(self):
@@ -501,3 +478,8 @@ class BookingTimeTest(TestCase):
         nr_weekday = self.bookingtime.date_booking.weekday()
         self.bookingtime.next_week_day(nr_weekday=nr_weekday)
         self.assertEqual(date_booking, self.bookingtime.date_booking)
+
+    def test_get_str_weekday(self):
+        book = BookTime()
+        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
+        self.assertEqual(book.get_str_weekday(), "Wednesday")
