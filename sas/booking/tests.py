@@ -483,3 +483,21 @@ class BookingTimeTest(TestCase):
         booking1 = self.bookingtime.date_booking
         date_ranges = date_range(booking2, booking1)
         self.assertEqual(len(date_ranges), 2)
+
+    def test_next_week_day_with_diff_more_than_zero(self):
+        date_booking = self.bookingtime.date_booking + timedelta(days=6)
+        nr_weekday = self.bookingtime.date_booking.weekday() - 1
+        self.bookingtime.next_week_day(nr_weekday=nr_weekday)
+        self.assertEqual(date_booking, self.bookingtime.date_booking)
+
+    def test_next_week_day_with_diff_less_than_zero(self):
+        date_booking = self.bookingtime.date_booking + timedelta(days=1)
+        nr_weekday = self.bookingtime.date_booking.weekday() + 1
+        self.bookingtime.next_week_day(nr_weekday=nr_weekday)
+        self.assertEqual(date_booking, self.bookingtime.date_booking)
+
+    def test_next_week_day_with_diff_equals_zero(self):
+        date_booking = self.bookingtime.date_booking + timedelta(days=7)
+        nr_weekday = self.bookingtime.date_booking.weekday()
+        self.bookingtime.next_week_day(nr_weekday=nr_weekday)
+        self.assertEqual(date_booking, self.bookingtime.date_booking)
