@@ -9,6 +9,7 @@ from django.contrib import messages
 from sas.views import index
 from django.contrib.auth.decorators import login_required
 from sas.decorators.decorators import required_to_be_admin
+from django.views.generic.edit import FormView
 
 
 def new_user(request):
@@ -57,16 +58,20 @@ def render_edit_user(request, user_form=None, change_form=PasswordForm()):
                   {'form_user': user_form, 'change_form': change_form})
 
 
-def login_user(request):
-    if request.method == "POST":
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            user = form.authenticate_user()
-            login(request, user)
-            return redirect('index')
-        else:
-            return index(request, login_form=form)
-    else:
+class LoginView(FormView):
+    template_name = "user/newUser.html"
+    form_class = LoginForm
+    success_url = "/"
+
+    def form_valid(self, form):
+        user = form.authenticate_user()
+        login(self.request, user)
+        return super(LoginView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        return index(self.request, login_form=form)
+
+    def get(self, request, *args, **kwargs):
         return redirect('index')
 
 
@@ -85,21 +90,24 @@ def delete_user(request):
     else:
         return index(request)
 
+class ChangePasswordView(FormView):
+    form_class = PasswordForm
 
-def change_password(request):
-    if request.user.is_authenticated() and request.POST:
-        form = PasswordForm(request.POST)
-        if form.is_valid() and form.is_password_valid(request.user.username):
-            form.save(request.user)
-            login(request, request.user)
-            messages.success(request, _('Your password has been changed'))
-            return render_edit_user(request)
+    def form_valid(self, form):
+        if(form.is_password_valid(self.request.user.username)):
+            form.save(self.request.user)
+            login(self.request, self.request.user)
+            messages.success(self.request, 
+                             _('Your password has been changed'))
+            return render_edit_user(self.request)
         else:
-            return render_edit_user(request, change_form=form)
-    if not request.user.is_authenticated():
-        return index(request)
-    else:
-        return render_edit_user(request)
+            return render_edit_user(self.request, change_form=form)
+
+    def form_invalid(self, form):
+        return render_edit_user(self.request, change_form=form)
+
+    def get(self, request, *args, **kwargs):
+        return redirect('index')
 
 
 @login_required(login_url='/?showLoginModal=yes')
