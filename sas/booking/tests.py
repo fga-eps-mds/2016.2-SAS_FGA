@@ -17,6 +17,7 @@ from booking.forms import BookingForm, SearchBookingForm
 from dateutil import parser
 from booking.views import search_booking_room_period
 from django.db.models import Q
+from booking.factories import BookTimeFactory
 
 
 class TestBookTime(TestCase):
@@ -412,3 +413,73 @@ class TestSearchBookingForm(TestCase):
         page = search_booking_building_day(request=request, form_booking=form)
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, 'Building x Day')
+
+
+class ValidationTest(TestCase):
+    def setUp(self):
+        self.validation = Validation()
+
+    # True validations
+    def test_has_numbers(self):
+        self.assertEqual(self.validation.hasNumbers('Test123'), True)
+
+    def test_has_letters(self):
+        self.assertEqual(self.validation.hasLetters('123Test'), True)
+
+    def test_has_special_characters(self):
+        self.assertEqual(self.validation.hasSpecialCharacters('#Test'), True)
+
+    # False validations
+    def test_has_no_numbers(self):
+        self.assertEqual(self.validation.hasNumbers('Test Test'), None)
+
+    def test_has_no_letters(self):
+        self.assertEqual(self.validation.hasLetters('123456'), None)
+
+    def test_has_no_special_characters(self):
+        self.assertEqual(self.validation.hasSpecialCharacters('Other'), None)
+
+
+class BuildingTest(TestCase):
+
+    def setUp(self):
+        self.building = Building()
+
+    def test_set_name(self):
+        name = "Minhocão"
+        self.building.name = name
+        name_size = len(name)
+        building_name_size = len(self.building.name)
+        self.assertEqual(building_name_size, name_size)
+
+    def test_str(self):
+        self.building.name = "Minhocão"
+        self.assertEqual(self.building.__str__(), "Minhocão")
+
+
+class PlaceTest(TestCase):
+
+    def setUp(self):
+        self.place = Place()
+
+    def test_set_name(self):
+        self.place.name = "Sala 2"
+        self.assertEqual(self.place.__str__(), "Sala 2")
+
+
+class BookingTimeTest(TestCase):
+
+    def setUp(self):
+        self.bookingtime = BookTimeFactory.create()
+
+    def test_add_days(self):
+        booking_time_add = self.bookingtime.date_booking + timedelta(days=1)
+        self.bookingtime.add_days(1)
+        self.assertEqual(self.bookingtime.date_booking, booking_time_add)
+
+    def test_range_days(self):
+        booking2 = self.bookingtime.date_booking
+        self.bookingtime.add_days(1)
+        booking1 = self.bookingtime.date_booking
+        date_ranges = date_range(booking2, booking1)
+        self.assertEqual(len(date_ranges), 2)

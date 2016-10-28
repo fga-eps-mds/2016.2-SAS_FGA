@@ -21,7 +21,8 @@ class LoginForm(forms.Form):
         password = self.cleaned_data.get("password")
         user = authenticate(username=username, password=password)
         if user is None:
-            raise ValidationError({'password': [_('Email or Password does not match'), ]})
+            raise ValidationError({'password':
+                                  [_('Email or Password does not match'), ]})
         return user
 
     def clean(self):
@@ -119,8 +120,10 @@ class UserForm(ModelForm):
         cleaned_data = super(ModelForm, self).clean()
         validation = Validation()
 
-        if not hasattr(self.instance, 'user') or self.instance.user.email != cleaned_data.get('email'):
-            if User.objects.filter(username=cleaned_data.get('email')).exists():
+        if (not(hasattr(self.instance, 'user')) or self.instance
+                .user.email != cleaned_data.get('email')):
+            if (User.objects.filter(username=cleaned_data
+                                    .get('email')).exists()):
                 raise ValidationError({'email': [_('Email already used'), ]})
 
         # Name validation
