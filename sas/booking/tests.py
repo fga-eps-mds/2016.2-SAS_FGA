@@ -19,6 +19,7 @@ from booking.views import search_booking_room_period
 from django.db.models import Q
 from booking.factories import BookTimeFactory
 
+
 class TestSearchBookingQuery(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -207,6 +208,7 @@ class TestNewBooking(TestCase):
     def test_form_is_valid(self):
         form = BookingForm(data=self.parameters)
         self.assertTrue(form.is_valid())
+
 
 class TestSearchBooking(TestCase):
 
@@ -443,6 +445,7 @@ class PlaceTest(TestCase):
     def test_set_name(self):
         self.place.name = "Sala 2"
         self.assertEqual(self.place.__str__(), "Sala 2")
+
 
 class BookingTimeTest(TestCase):
 
