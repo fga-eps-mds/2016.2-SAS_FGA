@@ -17,7 +17,7 @@ from booking.forms import BookingForm, SearchBookingForm
 from dateutil import parser
 from booking.views import search_booking_room_period
 from django.db.models import Q
-
+from booking.factories import BookTimeFactory
 
 class TestBookTime(TestCase):
     def test_get_str_weekday(self):
@@ -445,6 +445,13 @@ class BuildingTest(TestCase):
         self.building = Building()
 
     def test_set_name(self):
+        name = "Minhocão"
+        self.building.name = name
+        name_size = len(name)
+        building_name_size = len(self.building.name)
+        self.assertEqual(building_name_size, name_size)
+
+    def test_str(self):
         self.building.name = "Minhocão"
         self.assertEqual(self.building.__str__(), "Minhocão")
 
@@ -453,7 +460,24 @@ class PlaceTest(TestCase):
 
     def setUp(self):
         self.place = Place()
-
     def test_set_name(self):
         self.place.name = "Sala 2"
         self.assertEqual(self.place.__str__(), "Sala 2")
+
+
+class BookingTimeTest(TestCase):
+
+    def setUp(self):
+        self.bookingtime = BookTimeFactory.create()
+
+    def test_add_days(self):
+        booking_time_add = self.bookingtime.date_booking + timedelta(days=1)
+        self.bookingtime.add_days(1)
+        self.assertEqual(self.bookingtime.date_booking, booking_time_add)
+
+    def test_range_days(self):
+        booking2 = self.bookingtime.date_booking
+        self.bookingtime.add_days(1)
+        booking1 = self.bookingtime.date_booking
+        date_ranges = date_range(booking2, booking1)
+        self.assertEqual(len(date_ranges), 2)
