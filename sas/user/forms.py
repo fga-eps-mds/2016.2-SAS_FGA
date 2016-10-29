@@ -21,7 +21,8 @@ class LoginForm(forms.Form):
         password = self.cleaned_data.get("password")
         user = authenticate(username=username, password=password)
         if user is None:
-            raise ValidationError({'password': [_('Email or Password does not match'), ]})
+            raise ValidationError({'password':
+                                  [_('Email or Password does not match'), ]})
         return user
 
     def clean(self):
@@ -30,7 +31,7 @@ class LoginForm(forms.Form):
         return cleaned_data
 
 
-class PasswordForm(ModelForm):
+class PasswordForm(forms.Form):
     password = forms.CharField(
         label=_('Password:'),
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
@@ -47,26 +48,21 @@ class PasswordForm(ModelForm):
         user.save()
 
     def is_password_valid(self, username):
-        cleaned_data = super(ModelForm, self).clean()
+        cleaned_data = super(PasswordForm, self).clean()
         password = cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         if user is None:
             self.add_error('password', _('Current password is wrong'))
-
             return False
         return True
 
     def clean(self):
-        cleaned_data = super(ModelForm, self).clean()
+        cleaned_data = super(PasswordForm, self).clean()
         password1 = cleaned_data.get('new_password')
         password2 = cleaned_data.get('renew_password')
         if password1 and password2 and password1 != password2:
             raise ValidationError({'renew_password': [_('Passwords \
                                                          do not match'), ]})
-
-    class Meta:
-        model = User
-        fields = ['password', 'new_password', 'renew_password']
 
 
 class UserForm(ModelForm):
@@ -119,8 +115,10 @@ class UserForm(ModelForm):
         cleaned_data = super(ModelForm, self).clean()
         validation = Validation()
 
-        if not hasattr(self.instance, 'user') or self.instance.user.email != cleaned_data.get('email'):
-            if User.objects.filter(username=cleaned_data.get('email')).exists():
+        if (not(hasattr(self.instance, 'user')) or self.instance
+                .user.email != cleaned_data.get('email')):
+            if (User.objects.filter(username=cleaned_data
+                                    .get('email')).exists()):
                 raise ValidationError({'email': [_('Email already used'), ]})
 
         # Name validation

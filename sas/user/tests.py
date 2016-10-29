@@ -73,7 +73,8 @@ class DeleteUserTest(TestCase):
         client.login(username='gutorc@hotmail.com', password='123456')
         self.client.get(self.url, follow=True)
         self.assertEqual(False,
-                         UserProfile.objects.filter(registration_number="110030559").exists())
+                         UserProfile.objects.filter(
+                             registration_number="110030559").exists())
 
 
 class ViewsTest(TestCase):
