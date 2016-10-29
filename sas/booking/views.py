@@ -46,7 +46,7 @@ def search_booking_day_room(request, form_booking):
     table_header = str(booking_place) + ": " + period
     return render(request, 'booking/template_table.html',
                   {'days': weekday, 'table': table, 'hours': HOURS,
-                   'n': n, 'name': "Room x Day", 'table_header': table_header})
+                   'n': n, 'name': _("Room's Week Timetable"), 'table_header': table_header})
 
 def search_booking_building_day(request, form_booking):
     form_day = form_booking.get_day()
@@ -77,7 +77,7 @@ def search_booking_building_day(request, form_booking):
 
     return render(request, 'booking/template_table.html',
                   {'days': places_, 'table': table, 'hours': HOURS,
-                   'n': n, 'name': "Building x Day",
+                   'n': n, 'name': _(' Building occupation'),
                    'table_header': table_header})
 
 def search_booking_booking_name_week(request, form_booking):
@@ -101,7 +101,7 @@ def search_booking_booking_name_week(request, form_booking):
 
     return render(request, 'booking/template_table.html',
                   {'days': form_days, 'table': table,
-                   'hours': HOURS, 'n': n, 'name': 'Booking x Week'})
+                   'hours': HOURS, 'n': n, 'name': _(' Booking')})
 
 def search_booking_room_period(request, form_booking):
     form_days = form_booking.days_list()
@@ -128,7 +128,7 @@ def search_booking_room_period(request, form_booking):
 
     return render(request, 'booking/template_table.html',
                   {'days': form_days, 'table': table, 'hours': HOURS,
-                   'n': n, 'name': "Room x Period",
+                   'n': n, 'name': _(' Room'),
                    'table_header': table_header})
 
 search_options = {'opt_day_room': search_booking_day_room,

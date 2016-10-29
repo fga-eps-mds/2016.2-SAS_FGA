@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-26 15:35-0200\n"
+"POT-Creation-Date: 2016-10-28 22:47-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,102 +17,134 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: booking/forms.py:28 booking/forms.py:195
-msgid "Booking Name:"
+#: booking/forms.py:18
+msgid "Room's Week Timetable"
 msgstr ""
 
-#: booking/forms.py:33 booking/forms.py:213
+#: booking/forms.py:19
+msgid " Booking"
+msgstr ""
+
+#: booking/forms.py:20
+msgid " Building occupation"
+msgstr ""
+
+#: booking/forms.py:21
+msgid " Room"
+msgstr ""
+
+#: booking/forms.py:26
+msgid "Search options"
+msgstr ""
+
+#: booking/forms.py:32
+msgid "Booking:"
+msgstr ""
+
+#: booking/forms.py:39 booking/forms.py:227
 msgid "Building:"
 msgstr ""
 
-#: booking/forms.py:36 booking/forms.py:216
+#: booking/forms.py:45 booking/forms.py:230
 msgid "Place:"
 msgstr ""
 
-#: booking/forms.py:40 booking/forms.py:204
-msgid "Start Date:"
+#: booking/forms.py:51
+msgid "Date:"
 msgstr ""
 
-#: booking/forms.py:45 booking/forms.py:208
-msgid "End Date:"
+#: booking/forms.py:57
+msgid "Date (To):"
 msgstr ""
 
-#: booking/forms.py:127
+#: booking/forms.py:139
 msgid "Doesnt exist any building with this name"
 msgstr ""
 
-#: booking/forms.py:133
+#: booking/forms.py:145
 msgid "Doesnt exist any booking in this place"
 msgstr ""
 
-#: booking/forms.py:140
+#: booking/forms.py:152
 msgid "Doesnt exist any booking with this name"
 msgstr ""
 
-#: booking/forms.py:147
+#: booking/forms.py:160
 msgid ""
 "Invalid booking period:                              Booking must be in "
 "future date"
 msgstr ""
 
-#: booking/forms.py:153
+#: booking/forms.py:166
 msgid "End date must be from future date"
 msgstr ""
 
-#: booking/forms.py:158
+#: booking/forms.py:171
 msgid ""
 "End date must be equal or                              greater then Start "
 "date"
 msgstr ""
 
-#: booking/forms.py:166
+#: booking/forms.py:179
 msgid ""
 "Doesnt exist any booking in                              this period of time"
 msgstr ""
 
-#: booking/forms.py:173
-msgid "Inputs are in invalid format"
+#: booking/forms.py:186
+msgid "Fill all the fields correctly"
 msgstr ""
 
-#: booking/forms.py:198
+#: booking/forms.py:209
+msgid "Booking Name:"
+msgstr ""
+
+#: booking/forms.py:212
 msgid "Start Time:"
 msgstr ""
 
-#: booking/forms.py:201
+#: booking/forms.py:215
 msgid "End Time:"
 msgstr ""
 
-#: booking/forms.py:206 booking/forms.py:210
+#: booking/forms.py:218
+msgid "Start Date:"
+msgstr ""
+
+#: booking/forms.py:220 booking/forms.py:224
 #: booking/templates/booking/newBooking.html:40
-#: booking/templates/booking/searchBookingQuery.html:40
+#: booking/templates/booking/searchBookingQuery.html:42
 msgid "mm/dd/yyyy"
 msgstr ""
 
-#: booking/forms.py:218
+#: booking/forms.py:222
+msgid "End Date:"
+msgstr ""
+
+#: booking/forms.py:232
 msgid "Days of week: "
 msgstr ""
 
-#: booking/forms.py:251
+#: booking/forms.py:265
 msgid "Failed to book selected period"
 msgstr ""
 
-#: booking/forms.py:265
+#: booking/forms.py:279
 msgid "Select a repeating standard for the date interval"
 msgstr ""
 
-#: booking/forms.py:272
+#: booking/forms.py:286
 msgid "Period invalid"
 msgstr ""
 
-#: booking/forms.py:286
+#: booking/forms.py:300
 msgid "Invalid booking period: Booking must be in future dates"
 msgstr ""
 
-#: booking/forms.py:293
+#: booking/forms.py:307
 msgid "Invalid booking hours: Time must be after current hour"
 msgstr ""
 
-#: booking/forms.py:299
+#: booking/forms.py:313
 msgid "Inputs are invalid"
 msgstr ""
 
@@ -163,7 +195,6 @@ msgid "New Booking"
 msgstr ""
 
 #: booking/templates/booking/newBooking.html:13
-#: booking/templates/booking/searchBookingQuery.html:12
 #: booking/templates/booking/searchBookingTable.html:13
 msgid "Rooms Booking"
 msgstr ""
@@ -173,7 +204,7 @@ msgid "Perform Booking"
 msgstr ""
 
 #: booking/templates/booking/newBooking.html:41
-#: booking/templates/booking/searchBookingQuery.html:41
+#: booking/templates/booking/searchBookingQuery.html:43
 msgid "en"
 msgstr ""
 
@@ -229,9 +260,10 @@ msgid "Cancel"
 msgstr ""
 
 #: booking/templates/booking/searchBookingQuery.html:7
-msgid "Search Booking"
+msgid "Search Bookings"
 msgstr ""
 
+#: booking/templates/booking/searchBookingQuery.html:12
 #: booking/templates/booking/searchBookingQuery.html:21
 msgid "Search"
 msgstr ""

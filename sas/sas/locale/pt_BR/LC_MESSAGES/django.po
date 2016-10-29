@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-26 15:35-0200\n"
+"POT-Creation-Date: 2016-10-28 22:47-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,140 +20,147 @@ msgstr ""
 
 #: sas/templates/sas/base.html:61
 msgid "Message"
-msgstr ""
+msgstr "Mensagem"
 
 #: sas/templates/sas/base.html:66
 msgid "Important"
-msgstr ""
+msgstr "Importante"
 
 #: sas/templates/sas/base.html:72
 msgid "Close"
-msgstr ""
+msgstr "Fechar"
 
 #: sas/templates/sas/base.html:108
 msgid "Contact"
-msgstr ""
+msgstr "Contato"
 
 #: sas/templates/sas/base.html:110
 msgid "Telephone"
-msgstr ""
+msgstr "Telefone"
 
 #: sas/templates/sas/base.html:111
-msgid "secretariat"
-msgstr ""
+msgid "secretary"
+msgstr "secretaria"
 
 #: sas/templates/sas/base.html:112
-msgid "direction"
-msgstr ""
+msgid "board"
+msgstr "direção"
 
 #: sas/templates/sas/home.html:11 sas/templates/sas/index.html:12
 msgid "Welcome"
-msgstr ""
+msgstr "Bem-vindo"
 
 #: sas/templates/sas/home.html:12 sas/templates/sas/index.html:13
 msgid "Rooms Allocation System"
-msgstr ""
+msgstr "Sistema de Alocação de Salas"
 
 #: sas/templates/sas/home.html:14 sas/templates/sas/index.html:15
 msgid ""
 "Booking rooms, auditoriums and laboratories for teachers, students <br> and "
 "all the academic body of the university"
 msgstr ""
+"Reserva de salas, auditórios e laboratórios para professores, estudantes "
+"<br> e todo corpo acadêmico da universidade"
 
 #: sas/templates/sas/index.html:6
 msgid "Homepage"
-msgstr ""
+msgstr "Página inicial"
 
 #: sas/templates/sas/index.html:40
 msgid "Remember me"
-msgstr ""
+msgstr "Lembrar"
 
 #: sas/templates/sas/index.html:46
 msgid "Sign In"
-msgstr ""
+msgstr "Entrar"
 
 #: sas/templates/sas/index.html:50 sas/templates/sas/index.html:75
 msgid "Forgot Password"
-msgstr ""
+msgstr "Esqueci a Senha"
 
 #: sas/templates/sas/index.html:56
 msgid "I'm not registered yet"
-msgstr ""
+msgstr "Ainda não sou cadastrado"
 
 #: sas/templates/sas/index.html:58
 msgid "Registered user can book"
-msgstr ""
+msgstr "Usuários cadastrados podem fazer reservas"
 
 #: sas/templates/sas/index.html:59
 msgid " Laboratories"
-msgstr ""
+msgstr " Laboratórios"
 
 #: sas/templates/sas/index.html:60
 msgid " Auditoriums"
-msgstr ""
+msgstr " Auditórios"
 
 #: sas/templates/sas/index.html:61
 msgid " Rooms"
-msgstr ""
+msgstr " Salas"
 
 #: sas/templates/sas/index.html:63
 msgid "Sign Up"
-msgstr ""
+msgstr "Cadastrar"
 
 #: sas/templates/sas/index.html:80
 msgid ""
 "Type your email and an automatic message will be sent to it containing a new "
 "password. This must be changed posteriorly."
 msgstr ""
+"Informe seu email e uma mensagem automática será enviada contendo uma nova "
+"senha que deverá ser modificada posteriormente."
 
 #: sas/templates/sas/index.html:86
 msgid "Recover Password"
-msgstr ""
+msgstr "Recuperar Senha"
 
 #: sas/templates/sas/menu.html:16
 msgid "Home"
-msgstr ""
+msgstr "Início"
 
 #: sas/templates/sas/menu.html:17
 msgid "Search"
-msgstr ""
+msgstr "Pesquisar"
 
 #: sas/templates/sas/menu.html:19 sas/templates/sas/menu.html:33
 msgid "Book a Place"
-msgstr ""
+msgstr "Reservar"
 
 #: sas/templates/sas/menu.html:27
 msgid "Bookings"
-msgstr ""
+msgstr "Reservas"
 
 #: sas/templates/sas/menu.html:36
 msgid "View All Bookings"
-msgstr ""
+msgstr "Visualizar todas as reservas"
 
 #: sas/templates/sas/menu.html:39
 msgid "Requests"
-msgstr ""
+msgstr "Solicitações"
 
 #: sas/templates/sas/menu.html:44
 msgid "Users"
-msgstr ""
+msgstr "Usuários"
 
 #: sas/templates/sas/menu.html:53
 msgid "Hi"
-msgstr ""
+msgstr "Olá"
 
 #: sas/templates/sas/menu.html:59
 msgid "Personal Data"
-msgstr ""
+msgstr "Meus Dados"
 
 #: sas/templates/sas/menu.html:62
 msgid "My Bookings"
-msgstr ""
+msgstr "Minhas Reservas"
 
 #: sas/templates/sas/menu.html:66
 msgid "Logout"
-msgstr ""
+msgstr "Sair"
 
 #: sas/templates/sas/menu.html:74
 msgid "Sign In | Sign Up"
-msgstr ""
+msgstr "Entrar | Cadastrar"
+
+#~ msgid "direction"
+#~ msgstr "direção"
