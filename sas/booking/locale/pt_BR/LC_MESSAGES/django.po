@@ -309,7 +309,7 @@ msgstr "Opção inválida"
 
 #: booking/views.py:189
 msgid "Booking alread exists"
-msgstr "Esta reserva já existe"
+msgstr "Conflito: já existe reserva neste horário e local"
 
 #: booking/views.py:229
 msgid "Booking has been canceled"
