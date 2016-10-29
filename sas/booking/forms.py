@@ -17,7 +17,7 @@ class SearchBookingForm(forms.Form):
     SEARCH_CHOICES = (
         ('opt_day_room', _("Room's Week Timetable")),
         ('opt_booking_week', _(' Booking')),
-        ('opt_building_day', _(' Building occupation')),
+        ('opt_building_day', _(' Occupation')),
         ('opt_room_period', _(' Room')),
     )
 

@@ -27,8 +27,8 @@ msgid " Booking"
 msgstr " Reserva"
 
 #: booking/forms.py:20
-msgid " Building occupation"
-msgstr " Ocupação de pŕedio"
+msgid " Occupation"
+msgstr " Ocupação"
 
 #: booking/forms.py:21
 msgid " Room"

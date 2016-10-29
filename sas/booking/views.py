@@ -77,7 +77,7 @@ def search_booking_building_day(request, form_booking):
 
     return render(request, 'booking/template_table.html',
                   {'days': places_, 'table': table, 'hours': HOURS,
-                   'n': n, 'name': _(' Building occupation'),
+                   'n': n, 'name': _(' Occupation'),
                    'table_header': table_header})
 
 def search_booking_booking_name_week(request, form_booking):
