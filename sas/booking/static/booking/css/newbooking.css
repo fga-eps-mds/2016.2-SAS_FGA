@@ -1,6 +1,15 @@
 #booking_canvas{
     width: 100%;
 }
+.checkbox.newbooking-checkbox {
+    display: inline;
+}
+.form-group.newbooking-dates {
+    display: inline;
+}
+.form-control.newbooking-dates-input {
+    width: 30%;
+}
 .building-selected{
    background-color: #417323;
 }
