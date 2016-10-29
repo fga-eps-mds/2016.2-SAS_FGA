@@ -1,12 +1,12 @@
 function Building(pk, name){
     this.pk = pk;
     this.name = name;
-    
+
 
     this.td_place = function(){
-        var begin = "<td class='place-span'>";
+        var begin = "<td class='place-span'><i class='glyphicon glyphicon-home'></i>&nbsp;";
         var input = "<input type='hidden' value='" + this.pk + "' />";
-         
+
         var end = "</td>"
         return begin + input + this.name + end;
     }
@@ -21,7 +21,7 @@ function Building(pk, name){
         });
         return all;
     }
-    
+
 }
 
 Building.all = function(){
@@ -29,5 +29,3 @@ Building.all = function(){
     return b.all();
 
 }
-
-

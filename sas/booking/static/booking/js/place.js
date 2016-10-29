@@ -1,12 +1,12 @@
 function Place(pk, name){
     this.pk = pk;
     this.name = name;
-    
+
 
     this.td_place = function(){
         var begin = "<td class='place-span'>";
         var input = "<input type='hidden' value='" + this.pk + "' />";
-         
+
         var end = "</td>"
         return begin + input + this.name + end;
     }
@@ -21,7 +21,7 @@ function Place(pk, name){
         });
         return all;
     }
-   
+
     this.make_places = function(id, callback){
         all = new Array()
         callback(all);
@@ -34,7 +34,7 @@ function Place(pk, name){
             callback(all);
         });
     }
- 
+
     this.by_building = function(id){
         all = new Array()
         url = "/buildings/places/" +id + "/";
@@ -64,4 +64,3 @@ Place.make_places = function(id, callback){
     return p.make_places(id, callback);
 
 }
-

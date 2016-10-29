@@ -35,118 +35,161 @@
                         <i class="glyphicon glyphicon-ok-sign"></i>
                         {% trans "Finish" %}
                     </li>
-                </ul> 
+                </ul>
             </div>
             <div id="page1" class="form-content">
                 <div class="form-group">
-                    <label class="control-label" id="id_name">Nome da reserva</label>
+                    <label class="control-label" id="id_name">{% trans "Booking name" %}</label>
                     <input id="name_of_booking" class="form-control" type="text" \>
                 </div>
-                <button id="next-date" class="btn btn-primary btn-newbooking" value="Next">Next</button>
+                <button id="next-date" class="btn btn-primary btn-newbooking" value="Next">
+                  {% trans "Next" %}
+                  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </button>
             </div>
             <div id="page2" class="form-content container">
-                <input type="radio" name="times" value="oneday" checked /> {% trans "Just one day" %}
-                <input type="radio" name="times" value="interval" /> {% trans "Interval" %}
+              <div class="row">
+                <div class="col-sm-3">
+                  <label>
+                    <input type="radio" name="times" value="oneday" checked /> {% trans "Just one day" %}
+                  </label>
+                </div>
+                <div class="col-sm-3">
+                  <label>
+                    <input type="radio" name="times" value="interval" /> {% trans "Interval" %}
+                  </label>
+                </div>
+              </div>
+                <hr>
                 <div id="one-day">
                     <div class="form-group newbooking-dates">
-                        <label class="control-label" for="id_start_date">Date:</label>
-                        <input class="form-control newbooking-dates-input datepicker1" id="id_one_day_date" name="start_date" placeholder="mm/dd/yyyy" title="" type="text" required="">
+                        <label class="control-label" for="id_start_date">{% trans "Date" %}:</label>
+                        <input class="form-control newbooking-dates-input datepicker1" id="id_one_day_date" placeholder="{% trans 'dd/mm/yyyy' %}" name="start_date" type="text" style="width:200px">
                     </div>
                 </div>
                 <div id="period-dates" class="row">
-                    <div class="form-group col-xs-12 col-md-6 newbooking-dates">
-                        <label class="control-label" for="id_start_date">Start Date:</label>
-                        <input class="form-control newbooking-dates-input datepicker1" id="id_start_date" name="start_date" placeholder="mm/dd/yyyy" title="" type="text" required="">
-                    </div> 
-                    <div class="form-group col-xs-12 col-md-6 newbooking-dates">
-                        <label class="control-label" for="id_end_date">End Date:</label>
-                        <input class="form-control newbooking-dates-input datepicker1" id="id_end_date" name="end_date" placeholder="mm/dd/yyyy" title="" type="text" required="">
+                    <div class="form-group col-xs-12 col-sm-6 newbooking-dates">
+                        <label class="control-label" for="id_start_date">{% trans "Start Date" %}:</label>
+                        <input class="form-control newbooking-dates-input datepicker1" id="id_start_date" placeholder="{% trans 'dd/mm/yyyy' %}" name="start_date" type="text" style="width:200px">
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 newbooking-dates">
+                        <label class="control-label" for="id_end_date">{% trans "End Date" %}:</label>
+                        <input class="form-control newbooking-dates-input datepicker1" id="id_end_date" placeholder="{% trans 'dd/mm/yyyy' %}" name="end_date" type="text" style="width:200px">
                     </div>
                 </div>
-                <div id="times" class="row">
+                <div id="times" class="row" style="padding:20px 0">
+                  <div class="col-sm-6">
                     <div class"booking-slider col-xs-12 col-md-6">
-                        <label>{% trans "Begin Time" %}</label>
-                        <div class="col-xs-6">
-                            <div id="slider_begin_time" ></div>
+                        <div style="max-width:200px;">
+                          <label>{% trans "Begin Time" %}</label>
+                          <div id="slider_begin_time" ></div>
                         </div>
-                        <input id="input_slider_begin_time" type="text" />
+                        <div style="padding:10px 0">
+                          <input id="input_slider_begin_time" class="form-control" style="width:200px" type="text" />
+                        </div>
                     </div>
+                  </div>
+                  <div class="col-sm-6">
                     <div class"booking-slider col-xs-12 col-md-6">
-                        <label>{% trans "End Time" %}</label>
-                        <div class="col-xs-6">
-                            <div id="slider_end_time" ></div>
+                        <div style="max-width:200px;">
+                          <label>{% trans "End Time" %}</label>
+                          <div id="slider_end_time" ></div>
                         </div>
-                        <input id="input_slider_end_time" type="text" />
+                        <div style="padding:10px 0">
+                            <input id="input_slider_end_time"  class="form-control" style="width:200px" type="text" />
+                        </div>
                     </div>
                 </div>
-                <div id="id_week_days">
-                    <div>
+              </div>
+
+                <div id="id_week_days" class="row">
+                    <div class="col-xs-6 col-md-3">
                         <div class="checkbox newbooking-checkbox">
                             <label for="id_week_days_0">
-                                <input class="" id="id_week_days_0" name="week_days" title="" type="checkbox" value="0"> Monday
+                                <input class="" id="id_week_days_0" name="week_days" title="" type="checkbox" value="0"> {% trans "Monday" %}
                             </label>
-                        </div>
+                        </div><br>
                         <div class="checkbox newbooking-checkbox">
                             <label for="id_week_days_1">
-                                <input class="" id="id_week_days_1" name="week_days" title="" type="checkbox" value="1"> Tuesday
+                                <input class="" id="id_week_days_1" name="week_days" title="" type="checkbox" value="1"> {% trans "Tuesday" %}
                             </label>
                         </div>
                     </div>
-                    <div>
+                    <div class="col-xs-6 col-md-3">
                         <div class="checkbox newbooking-checkbox">
                             <label for="id_week_days_2">
-                                <input class="" id="id_week_days_2" name="week_days" title="" type="checkbox" value="2"> Wednesday
+                                <input class="" id="id_week_days_2" name="week_days" title="" type="checkbox" value="2"> {% trans "Wednesday" %}
                             </label>
-                        </div>
+                        </div><br>
                         <div class="checkbox newbooking-checkbox">
                             <label for="id_week_days_3">
-                                <input class="" id="id_week_days_3" name="week_days" title="" type="checkbox" value="3"> Thursday
+                                <input class="" id="id_week_days_3" name="week_days" title="" type="checkbox" value="3"> {% trans "Thursday" %}
                             </label>
                         </div>
                     </div>
-                    <div>
+                    <div class="col-xs-6 col-md-3">
                         <div class="checkbox newbooking-checkbox">
                             <label for="id_week_days_4">
-                                <input class="" id="id_week_days_4" name="week_days" title="" type="checkbox" value="4"> Friday
+                                <input class="" id="id_week_days_4" name="week_days" title="" type="checkbox" value="4"> {% trans "Friday" %}
                             </label>
-                        </div>
+                        </div><br>
                         <div class="checkbox newbooking-checkbox">
                             <label for="id_week_days_5">
-                            <input class="" id="id_week_days_5" name="week_days" title="" type="checkbox" value="5"> Saturday
+                            <input class="" id="id_week_days_5" name="week_days" title="" type="checkbox" value="5"> {% trans "Saturday" %}
                             </label>
                         </div>
                     </div>
-                    <div>
+                    <div class="col-xs-6 col-md-3">
                         <div class="checkbox newbooking-checkbox">
                             <label for="id_week_days_6">
-                                <input class="" id="id_week_days_6" name="week_days" title="" type="checkbox" value="6"> Sunday
+                                <input class="" id="id_week_days_6" name="week_days" title="" type="checkbox" value="6"> {% trans "Sunday" %}
                             </label>
                         </div>
                     </div>
-                </div> 
-                <button class="btn btn-primary btn-newbooking btn-back" value="2">{% trans "Back" %}</button>
-                <button id="next-building" class="btn btn-primary btn-newbooking" value="Next">Next</button>
+                </div>
+                <button class="btn btn-primary btn-newbooking btn-back" value="2">
+                  <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                  {% trans "Back" %}
+                </button>
+                <button id="next-building" class="btn btn-primary btn-newbooking" value="Next">
+                  {% trans "Next" %}
+                  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </button>
             </div>
             <div id="page3" class="form-content">
-                <table id="booking-buildings" class="place">
+                <table id="booking-buildings" class="place" style="table-layout:fixed;">
                     <tr>
                     </tr>
                 </table>
-                <button class="btn btn-primary btn-newbooking btn-back" value="3">{% trans "Back" %}</button>
-                <button id="next-place" class="btn btn-primary btn-newbooking" value="Next">Next</button>
+                <button class="btn btn-primary btn-newbooking btn-back" value="3">
+                  <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                  {% trans "Back" %}
+                </button>
+                <button id="next-place" class="btn btn-primary btn-newbooking" value="Next">
+                  {% trans "Next" %}
+                  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </button>
             </div>
              <div id="page4" class="form-content">
                 <table id="booking-places" class="place">
                     <tr>
                     </tr>
                 </table>
-                <button class="btn btn-primary btn-newbooking btn-back" value="4">{% trans "Back" %}</button>
-                <button id="next-finish" class="btn btn-primary btn-newbooking" value="Next">Next</button>
+                <button class="btn btn-primary btn-newbooking btn-back" value="4">
+                  <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                  {% trans "Back" %}
+                </button>
+                <button id="next-finish" class="btn btn-primary btn-newbooking" value="Next">
+                  {% trans "Next" %}
+                  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </button>
 
             </div>
             <div id="page5" class="form-content">
-                <button id="next-finish" class="btn btn-primary btn-newbooking" value="Next">Next</button>
-
+                <button id="next-finish" class="btn btn-primary btn-newbooking" value="Next">
+                  {% trans "Next" %}
+                  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </button>
             </div>
 		</div>
 	</div>
