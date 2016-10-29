@@ -33,6 +33,11 @@ function breadcrumbsadd(index){
     $("#breadcrumbs ul li:eq(" + index + ")").addClass("active")
 
 }
+function back(index){
+    $("#breadcrumbs ul li:eq(" + index + ")").removeClass("active")
+    $("#page" + (index + 1)).hide();
+    $("#page" + index).show();
+}
 $("#booking-buildings tbody").on("click", "td", function(){
         $(".building-selected").removeClass("building-selected");
         $(this).addClass("building-selected");
@@ -76,7 +81,20 @@ $(document).ready(function(){
     $("#page4").hide();
     $("#page5").hide();
     $("#period-dates").hide();
-  
+    $("#id_week_days").hide();
+    $(".btn-back").on("click", function(){
+        var val = $(this).val();
+        val = val - 1;
+        console.log(val);
+        back(val);
+    });
+    $('.datepicker1').datepicker({
+			inline: true,
+			useCurrent: true,
+			format: '{% trans "mm/dd/yyyy" %}',
+			language: '{% trans "en" %}',
+			autoclose: true,
+	});
     $( "#slider_begin_time" ).on( "slidechange", function( event, ui ) {
         var text = $( "#slider_begin_time" ).slider("value");
         text = text + ":00"; 
@@ -91,19 +109,22 @@ $(document).ready(function(){
         if($('input[name=times]:checked', '#page2').val() == "interval"){
            $("#period-dates").show();
            $("#one-day").hide();
+           $("#id_week_days").show();
         }else{
            $("#period-dates").hide();
            $("#one-day").show();
+           $("#id_week_days").hide();
         }
     });    
     
+    breadcrumbsadd(0);
     $("#next-date").click(function(){
         $("#page1").hide();
         $("#page2").show();
         $("#page3").hide();
         $("#page4").hide();
         $("#page5").hide();
-        breadcrumbsadd(0);
+        breadcrumbsadd(1);
     });
     $("#next-building").click(function(){
         $("#page1").hide();
@@ -111,8 +132,9 @@ $(document).ready(function(){
         $("#page3").show();
         $("#page4").hide();
         $("#page5").hide();
-        breadcrumbsadd(1);
+        breadcrumbsadd(2);
         console.log(buildings.length);
+        $(".place-span").remove();
         for(var i = 0; i < buildings.length; i++){
             var b = buildings[i];
             if(i % 3 == 0){
@@ -130,7 +152,7 @@ $(document).ready(function(){
         $("#page3").hide();
         $("#page4").show(); 
         $("#page5").hide();
-        breadcrumbsadd(2);
+        breadcrumbsadd(3);
         //TODO: breadcrumps refresh
         
         //places = Place.all();
@@ -147,7 +169,7 @@ $(document).ready(function(){
         $("#page3").hide();
         $("#page4").hide();
         $("#page5").show();
-        breadcrumbsadd(3);
+        breadcrumbsadd(4);
         
         var building = $(".building-selected > input").attr("value");
         var place = $(".place-selected > input").attr("value");

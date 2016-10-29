@@ -8,7 +8,7 @@
     display: inline;
 }
 .form-control.newbooking-dates-input {
-    width: 30%;
+    max-width: 110px;
 }
 .building-selected{
    background-color: #417323;
@@ -72,7 +72,7 @@ ul.bread-crumbs li {
   position: relative;
   padding: 10px 15px 10px 30px;
   margin-bottom: 5px;
-  font-size: 16px;
+  font-size: 14px;
   color: #4e8aa5;
   text-align: center;
 }
