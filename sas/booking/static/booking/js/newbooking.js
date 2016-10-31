@@ -1,5 +1,6 @@
 var buildings = Building.all();
 
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -132,9 +133,9 @@ $(document).ready(function(){
         $("#page3").show();
         $("#page4").hide();
         $("#page5").hide();
+        $("#booking-buildings").find(".place-span").remove();
         breadcrumbsadd(2);
         console.log(buildings.length);
-        $(".place-span").remove();
         for(var i = 0; i < buildings.length; i++){
             var b = buildings[i];
             if(i % 3 == 0){
@@ -154,7 +155,7 @@ $(document).ready(function(){
         $("#page5").hide();
         breadcrumbsadd(3);
         //TODO: breadcrumps refresh
-
+        $("#booking-places").find(".place-span").remove();
         //places = Place.all();
         var id = $(".building-selected > input").attr("value");
         console.log("Ate aqui places length:" );
