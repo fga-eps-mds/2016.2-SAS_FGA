@@ -19,7 +19,7 @@ Scenario: Inexistent booking between start date and end date
 Scenario: Inexistent booking in the specified room
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room x Period"
+    And I choose "Room"
     And I select "UED" from "Building"
     And I select "UED | FGA-LAB_MATERIAIS" from "Place"
     And I fill in "Date" with "12/21/2016"
