@@ -203,7 +203,7 @@ class TestNewBooking(TestCase):
         client.login(username=username, password='1234567')
         response = client.post('/booking/newbooking/', parameters)
         self.assertTemplateUsed(response, 'booking/newBooking.html')
-        self.assertContains(response, 'Fill all the fields correctly')
+        self.assertContains(response, 'Inputs are invalid')
 
     def test_form_is_valid(self):
         form = BookingForm(data=self.parameters)
@@ -279,7 +279,7 @@ class TestSearchBookingQuery(TestCase):
         request = factory.post('/booking/searchbookingg', parameters)
         page = search_booking_day_room(request=request, form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, "Room's Week Timetable")
+        self.assertContains(page, "Timetable")
 
     def test_search_booking_booking_name_week(self):
         factory = self.factory
