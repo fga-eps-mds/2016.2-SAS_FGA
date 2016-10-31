@@ -30,7 +30,7 @@ Scenario: Filtering by Building x Day
 Scenario: Filtering by Room x Period
   When I login in with email "lucas@gmail.com" and password "123456"
   Then I visit site page "/booking/searchbookingg/"
-  Then I choose "Room"
+  Then I choose "id_search_options_3"
   Then I should see "Building"
   And I should see "Place"
   And I should see "Date"
@@ -39,6 +39,6 @@ Scenario: Filtering by Room x Period
 Scenario: Selecting place according to building
   When I login in with email "lucas@gmail.com" and password "123456"
   Then I visit site page "/booking/searchbookingg/"
-  Then I choose "Room"
+  Then I choose "id_search_options_3"
   Then I select "UAC" from "Building:"
   Then I should not see option "UED" in selector "Place:"

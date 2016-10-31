@@ -8,7 +8,7 @@ Background:
 Scenario: Inexistent booking between start date and end date
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/booking/searchbookingg/"
-	And I choose "Room"
+	And I choose "id_search_options_3"
 	And I select "UAC" from "Building"
 	And I select "UAC | FGA-I1" from "Place"
 	And I fill in "Date" with "10/20/2018"
@@ -19,7 +19,7 @@ Scenario: Inexistent booking between start date and end date
 Scenario: Inexistent booking in the specified room
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room"
+    And I choose "id_search_options_3"
     And I select "UED" from "Building"
     And I select "UED | FGA-LAB_MATERIAIS" from "Place"
     And I fill in "Date" with "12/21/2016"
@@ -30,7 +30,7 @@ Scenario: Inexistent booking in the specified room
 Scenario: Start date lower than actual date
 	When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room"
+    And I choose "id_search_options_3"
 	And I select "UAC" from "Building"
 	And I select "UAC | FGA-I1" from "Place"
     And I fill in "Date" with "10/10/2015"
@@ -41,7 +41,7 @@ Scenario: Start date lower than actual date
 Scenario: End date lower than actual date
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room"
+    And I choose "id_search_options_3"
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
     And I fill in "Date" with "12/30/2020"
@@ -52,7 +52,7 @@ Scenario: End date lower than actual date
 Scenario: Start Date greater then End Date
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room"
+    And I choose "id_search_options_3"
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
     And I fill in "Date" with "12/31/2016"
