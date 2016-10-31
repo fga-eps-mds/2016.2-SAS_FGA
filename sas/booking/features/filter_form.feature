@@ -8,25 +8,33 @@ Scenario: Filtering by Day x Room
   When I login in with email "lucas@gmail.com" and password "123456"
   Then I visit site page "/booking/searchbookingg/"
   Then I choose "Room's Week Timetable"
-  Then There should be exactly 2 elements matching $(":disabled")
+  Then I should see "Building"
+  And I should see "Place"
+  And I should see "Date"
 
 Scenario: Filtering by Booking x Week
   When I login in with email "lucas@gmail.com" and password "123456"
   Then I visit site page "/booking/searchbookingg/"
   Then I choose "Booking"
-  Then There should be exactly 2 elements matching $(":disabled")
+  Then I should see "Booking"
+  And I should see "Date"
+  And I should see "Date (To)"
 
 Scenario: Filtering by Building x Day
   When I login in with email "lucas@gmail.com" and password "123456"
   Then I visit site page "/booking/searchbookingg/"
   Then I choose "Occupation"
-  Then There should be exactly 3 elements matching $(":disabled")
+  Then I should see "Building"
+  And I should see "Date"
 
 Scenario: Filtering by Room x Period
   When I login in with email "lucas@gmail.com" and password "123456"
   Then I visit site page "/booking/searchbookingg/"
   Then I choose "Room"
-  Then There should be exactly 1 elements matching $(":disabled")
+  Then I should see "Building"
+  And I should see "Place"
+  And I should see "Date"
+  And I should see "Date (To)"
 
 Scenario: Selecting place according to building
   When I login in with email "lucas@gmail.com" and password "123456"
