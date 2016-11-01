@@ -34,12 +34,12 @@
          <td class='time'> <strong>{{hour}}</strong></td>
            {% for cell_table in table %}
               {% if not cell_table%}
-				<td class="cs335 small text-center" style="color:black">
-          <button class="btn btn-sm btn-primary" data-href="#"
-              data-toggle="modal" data-target="#modalDeleteBooking" id="delete-booking">
-              <span class="glyphicon glyphicon-trash" ></span> {% trans "Book" %}
-          </button>
-        </td>
+      				<td class="cs335 small text-center" style="color:black">
+                <button class="btn btn-xs btn-primary" data-href="{% url 'booking:newbooking' %}"
+                    data-toggle="modal" data-start-date="{{hour}}" data-place="Colocar aqui Place" data-target="#modalNewBooking" id="create-booking">
+                    <span class="glyphicon glyphicon-plus-sign" ></span> {% trans "Book" %}
+                </button>
+              </td>
               {% else%}
                 <td class="cs335 small text-center" {% if cell_table|check_tooltip:id %}
                     data-tooltip="{{ cell_table|check_tooltip:id }}"{% endif %}
@@ -48,7 +48,10 @@
                   {% if cell_table|check_table:id %}
                      {{ cell_table|check_table:id }}
                   {% else %}
-					<a href="{% url 'booking:newbooking' %}">Disponível</a>
+                  <button class="btn btn-xs btn-primary" data-href="{% url 'booking:newbooking' %}"
+                      data-toggle="modal" data-start-date="{{hour}}" data-place-pk="{{cell_table.0.1.place.pk}}" data-place="{{cell_table.0.1.place}}" data-target="#modalNewBooking" id="create-booking">
+                      <span class="glyphicon glyphicon-plus-sign" ></span> {% trans "Book" %}
+                  </button>
                   {%endif%}
 
                 </td>
@@ -59,5 +62,62 @@
   </tbody>
 </table>
 <br>
+<!-- Modal -->
+<div class="modal fade" id="modalNewBooking" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="dialog">
+    <div class="modal-content">
+      <div class="modal-header delete-header">
+        <button class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p class="modal-title" id="myModalLabel">{% trans "Confirm booking creation" %}</p>
+      </div>
+      <form class="form-horizontal" method = 'POST'>
+       {% csrf_token %}
+        <div class="modal-body">
+          <p>{% trans "Are you sure you want to book this place?" %}<br>
+            <strong><span id="place"></span></strong>
+          </p>
+          <label class="control-label" for="id_place">Place:</label>
+          <input type="text"class="form-control" id="id_place" name="place" title="" required>
+          <label class="control-label" for="id_start_hour">Start Hour:</label>
+          <input type="text"class="form-control" id="id_start_hour" name="start_hour" title="" required>
+          <label class="control-label" for="id_end_hour">End Hour:</label>
+          <input type="text"class="form-control" id="id_end_hour" name="end_hour" title="" required>
+          <label class="control-label" for="id_start_date">Start Date:</label>
+          <input type="text"class="form-control" id="id_start_date" name="start_date" title="" required>
+          <label class="control-label" for="id_end_date">End Date:</label>
+          <input type="text"class="form-control" id="id_end_date" name="end_date" title="" required>
+          <label class="control-label" for="id_name">Booking Name:</label>
+          <input class="form-control" id="id_name" name="name" placeholder="" title="" type="text" required />
+        </div>
+        <div class="modal-footer">
+           <button class="btn btn-primary btn-ok" type="submit" id="action-create">
+            {% trans "Book" %}
+            </button>
+          <a class="btn btn-default" data-dismiss="modal">{% trans "Cancel" %}</a>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/extensions/Responsive/js/responsive.bootstrap.min.js' %}"></script>
+<!-- page script -->
+<script>
+$('#modalNewBooking').on('show.bs.modal', function(e) {
+    $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+});
+$(document).on("click", "#create-booking", function () {
+     var place = $(this).data('place');
+     var place_pk = $(this).data('place-pk');
+     $(".modal-body #id_place").val( place_pk );
+     $(".modal-body #place").html( place );
+});
+</script>
 {% endblock %}
