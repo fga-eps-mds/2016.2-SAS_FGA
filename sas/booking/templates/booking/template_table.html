@@ -19,7 +19,7 @@
 <div class='col-xs-12' style="overflow-x:scroll">
  <table border='0' cellpadding='0' cellspacing='0'>
   <thead>
-    <tr class='days'><th></th><th colspan="{{ n  }}" class="text-center">{{ table_header }}</th></tr>
+    <tr class='days'><th></th><th colspan="{{  n  }}" class="text-center">{{ table_header }}</th></tr>
     <tr class='days'>
     <th class='days'>{% trans "Time" %}</th>
       {% for day in days %}
@@ -34,12 +34,18 @@
          <td class='time'> <strong>{{hour}}</strong></td>
            {% for cell_table in table %}
               {% if not cell_table%}
-                <td class='cs335'>&nbsp;</td>
+				<td class="cs335 small text-center" style="color:black"><a href="{% url 'booking:newbooking' %}">Disponível</a></td>
               {% else%}
                 <td class="cs335 small text-center" {% if cell_table|check_tooltip:id %}
                     data-tooltip="{{ cell_table|check_tooltip:id }}"{% endif %}
                     style="color:black">
-                  {% check_table cell_table id %}
+
+                  {% if cell_table|check_table:id %}
+                     {{ cell_table|check_table:id }}
+                  {% else %}
+					<a href="{% url 'booking:newbooking' %}">Disponível</a>
+                  {%endif%}
+
                 </td>
               {% endif %}
            {% endfor %}
