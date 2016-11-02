@@ -4,6 +4,7 @@ from .forms import BookingForm, SearchBookingForm
 from .models import Booking, BookTime, Place, Building
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from sas.decorators.decorators import required_to_be_admin
 from sas.views import index
 from datetime import datetime, timedelta
 import operator
@@ -214,15 +215,22 @@ def search_booking(request):
         return redirect("index")
 
 
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
 def all_bookings(request):
-    if request.user.profile_user.is_admin():
         bookings = Booking.objects.all()
         name = _("All Bookings")
         return render(request, 'booking/searchBooking.html',
                       {'bookings': bookings, 'name':name})
-    else:
-        return redirect("index")
 
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
+def pending_bookings(request):
+        bookings = Booking.objects.filter(status=1)
+        name = _("Pending Bookings")
+        return render(request, 'booking/searchBooking.html',
+                      {'bookings': bookings, 'name':name})
 
 def cancel_booking(request, id):
     if request.user.is_authenticated() and request.session['booking']:
