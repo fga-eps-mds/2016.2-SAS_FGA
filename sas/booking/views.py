@@ -219,7 +219,7 @@ def all_bookings(request):
         bookings = Booking.objects.all()
         name = _("All Bookings")
         return render(request, 'booking/searchBooking.html',
-                      {'bookings': bookings, 'name':name,
+                      {'bookings': bookings, 'name': name,
                        'pending': False})
 
 
@@ -229,8 +229,9 @@ def pending_bookings(request):
         bookings = Booking.objects.filter(status=1)
         name = _("Pending Bookings")
         return render(request, 'booking/searchBooking.html',
-                      {'bookings': bookings, 'name':name,
+                      {'bookings': bookings, 'name': name,
                        'pending': True})
+
 
 def cancel_booking(request, id):
     if request.user.is_authenticated() and request.session['booking']:
@@ -275,6 +276,7 @@ def delete_booking(request, id):
     except:
         messages.error(request, _('Booking not found.'))
     return search_booking(request)
+
 
 @login_required(login_url='/?showLoginModal=yes')
 @required_to_be_admin
