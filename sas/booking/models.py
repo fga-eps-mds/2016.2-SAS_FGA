@@ -78,6 +78,7 @@ class Booking(models.Model):
     name = models.CharField(max_length=50)
     start_date = models.DateField(null=False, blank=False)
     end_date = models.DateField(null=False, blank=False)
+    status = models.PositiveSmallIntegerField(default=2)
 
     def __str__(self):
         return ((self.user.email) + " | " + str(self.place) +
@@ -117,7 +118,10 @@ class Booking(models.Model):
             return False
 
     def save(self, *args, **kwargs):
-        self.place.is_laboratory = False
+        if (self.place.is_laboratory):
+            self.status = 1 #status for pending booking
+        else:
+            self.status = 2 #status for approved booking
         if Place.objects.filter(name=self.place.name):
             self.place = Place.objects.get(name=self.place.name)
         else:
