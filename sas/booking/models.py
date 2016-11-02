@@ -137,6 +137,15 @@ class Booking(models.Model):
         else:
             raise PermissionDenied()
 
+class BookingUserRelation(models.Model):
+    booking = models.ForeignKey(Booking, related_name="booking",
+                                on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="user",
+                             on_delete=models.CASCADE)
+    responsable = models.CharField(max_length=100)
+    responsable_fk = models.ForeignKey(User, related_name="responsable",
+                                        on_delete=models.CASCADE)
+
 
 class Validation():
 
