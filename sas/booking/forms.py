@@ -217,7 +217,8 @@ class BookingForm(forms.Form):
         book.end_hour = self.cleaned_data.get("end_hour")
         try:
             booking.save()
-            if booking.exists(book.start_hour, book.end_hour, weekdays):
+            if booking.exists(book.start_hour, book.end_hour, weekdays) \
+                and booking.status > 1: #status accepted
                 return None
             else:
                 for day in date_range(book.date_booking, booking.end_date):
