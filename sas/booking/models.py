@@ -133,6 +133,12 @@ class Booking(models.Model):
         self.time.all().delete()
         super(Booking, self).delete()
 
+    def approve(self):
+        self.status = 2
+
+    def deny(self):
+        self.status = 0
+        
     def delete_booktime(self, id_booktime, user):
         booktime = BookTime.objects.get(pk=id_booktime)
         if (user.profile_user.is_admin() or self.user.id == user.id) and \
