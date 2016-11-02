@@ -60,15 +60,13 @@
                 </td>
                 {% if pending %}
                 <td>
-                    <button class="btn btn-primary" href="{% url 'booking:approvebooking' booking.id %}"
-                        id="approve-booking">
-                        <span class="	glyphicon glyphicon-ok" ></span> {% trans "Approve" %}
-                    </button>
+                  <a href="{% url 'booking:approvebooking' booking.id %}" class="btn btn-primary" id="approve-booking">
+                      <span class="	glyphicon glyphicon-ok" ></span> {% trans "Approve" %}
+                  </a>
                     <br><br>
-                    <button class="btn btn-primary" data-href="{% url 'booking:approvebooking' booking.id %}"
-                         id="deny-booking">
+                    <a href="{% url 'booking:denybooking' booking.id %}" class="btn btn-primary" id="deny-booking">
                         <span class="glyphicon glyphicon-remove" ></span> {% trans "Deny" %}
-                    </button>
+                    </a>
                 </td>
                 {% endif %}
                 <td>
