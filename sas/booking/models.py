@@ -105,6 +105,7 @@ class Booking(models.Model):
                start_hour.strftime("%H:%M:%S") + "')")
         sql += " and bt.end_hour >= time('" + (
                end_hour.strftime("%H:%M:%S") + "')")
+        sql += " and bb.status = 2"
         sql += " and strftime('%w',bt.date_booking) IN (" + str_weekdays + ")"
         sql += " and bp.id = '" + str(self.place.pk) + "'"
 
@@ -119,9 +120,9 @@ class Booking(models.Model):
 
     def save(self, *args, **kwargs):
         if (self.place.is_laboratory):
-            self.status = 1 #status for pending booking
+            self.status = 1  # status for pending booking
         else:
-            self.status = 2 #status for approved booking
+            self.status = 2  # status for approved booking
         if Place.objects.filter(name=self.place.name):
             self.place = Place.objects.get(name=self.place.name)
         else:
@@ -133,7 +134,7 @@ class Booking(models.Model):
         self.time.all().delete()
         super(Booking, self).delete()
 
-    def update_status(self,status):
+    def update_status(self, status):
         Booking.objects.filter(pk=self.pk).update(status=status)
 
     def delete_booktime(self, id_booktime, user):
