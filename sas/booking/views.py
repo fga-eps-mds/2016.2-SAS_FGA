@@ -281,11 +281,24 @@ def delete_booking(request, id):
 def approve_booking(request, id):
     try:
         booking = Booking.objects.get(pk=id)
-        booking.approve()
+        booking.update_status(status=2)
         messages.success(request, _('Booking Approved!'))
     except:
         messages.error(request, _('Booking not found.'))
     return pending_bookings(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
+def deny_booking(request, id):
+    try:
+        booking = Booking.objects.get(pk=id)
+        booking.update_status(status=0)
+        messages.success(request, _('Booking Denied!'))
+    except:
+        messages.error(request, _('Booking not found.'))
+    return pending_bookings(request)
+
 
 @login_required(login_url='/?showLoginModal=yes')
 def delete_booktime(request, booking_id, booktime_id):
