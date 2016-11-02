@@ -25,6 +25,9 @@
                 <th>{% trans "Place" %}</th>
                 <th>{% trans "Period" %}</th>
                 <th>{% trans "Date and Time" %}</th>
+                {% if pending %}
+                  <th class="all">{% trans "Actions" %}</th>
+                {% endif %}
                 <th class="all">{% trans "Delete" %}</th>
               </tr>
             </thead>
@@ -55,6 +58,19 @@
                       <strong>...</strong>
                     {% endif %}
                 </td>
+                {% if pending %}
+                <td>
+                    <button class="btn btn-primary" href="{% url 'booking:approvebooking' booking.id %}"
+                        id="approve-booking">
+                        <span class="	glyphicon glyphicon-ok" ></span> {% trans "Approve" %}
+                    </button>
+                    <br><br>
+                    <button class="btn btn-primary" data-href="{% url 'booking:approvebooking' booking.id %}"
+                         id="deny-booking">
+                        <span class="glyphicon glyphicon-remove" ></span> {% trans "Deny" %}
+                    </button>
+                </td>
+                {% endif %}
                 <td>
                     <button class="btn btn-danger" data-href="{% url 'booking:deletebooking' booking.id %}"
                         data-toggle="modal" data-target="#modalDeleteBooking" id="delete-booking">
@@ -71,6 +87,9 @@
               <th>{% trans "Place" %}</th>
               <th>{% trans "Period" %}</th>
               <th>{% trans "Date and Time" %}</th>
+              {% if pending %}
+                <th class="all">{% trans "Actions" %}</th>
+              {% endif %}
               <th class="all">{% trans "Delete" %}</th>
             </tr>
           </tfoot>
