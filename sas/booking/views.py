@@ -207,8 +207,9 @@ def search_booking_table(request):
 def search_booking(request):
     if request.user.is_authenticated():
         bookings = Booking.objects.filter(user=request.user)
+        name = _("My Bookings")
         return render(request, 'booking/searchBooking.html',
-                      {'bookings': bookings})
+                      {'bookings': bookings, 'name': name})
     else:
         return redirect("index")
 
@@ -216,8 +217,9 @@ def search_booking(request):
 def all_bookings(request):
     if request.user.profile_user.is_admin():
         bookings = Booking.objects.all()
+        name = _("All Bookings")
         return render(request, 'booking/searchBooking.html',
-                      {'bookings': bookings})
+                      {'bookings': bookings, 'name':name})
     else:
         return redirect("index")
 
