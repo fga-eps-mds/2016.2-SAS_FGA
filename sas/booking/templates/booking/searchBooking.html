@@ -31,7 +31,15 @@
             <tbody>
             {% for booking in bookings %}
               <tr>
-                <td>{{ booking.status }}</td>
+                {% if booking.status == 0 %}
+                    <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+                {% endif %}
+                {% if booking.status == 1 %}
+                    <td><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></td>
+                {% endif %}
+                {% if booking.status == 2 %}
+                    <td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+                {% endif %}
                 <td>{{ booking.name }}</td>
                 <td>{{ booking.place.name }}</td>
                 <td class="text-center">{{ booking.start_date }}
