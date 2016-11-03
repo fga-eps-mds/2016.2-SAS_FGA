@@ -109,7 +109,6 @@ class Booking(models.Model):
         sql += " and strftime('%w',bt.date_booking) IN (" + str_weekdays + ")"
         sql += " and bp.id = '" + str(self.place.pk) + "'"
 
-        print(sql)
         with connection.cursor() as cursor:
             cursor.execute(sql)
             row = cursor.fetchone()
@@ -136,6 +135,7 @@ class Booking(models.Model):
 
     def update_status(self, status):
         Booking.objects.filter(pk=self.pk).update(status=status)
+        self.refresh_from_db()
 
     def delete_booktime(self, id_booktime, user):
         booktime = BookTime.objects.get(pk=id_booktime)
