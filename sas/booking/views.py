@@ -208,8 +208,7 @@ def search_booking(request):
         bookings = Booking.objects.filter(user=request.user)
         name = _("My Bookings")
         return render(request, 'booking/searchBooking.html',
-                      {'bookings': bookings, 'name': name,
-                       'pending': False})
+                      {'bookings': bookings, 'name': name})
     else:
         return redirect("index")
 
@@ -220,8 +219,7 @@ def all_bookings(request):
         bookings = Booking.objects.all()
         name = _("All Bookings")
         return render(request, 'booking/searchBooking.html',
-                      {'bookings': bookings, 'name': name,
-                       'pending': False})
+                      {'bookings': bookings, 'name': name})
 
 
 @login_required(login_url='/?showLoginModal=yes')
@@ -229,9 +227,8 @@ def all_bookings(request):
 def pending_bookings(request):
         bookings = Booking.objects.filter(status=1)
         name = _("Pending Bookings")
-        return render(request, 'booking/searchBooking.html',
-                      {'bookings': bookings, 'name': name,
-                       'pending': True})
+        return render(request, 'booking/pendingBooking.html',
+                      {'bookings': bookings, 'name': name})
 
 
 def cancel_booking(request, id):
