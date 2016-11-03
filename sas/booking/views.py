@@ -120,7 +120,7 @@ def search_booking_booking_name_week(request, form_booking):
         for booking in bookings:
             if (booking.name == booking_name and booking.status > 1):
                 book = booking.time.get(date_booking=str(form_day))
-                aux_tuple = (book.start_hour.hour, booking.place.name)
+                aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
 
         table.append(aux)
@@ -176,7 +176,8 @@ def new_booking(request):
                     return render(request, 'booking/showDates.html',
                                   {'booking': booking})
                 else:
-                    messages.error(request, _("Booking alread exists"))
+                    print(booking)
+                    messages.error(request, _("Booking already exists"))
         else:
             form_booking = BookingForm()
         return render(request, 'booking/newBooking.html',
@@ -296,6 +297,7 @@ def deny_booking(request, id):
     try:
         booking = Booking.objects.get(pk=id)
         booking.update_status(status=0)
+        print(booking.status)
         messages.success(request, _('Booking Denied!'))
     except:
         messages.error(request, _('Booking not found.'))
