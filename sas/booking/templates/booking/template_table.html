@@ -119,6 +119,10 @@ $(document).on("click", "#create-booking", function () {
      $(".modal-body #id_place").val( place_pk );
      $(".modal-body #place").html( place );
      $("#id_place").prop('disabled',true);
+     $("#id_start_hour").prop('disabled',true);
+     $("#id_end_hour").prop('disabled',true);
+     $("#id_start_date").prop('disabled',true);
+     $("#id_end_date").prop('disabled',true);
 });
 </script>
 {% endblock %}
