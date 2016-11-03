@@ -118,6 +118,7 @@ $(document).on("click", "#create-booking", function () {
      var place_pk = $(this).data('place-pk');
      $(".modal-body #id_place").val( place_pk );
      $(".modal-body #place").html( place );
+     $("#id_place").prop('disabled',true);
 });
 </script>
 {% endblock %}
