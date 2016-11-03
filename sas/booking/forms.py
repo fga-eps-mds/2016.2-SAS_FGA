@@ -21,14 +21,12 @@ class SearchBookingForm(forms.Form):
         ('opt_room_period', _(' Room')),
     )
 
-    BOOKING_CHOICES = Booking.objects.values('name').distinct()
-
     search_options = forms.ChoiceField(label=_('Search options'),
                                        choices=SEARCH_CHOICES,
                                        widget=forms.RadioSelect())
 
     booking_name = forms.ChoiceField(
-        choices=( (x['name'], x['name']) for x in BOOKING_CHOICES ),
+        choices=Booking.get_bookings(),
         label=_('Booking:'),
         required=False,
         widget=forms.widgets.Select(

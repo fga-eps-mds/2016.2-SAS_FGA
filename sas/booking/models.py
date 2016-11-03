@@ -137,6 +137,10 @@ class Booking(models.Model):
         else:
             raise PermissionDenied()
 
+    @staticmethod
+    def get_bookings():
+        bookings = Booking.objects.values('name').distinct()
+        return ( (x['name'], x['name']) for x in bookings )
 
 class Validation():
 
