@@ -516,22 +516,22 @@ class PendingBookingTest(TestCase):
         self.assertContains(response, 'Booking Approved!')
 
     def test_view_approve_invalid_booking(self):
-        pk = self.booking.pk+10000
+        pk = self.booking.pk + 10000
         self.client.login(username=self.username, password='123456')
-        url = reverse('booking:approvebooking',  args=(pk,))
+        url = reverse('booking:approvebooking', args=(pk,))
         response = self.client.get(url)
         self.assertContains(response, 'Booking not found.')
 
     def test_view_deny_booking(self):
         pk = self.booking.pk
         self.client.login(username=self.username, password='123456')
-        url = reverse('booking:denybooking',  args=(pk,))
+        url = reverse('booking:denybooking', args=(pk,))
         response = self.client.get(url)
         self.assertContains(response, 'Booking Denied!')
 
     def test_view_deny_invalid_booking(self):
-        pk = self.booking.pk+10000
+        pk = self.booking.pk + 10000
         self.client.login(username=self.username, password='123456')
-        url = reverse('booking:denybooking',  args=(pk,))
+        url = reverse('booking:denybooking', args=(pk,))
         response = self.client.get(url)
         self.assertContains(response, 'Booking not found.')

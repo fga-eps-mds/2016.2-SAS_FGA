@@ -54,7 +54,8 @@ def search_booking_day_room(request, form_booking):
         aux = []
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
         for booking in bookings:
-            if (booking.place.name == booking_place.name and booking.status > 1):
+            if (booking.place.name == booking_place.name and
+                    booking.status > 1):
                 book = booking.time.get(date_booking=str(form_day))
                 aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
@@ -143,7 +144,8 @@ def search_booking_room_period(request, form_booking):
         aux = []
         bookings = Booking.objects.filter(time__date_booking=form_day)
         for booking in bookings:
-            if (booking.place.name == booking_place.name and booking.status > 1):
+            if (booking.place.name == booking_place.name and
+                    booking.status > 1):
                 book = booking.time.get(date_booking=str(form_day))
                 aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
