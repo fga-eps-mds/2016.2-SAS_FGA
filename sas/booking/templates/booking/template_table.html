@@ -13,6 +13,9 @@
 
 
 {% block content %}
+
+{% csrf_token %}
+
 <h1>{{ name }}</h1>
 <hr class="star-light">
 <br>
@@ -33,12 +36,15 @@
       <tr>
          <td class='time'> <strong>{{hour}}</strong></td>
            {% for cell_table in table %}
+            {% with forloop.counter0 as count %}
               {% if not cell_table%}
       				<td class="cs335 small text-center" style="color:black">
-                <button class="btn btn-xs btn-primary" data-href="{% url 'booking:newbooking' %}"
-                    data-toggle="modal" data-start-date="{{hour}}" data-place="Colocar aqui Place" data-target="#modalNewBooking" id="create-booking">
-                    <span class="glyphicon glyphicon-plus-sign" ></span> {% trans "Book" %}
-                </button>
+                  <button class="btn btn-xs btn-primary" data-href="{% url 'booking:newbooking' %} place='UAC'"
+                      data-toggle="modal" data-start-hour="{{id|search_hour:0}}" data-end-hour="{{id|search_hour:1}}" data-start-date="{{ days|aux_search_date:n|search_date:count }}" data-end-date="{{ days|aux_search_date:n|search_date:count }}" 
+                      data-place-pk="{{cell_table.0.1.place.pk}}" data-place="{{cell_table.0.1.place}}" data-target="#modalNewBooking" id="create-booking">
+                      <span class="glyphicon glyphicon-plus-sign" ></span> {% trans "Book" %}
+                  </button>
+
               </td>
               {% else%}
                 <td class="cs335 small text-center" {% if cell_table|check_tooltip:id %}
@@ -48,14 +54,17 @@
                   {% if cell_table|check_table:id %}
                      {{ cell_table|check_table:id }}
                   {% else %}
-                  <button class="btn btn-xs btn-primary" data-href="{% url 'booking:newbooking' %}"
-                      data-toggle="modal" data-start-date="{{hour}}" data-place-pk="{{cell_table.0.1.place.pk}}" data-place="{{cell_table.0.1.place}}" data-target="#modalNewBooking" id="create-booking">
+
+                  <button class="btn btn-xs btn-primary" data-href="{% url 'booking:newbooking' %} place='UAC'"
+                      data-toggle="modal" data-start-hour="{{id|search_hour:0}}" data-end-hour="{{id|search_hour:1}}" data-start-date="{{ days|aux_search_date:n|search_date:count }}" data-end-date="{{ days|aux_search_date:n|search_date:count }}" 
+                      data-place-pk="{{cell_table.0.1.place.pk}}" data-place="{{cell_table.0.1.place}}" data-target="#modalNewBooking" id="create-booking">
                       <span class="glyphicon glyphicon-plus-sign" ></span> {% trans "Book" %}
                   </button>
                   {%endif%}
 
                 </td>
               {% endif %}
+            {% endwith %}  
            {% endfor %}
       </tr>
     {% endfor %}
@@ -116,8 +125,20 @@ $('#modalNewBooking').on('show.bs.modal', function(e) {
 $(document).on("click", "#create-booking", function () {
      var place = $(this).data('place');
      var place_pk = $(this).data('place-pk');
+     var start_hour = $(this).data('start-hour');
+     var end_hour = $(this).data('end-hour');
+     var start_date = $(this).data('start-date');
+     var end_date = $(this).data('end-date'); 
+
+
      $(".modal-body #id_place").val( place_pk );
      $(".modal-body #place").html( place );
+     $(".modal-body #id_start_hour").val( start_hour );
+     $(".modal-body #id_end_hour").val( end_hour );
+     $(".modal-body #id_start_date").val( start_date );
+     $(".modal-body #id_end_date").val( end_date );
+
+
 });
 </script>
 {% endblock %}
