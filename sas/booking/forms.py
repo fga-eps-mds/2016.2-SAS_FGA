@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from datetime import date, datetime, timedelta, time
 from django.conf import settings
 from django.utils import formats
+from user.models import UserProfile
 import copy
 import traceback
 
@@ -131,6 +132,7 @@ class SearchBookingForm(forms.Form):
 
 
 class BookingForm(forms.Form):
+<<<<<<< HEAD
     hour = timedelta(hours=6)
     hour1 = timedelta(hours=8)
     hour2 = timedelta(hours=10)
@@ -143,6 +145,29 @@ class BookingForm(forms.Form):
     hour9 = timedelta(hours=0)
     HOURS = (('', '----'), (hour, '06:00'),
              (hour1, '08:00'), (hour2, ('10:00')),
+=======
+
+    def __init__(self, *args, **kwargs):
+        super(BookingForm, self).__init__(*args, **kwargs)
+        self.fields['responsible'] = forms.ChoiceField(
+            choices=UserProfile.get_users(),
+            label=_('Responsible:'),
+            required=False,
+            widget=forms.widgets.Select(
+                    attrs={'class': 'selectize'})
+        )
+
+    hour = datetime.strptime("08:00", "%H:%M").time()
+    hour2 = datetime.strptime("10:00", "%H:%M").time()
+    hour3 = datetime.strptime("12:00", "%H:%M").time()
+    hour4 = datetime.strptime("14:00", "%H:%M").time()
+    hour5 = datetime.strptime("16:00", "%H:%M").time()
+    hour6 = datetime.strptime("18:00", "%H:%M").time()
+    hour7 = datetime.strptime("20:00", "%H:%M").time()
+    hour8 = datetime.strptime("22:00", "%H:%M").time()
+    hour9 = datetime.strptime("00:00", "%H:%M").time()
+    HOURS = (('', '----'), (hour, '08:00'), (hour2, ('10:00')),
+>>>>>>> Created struct for responsible
              (hour3, ('12:00')), (hour4, ('14:00')),
              (hour5, ('16:00')), (hour6, ('18:00')),
              (hour7, ('20:00')), (hour8, ('22:00')),
@@ -185,6 +210,7 @@ class BookingForm(forms.Form):
         booking.end_date = self.cleaned_data.get("end_date")
         booking.place = self.cleaned_data.get("place")
         weekdays = self.cleaned_data.get("week_days")
+        booking.responsible = self.cleaned_data.get("responsible")
 
         book = BookTime()
         book.date_booking = booking.start_date
