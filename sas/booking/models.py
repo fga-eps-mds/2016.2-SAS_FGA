@@ -78,9 +78,10 @@ class Booking(models.Model):
     name = models.CharField(max_length=50)
     start_date = models.DateField(null=False, blank=False)
     end_date = models.DateField(null=False, blank=False)
+    status = models.PositiveSmallIntegerField(default=2)
 
     def __str__(self):
-        return ((self.user.email) + " | " + str(self.place) +
+        return (self.name + " " + self.user.email + " | " + str(self.place) +
                 " - " + str(self.start_date) + " - " + str(self.end_date))
 
     def exists(self, start_hour, end_hour, week_days):
@@ -104,10 +105,10 @@ class Booking(models.Model):
                start_hour.strftime("%H:%M:%S") + "')")
         sql += " and bt.end_hour >= time('" + (
                end_hour.strftime("%H:%M:%S") + "')")
+        sql += " and bb.status = 2"
         sql += " and strftime('%w',bt.date_booking) IN (" + str_weekdays + ")"
         sql += " and bp.id = '" + str(self.place.pk) + "'"
 
-        print(sql)
         with connection.cursor() as cursor:
             cursor.execute(sql)
             row = cursor.fetchone()
@@ -117,7 +118,10 @@ class Booking(models.Model):
             return False
 
     def save(self, *args, **kwargs):
-        self.place.is_laboratory = False
+        if (self.place.is_laboratory):
+            self.status = 1  # status for pending booking
+        else:
+            self.status = 2  # status for approved booking
         if Place.objects.filter(name=self.place.name):
             self.place = Place.objects.get(name=self.place.name)
         else:
@@ -129,6 +133,10 @@ class Booking(models.Model):
         self.time.all().delete()
         super(Booking, self).delete()
 
+    def update_status(self, status):
+        Booking.objects.filter(pk=self.pk).update(status=status)
+        self.refresh_from_db()
+
     def delete_booktime(self, id_booktime, user):
         booktime = BookTime.objects.get(pk=id_booktime)
         if (user.profile_user.is_admin() or self.user.id == user.id) and \
@@ -136,6 +144,16 @@ class Booking(models.Model):
             booktime.delete()
         else:
             raise PermissionDenied()
+
+    @staticmethod
+    def get_bookings():
+        bookings = Booking.objects.values('name').distinct()
+        choices = ()
+        for booking in bookings:
+            new_choice = (booking['name'], booking['name'])
+            choices = (new_choice,) + choices
+        return choices
+
 
 class BookingUserRelation(models.Model):
     booking = models.ForeignKey(Booking, related_name="booking",

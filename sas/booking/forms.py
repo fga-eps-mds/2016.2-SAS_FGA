@@ -14,37 +14,52 @@ import traceback
 
 
 class SearchBookingForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(SearchBookingForm, self).__init__(*args, **kwargs)
+        self.fields['booking_name'] = forms.ChoiceField(
+            choices=Booking.get_bookings(),
+            label=_('Booking:'),
+            required=False,
+            widget=forms.widgets.Select(
+                    attrs={'class': 'select2 optional'})
+        )
     SEARCH_CHOICES = (
-        ('opt_day_room', ' Day x Room'),
-        ('opt_booking_week', ' Booking x Week'),
-        ('opt_building_day', ' Building x Day'),
-        ('opt_room_period', ' Room x Period'),
+        ('opt_day_room', _("Room's Week Timetable")),
+        ('opt_booking_week', _(' Booking')),
+        ('opt_building_day', _(' Occupation')),
+        ('opt_room_period', _(' Room')),
     )
 
-    search_options = forms.ChoiceField(choices=SEARCH_CHOICES,
+    search_options = forms.ChoiceField(label=_('Search options'),
+                                       choices=SEARCH_CHOICES,
                                        widget=forms.RadioSelect())
 
-    booking_name = forms.CharField(
-        label=_('Booking Name:'),
-        widget=forms.TextInput(attrs={'placeholder': ''}), required=False)
 
     building_name = forms.ModelChoiceField(
         queryset=Building.objects,
-        label=_('Building:'), required=False)
+        label=_('Building:'), required=False,
+        widget=forms.widgets.Select(
+            attrs={'class': 'optional'}) )
 
-    room_name = forms.ModelChoiceField(queryset=Place.objects,
-                                       label=_('Place:'),
-                                       required=False)
+    room_name = forms.ModelChoiceField(
+        queryset=Place.objects,
+        label=_('Place:'),
+        required=False,
+        widget=forms.widgets.Select(
+            attrs={'class': 'optional'}) )
 
     start_date = forms.DateField(
-        label=_('Start Date:'),
+        label=_('Date:'),
         widget=forms.widgets.DateInput(
-            attrs={'class': 'datepicker1', 'placeholder': ''}), required=False)
+            attrs={'class': 'datepicker1 optional', 'placeholder': ''}),
+        required=False)
 
     end_date = forms.DateField(
-        label=_('End Date:'),
+        label=_('Date (To):'),
         widget=forms.widgets.DateInput(
-            attrs={'class': 'datepicker1', 'placeholder': ''}), required=False)
+            attrs={'class': 'datepicker1 optional', 'placeholder': ''}),
+        required=False)
 
     def search(self):
         cleaned_data = super(SearchBookingForm, self).clean()
@@ -153,9 +168,11 @@ class SearchBookingForm(forms.Form):
                     raise forms.ValidationError(msg)
 
         except Exception as e:
-            msg = _('Inputs are in invalid format')
+            msg = _('Fill all the fields correctly')
             print(e)
             raise forms.ValidationError(msg)
+
+
 
 
 class BookingForm(forms.Form):
@@ -218,6 +235,7 @@ class BookingForm(forms.Form):
         try:
             booking.save()
             if booking.exists(book.start_hour, book.end_hour, weekdays):
+                booking.delete()
                 return None
             else:
                 for day in date_range(book.date_booking, booking.end_date):
