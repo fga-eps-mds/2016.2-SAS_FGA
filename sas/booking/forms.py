@@ -180,12 +180,13 @@ class BookingForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(BookingForm, self).__init__(*args, **kwargs)
-        self.fields['responsible'] = forms.ChoiceField(
-            choices=UserProfile.get_users(),
+        self.fields['responsible'] = forms.CharField(
             label=_('Responsible:'),
             required=False,
             widget=forms.widgets.Select(
-                    attrs={'class': 'selectize'})
+                    attrs={'class': 'selectize'},
+                    choices=UserProfile.get_users(),
+                    )
         )
 
     hour = datetime.strptime("08:00", "%H:%M").time()
@@ -239,7 +240,11 @@ class BookingForm(forms.Form):
         booking.end_date = self.cleaned_data.get("end_date")
         booking.place = self.cleaned_data.get("place")
         weekdays = self.cleaned_data.get("week_days")
-        booking.responsible = self.cleaned_data.get("responsible")
+
+        if user.is_staff:
+            booking.responsible = self.cleaned_data.get("responsible")
+        else:
+            booking.responsible = user.username
 
         book = BookTime()
         book.date_booking = booking.start_date

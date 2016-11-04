@@ -181,6 +181,7 @@ def next(skip, aux_rows):
 
 @login_required(login_url='/?showLoginModal=yes')
 def new_booking(request):
+    user = request.user
     if request.method == "POST":
         form_booking = BookingForm(request.POST)
         if (form_booking.is_valid()):
@@ -194,7 +195,7 @@ def new_booking(request):
     else:
         form_booking = BookingForm()
     return render(request, 'booking/newBooking.html',
-                  {'form_booking': form_booking})
+                  {'form_booking': form_booking, 'is_staff': user.is_staff})
 
 
 def search_booking_table(request):
@@ -211,7 +212,7 @@ def search_booking_table(request):
 
 @login_required(login_url='/?showLoginModal=yes')
 def search_booking(request):
-    bookings = Booking.objects.filter(user=request.user)
+    bookings = Booking.objects.filter(responsible=request.user.username)
     return render(request, 'booking/searchBooking.html',
                   {'bookings': bookings})
 

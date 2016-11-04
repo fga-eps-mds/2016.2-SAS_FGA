@@ -73,7 +73,7 @@ class BookTime(models.Model):
 class Booking(models.Model):
     user = models.ForeignKey(User, related_name="bookings",
                              on_delete=models.CASCADE)
-    responsible = models.CharField(max_length=100)
+    responsible = models.CharField(max_length=100, default=' ')
     time = models.ManyToManyField(BookTime, related_name="booking_time")
     place = models.ForeignKey(Place, related_name="booking_place")
     name = models.CharField(max_length=50)
