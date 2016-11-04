@@ -4,6 +4,7 @@ from .forms import BookingForm, SearchBookingForm
 from .models import Booking, BookTime, Place, Building
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from sas.decorators.decorators import required_to_be_admin
 from sas.views import index
 from datetime import datetime, timedelta
 import operator
@@ -30,12 +31,9 @@ def search_booking_query(request):
         elif(option == 'opt_booking_week'):
             return (search_booking_booking_name_week(request, form_booking))
         elif(option == 'opt_building_day'):
-            # view method from who was responsable for this table - Hugo
             return (search_booking_building_day(request, form_booking))
         else:
             return (search_booking_room_period(request, form_booking))
-            ''' view method from who was responsable for opt_room_period
-            table - Luis '''
     return render(request, 'booking/searchBookingQuery.html',
                   {'search_booking': form_booking})
 
@@ -56,7 +54,8 @@ def search_booking_day_room(request, form_booking):
         aux = []
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
         for booking in bookings:
-            if (booking.place.name == booking_place.name):
+            if (booking.place.name == booking_place.name and
+                    booking.status > 1):
                 book = booking.time.get(date_booking=str(form_day))
                 aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
@@ -87,7 +86,7 @@ def search_booking_building_day(request, form_booking):
         aux = []
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
         for booking in bookings:
-            if (booking.place.name == place.name):
+            if (booking.place.name == place.name and booking.status > 1):
 
                 book = booking.time.get(date_booking=str(form_day))
                 aux_tuple = (book.start_hour.hour, booking)
@@ -120,9 +119,9 @@ def search_booking_booking_name_week(request, form_booking):
         aux = []
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
         for booking in bookings:
-            if (booking.name == booking_name):
+            if (booking.name == booking_name and booking.status > 1):
                 book = booking.time.get(date_booking=str(form_day))
-                aux_tuple = (book.start_hour.hour, booking.place.name)
+                aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
 
         table.append(aux)
@@ -145,7 +144,8 @@ def search_booking_room_period(request, form_booking):
         aux = []
         bookings = Booking.objects.filter(time__date_booking=form_day)
         for booking in bookings:
-            if (booking.place.name == booking_place.name):
+            if (booking.place.name == booking_place.name and
+                    booking.status > 1):
                 book = booking.time.get(date_booking=str(form_day))
                 aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
@@ -178,7 +178,8 @@ def new_booking(request):
                     return render(request, 'booking/showDates.html',
                                   {'booking': booking})
                 else:
-                    messages.error(request, _("Booking alread exists"))
+                    print(booking)
+                    messages.error(request, _("Booking already exists"))
         else:
             form_booking = BookingForm()
         return render(request, 'booking/newBooking.html',
@@ -207,19 +208,29 @@ def search_booking_table(request):
 def search_booking(request):
     if request.user.is_authenticated():
         bookings = Booking.objects.filter(user=request.user)
+        name = _("My Bookings")
         return render(request, 'booking/searchBooking.html',
-                      {'bookings': bookings})
+                      {'bookings': bookings, 'name': name})
     else:
         return redirect("index")
 
 
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
 def all_bookings(request):
-    if request.user.profile_user.is_admin():
         bookings = Booking.objects.all()
+        name = _("All Bookings")
         return render(request, 'booking/searchBooking.html',
-                      {'bookings': bookings})
-    else:
-        return redirect("index")
+                      {'bookings': bookings, 'name': name})
+
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
+def pending_bookings(request):
+        bookings = Booking.objects.filter(status=1)
+        name = _("Pending Bookings")
+        return render(request, 'booking/pendingBooking.html',
+                      {'bookings': bookings, 'name': name})
 
 
 def cancel_booking(request, id):
@@ -265,6 +276,31 @@ def delete_booking(request, id):
     except:
         messages.error(request, _('Booking not found.'))
     return search_booking(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
+def approve_booking(request, id):
+    try:
+        booking = Booking.objects.get(pk=id)
+        booking.update_status(status=2)
+        messages.success(request, _('Booking Approved!'))
+    except:
+        messages.error(request, _('Booking not found.'))
+    return pending_bookings(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
+def deny_booking(request, id):
+    try:
+        booking = Booking.objects.get(pk=id)
+        booking.update_status(status=0)
+        print(booking.status)
+        messages.success(request, _('Booking Denied!'))
+    except:
+        messages.error(request, _('Booking not found.'))
+    return pending_bookings(request)
 
 
 @login_required(login_url='/?showLoginModal=yes')

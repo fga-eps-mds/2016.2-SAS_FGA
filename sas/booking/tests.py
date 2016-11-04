@@ -17,7 +17,9 @@ from booking.forms import BookingForm, SearchBookingForm
 from dateutil import parser
 from booking.views import search_booking_room_period
 from django.db.models import Q
-from booking.factories import BookTimeFactory
+from booking.factories import BookTimeFactory, BookingFactory
+from booking.views import approve_booking
+from booking.views import deny_booking
 
 
 class TestSearchBookingQuery(TestCase):
@@ -486,3 +488,50 @@ class BookingTimeTest(TestCase):
         book = BookTime()
         book.date_booking = datetime.strptime("21092016", "%d%m%Y")
         self.assertEqual(book.get_str_weekday(), "Wednesday")
+
+
+class PendingBookingTest(TestCase):
+    def setUp(self):
+        self.booking = BookingFactory.create()
+        self.booking.place.is_laboratory = True
+        self.booking.save()
+        self.factory = RequestFactory()
+        self.userprofile = UserProfileFactory.create()
+        self.userprofile.make_as_admin()
+        self.userprofile.user.set_password('123456')
+        self.userprofile.save()
+        self.client = Client()
+        self.username = self.userprofile.user.username
+
+    def test_update_status(self):
+        self.booking.update_status(status=0)
+        status = self.booking.status
+        self.assertEqual(status, 0)
+
+    def test_approve_booking(self):
+        self.client.login(username=self.username,
+                          password='123456')
+        url = reverse('booking:approvebooking', args=(self.booking.id,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking Approved!')
+
+    def test_view_approve_invalid_booking(self):
+        pk = self.booking.pk + 10000
+        self.client.login(username=self.username, password='123456')
+        url = reverse('booking:approvebooking', args=(pk,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
+
+    def test_view_deny_booking(self):
+        pk = self.booking.pk
+        self.client.login(username=self.username, password='123456')
+        url = reverse('booking:denybooking', args=(pk,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking Denied!')
+
+    def test_view_deny_invalid_booking(self):
+        pk = self.booking.pk + 10000
+        self.client.login(username=self.username, password='123456')
+        url = reverse('booking:denybooking', args=(pk,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
