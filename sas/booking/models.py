@@ -81,7 +81,7 @@ class Booking(models.Model):
     status = models.PositiveSmallIntegerField(default=2)
 
     def __str__(self):
-        return ((self.user.email) + " | " + str(self.place) +
+        return (self.name + " " + self.user.email + " | " + str(self.place) +
                 " - " + str(self.start_date) + " - " + str(self.end_date))
 
     def exists(self, start_hour, end_hour, week_days):
@@ -145,6 +145,14 @@ class Booking(models.Model):
         else:
             raise PermissionDenied()
 
+    @staticmethod
+    def get_bookings():
+        bookings = Booking.objects.values('name').distinct()
+        choices = ()
+        for booking in bookings:
+            new_choice = (booking['name'], booking['name'])
+            choices = (new_choice,) + choices
+        return choices
 
 class Validation():
 

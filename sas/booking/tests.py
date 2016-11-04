@@ -240,7 +240,7 @@ class TestSearchBooking(TestCase):
         page = search_booking_booking_name_week(request=request,
                                                 form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, 'Booking x Week')
+        self.assertContains(page, 'Booking')
 
     def test_search_booking_post_not_valid(self):
         client = self.client
@@ -281,7 +281,7 @@ class TestSearchBookingQuery(TestCase):
         request = factory.post('/booking/searchbookingg', parameters)
         page = search_booking_day_room(request=request, form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, "Room x Day")
+        self.assertContains(page, "Timetable")
 
     def test_search_booking_booking_name_week(self):
         factory = self.factory
@@ -301,7 +301,7 @@ class TestSearchBookingQuery(TestCase):
         page = search_booking_booking_name_week(request=request,
                                                 form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, 'Booking x Week')
+        self.assertContains(page, 'Booking')
 
     def test_form_is_valid(self):
         start_date = datetime.now().date()
@@ -348,7 +348,7 @@ class TestSearchBookingQuery(TestCase):
         request = factory.post('/booking/searchbookingg', parameters)
         page = search_booking_room_period(request=request, form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, "Room x Period")
+        self.assertContains(page, "Room")
         parameters = {'search_options': 'opt_day_room',
                       'building_name': building_name,
                       'room_name': room_name,
@@ -394,7 +394,7 @@ class TestSearchBookingForm(TestCase):
         request = factory.post('/booking/searchbookingg/', parameters)
         page = search_booking_building_day(request=request, form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, 'Building x Day')
+        self.assertContains(page, 'Occupation')
 
 
 class ValidationTest(TestCase):

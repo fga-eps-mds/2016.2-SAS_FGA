@@ -1,11 +1,12 @@
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import BookingForm, SearchBookingForm
-from .models import Booking, BookTime, Place, Building
+from booking.forms import BookingForm, SearchBookingForm
+from booking.models import Booking, BookTime, Place, Building
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from sas.decorators.decorators import required_to_be_admin
 from sas.views import index
+from django.views import View
 from datetime import datetime, timedelta
 import operator
 from collections import OrderedDict
@@ -16,26 +17,6 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 HOURS = [(6, "06-08"), (8, "08-10"), (10, "10-12"), (12, "12-14"),
          (14, "14-16"), (16, "16-18"), (18, "18-20"), (20, "20-22"),
          (22, ("22-00"))]
-
-
-def search_booking_query(request):
-    form_booking = SearchBookingForm()
-    if request.method == "POST":
-        form_booking = SearchBookingForm(request.POST)
-        option = request.POST.get('search_options')
-        if not(form_booking.is_valid()):
-            return render(request, 'booking/searchBookingQuery.html',
-                          {'search_booking': form_booking})
-        elif(option == 'opt_day_room'):
-            return (search_booking_day_room(request, form_booking))
-        elif(option == 'opt_booking_week'):
-            return (search_booking_booking_name_week(request, form_booking))
-        elif(option == 'opt_building_day'):
-            return (search_booking_building_day(request, form_booking))
-        else:
-            return (search_booking_room_period(request, form_booking))
-    return render(request, 'booking/searchBookingQuery.html',
-                  {'search_booking': form_booking})
 
 
 def search_booking_day_room(request, form_booking):
@@ -66,11 +47,9 @@ def search_booking_day_room(request, form_booking):
               formats.date_format(form_days[-1], "SHORT_DATE_FORMAT"))
 
     table_header = str(booking_place) + ": " + period
-
     return render(request, 'booking/template_table.html',
                   {'days': weekday, 'table': table, 'hours': HOURS,
-                   'n': n, 'name': "Room x Day", 'table_header': table_header})
-
+                   'n': n, 'name': _("Room's Week Timetable"), 'table_header': table_header})
 
 def search_booking_building_day(request, form_booking):
     form_day = form_booking.get_day()
@@ -101,35 +80,31 @@ def search_booking_building_day(request, form_booking):
 
     return render(request, 'booking/template_table.html',
                   {'days': places_, 'table': table, 'hours': HOURS,
-                   'n': n, 'name': "Building x Day",
+                   'n': n, 'name': _(' Occupation'),
                    'table_header': table_header})
-
 
 def search_booking_booking_name_week(request, form_booking):
     form_days = form_booking.days_list()
-    booking_name = form_booking["booking_name"].data
-    hours = [(6, "06-08"), (8, "08-10"), (10, "10-12"),
-             (12, "12-14"), (14, "14-16"), (16, "16-18"),
-             (18, "18-20"), (20, "20-22"), (22, ("22-00"))]
+    in_search_booking_name = form_booking["booking_name"].data
     n = len(form_days) + 1
 
     table = []
 
     for form_day in form_days:
         aux = []
-        bookings = Booking.objects.filter(time__date_booking=str(form_day))
+        bookings = Booking.objects.filter(time__date_booking=str(form_day),
+                                          name__contains=in_search_booking_name)
+        print(bookings)
         for booking in bookings:
-            if (booking.name == booking_name and booking.status > 1):
-                book = booking.time.get(date_booking=str(form_day))
-                aux_tuple = (book.start_hour.hour, booking)
-                aux.append(aux_tuple)
+            book = booking.time.get(date_booking=str(form_day))
+            aux_tuple = (book.start_hour.hour, booking)
+            aux.append(aux_tuple)
 
         table.append(aux)
 
     return render(request, 'booking/template_table.html',
                   {'days': form_days, 'table': table,
-                   'hours': hours, 'n': n, 'name': 'Booking x Week'})
-
+                   'hours': HOURS, 'n': n, 'name': _(' Booking')})
 
 def search_booking_room_period(request, form_booking):
     form_days = form_booking.days_list()
@@ -157,35 +132,69 @@ def search_booking_room_period(request, form_booking):
 
     return render(request, 'booking/template_table.html',
                   {'days': form_days, 'table': table, 'hours': HOURS,
-                   'n': n, 'name': "Room x Period",
+                   'n': n, 'name': _(' Room'),
                    'table_header': table_header})
 
+search_options = {'opt_day_room': search_booking_day_room,
+                  'opt_booking_week': search_booking_booking_name_week,
+                  'opt_building_day': search_booking_building_day,
+                  'opt_room_period': search_booking_room_period}
+
+class SearchBookingQueryView(View):
+    form_class = SearchBookingForm
+    template_name = 'booking/searchBookingQuery.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class
+        return render(request, self.template_name, {'search_booking': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            option = request.POST.get('search_options')
+            try:
+                return search_options[option](request, form)
+            except Exception as e:
+                messages.error(request, _('Invalid option'))
+                print(e)
+                traceback.print_exc()
+        return render(request, self.template_name, {'search_booking': form})
+
+# def search_booking_query(request):
+#     if request.method == "POST":
+#         form_booking = SearchBookingForm(request.POST)
+#         if form_booking.is_valid():
+#             option = request.POST.get('search_options')
+#             try:
+#                 return search_options[option](request, form_booking)
+#             except:
+#                 messages.error(request, _('Invalid option'))
+#     else:
+#         form_booking = SearchBookingForm()
+#     return render(request, 'booking/searchBookingQuery.html',
+#                   {'search_booking': form_booking})
 
 def next(skip, aux_rows):
     for i in range(skip):
         aux_rows.append(" ")
     return aux_rows
 
-
+@login_required(login_url='/?showLoginModal=yes')
 def new_booking(request):
-    if request.user.is_authenticated():
-        if request.method == "POST":
-            form_booking = BookingForm(request.POST)
-            if (form_booking.is_valid()):
-                booking = form_booking.save(request.user)
-                if booking:
-                    request.session['booking'] = booking.pk
-                    return render(request, 'booking/showDates.html',
-                                  {'booking': booking})
-                else:
-                    print(booking)
-                    messages.error(request, _("Booking already exists"))
-        else:
-            form_booking = BookingForm()
-        return render(request, 'booking/newBooking.html',
-                      {'form_booking': form_booking})
+    if request.method == "POST":
+        form_booking = BookingForm(request.POST)
+        if (form_booking.is_valid()):
+            booking = form_booking.save(request.user)
+            if booking:
+                request.session['booking'] = booking.pk
+                return render(request, 'booking/showDates.html',
+                              {'booking': booking})
+            else:
+                messages.error(request, _("Booking alread exists"))
     else:
-        return redirect("index")
+        form_booking = BookingForm()
+    return render(request, 'booking/newBooking.html',
+                  {'form_booking': form_booking})
 
 
 def search_booking_table(request):
@@ -196,23 +205,15 @@ def search_booking_table(request):
             return render(request, 'booking/template_table.html',
                           {'form_booking': form_booking,
                            'bookings': bookings})
-        else:
-            return render(request, 'booking/searchBookingTable.html',
-                          {'form_booking': form_booking})
-    else:
-        form_booking = SearchBooking()
-        return render(request, 'booking/searchBookingTable.html',
-                      {'form_booking': form_booking})
+    form_booking = SearchBooking()
+    return render(request, 'booking/searchBookingTable.html',
+                  {'form_booking': form_booking})
 
-
+@login_required(login_url='/?showLoginModal=yes')
 def search_booking(request):
-    if request.user.is_authenticated():
-        bookings = Booking.objects.filter(user=request.user)
-        name = _("My Bookings")
-        return render(request, 'booking/searchBooking.html',
-                      {'bookings': bookings, 'name': name})
-    else:
-        return redirect("index")
+    bookings = Booking.objects.filter(user=request.user)
+    return render(request, 'booking/searchBooking.html',
+                  {'bookings': bookings})
 
 
 @login_required(login_url='/?showLoginModal=yes')
@@ -232,9 +233,9 @@ def pending_bookings(request):
         return render(request, 'booking/pendingBooking.html',
                       {'bookings': bookings, 'name': name})
 
-
+@login_required(login_url='/?showLoginModal=yes')
 def cancel_booking(request, id):
-    if request.user.is_authenticated() and request.session['booking']:
+    if request.session['booking']:
         id = int(id)
         if(id == request.session.get('booking')):
             request.session.pop('booking')
@@ -247,9 +248,9 @@ def cancel_booking(request, id):
     else:
         return redirect("index")
 
-
+@login_required(login_url='/?showLoginModal=yes')
 def confirm_booking(request, id):
-    if request.user.is_authenticated() and request.session.get('booking'):
+    if request.session.get('booking'):
         id = int(id)
         if id == request.session.get('booking'):
             request.session.pop('booking')

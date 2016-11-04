@@ -26,6 +26,8 @@ def check_tooltip(cell_table, id):
             aux = 1
             booking = book
     if aux == 1:
-        return booking.user.get_full_name()
+        return (booking.place.building.name +
+                ' - ' + booking.place.name +
+                ', ' + booking.user.get_full_name())
     else:
         return None
