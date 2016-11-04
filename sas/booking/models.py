@@ -154,6 +154,7 @@ class Booking(models.Model):
             choices = (new_choice,) + choices
         return choices
 
+
 class Validation():
 
     def hasNumbers(self, string):

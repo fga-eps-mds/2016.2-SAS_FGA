@@ -12,6 +12,12 @@ class Command(BaseCommand):
                             default=True,
                             help="it create user fixture")
 
+        parser.add_argument("--not-create-booking-fixture",
+                            dest="booking_fixtures",
+                            action="store_false",
+                            default=True,
+                            help="it create user fixture")
+
     def handle(self, *args, **options):
         output = super(Command, self).handle(*args, **options)
         if options["user_fixtures"]:
@@ -20,8 +26,11 @@ class Command(BaseCommand):
             call_command('loaddata', 'user/fixtures/user.json')
             call_command('loaddata', 'user/fixtures/users.json')
             call_command('loaddata', 'user/fixtures/userprofile.json')
-        call_command('loaddata', 'booking/fixtures/buildings.json')
-        call_command('loaddata', 'booking/fixtures/places.json')
-        call_command('loaddata', 'booking/fixtures/bookTimes.json')
-        call_command('loaddata', 'booking/fixtures/bookings.json')
+
+        if options["booking_fixtures"]:
+            call_command('loaddata', 'booking/fixtures/buildings.json')
+            call_command('loaddata', 'booking/fixtures/places.json')
+            call_command('loaddata', 'booking/fixtures/bookTimes.json')
+            call_command('loaddata', 'booking/fixtures/bookings.json')
+
         return output

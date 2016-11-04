@@ -43,14 +43,19 @@ class Command(BaseCommand):
             path_migrations = os.path.join(settings.BASE_DIR,
                                            app, "migrations")
             path_app = os.path.join(settings.BASE_DIR, app)
-            if (os.path.isdir(path_migrations)):
+            if os.path.isdir(path_migrations):
+                self.stdout.write("It is going to remove %s" % path_migrations)
                 output = call(["rm", "-r", path_migrations], stderr=STDOUT)
 
-            if (os.path.isdir(path_app)):
-                self.stdout.write("It will create migrations %s %s %s %s" %
-                                  ("python", self.manage_path(),
-                                   "makemigrations", app))
-                call_command('makemigrations', app)
+            if os.path.isdir(path_app):
+                msg = "It will create migrations \
+                      {0} {1} {2} {3}".format("python",
+                                              self.manage_path(),
+                                              "makemigrations",
+                                              app)
+                self.stdout.write(msg)
+                output = call(["python", self.manage_path(),
+                               "makemigrations", app], stderr=STDOUT)
 
     def handle(self, *args, **options):
         self.stdout.write("Prepare command")
