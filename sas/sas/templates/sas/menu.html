@@ -37,7 +37,7 @@
                            <li class="user-menu-info"><a href="{% url 'booking:allbookings' %}">
                              <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                             {% trans "View All Bookings" %}</a></li>
-                           <li class="user-menu-info"><a href="#">
+                           <li class="user-menu-info"><a href="{% url 'booking:pendingbookings' %}">
                              <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             {% trans "Requests" %}</a></li>
                            <li role="separator" class="divider"></li>

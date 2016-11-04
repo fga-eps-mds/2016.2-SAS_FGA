@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-17 16:49-0200\n"
+"POT-Creation-Date: 2016-10-28 22:47-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: user/forms.py:13 user/forms.py:76
+#: user/forms.py:13 user/forms.py:77
 msgid "Email:"
 msgstr "Email:"
 
-#: user/forms.py:16 user/forms.py:35 user/forms.py:81
+#: user/forms.py:16 user/forms.py:35 user/forms.py:83
 msgid "Password:"
 msgstr "Senha:"
 
@@ -32,9 +32,9 @@ msgstr "Email ou senha inválidos"
 
 #: user/forms.py:38
 msgid "New Password:"
-msgstr "Nova senha"
+msgstr "Nova senha:"
 
-#: user/forms.py:41 user/forms.py:85
+#: user/forms.py:41 user/forms.py:87
 msgid "Repeat Password:"
 msgstr "Repetir Senha:"
 
@@ -43,75 +43,93 @@ msgid "Current password is wrong"
 msgstr "Senha atual incorreta"
 
 #: user/forms.py:64
-msgid "Passwords do not match"
+msgid ""
+"Passwords                                                          do not "
+"match"
 msgstr "Senhas não conferem"
 
-#: user/forms.py:73
+#: user/forms.py:74
 msgid "Name:"
 msgstr "Nome:"
 
-#: user/forms.py:78
-msgid "Email address must be in a valid format."
+#: user/forms.py:79
+msgid ""
+"Email address must                                        be in a valid "
+"format."
 msgstr "Email precisa estar em formato válido."
 
-#: user/forms.py:89
+#: user/forms.py:91
 msgid "Registration number:"
 msgstr "Matrícula:"
 
-#: user/forms.py:91
+#: user/forms.py:93
 msgid "Category:"
 msgstr "Categoria"
 
-#: user/forms.py:119
+#: user/forms.py:124
 msgid "Email already used"
 msgstr "Email já está sendo utilizado"
 
-#: user/forms.py:125
-msgid "Name must be between 2 and 50 characters."
+#: user/forms.py:130
+msgid ""
+"Name must be                                                between 2 "
+"and                                                50 characters."
 msgstr "Nome precisa conter entre 2 e 50 caracteres."
 
-#: user/forms.py:128
-msgid "Name cannot contain special characters."
+#: user/forms.py:135
+msgid ""
+"Name cannot                                                contain "
+"special                                                characters."
 msgstr "Nome não pode conter caracteres especiais."
 
-#: user/forms.py:131
-msgid "Name cannot contain numbers."
+#: user/forms.py:140
+msgid ""
+"Name cannot                                                contain numbers."
 msgstr "Nome não pode conter números."
 
-#: user/forms.py:156
-msgid "Password must be between 6 and 15 characters."
-msgstr "Senha precisa conter entre 6 e 15 caracteres"
+#: user/forms.py:166
+msgid ""
+"Password must be                                                    between "
+"6 and 15                                                    characters."
+msgstr "Senha precisa conter entre 6 e 15 caracteres."
 
-#: user/forms.py:159
-msgid "Passwords do not match."
-msgstr "Senhas não conferem"
+#: user/forms.py:171
+msgid ""
+"Passwords do                                                           not "
+"match."
+msgstr "Senhas não conferem."
 
-#: user/models.py:6
+#: user/models.py:7
 msgid "Student"
 msgstr "Estudante"
 
-#: user/models.py:7
+#: user/models.py:8
 msgid "Teaching Staff"
 msgstr "Professor"
 
-#: user/models.py:7
+#: user/models.py:8
 msgid "Employees"
 msgstr "Funcionários"
 
-#: user/models.py:11
+#: user/models.py:14
 msgid "Registration Number already used."
 msgstr "Matrícula já em uso"
 
-#: user/models.py:34
-msgid "Registration number must have 9 digits."
+#: user/models.py:42
+msgid ""
+"Registration number                                       must have 9 digits."
 msgstr "Matrícula precisa conter 9 dígitos"
 
-#: user/models.py:37
-msgid "Registration number cannot contain letters."
+#: user/models.py:47
+msgid ""
+"Registration number                                       cannot contain "
+"letters."
 msgstr "Matrícula não poder conter letras"
 
-#: user/models.py:40
-msgid "Registration number cannot contain special characters."
+#: user/models.py:52
+msgid ""
+"Registration number                                       cannot contain "
+"special characters."
 msgstr "Matrícula não pode conter caracteres especiais."
 
 #: user/templates/user/editUser.html:5
@@ -143,107 +161,200 @@ msgstr "Novo Usuário"
 msgid "Register"
 msgstr "Registrar"
 
-#: user/views.py:18
-msgid "You have been registered"
-msgstr "Você foi registrado"
+#: user/templates/user/searchUser.html:13
+#: user/templates/user/searchUser.html:17
+msgid "Users"
+msgstr "Usuários"
 
-#: user/views.py:35
+#: user/templates/user/searchUser.html:23
+#: user/templates/user/searchUser.html:54
+msgid "Name"
+msgstr "Nome:"
+
+#: user/templates/user/searchUser.html:24
+#: user/templates/user/searchUser.html:55
+msgid "Registration Number"
+msgstr "Matrícula"
+
+#: user/templates/user/searchUser.html:25
+#: user/templates/user/searchUser.html:56
+msgid "Category"
+msgstr "Categoria"
+
+#: user/templates/user/searchUser.html:26
+#: user/templates/user/searchUser.html:57
+msgid "Type"
+msgstr "Tipo"
+
+#: user/templates/user/searchUser.html:27
+#: user/templates/user/searchUser.html:45
+#: user/templates/user/searchUser.html:58
+#: user/templates/user/searchUser.html:76
+msgid "Make an Admin"
+msgstr "Tornar Administrador"
+
+#: user/templates/user/searchUser.html:69
+msgid "Confirm making user an admin"
+msgstr "Confirmar usuário como administrador"
+
+#: user/templates/user/searchUser.html:72
+msgid "Are you sure you want to make this user an admin?"
+msgstr "Tem certeza que deseja tornar este usuário administrador?"
+
+#: user/templates/user/searchUser.html:77
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: user/templatetags/user_extras.py:19
+msgid "Admin"
+msgstr "Administrador"
+
+#: user/templatetags/user_extras.py:21
+msgid "Academic User"
+msgstr "Usuário Corpo Acadêmico"
+
+#: user/views.py:21
+msgid "You have been registered"
+msgstr "Você foi cadastrado"
+
+#: user/views.py:38
 msgid "Your data has been updated"
 msgstr "Seus dados foram atualizados"
 
-#: user/views.py:73
+#: user/views.py:76
 msgid "You have been logged out successfully!"
 msgstr "Logout efetuado com sucesso!"
 
-#: user/views.py:92
+#: user/views.py:95
 msgid "Your password has been changed"
 msgstr "Sua senha foi modificada"
 
-#~ msgid "Message"
-#~ msgstr "Mensagem"
+#: user/views.py:121 user/views.py:124
+msgid "User "
+msgstr "Usuário "
 
-#~ msgid "Important"
-#~ msgstr "Importante"
+#: user/views.py:127
+msgid "User not found."
+msgstr "Usuário não encontrado."
 
-#~ msgid "Close"
-#~ msgstr "Fechar"
+msgid "Book a Place"
+msgstr "Reservar"
 
-#~ msgid "Contact"
-#~ msgstr "Contato"
+msgid "View All Bookings"
+msgstr "Todas as reservas"
 
-#~ msgid "Telephone"
-#~ msgstr "Telefone"
+msgid "Requests"
+msgstr "Solicitações"
 
-#~ msgid "Welcome"
-#~ msgstr "Bem-vindo"
+msgid "secretary"
+msgstr "secretaria"
 
-#~ msgid "Rooms Allocation System"
-#~ msgstr "Sistema de Alocação de Salas"
+msgid "board"
+msgstr "direção"
 
-#~ msgid ""
-#~ "Booking rooms, auditoriums and laboratories for teachers, students <br> "
-#~ "and all the academic body of the university"
-#~ msgstr ""
-#~ "Reserva de salas, auditórios e laboratórios para professores, estudantes "
-#~ "<br> e todo corpo acadêmico da universidade"
+msgid "Passwords do not match"
+msgstr "Senhas não conferem"
 
-#~ msgid "Homepage"
-#~ msgstr "Página inicial"
+msgid "Name must be between 2 and 50 characters."
+msgstr "Nome precisa conter entre 2 e 50 caracteres."
 
-#~ msgid "Remember me"
-#~ msgstr "Lembrar"
+msgid "Name cannot contain special characters."
+msgstr "Nome não pode conter caracteres especiais."
 
-#~ msgid "Sign In"
-#~ msgstr "Entrar"
+msgid "Name cannot contain numbers."
+msgstr "Nome não pode conter números."
 
-#~ msgid "Forgot Password"
-#~ msgstr "Esqueci a senha"
+msgid "Password must be between 6 and 15 characters."
+msgstr "Senha precisa conter entre 6 e 15 caracteres"
 
-#~ msgid "I'm not registered yet"
-#~ msgstr "Ainda não sou cadastrado"
+msgid "Passwords do not match."
+msgstr "Senhas não conferem"
 
-#~ msgid "Registered user can book"
-#~ msgstr "Usuários cadastrados podem reservar"
+msgid "Message"
+msgstr "Mensagem"
 
-#~ msgid " Laboratories"
-#~ msgstr " Laboratórios"
+msgid "Important"
+msgstr "Importante"
 
-#~ msgid " Auditoriums"
-#~ msgstr " Auditório"
+msgid "Close"
+msgstr "Fechar"
 
-#~ msgid " Rooms"
-#~ msgstr " Salas"
+msgid "Contact"
+msgstr "Contato"
 
-#~ msgid "Sign Up"
-#~ msgstr "Cadastro"
+msgid "Telephone"
+msgstr "Telefone"
 
-#~ msgid ""
-#~ "Type your email and an automatic message will be sent to it containing a "
-#~ "new password. This must be changed posteriorly."
-#~ msgstr ""
-#~ "Informe seu email e uma mensagem automática será enviada com uma nova "
-#~ "senha. Esta senha precisará ser modificada posteriormente."
+msgid "Welcome"
+msgstr "Bem-vindo"
 
-#~ msgid "Recover Password"
-#~ msgstr "Recuperar Senha"
+msgid "Rooms Allocation System"
+msgstr "Sistema de Alocação de Salas"
 
-#~ msgid "Home"
-#~ msgstr "Página inicial"
+msgid ""
+"Booking rooms, auditoriums and laboratories for teachers, students <br> "
+"and all the academic body of the university"
+msgstr ""
+"Reserva de salas, auditórios e laboratórios para professores, estudantes "
+"<br> e todo corpo acadêmico da universidade"
 
-#~ msgid "Search"
-#~ msgstr "Buscar"
+msgid "Homepage"
+msgstr "Página inicial"
 
-#~ msgid "Bookings"
-#~ msgstr "Reservas"
+msgid "Remember me"
+msgstr "Lembrar"
 
-#~ msgid "Hi"
-#~ msgstr "Olá"
+msgid "Sign In"
+msgstr "Entrar"
 
-#~ msgid "My Bookings"
-#~ msgstr "Minhas Reservas"
+msgid "Forgot Password"
+msgstr "Esqueci a senha"
 
-#~ msgid "Logout"
-#~ msgstr "Sair"
+msgid "I'm not registered yet"
+msgstr "Ainda não sou cadastrado"
 
-#~ msgid "Sign In | Sign Up"
-#~ msgstr "Entrar | Cadastrar"
+msgid "Registered user can book"
+msgstr "Usuários cadastrados podem reservar"
+
+msgid " Laboratories"
+msgstr " Laboratórios"
+
+msgid " Auditoriums"
+msgstr " Auditório"
+
+msgid " Rooms"
+msgstr " Salas"
+
+msgid "Sign Up"
+msgstr "Cadastro"
+
+msgid ""
+"Type your email and an automatic message will be sent to it containing a "
+"new password. This must be changed posteriorly."
+msgstr ""
+"Informe seu email e uma mensagem automática será enviada com uma nova "
+"senha. Esta senha precisará ser modificada posteriormente."
+
+msgid "Recover Password"
+msgstr "Recuperar Senha"
+
+msgid "Home"
+msgstr "Página inicial"
+
+msgid "Search"
+msgstr "Pesquisar"
+
+msgid "Bookings"
+msgstr "Reservas"
+
+msgid "Hi"
+msgstr "Olá"
+
+msgid "My Bookings"
+msgstr "Minhas Reservas"
+
+msgid "Logout"
+msgstr "Sair"
+
+msgid "Sign In | Sign Up"
+msgstr "Entrar | Cadastrar"

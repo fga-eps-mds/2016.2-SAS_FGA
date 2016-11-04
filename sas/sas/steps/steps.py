@@ -46,8 +46,10 @@ def click_on_element_by_value(step, value, typeelement):
         raise AssertionError("Element not found.")
     text.click()
 
+
+
 @step(r'I register the user "(.*)" with the password "(.*)" and registration number "(.*)"')
-def register_user(step, username, password, registration_number):
+def register_user(step, username, password,registration_number):
     user = UserProfile()
     user.user = User()
     user.registration_number = registration_number
@@ -68,27 +70,27 @@ def register_user(step, username, password, registration_number, category):
     user.user.first_name = "Usuário"
     user.user.set_password(password)
     user.save()
-    user.make_as_academic_staff()
-    for number, category_type in CATEGORY:
+    user.make_as_academic_staff() 
+    for number,category_type in CATEGORY:
         if category_type == category:
             user.category = number
     user.save()
 
 @step(r'I register an admin with email "(.*)" and password "(.*)" and registration number "(.*)" and category "(.*)"')
-def register_user(step, username, password, registration_number, category):
-    user = UserProfile()
-    user.user = User()
-    user.registration_number = registration_number
-    user.user.email = username
-    user.user.username = username
-    user.user.first_name = "Usuário"
-    user.user.set_password(password)
-    user.save()
-    for number, category_type in CATEGORY:
-        if category_type == category:
-            user.category = number
-    user.make_as_admin()
-    user.save()
+def register_admin(step, username, password, registration_number, category):
+	user = UserProfile()
+	user.user = User()
+	user.registration_number = registration_number
+	user.user.email = username
+	user.user.username = username
+	user.user.first_name = "Usuário"
+	user.user.set_password(password)
+	user.save()
+	for number,category_type in CATEGORY:
+		if category_type == category:
+			user.category = number
+	user.make_as_admin()
+	user.save()
 
 @step(r'I register the booking "(.*)" with the building "(.*)" with the place name "(.*)" and start_date "(.*)" and end_date "(.*)" of user "(.*)"')
 def new_booking(step, booking_name, building, place_name, start_date, end_date, username):

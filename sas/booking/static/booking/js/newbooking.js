@@ -1,35 +1,3 @@
-function Building(pk, name){
-    this.pk = pk;
-    this.name = name;
-
-
-    this.td_place = function(){
-        var begin = "<td class='place-span'><i class='glyphicon glyphicon-home'></i>&nbsp;";
-        var input = "<input type='hidden' value='" + this.pk + "' />";
-
-        var end = "</td>"
-        return begin + input + this.name + end;
-    }
-
-    this.all = function(){
-        var all = new Array()
-        $.getJSON("/buildings", function(data){
-            for(var i = 0; i < data.length; i++){
-                var p = new Building(data[i].pk, data[i].name);
-                all.push(p);
-            }
-        });
-        return all;
-    }
-
-}
-
-Building.all = function(){
-    var b = new Building();
-    return b.all();
-
-}
-
 var buildings = Building.all();
 
 
@@ -173,72 +141,54 @@ $(document).ready(function(){
 
     breadcrumbsadd(0);
 
+    var booking = new Booking();
     $('#booking-name-error').css('display', 'none');
     $("#next-date").click(function(){
-        if($('#name_of_booking').val() == '') {
-            $('#booking-name-error').css('display', 'block');
-            $('#booking-name-error').html('Booking name cannot be empty');
+        if(!booking.check_name_element($("#name_of_booking"))){
+            return 0;
         }
+        $("#page1").hide();
+        $("#page2").show();
+        $("#page3").hide();
+        $("#page4").hide();
+        $("#page5").hide();
 
-        else {
-            $("#page1").hide();
-            $("#page2").show();
-            $("#page3").hide();
-            $("#page4").hide();
-            $("#page5").hide();
-
-            $('#booking-name-error').css('display', 'none');
-            breadcrumbsadd(1);
-        }
+        breadcrumbsadd(1);
     });
 
     $('#booking-period-error').css('display', 'none');
     $("#next-building").click(function(){
-        console.log($('#id_one_day_date').val());
-        console.log($.datepicker.formatDate('mm/dd/yy', new Date()));
-        console.log(parseInt($("#slider_end_time").slider("value")));
-        console.log(parseInt($("#slider_begin_time").slider("value")));
-
-        if($('#id_one_day_date').val() >= $.datepicker.formatDate('mm/dd/yy', new Date()) ||
-            (parseInt($("#slider_end_time").slider("value"))) > (parseInt($("#slider_begin_time").slider("value")))) {
-
-            $("#page1").hide();
-            $("#page2").hide();
-            $("#page3").show();
-            $("#page4").hide();
-            $("#page5").hide();
-            $("#booking-buildings").find(".place-span").remove();
-
-            $('#booking-period-error').css('display', 'none');
-            breadcrumbsadd(2);
-
-            for(var i = 0; i < buildings.length; i++){
-                var b = buildings[i];
-
-                if(i % 3 == 0){
-                    var text = "<tr>" + b.td_place() + "</tr";
-                    $('#booking-buildings tr:last').after(text);
-                }
-
-                else{
-                    $('#booking-buildings td:last').after(b.td_place());
-                }
+        if($('input[name=times]:checked', '#page2').val() == "interval"){
+            if(!booking.check_date($("#id_start_date")) || !booking.check_date($("#id_end_date"))){
+            }
+        }else{
+            if(!booking.check_date($("#id_one_day_date"))){
             }
         }
 
-        else {
-            $('#booking-period-error').css('display', 'block');
+        $("#page1").hide();
+        $("#page2").hide();
+        $("#page3").show();
+        $("#page4").hide();
+        $("#page5").hide();
+        $("#booking-buildings").find(".place-span").remove();
 
-            if($('#id_one_day_date').val() >= $.datepicker.formatDate('yy/mm/dd', new Date())) {
+        $('#booking-period-error').css('display', 'none');
+        breadcrumbsadd(2);
 
-                $('#booking-period-error').html('Date has to be bigger or equal to current date');
+        for(var i = 0; i < buildings.length; i++){
+            var b = buildings[i];
+
+            if(i % 3 == 0){
+                var text = "<tr>" + b.td_place() + "</tr";
+                $('#booking-buildings tr:last').after(text);
             }
 
-            else {
-                $('#booking-period-error').html('End date has to be bigger than start date');
+            else{
+                $('#booking-buildings td:last').after(b.td_place());
             }
         }
-    });
+     });
 
     $("#next-place").click(function(){
         //TODO: get the id of building

@@ -1,0 +1,139 @@
+{% extends 'sas/base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 staticfiles %}
+{% bootstrap_messages %}
+
+{% block extrastyle %}
+  <link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.css" %}">
+  <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css" %}">
+  <link rel="stylesheet" href="{% static "plugins/datatables/extensions/Responsive/css/dataTables.responsive.css" %}">
+{% endblock %}
+
+{% block title %}{% trans "Pending Bookings" %}{% endblock %}
+{% block content %}
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1 col-sm-offset-1">
+      <h1 class="text-center">{{ name }}</h1>
+      <hr class="star-light">
+      <div>
+        <table id="my_bookings" class="table table-striped table-bordered " cellspacing="0" width="100%">
+            <thead>
+              <tr>
+                <th>{% trans "Status" %}</th>
+                <th>{% trans "Name" %}</th>
+                <th>{% trans "Place" %}</th>
+                <th>{% trans "Period" %}</th>
+                <th>{% trans "Date and Time" %}</th>
+                <th class="all">{% trans "Actions" %}</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for booking in bookings %}
+              <tr>
+                {% if booking.status == 0 %}
+                    <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+                {% endif %}
+                {% if booking.status == 1 %}
+                    <td><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></td>
+                {% endif %}
+                {% if booking.status == 2 %}
+                    <td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+                {% endif %}
+                <td>{{ booking.name }}</td>
+                <td>{{ booking.place.name }}</td>
+                <td class="text-center">{{ booking.start_date }}
+                  <br>{% trans " to " %}<br>
+                  {{ booking.end_date }}</td>
+                <td class="text-center">
+                  {% for time in booking.time.all|slice:":7" %}
+                        <strong>{{ time.date_booking|date:"D, d/M/Y" }}</strong><br>
+                        {{ time.start_hour|date:"H:i" }} {% trans " to " %}
+                        {{ time.end_hour|date:"H:i" }}<br><hr>
+                    {% endfor %}
+                    {% if booking.time.all|length > 7 %}
+                      <strong>...</strong>
+                    {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'booking:approvebooking' booking.id %}" class="btn btn-primary" id="approve-booking">
+                      <span class="	glyphicon glyphicon-ok" ></span> {% trans "Approve" %}
+                  </a>
+                    <br><br>
+                    <a href="{% url 'booking:denybooking' booking.id %}" class="btn btn-primary" id="deny-booking">
+                        <span class="glyphicon glyphicon-remove" ></span> {% trans "Deny" %}
+                    </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>{% trans "Status" %}</th>
+              <th>{% trans "Name" %}</th>
+              <th>{% trans "Place" %}</th>
+              <th>{% trans "Period" %}</th>
+              <th>{% trans "Date and Time" %}</th>
+                <th class="all">{% trans "Actions" %}</th>
+            </tr>
+          </tfoot>
+        </table>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extrajs %}
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/extensions/Responsive/js/responsive.bootstrap.min.js' %}"></script>
+<!-- page script -->
+<script>
+  $(function () {
+
+    var table = $('#my_bookings').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "language": {
+                "url": "{% static 'plugins/datatables/Portuguese-Brasil.json' %}"
+      }
+    });
+
+    // Apply the filtering
+    table.columns().every( function () {
+        var that = this;
+
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
+
+    new $.fn.dataTable.Responsive(table, {
+      details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        var closing = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                        return '<h2><i class="fa fa-fw fa-calendar-check-o"></i> Detalhes'+closing+'</h2>';
+                    }
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                } )
+            }
+    } );
+  });
+
+</script>
+{% endblock %}

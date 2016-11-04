@@ -17,13 +17,9 @@ from booking.forms import BookingForm, SearchBookingForm
 from dateutil import parser
 from booking.views import search_booking_room_period
 from django.db.models import Q
-
-
-class TestBookTime(TestCase):
-    def test_get_str_weekday(self):
-        book = BookTime()
-        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
-        self.assertEqual(book.get_str_weekday(), "Wednesday")
+from booking.factories import BookTimeFactory, BookingFactory
+from booking.views import approve_booking
+from booking.views import deny_booking
 
 
 class TestSearchBookingQuery(TestCase):
@@ -216,19 +212,6 @@ class TestNewBooking(TestCase):
         self.assertTrue(form.is_valid())
 
 
-class TestBookTime(TestCase):
-
-    def test_get_str_weekday(self):
-        book = BookTime()
-        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
-        self.assertEqual(book.get_str_weekday(), "Wednesday")
-
-    def test_get_str_weekday(self):
-        book = BookTime()
-        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
-        self.assertEqual(book.get_str_weekday(), "Wednesday")
-
-
 class TestSearchBooking(TestCase):
 
     def setUp(self):
@@ -257,7 +240,7 @@ class TestSearchBooking(TestCase):
         page = search_booking_booking_name_week(request=request,
                                                 form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, 'Booking x Week')
+        self.assertContains(page, 'Booking')
 
     def test_search_booking_post_not_valid(self):
         client = self.client
@@ -298,7 +281,7 @@ class TestSearchBookingQuery(TestCase):
         request = factory.post('/booking/searchbookingg', parameters)
         page = search_booking_day_room(request=request, form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, "Room x Day")
+        self.assertContains(page, "Timetable")
 
     def test_search_booking_booking_name_week(self):
         factory = self.factory
@@ -318,7 +301,7 @@ class TestSearchBookingQuery(TestCase):
         page = search_booking_booking_name_week(request=request,
                                                 form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, 'Booking x Week')
+        self.assertContains(page, 'Booking')
 
     def test_form_is_valid(self):
         start_date = datetime.now().date()
@@ -365,7 +348,7 @@ class TestSearchBookingQuery(TestCase):
         request = factory.post('/booking/searchbookingg', parameters)
         page = search_booking_room_period(request=request, form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, "Room x Period")
+        self.assertContains(page, "Room")
         parameters = {'search_options': 'opt_day_room',
                       'building_name': building_name,
                       'room_name': room_name,
@@ -411,4 +394,144 @@ class TestSearchBookingForm(TestCase):
         request = factory.post('/booking/searchbookingg/', parameters)
         page = search_booking_building_day(request=request, form_booking=form)
         self.assertEqual(page.status_code, 200)
-        self.assertContains(page, 'Building x Day')
+        self.assertContains(page, 'Occupation')
+
+
+class ValidationTest(TestCase):
+    def setUp(self):
+        self.validation = Validation()
+
+    # True validations
+    def test_has_numbers(self):
+        self.assertEqual(self.validation.hasNumbers('Test123'), True)
+
+    def test_has_letters(self):
+        self.assertEqual(self.validation.hasLetters('123Test'), True)
+
+    def test_has_special_characters(self):
+        self.assertEqual(self.validation.hasSpecialCharacters('#Test'), True)
+
+    # False validations
+    def test_has_no_numbers(self):
+        self.assertEqual(self.validation.hasNumbers('Test Test'), None)
+
+    def test_has_no_letters(self):
+        self.assertEqual(self.validation.hasLetters('123456'), None)
+
+    def test_has_no_special_characters(self):
+        self.assertEqual(self.validation.hasSpecialCharacters('Other'), None)
+
+
+class BuildingTest(TestCase):
+
+    def setUp(self):
+        self.building = Building()
+
+    def test_set_name(self):
+        name = "Minhocão"
+        self.building.name = name
+        name_size = len(name)
+        building_name_size = len(self.building.name)
+        self.assertEqual(building_name_size, name_size)
+
+    def test_str(self):
+        self.building.name = "Minhocão"
+        self.assertEqual(self.building.__str__(), "Minhocão")
+
+
+class PlaceTest(TestCase):
+
+    def setUp(self):
+        self.place = Place()
+
+    def test_set_name(self):
+        self.place.name = "Sala 2"
+        self.assertEqual(self.place.__str__(), "Sala 2")
+
+
+class BookingTimeTest(TestCase):
+
+    def setUp(self):
+        self.bookingtime = BookTimeFactory.create()
+
+    def test_add_days(self):
+        booking_time_add = self.bookingtime.date_booking + timedelta(days=1)
+        self.bookingtime.add_days(1)
+        self.assertEqual(self.bookingtime.date_booking, booking_time_add)
+
+    def test_range_days(self):
+        booking2 = self.bookingtime.date_booking
+        self.bookingtime.add_days(1)
+        booking1 = self.bookingtime.date_booking
+        date_ranges = date_range(booking2, booking1)
+        self.assertEqual(len(date_ranges), 2)
+
+    def test_next_week_day_with_diff_more_than_zero(self):
+        date_booking = self.bookingtime.date_booking + timedelta(days=6)
+        nr_weekday = self.bookingtime.date_booking.weekday() - 1
+        self.bookingtime.next_week_day(nr_weekday=nr_weekday)
+        self.assertEqual(date_booking, self.bookingtime.date_booking)
+
+    def test_next_week_day_with_diff_less_than_zero(self):
+        date_booking = self.bookingtime.date_booking + timedelta(days=1)
+        nr_weekday = self.bookingtime.date_booking.weekday() + 1
+        self.bookingtime.next_week_day(nr_weekday=nr_weekday)
+        self.assertEqual(date_booking, self.bookingtime.date_booking)
+
+    def test_next_week_day_with_diff_equals_zero(self):
+        date_booking = self.bookingtime.date_booking + timedelta(days=7)
+        nr_weekday = self.bookingtime.date_booking.weekday()
+        self.bookingtime.next_week_day(nr_weekday=nr_weekday)
+        self.assertEqual(date_booking, self.bookingtime.date_booking)
+
+    def test_get_str_weekday(self):
+        book = BookTime()
+        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
+        self.assertEqual(book.get_str_weekday(), "Wednesday")
+
+
+class PendingBookingTest(TestCase):
+    def setUp(self):
+        self.booking = BookingFactory.create()
+        self.booking.place.is_laboratory = True
+        self.booking.save()
+        self.factory = RequestFactory()
+        self.userprofile = UserProfileFactory.create()
+        self.userprofile.make_as_admin()
+        self.userprofile.user.set_password('123456')
+        self.userprofile.save()
+        self.client = Client()
+        self.username = self.userprofile.user.username
+
+    def test_update_status(self):
+        self.booking.update_status(status=0)
+        status = self.booking.status
+        self.assertEqual(status, 0)
+
+    def test_approve_booking(self):
+        self.client.login(username=self.username,
+                          password='123456')
+        url = reverse('booking:approvebooking', args=(self.booking.id,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking Approved!')
+
+    def test_view_approve_invalid_booking(self):
+        pk = self.booking.pk + 10000
+        self.client.login(username=self.username, password='123456')
+        url = reverse('booking:approvebooking', args=(pk,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
+
+    def test_view_deny_booking(self):
+        pk = self.booking.pk
+        self.client.login(username=self.username, password='123456')
+        url = reverse('booking:denybooking', args=(pk,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking Denied!')
+
+    def test_view_deny_invalid_booking(self):
+        pk = self.booking.pk + 10000
+        self.client.login(username=self.username, password='123456')
+        url = reverse('booking:denybooking', args=(pk,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
