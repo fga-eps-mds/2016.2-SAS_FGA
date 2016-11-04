@@ -1,4 +1,5 @@
 from django import template
+from datetime import timedelta
 
 register = template.Library()
 
@@ -27,3 +28,27 @@ def check_table(cell_table, id):
    	    return booking.name
     else:
         return None
+
+@register.filter(name='aux_search_date')
+def aux_search_date(days,n):
+    return days,n
+
+@register.filter(name='search_date')
+def search_date(daysn,count):
+    days, n = daysn
+
+    if count < n:        
+        return days[count]
+
+@register.filter(name='search_hour')
+def search_hour(id,option):
+    
+    if option == 0:
+        time = timedelta(hours=id)
+    else:
+        if id == 22:
+            time = timedelta(hours=id+2) - timedelta(days=1)
+        else:
+            time = timedelta(hours=id+2)        
+
+    return time
