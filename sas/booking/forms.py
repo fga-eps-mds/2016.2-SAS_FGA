@@ -15,7 +15,7 @@ import traceback
 
 class SearchBookingForm(forms.Form):
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(SearchBookingForm, self).__init__(*args, **kwargs)
         self.fields['booking_name'] = forms.ChoiceField(
             choices=Booking.get_bookings(),
@@ -35,7 +35,7 @@ class SearchBookingForm(forms.Form):
                                        choices=SEARCH_CHOICES,
                                        widget=forms.RadioSelect())
 
-    
+
     building_name = forms.ModelChoiceField(
         queryset=Building.objects,
         label=_('Building:'), required=False,

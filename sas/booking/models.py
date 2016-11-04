@@ -141,11 +141,9 @@ class Booking(models.Model):
     def get_bookings():
         bookings = Booking.objects.values('name').distinct()
         choices = ()
-        print("TRYING")
         for booking in bookings:
             new_choice = (booking['name'], booking['name'])
             choices = (new_choice,) + choices
-            print(choices)
         return choices
 
 class Validation():
