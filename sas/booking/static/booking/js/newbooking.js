@@ -172,36 +172,70 @@ $(document).ready(function(){
     });
 
     breadcrumbsadd(0);
-    $("#next-date").click(function(){
-        $("#page1").hide();
-        $("#page2").show();
-        $("#page3").hide();
-        $("#page4").hide();
-        $("#page5").hide();
 
-        breadcrumbsadd(1);
+    $('#booking-name-error').css('display', 'none');
+    $("#next-date").click(function(){
+        if($('#name_of_booking').val() == '') {
+            $('#booking-name-error').css('display', 'block');
+            $('#booking-name-error').html('Booking name cannot be empty');
+        }
+
+        else {
+            $("#page1").hide();
+            $("#page2").show();
+            $("#page3").hide();
+            $("#page4").hide();
+            $("#page5").hide();
+
+            $('#booking-name-error').css('display', 'none');
+            breadcrumbsadd(1);
+        }
     });
 
+    $('#booking-period-error').css('display', 'none');
     $("#next-building").click(function(){
-        $("#page1").hide();
-        $("#page2").hide();
-        $("#page3").show();
-        $("#page4").hide();
-        $("#page5").hide();
-        $("#booking-buildings").find(".place-span").remove();
+        console.log($('#id_one_day_date').val());
+        console.log($.datepicker.formatDate('mm/dd/yy', new Date()));
+        console.log(parseInt($("#slider_end_time").slider("value")));
+        console.log(parseInt($("#slider_begin_time").slider("value")));
 
-        breadcrumbsadd(2);
+        if($('#id_one_day_date').val() >= $.datepicker.formatDate('mm/dd/yy', new Date()) ||
+            (parseInt($("#slider_end_time").slider("value"))) > (parseInt($("#slider_begin_time").slider("value")))) {
 
-        for(var i = 0; i < buildings.length; i++){
-            var b = buildings[i];
+            $("#page1").hide();
+            $("#page2").hide();
+            $("#page3").show();
+            $("#page4").hide();
+            $("#page5").hide();
+            $("#booking-buildings").find(".place-span").remove();
 
-            if(i % 3 == 0){
-                var text = "<tr>" + b.td_place() + "</tr";
-                $('#booking-buildings tr:last').after(text);
+            $('#booking-period-error').css('display', 'none');
+            breadcrumbsadd(2);
+
+            for(var i = 0; i < buildings.length; i++){
+                var b = buildings[i];
+
+                if(i % 3 == 0){
+                    var text = "<tr>" + b.td_place() + "</tr";
+                    $('#booking-buildings tr:last').after(text);
+                }
+
+                else{
+                    $('#booking-buildings td:last').after(b.td_place());
+                }
+            }
+        }
+
+        else {
+            $('#booking-period-error').css('display', 'block');
+
+            if($('#id_one_day_date').val() >= $.datepicker.formatDate('yy/mm/dd', new Date())) {
+
+                $('#booking-period-error').html('Date has to be bigger or equal to current date');
             }
 
-            else{
-                $('#booking-buildings td:last').after(b.td_place());
+            else {
+                $('#booking-period-error').html('End date has to be bigger than start date');
             }
         }
     });
@@ -228,7 +262,7 @@ $(document).ready(function(){
         $("#page2").hide();
         $("#page3").hide();
         $("#page4").hide();
-        $("#page5").show();
+        $("#page5").hide();
         breadcrumbsadd(4);
 
         var building = $(".building-selected > input").attr("value");
@@ -256,6 +290,6 @@ $(document).ready(function(){
 
             }).done(function(result){
                 $("#page5").append(result);
-            });
+        });
     });
 });

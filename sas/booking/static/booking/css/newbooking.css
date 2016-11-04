@@ -23,7 +23,7 @@
 
 }
 #breadcrumbs{
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 
 #page2{
@@ -53,11 +53,18 @@
 #breadcrumbs{
     margin: 10px 0;
 }
+
+.glyphicon {
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
 ul.bread-crumbs {
-  margin: 0;
+  margin: 2em auto 3em auto;
   padding: 0;
   border: 0;
   overflow: hidden;
+  width: 90%;
   *zoom: 1;
 }
 ul.bread-crumbs li {
