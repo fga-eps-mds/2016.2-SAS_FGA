@@ -73,6 +73,7 @@ class BookTime(models.Model):
 class Booking(models.Model):
     user = models.ForeignKey(User, related_name="bookings",
                              on_delete=models.CASCADE)
+    responsible = models.CharField(max_length=100)
     time = models.ManyToManyField(BookTime, related_name="booking_time")
     place = models.ForeignKey(Place, related_name="booking_place")
     name = models.CharField(max_length=50)
@@ -153,16 +154,6 @@ class Booking(models.Model):
             new_choice = (booking['name'], booking['name'])
             choices = (new_choice,) + choices
         return choices
-
-
-class BookingUserRelation(models.Model):
-    booking = models.ForeignKey(Booking, related_name="booking",
-                                on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name="user",
-                             on_delete=models.CASCADE)
-    responsable = models.CharField(max_length=100)
-    responsable_fk = models.ForeignKey(User, related_name="responsable",
-                                        on_delete=models.CASCADE)
 
 
 class Validation():
