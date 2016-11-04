@@ -31,4 +31,5 @@ Scenario: Modal receives correct booking data
     Then I press "Search"
     Then I should see an element with id of "create-booking"
     Then I click on an element with id of "create-booking"
-    Then I should see "FGA-I1"
+    #Then I should see "6:00:00"
+    #Then I should see "8:00:00"
