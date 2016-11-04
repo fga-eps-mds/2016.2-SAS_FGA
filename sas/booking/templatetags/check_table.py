@@ -1,5 +1,5 @@
 from django import template
-from datetime import timedelta
+from datetime import timedelta,datetime
 
 register = template.Library()
 
@@ -36,9 +36,14 @@ def aux_search_date(days,n):
 @register.filter(name='search_date')
 def search_date(daysn,count):
     days, n = daysn
+    day = []
 
-    if count < n:        
-        return days[count]
+    if type(days) is list:
+        if count < n:        
+            return str(days[count])
+    else:
+        return str(days)        
+
 
 @register.filter(name='search_hour')
 def search_hour(id,option):
@@ -52,3 +57,20 @@ def search_hour(id,option):
             time = timedelta(hours=id+2)        
 
     return time
+
+@register.filter(name='search_place')
+def search_place(place,count):
+    
+    if str(type(place)) == "<class 'django.db.models.query.QuerySet'>":
+        return str(place[count].pk)
+    else:
+        return str(place.pk)        
+
+
+@register.filter(name='search_building')
+def search_building(place,count):
+    
+    if str(type(place)) == "<class 'django.db.models.query.QuerySet'>":
+        return str(place[count].building.pk)
+    else:
+        return str(place.building.pk)        
