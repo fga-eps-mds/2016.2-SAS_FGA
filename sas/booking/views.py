@@ -4,6 +4,7 @@ from booking.forms import BookingForm, SearchBookingForm
 from booking.models import Booking, BookTime, Place, Building
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from sas.decorators.decorators import required_to_be_admin
 from sas.views import index
 from django.views import View
 from datetime import datetime, timedelta
@@ -16,6 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 HOURS = [(6, "06-08"), (8, "08-10"), (10, "10-12"), (12, "12-14"),
          (14, "14-16"), (16, "16-18"), (18, "18-20"), (20, "20-22"),
          (22, ("22-00"))]
+
 
 def search_booking_day_room(request, form_booking):
     form_days = form_booking.week_day()
@@ -33,7 +35,8 @@ def search_booking_day_room(request, form_booking):
         aux = []
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
         for booking in bookings:
-            if (booking.place.name == booking_place.name):
+            if (booking.place.name == booking_place.name and
+                    booking.status > 1):
                 book = booking.time.get(date_booking=str(form_day))
                 aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
@@ -62,7 +65,7 @@ def search_booking_building_day(request, form_booking):
         aux = []
         bookings = Booking.objects.filter(time__date_booking=str(form_day))
         for booking in bookings:
-            if (booking.place.name == place.name):
+            if (booking.place.name == place.name and booking.status > 1):
 
                 book = booking.time.get(date_booking=str(form_day))
                 aux_tuple = (book.start_hour.hour, booking)
@@ -116,7 +119,8 @@ def search_booking_room_period(request, form_booking):
         aux = []
         bookings = Booking.objects.filter(time__date_booking=form_day)
         for booking in bookings:
-            if (booking.place.name == booking_place.name):
+            if (booking.place.name == booking_place.name and
+                    booking.status > 1):
                 book = booking.time.get(date_booking=str(form_day))
                 aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
@@ -211,13 +215,23 @@ def search_booking(request):
     return render(request, 'booking/searchBooking.html',
                   {'bookings': bookings})
 
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
 def all_bookings(request):
-    if request.user.profile_user.is_admin():
         bookings = Booking.objects.all()
+        name = _("All Bookings")
         return render(request, 'booking/searchBooking.html',
-                      {'bookings': bookings})
-    else:
-        return redirect("index")
+                      {'bookings': bookings, 'name': name})
+
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
+def pending_bookings(request):
+        bookings = Booking.objects.filter(status=1)
+        name = _("Pending Bookings")
+        return render(request, 'booking/pendingBooking.html',
+                      {'bookings': bookings, 'name': name})
 
 @login_required(login_url='/?showLoginModal=yes')
 def cancel_booking(request, id):
@@ -263,6 +277,31 @@ def delete_booking(request, id):
     except:
         messages.error(request, _('Booking not found.'))
     return search_booking(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
+def approve_booking(request, id):
+    try:
+        booking = Booking.objects.get(pk=id)
+        booking.update_status(status=2)
+        messages.success(request, _('Booking Approved!'))
+    except:
+        messages.error(request, _('Booking not found.'))
+    return pending_bookings(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
+def deny_booking(request, id):
+    try:
+        booking = Booking.objects.get(pk=id)
+        booking.update_status(status=0)
+        print(booking.status)
+        messages.success(request, _('Booking Denied!'))
+    except:
+        messages.error(request, _('Booking not found.'))
+    return pending_bookings(request)
 
 
 @login_required(login_url='/?showLoginModal=yes')

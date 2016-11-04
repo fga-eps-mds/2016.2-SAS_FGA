@@ -235,6 +235,7 @@ class BookingForm(forms.Form):
         try:
             booking.save()
             if booking.exists(book.start_hour, book.end_hour, weekdays):
+                booking.delete()
                 return None
             else:
                 for day in date_range(book.date_booking, booking.end_date):
