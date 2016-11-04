@@ -46,20 +46,6 @@ class SearchBookingForm(forms.Form):
         widget=forms.widgets.DateInput(
             attrs={'class': 'datepicker1', 'placeholder': ''}), required=False)
 
-    def search(self):
-        cleaned_data = super(SearchBookingForm, self).clean()
-        all_bookings = Booking.objects.all()
-        end_date = self.cleaned_data.get('end_date')
-        start_date = self.cleaned_data.get('start_date')
-        bookings = []
-
-        for booking in all_bookings:
-            if not(booking.end_date < start_date or
-                   booking.start_date > end_date):
-                bookings.append(booking)
-
-        return bookings
-
     def count_days(self, start_date, end_date):
 
         days = []
@@ -141,13 +127,6 @@ class SearchBookingForm(forms.Form):
                     msg = _('End date must be equal or \
                              greater then Start date')
 
-                    self.add_error('start_date', msg)
-                    self.add_error('end_date', msg)
-                    raise forms.ValidationError(msg)
-                booking = self.search()
-                if not booking:
-                    msg = _('Doesnt exist any booking in \
-                             this period of time')
                     self.add_error('start_date', msg)
                     self.add_error('end_date', msg)
                     raise forms.ValidationError(msg)
