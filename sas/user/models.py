@@ -90,6 +90,15 @@ class UserProfile(models.Model):
         except Group.DoesNotExist:
             return False
 
+    @staticmethod
+    def get_users():
+        users = User.objects.values('username').distinct()
+        choices = ()
+        for user in users:
+            new_choice = (user['username'], user['username'])
+            choices = (new_choice,) + choices
+        return choices
+
 
 class Validation():
 
