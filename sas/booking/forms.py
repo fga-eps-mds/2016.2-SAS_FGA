@@ -154,7 +154,7 @@ class BookingForm(forms.Form):
              (hour5, ('16:00')), (hour6, ('18:00')),
              (hour7, ('20:00')), (hour8, ('22:00')),
              (hour9, ('00:00')))
-    
+
     name = forms.CharField(
         label=_('Booking Name:'),
         widget=forms.TextInput(attrs={'placeholder': ''}))
