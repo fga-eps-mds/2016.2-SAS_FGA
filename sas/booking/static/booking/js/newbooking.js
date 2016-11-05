@@ -158,6 +158,7 @@ $(document).ready(function(){
     $("#next-building").click(function() {
         if($('input[name=times]:checked', '#page2').val() == "interval") {
             if(!booking.check_date($("#id_start_date")) || !booking.check_date($("#id_end_date")) ||
+                !booking.check_interval_date($("#id_start_date"), $("#id_end_date")) ||
                 !booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'))) {
                 return 0;
             }
@@ -227,7 +228,7 @@ $(document).ready(function(){
         $("#page2").hide();
         $("#page3").hide();
         $("#page4").hide();
-        $("#page5").hide();
+        $("#page5").show();
         breadcrumbsadd(4);
 
         var building = $(".building-selected > input").attr("value");

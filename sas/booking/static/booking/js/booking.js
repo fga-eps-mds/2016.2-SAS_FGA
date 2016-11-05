@@ -77,6 +77,20 @@ function Booking() {
         return true;
     }
 
+    this.check_interval_date = function (element1, element2) {
+        var startDate = element1.val();
+        var endDate = element2.val();
+
+        if (endDate < startDate) {
+            this.addError(element2.parent());
+            this.addSpan(element2, "End date has to be after start date");
+
+            return false;
+        }
+
+        return true;
+    }
+
     this.check_time = function(element1, element2) {
         var beginTime = parseInt(element1.val());
         var endTime = parseInt(element2.val());
