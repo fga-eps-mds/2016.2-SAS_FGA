@@ -165,12 +165,6 @@ def search_booking_room_period(request, form_booking):
                    'table_header': table_header, 'place': booking_place})
 
 
-def next(skip, aux_rows):
-    for i in range(skip):
-        aux_rows.append(" ")
-    return aux_rows
-
-
 def new_booking(request):
     if request.user.is_authenticated():
         if request.method == "POST":
