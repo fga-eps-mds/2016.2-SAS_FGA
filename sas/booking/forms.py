@@ -24,10 +24,10 @@ class SearchBookingForm(forms.Form):
             widget=forms.widgets.Select(attrs={'class': 'select2 optional'})
         )
     SEARCH_CHOICES = (
-        ('opt_day_room', _("Room's Week Timetable")),
-        ('opt_booking_week', _(' Booking')),
-        ('opt_building_day', _(' Occupation')),
-        ('opt_room_period', _(' Room')),
+        ('opt_day_room', _("Room's Week Timetable.")),
+        ('opt_booking_week', _(' Booking.')),
+        ('opt_building_day', _(' Occupation.')),
+        ('opt_room_period', _(' Room.')),
     )
 
     search_options = forms.ChoiceField(label=_('Search options'),
