@@ -21,20 +21,6 @@ Scenario: Successfully booking creation
     Then I click on an element with id of "button-confirm"
     Then I should see "Booking has been saved."
 
-Scenario: Empty booking name
-    When I login in with email "lucas@gmail.com" and password "123456"
-    Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room x Period"
-    And I select "UAC" from "Building"
-    And I select "UAC | FGA-I1" from "Place"
-    And I fill in "Start Date" with "10/20/2018"
-    And I fill in "End Date" with "10/30/2018"
-    Then I press "Search"
-    Then I should see an element with id of "create-booking"
-    Then I click on an element with id of "create-booking"
-    And I click on an element with id of "action-create"
-    Then I should see an element with id of "action-create"
-
 Scenario: canceling a book
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
