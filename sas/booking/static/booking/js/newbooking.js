@@ -157,12 +157,16 @@ $(document).ready(function(){
     });
 
     $('#booking-period-error').css('display', 'none');
-    $("#next-building").click(function(){
-        if($('input[name=times]:checked', '#page2').val() == "interval"){
-            if(!booking.check_date($("#id_start_date")) || !booking.check_date($("#id_end_date"))){
+    $("#next-building").click(function() {
+        if($('input[name=times]:checked', '#page2').val() == "interval") {
+            if(!booking.check_date($("#id_start_date")) || !booking.check_date($("#id_end_date"))) {
+                return 0;
             }
-        }else{
-            if(!booking.check_date($("#id_one_day_date"))){
+        }
+
+        else {
+            if(!booking.check_date($("#id_one_day_date"))) {
+                return 0;
             }
         }
 
