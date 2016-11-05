@@ -1,6 +1,5 @@
 var buildings = Building.all();
 
-
 function getCookie(name) {
     var cookieValue = null;
 
@@ -88,6 +87,18 @@ $("#slider_end_time").slider({
 });
 
 $(document).ready(function(){
+    var building = '';
+    var building_name = '';
+    var place = '';
+    var place_name = '';
+    var booking_name = '';
+    var start_date = '';
+    var end_date = '';
+    var start_hour = '';
+    var end_hour = '';
+    var ar_week_days = '';
+    var ar_week_days_names = '';
+
     $("#page1").show();
     $("#page2").hide();
     $("#page3").hide();
@@ -143,6 +154,7 @@ $(document).ready(function(){
 
     var booking = new Booking();
     $("#next-date").click(function(){
+        booking_name = $("#name_of_booking").val();
         if(!booking.check_name_element($("#name_of_booking"))){
             return 0;
         }
@@ -156,7 +168,13 @@ $(document).ready(function(){
     });
 
     $("#next-building").click(function() {
+        start_hour = $( "#slider_begin_time" ).slider("value") + ":00:00";
+        end_hour = $( "#slider_end_time" ).slider("value") + ":00:00";
+
         if($('input[name=times]:checked', '#page2').val() == "interval") {
+            start_date = $("#id_start_date").val();
+            end_date = $("#id_end_date").val();
+
             if(!booking.check_date($("#id_start_date")) || !booking.check_date($("#id_end_date")) ||
                 !booking.check_interval_date($("#id_start_date"), $("#id_end_date")) ||
                 !booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'))) {
@@ -165,6 +183,9 @@ $(document).ready(function(){
         }
 
         else {
+            start_date = $('#id_one_day_date').val();
+            end_date = $('#id_one_day_date').val();
+
             if(!booking.check_date($("#id_one_day_date")) ||
                 !booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'))) {
                 return 0;
@@ -195,6 +216,8 @@ $(document).ready(function(){
      });
 
     $("#next-place").click(function(){
+        building = $(".building-selected > input").attr("value");
+        building_name = $(".building-selected").text();
         //TODO: get the id of building
         if(!$('td').hasClass("building-selected")) {
             booking.addSpan($('#booking-buildings'), 'Please, select a building to continue');
@@ -218,6 +241,17 @@ $(document).ready(function(){
     });
 
     $("#next-finish").click(function(){
+        place = $(".place-selected > input").attr("value");
+        place_name = $(".place-selected").text();
+
+        ar_week_days = Array();
+        ar_week_days_names = Array();
+
+        $("input[name=week_days]:checked").each(function(index){
+            ar_week_days.push($(this).val());
+            ar_week_days_names.push($(this).parent().text());
+        });
+
         if(!$('td').hasClass("place-selected")) {
             booking.addSpan($('#booking-places'), 'Please, select a place to continue');
             $('.help-block').css('text-align', 'center');
@@ -231,19 +265,42 @@ $(document).ready(function(){
         $("#page5").show();
         breadcrumbsadd(4);
 
-        var building = $(".building-selected > input").attr("value");
-        var place = $(".place-selected > input").attr("value");
-        var booking_name = $("#booking_name").val();
-        var start_date = $("#id_start_date").val();
-        var end_date = $("#id_end_date").val();
-        var start_hour = $( "#slider_begin_time" ).slider("value") + ":00:00";
-        var end_hour = $( "#slider_end_time" ).slider("value") + ":00:00";
-        var ar_week_days = Array();
+        $('#result-booking').html('\
+            <div class="row">\
+                <div class="col-md-12 col-sm-12 col-xs-12">\
+                    <p><strong>Booking Name: </strong>' + booking_name + '\
+                <div>\
+            <div>\
+            <div class="row">\
+                <div class="col-md-6 col-sm-6 col-xs-6">\
+                    <p><strong>Start Date: </strong>' + start_date + '\
+                </div>\
+                <div class="col-md-6 col-sm-6 col-xs-6">\
+                    <p><strong>End Date: </strong>' + end_date + '\
+                </div>\
+            </div>\
+            <div class="row">\
+                <div class="col-md-6 col-sm-6 col-xs-6">\
+                    <p><strong>Begin Time: </strong>' + start_hour + '\
+                </div>\
+                <div class="col-md-6 col-sm-6 col-xs-6">\
+                    <p><strong>End Time: </strong>' + end_hour + '\
+                </div>\
+            </div>\
+            <div class="row">\
+                <div class="col-md-12 col-sm-12 col-xs-12">\
+                    <p><strong>Week Days: </strong>' + ar_week_days_names + '\
+                <div>\
+            </div>\
+            <div class="row">\
+                <div class="col-md-12 col-sm-12 col-xs-12">\
+                    <p><strong>Place: </strong>' + building_name + ' - ' + place_name + '\
+                <div>\
+            </div>\
+        ');
+    });
 
-        $("input[name=week_days]:checked").each(function(index){
-            ar_week_days.push($(this).val());
-        });
-
+    $('#finish-form').click(function() {
         $.post("/booking/newbooking/", {
             building     : building,
             place        : place,
@@ -254,8 +311,6 @@ $(document).ready(function(){
             end_hour     : end_hour,
             week_days    : ar_week_days
 
-            }).done(function(result){
-                $("#page5").append(result);
         });
     });
 });
