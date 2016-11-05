@@ -76,4 +76,18 @@ function Booking() {
 
         return true;
     }
+
+    this.check_time = function(element1, element2) {
+        var beginTime = parseInt(element1.val());
+        var endTime = parseInt(element2.val());
+
+        if(beginTime >= endTime) {
+            this.addError(element2.parent());
+            this.addSpan(element2, "End time has to be after begin time");
+
+            return false;
+        }
+
+        return true;
+    }
 }

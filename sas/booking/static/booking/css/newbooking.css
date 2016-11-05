@@ -22,6 +22,10 @@
    background-color: #4e8aa5;
 
 }
+.help-block{
+  color: #A94442 !important;
+  margin-top: 10px !important;
+}
 #breadcrumbs{
     margin-bottom: 50px;
 }

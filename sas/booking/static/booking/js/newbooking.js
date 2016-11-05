@@ -142,7 +142,6 @@ $(document).ready(function(){
     breadcrumbsadd(0);
 
     var booking = new Booking();
-    $('#booking-name-error').css('display', 'none');
     $("#next-date").click(function(){
         if(!booking.check_name_element($("#name_of_booking"))){
             return 0;
@@ -156,16 +155,17 @@ $(document).ready(function(){
         breadcrumbsadd(1);
     });
 
-    $('#booking-period-error').css('display', 'none');
     $("#next-building").click(function() {
         if($('input[name=times]:checked', '#page2').val() == "interval") {
-            if(!booking.check_date($("#id_start_date")) || !booking.check_date($("#id_end_date"))) {
+            if(!booking.check_date($("#id_start_date")) || !booking.check_date($("#id_end_date")) ||
+                !booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'))) {
                 return 0;
             }
         }
 
         else {
-            if(!booking.check_date($("#id_one_day_date"))) {
+            if(!booking.check_date($("#id_one_day_date")) ||
+                !booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'))) {
                 return 0;
             }
         }
@@ -177,13 +177,12 @@ $(document).ready(function(){
         $("#page5").hide();
         $("#booking-buildings").find(".place-span").remove();
 
-        $('#booking-period-error').css('display', 'none');
         breadcrumbsadd(2);
 
         for(var i = 0; i < buildings.length; i++){
             var b = buildings[i];
 
-            if(i % 3 == 0){
+            if(i % 2 == 0){
                 var text = "<tr>" + b.td_place() + "</tr";
                 $('#booking-buildings tr:last').after(text);
             }
@@ -196,6 +195,12 @@ $(document).ready(function(){
 
     $("#next-place").click(function(){
         //TODO: get the id of building
+        if(!$('td').hasClass("building-selected")) {
+            booking.addSpan($('#booking-buildings'), 'Please, select a building to continue');
+            $('.help-block').css('text-align', 'center');
+            return 0;
+        }
+
         $("#page1").hide();
         $("#page2").hide();
         $("#page3").hide();
@@ -212,6 +217,12 @@ $(document).ready(function(){
     });
 
     $("#next-finish").click(function(){
+        if(!$('td').hasClass("place-selected")) {
+            booking.addSpan($('#booking-places'), 'Please, select a place to continue');
+            $('.help-block').css('text-align', 'center');
+            return 0;
+        }
+
         $("#page1").hide();
         $("#page2").hide();
         $("#page3").hide();
