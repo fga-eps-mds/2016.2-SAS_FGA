@@ -33,7 +33,7 @@ Scenario: Empty booking name
     Then I should see an element with id of "create-booking"
     Then I click on an element with id of "create-booking"
     And I click on an element with id of "action-create"
-    Then I should see an element with id of "action-create"
+    Then I should see an alert with text "Please fill out this field."
 
 Scenario: canceling a book
     When I login in with email "lucas@gmail.com" and password "123456"
