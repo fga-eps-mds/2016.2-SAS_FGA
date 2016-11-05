@@ -84,18 +84,13 @@
           <p>{% trans "Are you sure you want to book this place?" %}<br>
             <strong><span id="place"></span></strong>
           </p>
-          <label class="control-label" for="id_place">Building:</label>
-          <input type="text"class="form-control" id="id_building" name="building" title="" required>
-          <label class="control-label" for="id_place">Place:</label>
-          <input type="text"class="form-control" id="id_place" name="place" title="" required>
-          <label class="control-label" for="id_start_hour">Start Hour:</label>
-          <input type="text"class="form-control" id="id_start_hour" name="start_hour" title="" required>
-          <label class="control-label" for="id_end_hour">End Hour:</label>
-          <input type="text"class="form-control" id="id_end_hour" name="end_hour" title="" required>
-          <label class="control-label" for="id_start_date">Start Date:</label>
-          <input type="text"class="form-control" id="id_start_date" name="start_date" title="" required>
-          <label class="control-label" for="id_end_date">End Date:</label>
-          <input type="text"class="form-control" id="id_end_date" name="end_date" title="" required>
+          <input type="hidden" class="form-control" id="id_building" name="building" title="" required>
+          <input type="hidden" class="form-control" id="id_place" name="place" title="" required>
+          <input type="hidden" class="form-control" id="id_start_hour" name="start_hour" title="" required>
+          <input type="hidden" class="form-control" id="id_end_hour" name="end_hour" title="" required>
+          <input type="hidden" class="form-control" id="id_start_date" name="start_date" title="" required>
+          <input type="hidden" class="form-control" id="id_end_date" name="end_date" title="" required>
+          
           <label class="control-label" for="id_name">Booking Name:</label>
           <input class="form-control" id="id_name" name="name" placeholder="" title="" type="text" required />
         </div>
