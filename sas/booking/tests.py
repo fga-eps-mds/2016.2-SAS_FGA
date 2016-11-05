@@ -112,6 +112,11 @@ class DeleteBooktimeTest(TestCase):
         self.id_booking = self.booking.id
         self.id_booktime = self.booking.time.all()[0].id
 
+    def test_delete_booktime(self):
+        count = self.booking.time.all().count() - 1
+        self.booking.time.all()[count].delete_booktime(self.booking)
+        self.assertEquals(self.booking.time.all().count(), count)
+
     def test_admin_delete_booktime(self):
         self.user.make_as_admin()
         self.user.save()

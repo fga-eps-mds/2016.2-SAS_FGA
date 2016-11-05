@@ -47,14 +47,12 @@ def search_booking_day_room(request, form_booking):
               formats.date_format(form_days[-1], "SHORT_DATE_FORMAT"))
 
     table_header = str(booking_place) + ": " + period
-    return render(request,
-                  'booking/template_table.html',
-                  {'days': weekday,
-                   'table': table, 'hours': HOURS,
-                   'n': n,
-                   'name': _("Room's Week Timetable"),
-                   'table_header': table_header}
-                  )
+
+    return render(request, 'booking/template_table.html',
+                  {'days': form_days, 'table': table, 'hours': HOURS,
+                   'n': n, 'name': _("Room's Week Timetable"),
+                   'column_header': weekday, 'table_header': table_header,
+                   'place': booking_place})
 
 
 def search_booking_building_day(request, form_booking):
@@ -85,14 +83,19 @@ def search_booking_building_day(request, form_booking):
                     formats.date_format(form_day, "SHORT_DATE_FORMAT"))
 
     return render(request, 'booking/template_table.html',
-                  {'days': places_, 'table': table, 'hours': HOURS,
-                   'n': n, 'name': _(' Occupation'),
-                   'table_header': table_header})
+                  {'days': form_day, 'table': table, 'hours': HOURS,
+                   'n': n, 'name': _(' Occupation'), 'column_header': places_,
+                   'table_header': table_header, 'place': places})
 
 
 def search_booking_booking_name_week(request, form_booking):
     form_days = form_booking.days_list()
     search_booking_name = form_booking["booking_name"].data
+    booking_name = form_booking["booking_name"].data
+    place_id = Place.objects.get(pk=1)
+    hours = [(6, "06-08"), (8, "08-10"), (10, "10-12"),
+             (12, "12-14"), (14, "14-16"), (16, "16-18"),
+             (18, "18-20"), (20, "20-22"), (22, ("22-00"))]
     n = len(form_days) + 1
 
     table = []
@@ -103,15 +106,18 @@ def search_booking_booking_name_week(request, form_booking):
                                           name__contains=search_booking_name)
         print(bookings)
         for booking in bookings:
-            book = booking.time.get(date_booking=str(form_day))
-            aux_tuple = (book.start_hour.hour, booking)
-            aux.append(aux_tuple)
+            if (booking.name == booking_name and booking.status > 1):
+                book = booking.time.get(date_booking=str(form_day))
+                aux_tuple = (book.start_hour.hour, booking)
+                aux.append(aux_tuple)
+                place_id = booking.place
 
         table.append(aux)
 
     return render(request, 'booking/template_table.html',
                   {'days': form_days, 'table': table,
-                   'hours': HOURS, 'n': n, 'name': _(' Booking')})
+                   'column_header': form_days, 'hours': hours,
+                   'n': n, 'name': _(' Booking'), 'place': place_id})
 
 
 def search_booking_room_period(request, form_booking):
@@ -140,8 +146,8 @@ def search_booking_room_period(request, form_booking):
 
     return render(request, 'booking/template_table.html',
                   {'days': form_days, 'table': table, 'hours': HOURS,
-                   'n': n, 'name': _(' Room'),
-                   'table_header': table_header})
+                   'n': n, 'name': _(' Room'), 'column_header': form_days,
+                   'table_header': table_header, 'place': booking_place})
 
 search_options = {'opt_day_room': search_booking_day_room,
                   'opt_booking_week': search_booking_booking_name_week,
@@ -182,12 +188,6 @@ class SearchBookingQueryView(View):
 #         form_booking = SearchBookingForm()
 #     return render(request, 'booking/searchBookingQuery.html',
 #                   {'search_booking': form_booking})
-
-
-def next(skip, aux_rows):
-    for i in range(skip):
-        aux_rows.append(" ")
-    return aux_rows
 
 
 @login_required(login_url='/?showLoginModal=yes')
