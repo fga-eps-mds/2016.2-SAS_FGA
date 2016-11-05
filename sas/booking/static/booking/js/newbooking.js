@@ -54,7 +54,6 @@ $("#booking-places tbody").on("click", "td", function(){
 });
 
 function test(places){
-    console.log("Executou");
     for(var i = 0; i < places.length; i++){
         var p = places[i];
 
@@ -236,7 +235,6 @@ $(document).ready(function(){
         $("#booking-places").find(".place-span").remove();
         //places = Place.all();
         var id = $(".building-selected > input").attr("value");
-        console.log("Ate aqui places length:" );
         Place.make_places(id, test);
     });
 
@@ -302,15 +300,30 @@ $(document).ready(function(){
 
     $('#finish-form').click(function() {
         $.post("/booking/newbooking/", {
-            building     : building,
-            place        : place,
-            booking_name : booking_name,
-            start_date   : start_date,
-            end_date     : end_date,
-            start_hour   : start_hour,
-            end_hour     : end_hour,
-            week_days    : ar_week_days
-
+            building: building,
+            place: place,
+            booking_name: booking_name,
+            start_date: start_date,
+            end_date: end_date,
+            start_hour: start_hour,
+            end_hour: end_hour,
+            week_days: ar_week_days
         });
+
+        $("#page1").hide();
+        $("#page2").hide();
+        $("#page3").hide();
+        $("#page4").hide();
+        $("#page5").show();
+        breadcrumbsadd(4);
+
+        $('#result-booking').html('\
+            <p>Booking successfully done!</p>\
+        ');
+
+        $('#result-booking > p').css('text-align', 'center')
+                                .css('color', '#2C3E50')
+                                .css('font-weight', 'bold');
+        $('#finish-form').remove();
     });
 });
