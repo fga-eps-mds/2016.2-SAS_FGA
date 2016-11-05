@@ -71,7 +71,7 @@ def search_booking_day_room(request, form_booking):
     return render(request, 'booking/template_table.html',
                   {'days': form_days, 'table': table, 'hours': HOURS,
                    'n': n, 'name': "Room x Day", 'column_header': weekday,
-                   'table_header': table_header, 'place':booking_place})
+                   'table_header': table_header, 'place': booking_place})
 
 
 def search_booking_building_day(request, form_booking):
@@ -103,13 +103,14 @@ def search_booking_building_day(request, form_booking):
 
     return render(request, 'booking/template_table.html',
                   {'days': form_day, 'table': table, 'hours': HOURS,
-                   'n': n, 'name': "Building x Day", 'column_header':places_, 
-                   'table_header': table_header, 'place':places})
+                   'n': n, 'name': "Building x Day", 'column_header': places_,
+                   'table_header': table_header, 'place': places})
 
 
 def search_booking_booking_name_week(request, form_booking):
     form_days = form_booking.days_list()
     booking_name = form_booking["booking_name"].data
+    place_id = Place.objects.get(pk=1)
     hours = [(6, "06-08"), (8, "08-10"), (10, "10-12"),
              (12, "12-14"), (14, "14-16"), (16, "16-18"),
              (18, "18-20"), (20, "20-22"), (22, ("22-00"))]
@@ -125,13 +126,14 @@ def search_booking_booking_name_week(request, form_booking):
                 book = booking.time.get(date_booking=str(form_day))
                 aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
-                place_id = booking.place.pk
+                place_id = booking.place
 
         table.append(aux)
 
     return render(request, 'booking/template_table.html',
-                  {'days': form_days, 'table': table, 'column_header': form_days,
-                   'hours': hours, 'n': n, 'name': 'Booking x Week', 'place':place_id})
+                  {'days': form_days, 'table': table,
+                   'column_header': form_days, 'hours': hours,
+                   'n': n, 'name': 'Booking x Week', 'place': place_id})
 
 
 def search_booking_room_period(request, form_booking):
@@ -160,7 +162,7 @@ def search_booking_room_period(request, form_booking):
     return render(request, 'booking/template_table.html',
                   {'days': form_days, 'table': table, 'hours': HOURS,
                    'n': n, 'name': "Room x Period", 'column_header': form_days,
-                   'table_header': table_header, 'place':booking_place})
+                   'table_header': table_header, 'place': booking_place})
 
 
 def next(skip, aux_rows):
