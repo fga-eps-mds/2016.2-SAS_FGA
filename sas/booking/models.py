@@ -32,7 +32,7 @@ class Place(models.Model):
 
     def __str__(self):
         try:
-            return self.building.name + " | " + self.name
+            return self.building.name + " | " + self.name + " - Cap. " + str(self.capacity)
         except:
             return self.name
 
@@ -147,7 +147,7 @@ class Booking(models.Model):
 
     @staticmethod
     def get_bookings():
-        bookings = Booking.objects.values('name').distinct()
+        bookings = Booking.objects.values('name').order_by('-name').distinct()
         choices = ()
         for booking in bookings:
             new_choice = (booking['name'], booking['name'])
