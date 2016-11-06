@@ -38,12 +38,13 @@
             {% with forloop.counter0 as count %}
               {% if not cell_table%}
       				<td class="cs335 small text-center" style="color:black">
+                {% if request.user.is_authenticated %}
                   <button class="btn btn-xs btn-primary" data-href="{% url 'booking:newbooking' %}"
-                      data-toggle="modal" data-start-hour="{{id|search_hour:0}}" data-end-hour="{{id|search_hour:1}}" data-start-date="{{ days|aux_search_date:n|search_date:count }}" data-end-date="{{ days|aux_search_date:n|search_date:count }}" 
+                      data-toggle="modal" data-start-hour="{{id|search_hour:0}}" data-end-hour="{{id|search_hour:1}}" data-start-date="{{ days|aux_search_date:n|search_date:count }}" data-end-date="{{ days|aux_search_date:n|search_date:count }}"
                       data-place-pk="{{place|search_place:count}}" data-building-pk="{{ place|search_building:count }}" data-target="#modalNewBooking" id="create-booking">
                       <span class="glyphicon glyphicon-plus-sign" ></span> {% trans "Book" %}
                   </button>
-
+                {%endif%}
               </td>
               {% else%}
                 <td class="cs335 small text-center" {% if cell_table|check_tooltip:id %}
@@ -52,9 +53,9 @@
 
                   {% if cell_table|check_table:id %}
                      {{ cell_table|check_table:id }}
-                  {% else %}
+                  {% elif request.user.is_authenticated %}
                   <button class="btn btn-xs btn-primary" data-href="{% url 'booking:newbooking' %}"
-                      data-toggle="modal" data-start-hour="{{id|search_hour:0}}" data-end-hour="{{id|search_hour:1}}" data-start-date="{{ days|aux_search_date:n|search_date:count }}" data-end-date="{{ days|aux_search_date:n|search_date:count }}" 
+                      data-toggle="modal" data-start-hour="{{id|search_hour:0}}" data-end-hour="{{id|search_hour:1}}" data-start-date="{{ days|aux_search_date:n|search_date:count }}" data-end-date="{{ days|aux_search_date:n|search_date:count }}"
                       data-place-pk="{{ place|search_place:count }}" data-place="{{cell_table.0.1.place}}" data-building-pk="{{ place|search_building:count }}" data-target="#modalNewBooking" id="create-booking" >
                       <span class="glyphicon glyphicon-plus-sign" ></span> {% trans "Book" %}
                   </button>
@@ -62,7 +63,7 @@
 
                 </td>
               {% endif %}
-            {% endwith %}  
+            {% endwith %}
            {% endfor %}
       </tr>
     {% endfor %}
@@ -89,7 +90,7 @@
           <input type="hidden" class="form-control" id="id_end_hour" name="end_hour" title="" required>
           <input type="hidden" class="form-control" id="id_start_date" name="start_date" title="" required>
           <input type="hidden" class="form-control" id="id_end_date" name="end_date" title="" required>
-          
+
           <label class="control-label" for="id_name">Booking Name:</label>
           <input class="form-control" id="id_name" name="name" placeholder="" title="" type="text" required />
         </div>
@@ -123,7 +124,7 @@ $(document).on("click", "#create-booking", function () {
      var start_hour = $(this).data('start-hour');
      var end_hour = $(this).data('end-hour');
      var start_date = $(this).data('start-date');
-     var end_date = $(this).data('end-date'); 
+     var end_date = $(this).data('end-date');
 
 
      $(".modal-body #id_place").val( place_pk );
