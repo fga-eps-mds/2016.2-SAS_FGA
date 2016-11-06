@@ -27,9 +27,7 @@ def check_table(cell_table, id):
             booking = book
 
     if aux == 1:
-        return (booking.place.building.name +
-                ' - ' + booking.place.name +
-                ', ' + booking.user.get_full_name())
+        return booking.name
     else:
         return None
 
@@ -42,7 +40,6 @@ def aux_search_date(days, n):
 @register.filter(name='search_date')
 def search_date(daysn, count):
     days, n = daysn
-    day = []
 
     if type(days) is list:
         if count < n:
