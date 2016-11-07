@@ -37,12 +37,13 @@
 				{% endfor %}
 				<tr>
 					<td colspan="2">
-						<a class="btn btn-info btn-block btn-password" href="{% url "booking:cancelbooking" booking.pk %}">
+						<a class="btn btn-info btn-block btn-password" href="{% url "booking:cancelbooking" booking.pk %}"
+                  id="button-cancel">
 						{% trans "Cancel" %}</a>
 					</td>
 					<td colspan="2">
 						<a class="btn btn-info btn-block btn-password" href="{% url "booking:confirmbooking" booking.pk %}"
-                  data-toggle="modal">{% trans "Confirm" %}</a>
+                  data-toggle="modal" id="button-confirm">{% trans "Confirm" %}</a>
 					</td>
 				</tr>
 			</table>

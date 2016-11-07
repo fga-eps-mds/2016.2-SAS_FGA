@@ -20,6 +20,9 @@ from django.db.models import Q
 from booking.factories import BookTimeFactory, BookingFactory
 from booking.views import approve_booking
 from booking.views import deny_booking
+from booking.templatetags.check_table import search_building
+from booking.templatetags.check_table import search_place, search_hour
+from booking.templatetags.check_table import search_date
 
 
 class TestSearchBookingQuery(TestCase):
@@ -111,6 +114,11 @@ class DeleteBooktimeTest(TestCase):
         self.client = Client()
         self.id_booking = self.booking.id
         self.id_booktime = self.booking.time.all()[0].id
+
+    def test_delete_booktime(self):
+        count = self.booking.time.all().count() - 1
+        self.booking.time.all()[count].delete_booktime(self.booking)
+        self.assertEquals(self.booking.time.all().count(), count)
 
     def test_admin_delete_booktime(self):
         self.user.make_as_admin()
@@ -535,3 +543,58 @@ class PendingBookingTest(TestCase):
         url = reverse('booking:denybooking', args=(pk,))
         response = self.client.get(url)
         self.assertContains(response, 'Booking not found.')
+
+
+class CheckTableTest(TestCase):
+    def setUp(self):
+        self.place = Place.objects.all()
+        self.start_hour = timedelta(hours=6)
+        self.end_hour = timedelta(hours=8)
+        self.midnight = timedelta(hours=0)
+        self.date = datetime.strptime('Jun 1 2025', '%b %d %Y')
+
+    def test_search_building_query(self):
+        place = self.place
+        result = search_building(place, 30)
+
+        self.assertEquals(result, '2')
+
+    def test_search_building_obj(self):
+        place = self.place.get(pk=1)
+        result = search_building(place, 1)
+        self.assertEquals(result, '1')
+
+    def test_search_place_query(self):
+        place = self.place
+        result = search_place(place, 10)
+        self.assertEquals(result, '11')
+
+    def test_search_place_obj(self):
+        place = self.place.get(pk=20)
+        result = search_place(place, 1)
+        self.assertEquals(result, '20')
+
+    def test_search_hour_start_hour(self):
+        result = search_hour(6, 0)
+        self.assertEquals(result, self.start_hour)
+
+    def test_search_hour_end_hour(self):
+        result = search_hour(6, 1)
+        self.assertEquals(result, self.end_hour)
+
+    def test_search_hour_midnight(self):
+        result = search_hour(22, 1)
+        self.assertEquals(result, self.midnight)
+
+    def test_search_date_obj(self):
+        date = self.date, 7
+        result = search_date(date, 1)
+        self.assertEquals(result, str(self.date))
+
+    def test_search_date_list(self):
+        dates = []
+        dates.append(self.date)
+        dates.append(self.date)
+        date = dates, 7
+        result = search_date(dates, 1)
+        self.assertEquals(result, str(self.date))
