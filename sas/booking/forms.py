@@ -1,96 +1,278 @@
-from django.utils.translation import ugettext as _
-from django.forms import ModelForm
-from .models import Booking, BookTime, Place
-from .models import SPACES, BUILDINGS, WEEKDAYS
+from django.utils.translation import ugettext_lazy as _
+from booking.models import (WEEKDAYS, Booking, BookTime, Place, Building,
+                            date_range)
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
-from django.utils import timezone
-from datetime import date
 from django.core.exceptions import ValidationError
+from datetime import date, datetime, timedelta, time
+from django.conf import settings
+from django.utils import formats
 import copy
+import traceback
+
+
+class SearchBookingForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(SearchBookingForm, self).__init__(*args, **kwargs)
+        self.fields['booking_name'] = forms.ChoiceField(
+            choices=Booking.get_bookings(),
+            label=_('Booking:'),
+            required=False,
+            widget=forms.widgets.Select(attrs={'class': 'select2 optional'})
+        )
+    SEARCH_CHOICES = (
+        ('opt_day_room', _("Room's Week Timetable.")),
+        ('opt_booking_week', _(' Booking.')),
+        ('opt_building_day', _(' Occupation.')),
+        ('opt_room_period', _(' Room.')),
+    )
+
+    search_options = forms.ChoiceField(label=_('Search options'),
+                                       choices=SEARCH_CHOICES,
+                                       widget=forms.RadioSelect())
+
+    building_name = forms.ModelChoiceField(
+        queryset=Building.objects,
+        label=_('Building:'), required=False,
+        widget=forms.widgets.Select(
+            attrs={'class': 'optional'}))
+
+    room_name = forms.ModelChoiceField(
+        queryset=Place.objects,
+        label=_('Place:'),
+        required=False,
+        widget=forms.widgets.Select(
+            attrs={'class': 'optional'}))
+
+    start_date = forms.DateField(
+        label=_('Date:'),
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1 optional', 'placeholder': ''}),
+        required=False)
+
+    end_date = forms.DateField(
+        label=_('Date (To):'),
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1 optional', 'placeholder': ''}),
+        required=False)
+
+    def count_days(self, start_date, end_date):
+
+        days = []
+        while(start_date <= end_date):
+            days.append(start_date)
+            start_date += timedelta(days=1)
+
+        return days
+
+    def days_list(self):
+
+        cleaned_data = super(SearchBookingForm, self).clean()
+        end_date = self.cleaned_data.get('end_date')
+        start_date = self.cleaned_data.get('start_date')
+        days = self.count_days(start_date=start_date, end_date=end_date)
+
+        return days
+
+    def week_day(self):
+        cleaned_data = super(SearchBookingForm, self).clean()
+        start_date = self.cleaned_data.get('start_date')
+        weekday_start_date = start_date.weekday()
+        monday = start_date - timedelta(days=weekday_start_date)
+        sunday = monday + timedelta(days=6)
+        days = self.count_days(start_date=monday, end_date=sunday)
+
+        return days
+
+    def get_day(self):
+        cleaned_data = super(SearchBookingForm, self).clean()
+        start_date = self.cleaned_data.get('start_date')
+
+        return start_date
+
+    def clean(self):
+        cleaned_data = super(SearchBookingForm, self).clean()
+        today = date.today()
+        now = datetime.now()
+
+        try:
+            option = self.cleaned_data.get('search_options')
+            start_date = self.cleaned_data.get('start_date')
+
+            if(option == 'opt_building_day'):
+                building_name = cleaned_data.get('building_name').name
+                if not Building.objects.filter(name=building_name).exists():
+                    msg = _('Doesnt exist any building with this name')
+                    self.add_error('building_name', msg)
+                    raise forms.ValidationError(msg)
+            if(option == 'opt_day_room' or option == 'opt_room_period'):
+                room_name = self.cleaned_data.get('room_name').name
+                if not Booking.objects.filter(place__name=room_name):
+                    msg = _('Doesnt exist any booking in this place')
+                    self.add_error('room_name', msg)
+                    raise forms.ValidationError(msg)
+
+            if(option == 'opt_booking_week'):
+                booking_name = cleaned_data.get('booking_name')
+                if not Booking.objects.filter(name=booking_name).exists():
+                    msg = _('Doesnt exist any booking with this name')
+                    self.add_error('booking_name', msg)
+                    raise forms.ValidationError(msg)
+
+            if(option == 'opt_room_period' or option == 'opt_booking_week'):
+                end_date = self.cleaned_data.get('end_date')
+
+                if not(today <= start_date and today <= end_date):
+                    msg = _('Invalid booking period: \
+                             Booking must be in future date')
+
+                    self.add_error('start_date', msg)
+                    raise forms.ValidationError(msg)
+                if not(today <= end_date):
+                    msg = _('End date must be from future date')
+                    self.add_error('end_date', msg)
+                    raise forms.ValidationError(msg)
+
+                elif(end_date < start_date):
+                    msg = _('End date must be equal or \
+                             greater then Start date')
+
+                    self.add_error('start_date', msg)
+                    self.add_error('end_date', msg)
+                    raise forms.ValidationError(msg)
+
+        except Exception as e:
+            msg = _('Fill all the fields correctly')
+            print(e)
+            raise forms.ValidationError(msg)
 
 
 class BookingForm(forms.Form):
-	name = forms.CharField(
-		label=_('Booking Name:'),
-		widget=forms.TextInput(attrs={'placeholder': ''}))
-	start_hour = forms.TimeField(
-		label=_('Start Time:'),
-		widget=forms.widgets.TimeInput(attrs={'placeholder': ''}))
-	end_hour = forms.TimeField(
-		label=_('End Time:'),
-		widget=forms.widgets.TimeInput(attrs={'placeholder': ''}))
-	start_date = forms.DateField(
-		label=_('Start Date:'),
-		widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
-	end_date = forms.DateField(
-		label=_('End Date:'),
-		widget=forms.widgets.DateInput(attrs={'placeholder': ''}))
-	place = forms.ChoiceField(choices=SPACES, label=_('Place:'))
-	building = forms.ChoiceField(choices=BUILDINGS, label=_('Building:'))
-	week_days = forms.MultipleChoiceField(label=_("Days of week: "),
-						choices=WEEKDAYS, widget=forms.CheckboxSelectMultiple())
+    hour = timedelta(hours=6)
+    hour1 = timedelta(hours=8)
+    hour2 = timedelta(hours=10)
+    hour3 = timedelta(hours=12)
+    hour4 = timedelta(hours=14)
+    hour5 = timedelta(hours=16)
+    hour6 = timedelta(hours=18)
+    hour7 = timedelta(hours=20)
+    hour8 = timedelta(hours=22)
+    hour9 = timedelta(hours=0)
+    HOURS = (('', '----'), (hour, '06:00'),
+             (hour1, '08:00'), (hour2, ('10:00')),
+             (hour3, ('12:00')), (hour4, ('14:00')),
+             (hour5, ('16:00')), (hour6, ('18:00')),
+             (hour7, ('20:00')), (hour8, ('22:00')),
+             (hour9, ('00:00')))
 
-	def save(self, user, force_insert=False, force_update=False, commit=True):
-		spaces = dict(SPACES)
-		booking = Booking()
-		booking.user = user
-		booking.name = self.cleaned_data.get("name")
-		booking.start_date = self.cleaned_data.get("start_date")
-		booking.end_date = self.cleaned_data.get("end_date")
-		booking.place = Place()
-		booking.place.name = spaces[self.cleaned_data.get("place")]
-		weekdays = self.cleaned_data.get("week_days")
-		book = BookTime()
-		book.date_booking = booking.start_date
-		book.start_hour = self.cleaned_data.get("start_hour")
-		book.end_hour = self.cleaned_data.get("end_hour")
-		finish_date = False
-		booking.save()
-		if booking.exists(book.start_hour, book.end_hour, weekdays):
-			booking.delete()
-			return None
-		else:
-			while not finish_date:
-				for days in weekdays:
-					book.next_week_day(int(days))
-					if book.date_booking < booking.end_date:
-						newobj = copy.deepcopy(book)
-						newobj.save()
-						print("pk book time", newobj.pk)
-						booking.time.add(newobj)
-					else:
-						finish_date = True
-						break
-			booking.save()
-			return booking
-		# do custom stuff
+    name = forms.CharField(
+        label=_('Booking Name:'),
+        widget=forms.TextInput(attrs={'placeholder': ''}))
+    start_hour = forms.TimeField(
+        label=_('Start Time:'),
+        widget=forms.Select(choices=HOURS))
+    end_hour = forms.TimeField(
+        label=_('End Time:'),
+        widget=forms.Select(choices=HOURS))
+    start_date = forms.DateField(
+        label=_('Start Date:'),
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
+    end_date = forms.DateField(
+        label=_('End Date:'),
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
+    building = forms.ModelChoiceField(
+        queryset=Building.objects,
+        label=_('Building:'))
+    place = forms.ModelChoiceField(
+        queryset=Place.objects,
+        label=_('Place:'))
+    week_days = forms.MultipleChoiceField(
+        label=_("Days of week: "),
+        required=False,
+        choices=WEEKDAYS,
+        widget=forms.CheckboxSelectMultiple())
 
-	def clean(self):
-		cleaned_data = super(BookingForm, self).clean()
-		if date.today() > cleaned_data.get('start_date'):
-			msg = _('Start date must be after current date.')
-			self.add_error('start_date', msg)
-			raise forms.ValidationError(msg)
-		if date.today() > cleaned_data.get('end_date'):
-			msg = _('End date must be after current date.')
-			self.add_error('end_date', msg)
-			raise forms.ValidationError(msg)
-		elif cleaned_data.get('end_date') < cleaned_data.get('start_date'):
-			msg = _('End date must be after start date.')
-			self.add_error('end_date', msg)
-			raise forms.ValidationError(msg)
-		if cleaned_data.get('end_hour') <= cleaned_data.get('start_hour'):
-			msg = _('End hour must occur after start hour.')
-			self.add_error('end_hour', msg)
-			raise forms.ValidationError(msg)
-		if date.today() == cleaned_data.get('start_date') and date.today() == cleaned_data.get('end_date') and datetime.now() > cleaned_data.get('start_hour'):
-			msg = ('Start hour must occur after current hour for a booking today')
-			self.add_error('start_hour', msg)
-			raise forms.ValidationError(msg)
-		if date.today() == cleaned_data.get('start_date') and date.today() == cleaned_data.get('end_date') and datetime.now() > cleaned_data.get('end_hour'):
-			msg = _('End hour must occur after current hour for a booking today')
-			self.add_error('end_hour', msg)
-			raise forms.ValidationError(msg)
+    def save(self, user, force_insert=False, force_update=False, commit=True):
+        booking = Booking()
+        booking.user = user
+        booking.name = self.cleaned_data.get("name")
+        booking.start_date = self.cleaned_data.get("start_date")
+        booking.end_date = self.cleaned_data.get("end_date")
+        booking.place = self.cleaned_data.get("place")
+        weekdays = self.cleaned_data.get("week_days")
+
+        book = BookTime()
+        book.date_booking = booking.start_date
+        book.start_hour = self.cleaned_data.get("start_hour")
+        book.end_hour = self.cleaned_data.get("end_hour")
+        try:
+            booking.save()
+            if booking.exists(book.start_hour, book.end_hour, weekdays):
+                booking.delete()
+                return None
+            else:
+                for day in date_range(book.date_booking, booking.end_date):
+                    if(day.isoweekday() - 1 in map(int, weekdays)):
+                        newBookTime = BookTime(start_hour=book.start_hour,
+                                               end_hour=book.end_hour,
+                                               date_booking=day)
+                        newBookTime.save()
+                        booking.time.add(newBookTime)
+                booking.save()
+        except Exception as e:
+            booking.delete()
+            msg = _('Failed to book selected period')
+            print(e)
+            raise forms.ValidationError(msg)
+            return None
+        return booking
+        # do custom stuff
+
+    def clean_week_days(self):
+        weekdays = self.cleaned_data['week_days']
+        try:
+            start_date = self.cleaned_data['start_date']
+            end_date = self.cleaned_data['end_date']
+            if ((end_date - start_date).days > 7 and
+                    not weekdays):  # 7 days in a week
+                msg = _('Select a repeating standard for the date interval')
+                self.add_error('week_days', msg)
+            elif not weekdays:
+                period = date_range(start_date, end_date)
+                for day in period:
+                    weekdays.append(day.weekday())
+        except:
+            msg = _('Period invalid')
+            raise forms.ValidationError(msg)
+        return weekdays
+
+    def clean(self):
+        try:
+            cleaned_data = super(BookingForm, self).clean()
+            today = date.today()
+            now = datetime.now()
+            start_date = cleaned_data.get('start_date')
+            end_date = cleaned_data.get('end_date')
+            start_hour = cleaned_data.get('start_hour')
+            end_hour = cleaned_data.get('end_hour')
+            if not (today <= start_date <= end_date):
+                msg = _('Invalid booking period: Booking must be'
+                        ' in future dates')
+                self.add_error('start_date', msg)
+                self.add_error('end_date', msg)
+                raise forms.ValidationError(msg)
+            elif ((start_date == today <= end_date) and
+                    not(now.time() < start_hour < end_hour)):
+                msg = _('Invalid booking hours: Time must be after'
+                        ' current hour')
+                self.add_error('start_hour', msg)
+                self.add_error('end_hour', msg)
+                raise forms.ValidationError(msg)
+        except Exception as e:
+            msg = _('Inputs are invalid')
+            raise forms.ValidationError(msg)

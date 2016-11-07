@@ -1,0 +1,113 @@
+{% extends 'sas/base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 staticfiles %}
+{% bootstrap_messages %}
+
+{% block title %} {% trans "Search Bookings" %} {% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-xs-8 col-sm-6 col-md-6 col-md-offset-3 col-xs-offset-2 col-sm-offset-3">
+		<h1 class="text-center">{% trans "Search" %}</h1>
+		<hr class="star-light">
+		<div class="form-content" >
+			<form class="form-horizontal" method = 'POST' role="form">
+				<div class="form-group">
+					{% csrf_token %}
+					{% bootstrap_form search_booking %}
+				</div>
+				{% buttons %}
+				<button class="btn btn-info btn-block" type = 'submit'>{% trans "Search" %}</button>
+				{% endbuttons %}
+			</form>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'plugins/datepicker/bootstrap-datepicker.css' %}" />
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.css' %}" />
+
+{% endblock %}
+{% block extrajs %}
+<script src="{% static 'plugins/select2/js/select2.js' %}"> </script>
+<script type="text/javascript">
+$(function () {
+	$('.datepicker1').datepicker({
+		inline: true,
+		sideBySide: true,
+		format: '{% trans "mm/dd/yyyy" %}',
+		language: '{% trans "en" %}',
+		autoclose: true,
+	});
+
+  $(".select2").select2({
+		theme: "classic"
+	});
+
+	$('.optional').closest('div').hide();
+});
+
+$(document).ready(function () {
+	$('form').trigger('reset');
+	$('#id_building_name').change(function () {
+		$("#id_room_name").prop('selectedIndex',0);
+		var selected_building = $(this).find(":selected").text();
+		$("#id_room_name option").hide();
+		$("#id_room_name option").filter(function(){
+			return $.trim($(this).text()).indexOf(selected_building) != -1
+		}).show();
+	});
+
+	function display_form() {
+		var selected_option = $('input[name=search_options]:checked', '.form-horizontal').val();
+		if(selected_option == 'opt_day_room'){
+			// $("#id_booking_name, #id_end_date").prop("disabled",true);
+			$("#id_room_name, #id_start_date, #id_building_name").closest('div').show();
+			$("#id_room_name, #id_start_date, #id_building_name").prop('required',true);
+			$("#id_end_date, #id_booking_name").closest('div').hide();
+			$("#id_end_date, #id_booking_name").prop('required',false);
+		}
+		if(selected_option == 'opt_booking_week'){
+			// $("#id_room_name, #id_building_name").prop("disabled",true);
+			$("#id_start_date, #id_booking_name, #id_end_date").closest('div').show();
+			$("#id_start_date, #id_booking_name, #id_end_date").prop('required',true);
+			$("#id_room_name, #id_building_name").closest('div').hide();
+			$("#id_room_name, #id_building_name").prop('required',false);
+		}
+		if(selected_option == 'opt_building_day'){
+			// $("#id_room_name, #id_booking_name, #id_end_date").prop("disabled",true);
+			$("#id_start_date, #id_building_name").closest('div').show();
+			$("#id_start_date, #id_building_name").prop('required',true);
+			$("#id_end_date, #id_booking_name, #id_room_name").closest('div').hide();
+			$("#id_end_date, #id_booking_name, #id_room_name").prop('required',false);
+		}
+		if(selected_option == 'opt_room_period'){
+			// $("#id_booking_name").prop("disabled",true);
+			$("#id_start_date, #id_room_name, #id_building_name, #id_end_date").closest('div').show();
+			$("#id_start_date, #id_room_name, #id_building_name, #id_end_date").prop('required',true);
+			$("#id_booking_name").closest('div').hide();
+			$("#id_booking_name").prop('required',false);
+		}
+	}
+
+	$('#id_search_options').change(function () {
+		display_form();
+	});
+
+
+	$('select').prop('selectedIndex', 0);
+	$('form').trigger('reset');
+
+	// .find('option').attr("selected",false) ;
+
+	display_form();
+});
+
+</script>
+<script src= "{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+<script src= "{% static 'plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
+{% endblock %}

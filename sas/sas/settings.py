@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -120,8 +121,15 @@ USE_L10N = True
 
 USE_TZ = True
 
+LANGUAGES = (
+	('en', u'English'),
+	('pt-br', u'Portugues')
+)
+
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+
 LOCALE_PATHS = (
-    os.path.join(os.path.dirname(__file__), "locale"),
+    os.path.join(PROJECT_PATH, '../locale'),
 )
 
 
@@ -139,7 +147,8 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # Tell nose to measure coverage on the 'foo' and 'bar' apps
 NOSE_ARGS = [
     '--with-coverage',
-	'--cover-package=sas,booking,user',
+	'--cover-package=booking,user',
+    '--cover-html',
 ]
 
 PROJECT_DIR = os.path.dirname(__file__)

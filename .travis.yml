@@ -4,7 +4,7 @@ python:
   - "3.4"
   - "3.5"
 
-sudo: required 
+sudo: required
 disty: trusty
 
 # command to install dependencies
@@ -12,7 +12,7 @@ before_install:
     - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     - sudo dpkg -i --force-depends google-chrome*.deb
 install:
-    - pip install --upgrade pip 
+    - pip install --upgrade pip
     - pip install -r requirements.txt
 before_script:
     - "export DISPLAY=:99.0"
@@ -21,9 +21,13 @@ before_script:
 # command to run tests
 script:
     - cd sas
-    - python manage.py makemigrations booking user
-    - coverage run manage.py harvest 
+    - python manage.py makemigrations user booking
+    - python manage.py migrate
+    - coverage run manage.py harvest
     - python manage.py test
 
 after_success:
   coveralls
+
+after_script:
+    - python manage.py test test_pep8

@@ -1,12 +1,10 @@
 from django.test import TestCase, RequestFactory
 from user.models import UserProfile, Validation, CATEGORY
 from django.test import Client
-from django.contrib.auth.models import AnonymousUser
-from user.views import delete_user, edit_user
-from user.factories import UserFactory, UserProfileFactory
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth import authenticate, login, logout
+from user.views import edit_user
+from user.factories import UserProfileFactory
+from django.contrib.auth import logout
+from django.urls import reverse
 
 
 class EditUserTest(TestCase):
@@ -30,17 +28,16 @@ class EditUserTest(TestCase):
 
     def test_get_request_anonymous(self):
         url = '/user/edituser/'
-        response = self.client.get(url, follow = True)
+        response = self.client.get(url, follow=True)
         self.assertTemplateUsed(response, 'sas/index.html')
 
     def test_edit_post_registration_number(self):
-        request = self.factory.get('/user/edituser/')
+        self.factory.get('/user/edituser/')
         client = self.client
-        userprofile = self.userprofile
         client.login(username='gutorc@hotmail.com', password='123456')
-        parameters = {'name': 'Pedro','registration_number': '140000000', \
-            'category' : '1', 'email' : "gutorc@hotmail.com"}
-        response = client.post('/user/edituser/', parameters)
+        parameters = {'name': 'Pedro', 'registration_number': '140000000',
+                      'category': '1', 'email': "gutorc@hotmail.com"}
+        client.post('/user/edituser/', parameters)
         self.userprofile.refresh_from_db()
         self.assertEqual('140000000', self.userprofile.registration_number)
 
@@ -62,22 +59,22 @@ class DeleteUserTest(TestCase):
     def test_get_request_logged(self):
         client = self.client
         client.login(username='gutorc@hotmail.com', password='123456')
-        response = self.client.get(self.url, follow = True)
+        response = self.client.get(self.url, follow=True)
         self.assertTemplateUsed(response, 'sas/index.html')
         self.assertEqual(response.status_code, 200)
 
-
     def test_get_request_anonymous(self):
-        response = self.client.get(self.url, follow = True)
+        response = self.client.get(self.url, follow=True)
         self.assertTemplateUsed(response, 'sas/index.html')
         self.assertEqual(response.status_code, 200)
 
     def test_delete_user(self):
-        userprofile = self.userprofile
         client = self.client
         client.login(username='gutorc@hotmail.com', password='123456')
-        response = self.client.get(self.url, follow = True)
-        self.assertEqual(False,UserProfile.objects.filter(registration_number="110030559").exists())
+        self.client.get(self.url, follow=True)
+        self.assertEqual(False,
+                         UserProfile.objects.filter(
+                             registration_number="110030559").exists())
 
 
 class ViewsTest(TestCase):
@@ -100,12 +97,20 @@ class UserProfileTest(TestCase):
         self.userprofile = UserProfile()
 
     def test_set_name(self):
-        self.userprofile.name("Gustavo Rodrigues Coelho")
-        self.assertEqual(self.userprofile.user.first_name, "Gustavo")
-        self.assertEqual(self.userprofile.user.last_name, "Rodrigues Coelho")
+        self.userprofile.name("Pedro Pereira Pinto")
+        self.assertEqual(self.userprofile.user.first_name, "Pedro")
+        self.assertEqual(self.userprofile.user.last_name, "Pereira Pinto")
+
+    def test_create_user(self):
+        self.assertFalse(hasattr(self.userprofile, 'user'))
+        self.userprofile.create_user()
+        self.assertTrue(hasattr(self.userprofile, 'user'))
 
     def test_get_full_name(self):
         name = "Pedro Pereira Pinto"
+        self.userprofile.name(name)
+        self.assertEqual(self.userprofile.full_name(), name)
+        name = "Renan Calheiros"
         self.userprofile.name(name)
         self.assertEqual(self.userprofile.full_name(), name)
 
@@ -137,7 +142,19 @@ class UserProfileTest(TestCase):
         self.userprofile.user.username = "gutorc@hotmail.com"
         self.userprofile.user.email = "gutorc@hotmail.com"
         self.userprofile.save()
-        self.assertEqual(self.userprofile.pk, 1)
+        self.assertTrue(self.userprofile.pk)
+
+    def test_is_admin(self):
+        userprofile = UserProfileFactory.create()
+        self.assertFalse(userprofile.is_admin())
+        userprofile.make_as_admin()
+        self.assertTrue(userprofile.is_admin())
+
+    def test_is_academic_staff(self):
+        userprofile = UserProfileFactory.create()
+        self.assertFalse(userprofile.is_academic_staff())
+        userprofile.make_as_academic_staff()
+        self.assertTrue(userprofile.is_academic_staff())
 
 
 class ValidationTest(TestCase):
@@ -193,24 +210,31 @@ class LoginTest(TestCase):
         self.client = Client()
 
     def test_get_request(self):
-        response = self.client.get('/user/login/', follow = True)
+        response = self.client.get('/user/login/', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.redirect_chain, [('/', 302)])
 
     def test_invalid_email(self):
-        response = self.client.post('/user/login/', {'email' : 'aeiou', 'password' : '1234567'})
+        response = self.client.post('/user/login/', {'email': 'aeiou',
+                                                     'password': '1234567'})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Enter a valid email address.')
 
     def test_invalid_password(self):
-        response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1235567'})
+        response = self.client.post('/user/login/',
+                                    {'email': self.user.user.email,
+                                     'password': '1235567'})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Email or Password does not match')
 
     def test_valid_user(self):
         logout(self.client)
-        response = self.client.post('/user/login/', {'email' : self.user.user.email, 'password' : '1234567'})
+        response = self.client.post('/user/login/',
+                                    {'email': self.user.user.email,
+                                     'password': '1234567'},
+                                    follow=True)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.redirect_chain, [('/', 302)])
         self.assertContains(response, 'Hi, %s' % (self.user.full_name()))
 
 
@@ -222,14 +246,95 @@ class LogoutTest(TestCase):
         self.client = Client()
 
     def test_logout(self):
-        self.client.login(username= self.user.user.email, password= '1234567')
-        response = self.client.get('/user/logout/', follow = True)
+        self.client.login(username=self.user.user.email, password='1234567')
+        response = self.client.get('/user/logout/', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.redirect_chain, [('/', 302)])
         self.assertContains(response, 'You have been logged out successfully!')
 
     def test_invalid_logout(self):
-        response = self.client.get('/user/logout/', follow = True)
+        response = self.client.get('/user/logout/', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.redirect_chain, [('/', 302)])
-        self.assertNotContains(response, 'You have been logged out sucessfully!')
+        self.assertNotContains(response,
+                               'You have been logged out sucessfully!')
+
+
+class AdminSearchUserTest(TestCase):
+    def setUp(self):
+        self.admin = UserProfileFactory.create()
+        self.admin.user.set_password('1234567')
+        self.admin.make_as_admin()
+        self.admin.save()
+        self.client = Client()
+        self.users = [UserProfileFactory.create() for x in range(5)]
+        for user in self.users:
+            user.make_as_academic_staff()
+
+    def test_search_users(self):
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
+        response = self.client.get(reverse('user:searchuser'))
+        for user in self.users:
+            self.assertContains(response, user.full_name())
+            self.assertContains(response, user.registration_number)
+
+    def test_user_doesnt_have_permission(self):
+        self.users[0].user.set_password('1234567')
+        self.users[0].save()
+        self.client.login(username=self.users[0].user.username,
+                          password='1234567')
+        response = self.client.get(reverse('user:searchuser'), follow=True)
+        self.assertContains(response, 'You cannot access this page.')
+
+    def test_user_not_logged_in(self):
+        response = self.client.get(reverse('user:searchuser'), follow=True)
+        self.assertNotContains(response, 'Make an Admin')
+
+
+class MakeUserAnAdminTest(TestCase):
+    def setUp(self):
+        self.admin = UserProfileFactory.create()
+        self.admin.user.set_password('1234567')
+        self.admin.make_as_admin()
+        self.admin.save()
+        self.user = UserProfileFactory.create()
+        self.client = Client()
+
+    def test_academic_staff_to_admin(self):
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
+        self.user.make_as_academic_staff()
+        url = reverse('user:usertoadmin', args=(self.user.id,))
+        response = self.client.get(url)
+        self.assertContains(response, 'User ' + self.user.full_name() +
+                            ' is now an admin.')
+        self.assertFalse(self.user.is_academic_staff())
+        self.assertTrue(self.user.is_admin())
+
+    def test_user_is_already_admin(self):
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
+        self.user.make_as_admin()
+        url = reverse('user:usertoadmin', args=(self.user.id,))
+        response = self.client.get(url)
+        self.assertContains(response, 'User ' + self.user.full_name() +
+                            ' is already an admin.')
+        self.assertFalse(self.user.is_academic_staff())
+        self.assertTrue(self.user.is_admin())
+
+    def test_user_does_not_exist(self):
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
+        url = reverse('user:usertoadmin', args=(9999,))
+        response = self.client.get(url)
+        self.assertContains(response, 'User not found.')
+
+    def test_user_doesnt_have_permission(self):
+        self.admin.user.groups.clear()
+        self.admin.make_as_academic_staff()
+        self.client.login(username=self.admin.user.username,
+                          password='1234567')
+        url = reverse('user:usertoadmin', args=(9999,))
+        response = self.client.get(url)
+        self.assertContains(response, 'You cannot access this page.')
