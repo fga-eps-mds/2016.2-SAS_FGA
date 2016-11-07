@@ -14,7 +14,10 @@ Scenario: Inexistent booking in the specified room
     And I fill in "Date:" with "12/21/2016"
     And I fill in "Date (To)" with "12/30/2016"
     Then I press "Search"
-    Then I should see "Doesnt exist any booking in this place"
+    Then I should see an element with id of "create-booking"
+
+Scenario: Inexistent booking between end date and start date
+   
 
 Scenario: Start date lower than actual date
 	When I login in with email "lucas@gmail.com" and password "123456"
