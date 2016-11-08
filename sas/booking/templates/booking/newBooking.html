@@ -50,6 +50,19 @@ $(document).ready(function () {
 				    return $.trim($(this).text()).indexOf(selected_building) != -1
 				}).show();
     });
+
+		$('#id_date_options').change(function () {
+			var selected_option = $('input[name=date_options]:checked', '.form-horizontal').val();
+			if(selected_option == 'opt_date_semester'){
+				$("#id_end_date, #id_start_date").closest('div').hide();
+				$("#id_end_date, #id_start_date").prop('required',false);
+			}
+			if(selected_option == 'opt_select_date'){
+				$("#id_start_date, #id_end_date").closest('div').show();
+				$("#id_start_date, #id_end_date").prop('required',true);
+			}
+    });
+
 });
 </script>
 <script src= "{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
