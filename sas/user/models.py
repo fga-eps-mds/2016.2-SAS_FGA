@@ -92,12 +92,18 @@ class UserProfile(models.Model):
 
     @staticmethod
     def get_users():
-        users = User.objects.values('username').distinct()
+        users = User.objects.all()
         choices = ()
         for user in users:
-            new_choice = (user['username'], user['username'])
-            choices = (new_choice,) + choices
+            try:
+                new_choice = (user.profile_user, user.profile_user)
+                choices = (new_choice,) + choices
+            except:
+                pass
         return choices
+
+    def __str__(self):
+        return ' '.join((self.full_name(), '<' + self.user.username + '>'))
 
 
 class Validation():
