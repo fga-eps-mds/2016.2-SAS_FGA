@@ -1,0 +1,45 @@
+{% extends 'sas/base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load bootstrap3 staticfiles %}
+{% block title %}{% trans "New User" %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+      <div class="col-xs-8 col-sm-6 col-md-6 col-md-offset-3 col-xs-offset-2 col-sm-offset-3">
+        <h1 class="text-center">{% trans "Settings" %}</h1>
+        <hr class="star-light">
+        <div class="form-content">
+           <form class="form-horizontal" method = 'POST'>
+                {% csrf_token %}
+                {% bootstrap_form form_settings %}
+                {% buttons %}
+                    <button class="btn btn-info btn-block" type = 'submit'>{% trans "Register" %}</button>
+                {% endbuttons %}
+            </form>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'plugins/datepicker/bootstrap-datepicker.css' %}" />
+{% endblock %}
+
+{% block extrajs %}
+<script>
+$(document).ready(function () {
+
+	$('.datepicker1').datepicker({
+			inline: true,
+			useCurrent: true,
+			format: '{% trans "mm/dd/yyyy" %}',
+			language: '{% trans "en" %}',
+			autoclose: true,
+	});
+});
+</script>
+<script src= "{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+<script src= "{% static 'plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
+{% endblock %}
