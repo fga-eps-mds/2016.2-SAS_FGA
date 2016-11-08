@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from booking.models import (WEEKDAYS, Booking, BookTime, Place, Building,
-                            date_range)
+                            date_range, Validation)
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
@@ -289,6 +289,17 @@ class BookingForm(forms.Form):
                 self.add_error('start_hour', msg)
                 self.add_error('end_hour', msg)
                 raise forms.ValidationError(msg)
+
+            #Responsible validation
+            responsible = cleaned_data.get('responsible')
+            validation = Validation()
+            if validation.hasSpecialCharacters(responsible):
+                msg = _('Responsible cannot contain special characters.')
+                self.add_error('responsible', msg)
+            if validation.hasNumbers(responsible):
+                msg = _('Responsible cannot contain numbers.')
+                self.add_error('responsible', msg)
+
         except Exception as e:
             msg = _('Inputs are invalid')
             raise forms.ValidationError(msg)
