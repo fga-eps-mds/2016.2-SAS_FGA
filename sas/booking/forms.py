@@ -319,16 +319,6 @@ class BookingForm(forms.Form):
                 self.add_error('end_hour', msg)
                 raise forms.ValidationError(msg)
 
-            #Responsible validation
-            responsible = cleaned_data.get('responsible')
-            validation = Validation()
-            if validation.hasSpecialCharacters(responsible):
-                msg = _('Responsible cannot contain special characters.')
-                self.add_error('responsible', msg)
-            if validation.hasNumbers(responsible):
-                msg = _('Responsible cannot contain numbers.')
-                self.add_error('responsible', msg)
-
         except Exception as e:
             msg = _('Inputs are invalid')
             raise forms.ValidationError(msg)
