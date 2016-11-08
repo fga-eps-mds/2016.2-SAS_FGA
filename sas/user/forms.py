@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm
 from .models import UserProfile, Validation
-from .models import CATEGORY
+from .models import CATEGORY, Settings
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -151,6 +151,48 @@ class EditUserForm(UserForm):
     class Meta:
         model = UserProfile
         fields = ['name', 'registration_number', 'category', 'email']
+
+class SettingsForm(forms.Form):
+    start_semester = forms.DateField(
+        label=_('Semester Start:'),
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
+    end_semester = forms.DateField(
+        label=_('Semester End:'),
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
+
+    def clean(self):
+        try:
+            cleaned_data = super(SettingsForm, self).clean()
+            start_semester = cleaned_data.get('start_semester')
+            end_semester = cleaned_data.get('end_semester')
+            if not (start_semester <= end_semester):
+                msg = _('Semester start must be before the end of it.')
+                self.add_error('start_semester', msg)
+                self.add_error('end_semester', msg)
+                raise forms.ValidationError(msg)
+        except Exception as e:
+            msg = _('Inputs are invalid')
+            raise forms.ValidationError(msg)
+
+    def save(self, force_insert=False, force_update=False, commit=True):
+        settings = Settings()
+        settings.start_semester = self.cleaned_data.get("start_semester")
+        settings.end_semester = self.cleaned_data.get("end_semester")
+
+        try:
+            settings.save()
+        except Exception as e:
+            msg = _('Failed to create settings')
+            print(e)
+            raise forms.ValidationError(msg)
+            return None
+        return settings
+
+    class Meta:
+        model = UserProfile
+        fields = ['start_semester', 'end_semester']
 
 
 class NewUserForm(UserForm):
