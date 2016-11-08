@@ -90,6 +90,10 @@ class UserProfile(models.Model):
         except Group.DoesNotExist:
             return False
 
+class Settings(models.Model):
+    start_semester = models.DateField(null=False, blank=False)
+    end_semester = models.DateField(null=False, blank=False)
+
 
 class Validation():
 
