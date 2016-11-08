@@ -212,8 +212,13 @@ class BookingForm(forms.Form):
         booking.place = self.cleaned_data.get("place")
         weekdays = self.cleaned_data.get("week_days")
 
-        if user.is_staff:
+        if user.profile_user.is_admin():
             booking.responsible = self.cleaned_data.get("responsible")
+            try:
+                responsible_user = User.objects.get(username=booking.responsible)
+                booking.user = responsible_user
+            except:
+                pass
         else:
             booking.responsible = user.username
 
