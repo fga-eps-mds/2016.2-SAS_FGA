@@ -243,8 +243,10 @@ class BookingForm(forms.Form):
 
         if user.profile_user.is_admin():
             booking.responsible = self.cleaned_data.get("responsible")
+            name, username = booking.responsible.split('<')
+            username = username.replace('>', '')
             try:
-                responsible_user = User.objects.get(username=booking.responsible)
+                responsible_user = User.objects.get(username=username)
                 booking.user = responsible_user
             except:
                 pass
