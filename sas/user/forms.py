@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm
 from .models import UserProfile, Validation
-from .models import CATEGORY
+from .models import CATEGORY, ENGINEERING
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -87,6 +87,7 @@ class UserForm(ModelForm):
         label=_('Registration number:'),
         widget=forms.TextInput(attrs={'placeholder': ''}))
     category = forms.ChoiceField(choices=CATEGORY, label=_('Category:'))
+    engineering = forms.ChoiceField(choices=ENGINEERING, label=_('Engineering:'))
 
     def save(self, force_insert=False, force_update=False,
              commit=True, is_edit_form=False):
@@ -100,6 +101,8 @@ class UserForm(ModelForm):
         userprofile.name(self.cleaned_data.get('name'))
         userprofile.user.email = self.cleaned_data.get('email')
         userprofile.user.username = userprofile.user.email
+        userprofile.engineering = self.cleaned_data.get('engineering')
+
 
         if not is_edit_form:
             userprofile.user.set_password(self.cleaned_data.get('password'))
@@ -143,7 +146,8 @@ class UserForm(ModelForm):
     class Meta:
         model = UserProfile
         fields = ['name', 'registration_number',
-                  'category', 'email', 'password', 'repeat_password']
+                  'category', 'email', 'password', 'repeat_password',
+                  'engineering']
 
 
 class EditUserForm(UserForm):
