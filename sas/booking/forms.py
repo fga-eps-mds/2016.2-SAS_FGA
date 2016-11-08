@@ -214,20 +214,15 @@ class BookingForm(forms.Form):
         booking = Booking()
         booking.user = user
         booking.name = self.cleaned_data.get("name")
+        booking.start_date = self.cleaned_data.get("start_date")
+        booking.end_date = self.cleaned_data.get("end_date")
         booking.place = self.cleaned_data.get("place")
         weekdays = self.cleaned_data.get("week_days")
-        semester_select = self.cleaned_data.get("date_options")
+
         book = BookTime()
         book.date_booking = booking.start_date
         book.start_hour = self.cleaned_data.get("start_hour")
         book.end_hour = self.cleaned_data.get("end_hour")
-        if (semester_select == 'opt_select_date'):
-            booking.start_date = self.cleaned_data.get("start_date")
-            booking.end_date = self.cleaned_data.get("end_date")
-        else:
-            booking.start_date = Settings.get_start()
-            booking.end_date = Settings.get_end()
-
         try:
             booking.save()
             if booking.exists(book.start_hour, book.end_hour, weekdays):
