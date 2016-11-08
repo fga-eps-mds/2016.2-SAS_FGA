@@ -187,16 +187,6 @@ def new_booking(request):
         form_booking = BookingForm(request.POST)
         if (form_booking.is_valid()):
             booking = form_booking.save(request.user)
-            """if user.profile_user.is_admin():
-                responsible_user = User.objects.get(username=booking.responsible)
-                booking.user = responsible_user
-                booking.save()
-                print('ENTROU AQUI')
-                print(booking.user)
-                print(booking.responsible)"""
-            print('ENTROU AQUI')
-            print(booking.user)
-            print(booking.responsible)
             if booking:
                 request.session['booking'] = booking.pk
                 return render(request, 'booking/showDates.html',
