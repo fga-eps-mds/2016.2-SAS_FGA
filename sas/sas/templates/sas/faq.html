@@ -1,0 +1,16 @@
+{% extends 'sas/base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% bootstrap_messages %}
+
+{% block title %}{% trans "My name" %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xs-8 col-sm-6 col-md-6 col-md-offset-3 col-xs-offset-2 col-sm-offset-3">
+        <h1 class="text-center">{% trans "Frequently Asked Questions" %}</h1>
+        <hr class="star-light">
+    </div>
+
+{% endblock %}
