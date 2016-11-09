@@ -10,7 +10,8 @@ from datetime import date, datetime, timedelta, time
 from django.conf import settings
 from django.utils import formats
 from user.models import UserProfile
-import copy, re
+import copy
+import re
 import traceback
 
 
@@ -23,7 +24,7 @@ class SearchBookingForm(forms.Form):
             label=_('Booking:'),
             required=False,
             widget=forms.widgets.Select(
-                    attrs={'class': 'select2 optional'})
+                attrs={'class': 'select2 optional'})
         )
     SEARCH_CHOICES = (
         ('opt_day_room', _("Room's Week Timetable")),
@@ -36,19 +37,18 @@ class SearchBookingForm(forms.Form):
                                        choices=SEARCH_CHOICES,
                                        widget=forms.RadioSelect())
 
-
     building_name = forms.ModelChoiceField(
         queryset=Building.objects,
         label=_('Building:'), required=False,
         widget=forms.widgets.Select(
-            attrs={'class': 'optional'}) )
+            attrs={'class': 'optional'}))
 
     room_name = forms.ModelChoiceField(
         queryset=Place.objects,
         label=_('Place:'),
         required=False,
         widget=forms.widgets.Select(
-            attrs={'class': 'optional'}) )
+            attrs={'class': 'optional'}))
 
     start_date = forms.DateField(
         label=_('Date:'),
@@ -174,8 +174,6 @@ class SearchBookingForm(forms.Form):
             raise forms.ValidationError(msg)
 
 
-
-
 class BookingForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
@@ -184,9 +182,9 @@ class BookingForm(forms.Form):
             label=_('Responsible:'),
             required=False,
             widget=forms.widgets.Select(
-                    attrs={'class': 'selectize'},
-                    choices=UserProfile.get_users(),
-                    )
+                attrs={'class': 'selectize'},
+                choices=UserProfile.get_users(),
+            )
         )
 
     hour = datetime.strptime("08:00", "%H:%M").time()
@@ -243,7 +241,8 @@ class BookingForm(forms.Form):
 
         if user.profile_user.is_admin():
             booking.responsible = self.cleaned_data.get("responsible")
-            name = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', booking.responsible)
+            name = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+',
+                             booking.responsible)
             if name is not None:
                 name = name.group()
             users = User.objects.filter(username=name)
