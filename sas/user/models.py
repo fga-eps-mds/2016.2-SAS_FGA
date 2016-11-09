@@ -93,7 +93,7 @@ class UserProfile(models.Model):
     @staticmethod
     def get_users():
         users = User.objects.all()
-        choices = ()
+        choices = (('', ''),)
         for user in users:
             try:
                 new_choice = (user.profile_user, user.profile_user)
