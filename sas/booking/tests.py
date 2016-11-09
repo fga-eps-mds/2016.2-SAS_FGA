@@ -226,7 +226,7 @@ class TestNewBooking(TestCase):
         client = self.client
         self.user.make_as_admin()
         responsible_user = UserProfileFactory.create()
-        self.parameters["responsible"] = responsible_user.full_name() + '<' + responsible_user.user.username + '>'
+        self.parameters["responsible"] = str(responsible_user)
         client.login(username=username, password='1234567')
         response = client.post('/booking/newbooking/', self.parameters)
         booking = Booking.objects.get(name='Reservaoiasd')
