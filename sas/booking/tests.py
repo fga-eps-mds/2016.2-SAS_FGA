@@ -176,17 +176,19 @@ class TestNewBooking(TestCase):
         self.client = Client()
         self.factory = RequestFactory()
         self.week_days = ['3', '5']
-        self.start_date = datetime.strptime("21092017", "%d%m%Y")
-        self.end_date = datetime.strptime("22092017", "%d%m%Y")
+        self.start_date = datetime.strptime("21092017", "%d%m%Y").date()
+        self.end_date = datetime.strptime("22102017", "%d%m%Y").date()
         self.hour = datetime.strptime("08:00", "%H:%M").time()
         self.hour2 = datetime.strptime("10:00", "%H:%M").time()
         self.building_name = Building.objects.filter(name='UAC')
         self.place_name = Place.objects.filter(pk=3)
+        print(self.place_name)
+        print(self.building_name)
         self.parameters = {
             'name': 'Reservaoiasd', 'start_hour': self.hour,
             'end_hour': self.hour2, 'start_date': self.start_date,
-            'end_date': self.end_date, 'building': self.building_name,
-            'place': self.place_name, 'week_days': self.week_days}
+            'end_date': self.end_date, 'building': self.building_name[0].pk,
+            'place': self.place_name[0].pk, 'week_days': self.week_days}
 
     def test_get_request_logged(self):
         request = self.factory.get('/booking/newbooking/')
@@ -218,6 +220,17 @@ class TestNewBooking(TestCase):
     def test_form_is_valid(self):
         form = BookingForm(data=self.parameters)
         self.assertTrue(form.is_valid())
+
+    def test_responsible(self):
+        username = self.user.user.username
+        client = self.client
+        self.user.make_as_admin()
+        responsible_user = UserProfileFactory.create()
+        self.parameters["responsible"] = responsible_user.full_name() + '<' + responsible_user.user.username + '>'
+        client.login(username=username, password='1234567')
+        response = client.post('/booking/newbooking/', self.parameters)
+        booking = Booking.objects.get(name='Reservaoiasd')
+        self.assertEqual(booking.user.id, responsible_user.user.id)
 
 
 class TestSearchBooking(TestCase):
