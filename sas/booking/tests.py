@@ -224,11 +224,22 @@ class TestNewBooking(TestCase):
         client = self.client
         self.user.make_as_admin()
         responsible_user = UserProfileFactory.create()
-        self.parameters["responsible"] = str(responsible_user)
+        self.parameters['responsible'] = str(responsible_user)
         client.login(username=username, password='1234567')
         response = client.post('/booking/newbooking/', self.parameters)
-        booking = Booking.objects.get(name='Reservaoiasd')
+        booking = Booking.objects.get(name=self.parameters['name'])
         self.assertEqual(booking.user.id, responsible_user.user.id)
+
+    def test_responsible_not_an_user(self):
+        username = self.user.user.username
+        client = self.client
+        self.user.make_as_admin()
+        self.parameters['responsible'] = 'Carla Rocha'
+        client.login(username=username, password='1234567')
+        response = client.post('/booking/newbooking/', self.parameters)
+        booking = Booking.objects.get(name=self.parameters['name'])
+        self.assertEqual(booking.user.id, self.user.user.id)
+        self.assertEqual(booking.responsible, self.parameters['responsible'])
 
 
 class TestSearchBooking(TestCase):
