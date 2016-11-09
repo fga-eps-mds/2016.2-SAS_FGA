@@ -182,8 +182,6 @@ class TestNewBooking(TestCase):
         self.hour2 = datetime.strptime("10:00", "%H:%M").time()
         self.building_name = Building.objects.filter(name='UAC')
         self.place_name = Place.objects.filter(pk=3)
-        print(self.place_name)
-        print(self.building_name)
         self.parameters = {
             'name': 'Reservaoiasd', 'start_hour': self.hour,
             'end_hour': self.hour2, 'start_date': self.start_date,
