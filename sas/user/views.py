@@ -49,6 +49,7 @@ def render_edit_user(request, user_form=None, change_form=PasswordForm()):
     initial = {}
     initial['name'] = user.profile_user.full_name()
     initial['email'] = user.email
+    initial['engineering'] = user.profile_user.engineering
 
     if user_form is None:
         user_form = EditUserForm(initial=initial,

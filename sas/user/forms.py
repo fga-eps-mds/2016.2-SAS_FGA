@@ -154,7 +154,7 @@ class EditUserForm(UserForm):
 
     class Meta:
         model = UserProfile
-        fields = ['name', 'registration_number', 'category', 'email']
+        fields = ['name', 'registration_number', 'category', 'email', 'engineering']
 
 
 class NewUserForm(UserForm):
