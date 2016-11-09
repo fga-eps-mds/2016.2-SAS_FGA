@@ -10,7 +10,8 @@ from datetime import date, datetime, timedelta, time
 from django.conf import settings
 from django.utils import formats
 from user.models import UserProfile
-import copy, re
+import copy
+import re
 import traceback
 
 
@@ -22,7 +23,8 @@ class SearchBookingForm(forms.Form):
             choices=Booking.get_bookings(),
             label=_('Booking:'),
             required=False,
-            widget=forms.widgets.Select(attrs={'class': 'select2 optional'})
+            widget=forms.widgets.Select(
+                attrs={'class': 'select2 optional'})
         )
     SEARCH_CHOICES = (
         ('opt_day_room', _("Room's Week Timetable.")),
@@ -153,9 +155,9 @@ class BookingForm(forms.Form):
             label=_('Responsible:'),
             required=False,
             widget=forms.widgets.Select(
-                    attrs={'class': 'selectize'},
-                    choices=UserProfile.get_users(),
-                    )
+                attrs={'class': 'selectize'},
+                choices=UserProfile.get_users(),
+            )
         )
 
     hour = datetime.strptime("08:00", "%H:%M").time()
@@ -214,7 +216,8 @@ class BookingForm(forms.Form):
 
         if user.profile_user.is_admin():
             booking.responsible = self.cleaned_data.get("responsible")
-            name = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', booking.responsible)
+            name = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+',
+                             booking.responsible)
             if name is not None:
                 name = name.group()
             users = User.objects.filter(username=name)
