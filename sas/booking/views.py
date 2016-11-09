@@ -192,7 +192,7 @@ class SearchBookingQueryView(View):
 
 
 class NewBooking(View):
-    
+
     def get(self, request):
         return render(request, 'booking/newBooking2.html')
 
@@ -208,6 +208,8 @@ def new_booking(request):
                               {'booking': booking})
             else:
                 messages.error(request, _("Booking alread exists"))
+        else:
+            print (form_booking.errors)
     else:
         form_booking = BookingForm()
     return render(request, 'booking/newBooking.html',

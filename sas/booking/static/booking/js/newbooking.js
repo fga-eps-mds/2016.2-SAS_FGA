@@ -171,8 +171,14 @@ $(document).ready(function(){
         end_hour = $( "#slider_end_time" ).slider("value") + ":00:00";
 
         if($('input[name=times]:checked', '#page2').val() == "interval") {
-            start_date = $("#id_start_date").val();
-            end_date = $("#id_end_date").val();
+            var startDate = $("#id_start_date").val();
+            var endDate = $("#id_end_date").val();
+
+            var StartDateinISO = $.datepicker.parseDate('mm/dd/yy', startDate);
+            start_date = $.datepicker.formatDate( "yy-mm-dd", new Date(StartDateinISO));
+
+            var EndDateinISO = $.datepicker.parseDate('mm/dd/yy', endDate);
+            end_date = $.datepicker.formatDate( "yy-mm-dd", new Date(EndDateinISO));
 
             if(!booking.check_date($("#id_start_date")) || !booking.check_date($("#id_end_date")) ||
                 !booking.check_interval_date($("#id_start_date"), $("#id_end_date")) ||
@@ -182,8 +188,14 @@ $(document).ready(function(){
         }
 
         else {
-            start_date = $('#id_one_day_date').val();
-            end_date = $('#id_one_day_date').val();
+            var startDate = $('#id_one_day_date').val();
+            var endDate = $('#id_one_day_date').val();
+
+            var StartDateinISO = $.datepicker.parseDate('mm/dd/yy', startDate);
+            start_date = $.datepicker.formatDate( "yy-mm-dd", new Date(StartDateinISO));
+
+            var EndDateinISO = $.datepicker.parseDate('mm/dd/yy', endDate);
+            end_date = $.datepicker.formatDate( "yy-mm-dd", new Date(EndDateinISO));
 
             if(!booking.check_date($("#id_one_day_date")) ||
                 !booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'))) {
@@ -242,13 +254,28 @@ $(document).ready(function(){
         place = $(".place-selected > input").attr("value");
         place_name = $(".place-selected").text();
 
-        ar_week_days = Array();
-        ar_week_days_names = Array();
+        ar_week_days = [];
+        ar_week_days_names = [];
 
         $("input[name=week_days]:checked").each(function(index){
             ar_week_days.push($(this).val());
             ar_week_days_names.push($(this).parent().text());
         });
+
+        if(start_date == end_date) {
+            var weekdays = new Array(7);
+            weekdays[0] = "Sunday";
+            weekdays[1] = "Monday";
+            weekdays[2] = "Tuesday";
+            weekdays[3] = "Wednesday";
+            weekdays[4] = "Thursday";
+            weekdays[5] = "Friday";
+            weekdays[6] = "Saturday";
+
+            var weekdayOneDate = new Date(start_date);
+            ar_week_days.push(weekdayOneDate.getDay()+1);
+            ar_week_days_names = weekdays[weekdayOneDate.getDay()+1];
+        }
 
         if(!$('td').hasClass("place-selected")) {
             booking.addSpan($('#booking-places'), 'Please, select a place to continue');
@@ -302,28 +329,42 @@ $(document).ready(function(){
         $.post("/booking/newbooking/", {
             building: building,
             place: place,
-            booking_name: booking_name,
+            name: booking_name,
             start_date: start_date,
             end_date: end_date,
             start_hour: start_hour,
             end_hour: end_hour,
             week_days: ar_week_days
+        })
+
+        .always(function() {
+            $("#page1").hide();
+            $("#page2").hide();
+            $("#page3").hide();
+            $("#page4").hide();
+            $("#page5").show();
+            breadcrumbsadd(4);
+        })
+
+        .done(function() {
+            $('#result-booking').html('\
+                <p>Booking successfully done!</p>\
+            ');
+
+            $('#result-booking > p').css('text-align', 'center')
+                                    .css('color', '#2C3E50')
+                                    .css('font-weight', 'bold');
+            $('#finish-form').remove();
+        })
+
+        .fail(function() {
+            $('#result-booking').html('\
+                <p>An error has occurred!</p>\
+            ');
+            $('#result-booking > p').css('text-align', 'center')
+                                    .css('color', '#C9302C')
+                                    .css('font-weight', 'bold');
+            $('#finish-form').remove();
         });
-
-        $("#page1").hide();
-        $("#page2").hide();
-        $("#page3").hide();
-        $("#page4").hide();
-        $("#page5").show();
-        breadcrumbsadd(4);
-
-        $('#result-booking').html('\
-            <p>Booking successfully done!</p>\
-        ');
-
-        $('#result-booking > p').css('text-align', 'center')
-                                .css('color', '#2C3E50')
-                                .css('font-weight', 'bold');
-        $('#finish-form').remove();
     });
 });
