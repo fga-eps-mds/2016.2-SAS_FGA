@@ -244,7 +244,9 @@ class BookingForm(forms.Form):
         if user.profile_user.is_admin():
             booking.responsible = self.cleaned_data.get("responsible")
             name = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', booking.responsible)
-            users = User.objects.filter(username=name.group())
+            if name is not None:
+                name = name.group()
+            users = User.objects.filter(username=name)
             ONE_FOUND = 1
             if user.profile_user.is_admin() and (users.count() is ONE_FOUND):
                 booking.user = users[0]
