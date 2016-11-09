@@ -10,7 +10,7 @@ from datetime import date, datetime, timedelta, time
 from django.conf import settings
 from django.utils import formats
 from user.models import UserProfile
-import copy
+import copy, re
 import traceback
 
 
@@ -243,15 +243,11 @@ class BookingForm(forms.Form):
 
         if user.profile_user.is_admin():
             booking.responsible = self.cleaned_data.get("responsible")
-            name, username = booking.responsible.split('<')
-            username = username.replace('>', '')
-            try:
-                responsible_user = User.objects.get(username=username)
-                booking.user = responsible_user
-            except:
-                pass
-        else:
-            booking.responsible = user.username
+            name = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', booking.responsible)
+            users = User.objects.filter(username=name.group())
+            ONE_FOUND = 1
+            if user.profile_user.is_admin() and (users.count() is ONE_FOUND):
+                booking.user = users[0]
 
         book = BookTime()
         book.date_booking = booking.start_date
