@@ -70,7 +70,7 @@ def register_user(step, username, password, registration_number, category):
     user.user.first_name = "Usuário"
     user.user.set_password(password)
     user.save()
-    user.make_as_academic_staff() 
+    user.make_as_academic_staff()
     for number,category_type in CATEGORY:
         if category_type == category:
             user.category = number
@@ -97,6 +97,7 @@ def new_booking(step, booking_name, building, place_name, start_date, end_date, 
 	booking = Booking()
 	booking.user = User()
 	booking.user = User.objects.get(username=username)
+    booking.user.make_as_admin()
 	booking.name = booking_name
 	booking.start_date = start_date
 	booking.end_date = end_date
