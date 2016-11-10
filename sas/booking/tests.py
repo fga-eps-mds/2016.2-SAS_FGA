@@ -616,6 +616,7 @@ class CheckTableTest(TestCase):
         result = search_date(dates, 1)
         self.assertEquals(result, str(self.date))
 
+
 class ShowBookTimesTest(TestCase):
     def setUp(self):
         self.user = UserProfileFactory.create()
