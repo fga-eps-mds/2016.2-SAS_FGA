@@ -62,13 +62,6 @@ class BookTime(models.Model):
         return (str(self.date_booking) + " | " +
                 str(self.start_hour) + " - " + str(self.end_hour))
 
-    def delete_booktime(self, booking):
-        if booking.time.count() == 1:
-            booking.delete()
-        else:
-            booking.time.remove(self)
-            super(BookTime, self).delete()
-
 
 class Booking(models.Model):
     user = models.ForeignKey(User, related_name="bookings",
@@ -138,11 +131,24 @@ class Booking(models.Model):
         Booking.objects.filter(pk=self.pk).update(status=status)
         self.refresh_from_db()
 
+    def update_start_date(self):
+        all_booktimes = self.time.order_by('date_booking')
+        self.start_date = all_booktimes.first().date_booking
+        self.save()
+
+    def update_end_date(self):
+        all_booktimes = self.time.order_by('date_booking')
+        self.end_date = all_booktimes.last().date_booking
+        self.save()
+
     def delete_booktime(self, id_booktime, user):
         booktime = BookTime.objects.get(pk=id_booktime)
+        all_booktimes = self.time.order_by('date_booking')
         if (user.profile_user.is_admin() or self.user.id == user.id) and \
-                booktime in self.time.all():
+                booktime in all_booktimes:
             booktime.delete()
+            self.update_start_date()
+            self.update_end_date()
         else:
             raise PermissionDenied()
 
