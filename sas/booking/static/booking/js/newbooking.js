@@ -326,45 +326,6 @@ $(document).ready(function(){
     });
 
     $('#finish-form').click(function() {
-        $.post("/booking/newbooking/", {
-            building: building,
-            place: place,
-            name: booking_name,
-            start_date: start_date,
-            end_date: end_date,
-            start_hour: start_hour,
-            end_hour: end_hour,
-            week_days: ar_week_days
-        })
-
-        .always(function() {
-            $("#page1").hide();
-            $("#page2").hide();
-            $("#page3").hide();
-            $("#page4").hide();
-            $("#page5").show();
-            breadcrumbsadd(4);
-        })
-
-        .done(function() {
-            $('#result-booking').html('\
-                <p>Booking successfully done!</p>\
-            ');
-
-            $('#result-booking > p').css('text-align', 'center')
-                                    .css('color', '#2C3E50')
-                                    .css('font-weight', 'bold');
-            $('#finish-form').remove();
-        })
-
-        .fail(function() {
-            $('#result-booking').html('\
-                <p>An error has occurred!</p>\
-            ');
-            $('#result-booking > p').css('text-align', 'center')
-                                    .css('color', '#C9302C')
-                                    .css('font-weight', 'bold');
-            $('#finish-form').remove();
-        });
+        booking.post_form(building, place, booking_name, start_date, end_date, start_hour, end_hour, ar_week_days);
     });
 });
