@@ -208,3 +208,27 @@ hr.star-light:after {
 .modal-footer.delete-footer {
     text-align: center;
 }
+
+
+/* FAQ */
+.intro-text {
+    margin-top: 1.5em;
+    font-size: 1.2em;
+}
+
+.faq-content {
+  text-align: left;
+}
+
+.question-number {
+    color: red;
+}
+
+.question {
+    font-weight: bold;
+}
+
+.answer {
+    padding-left: 2em;
+    margin-bottom: 1em;
+}
