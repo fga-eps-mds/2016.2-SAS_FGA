@@ -34,10 +34,13 @@ class EditUserTest(TestCase):
     def test_edit_post_registration_number(self):
         self.factory.get('/user/edituser/')
         client = self.client
+        print(self.userprofile.registration_number)
         client.login(username='gutorc@hotmail.com', password='123456')
         parameters = {'name': 'Pedro', 'registration_number': '140000000',
-                      'category': '1', 'email': "gutorc@hotmail.com"}
+                      'category': '1', 'email': "gutorc@hotmail.com",
+                      'engineering': '1'}
         client.post('/user/edituser/', parameters)
+        print(self.userprofile.registration_number)
         self.userprofile.refresh_from_db()
         self.assertEqual('140000000', self.userprofile.registration_number)
 
