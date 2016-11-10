@@ -97,7 +97,6 @@ def new_booking(step, booking_name, building, place_name, start_date, end_date, 
 	booking = Booking()
 	booking.user = User()
 	booking.user = User.objects.get(username=username)
-    booking.user.make_as_admin()
 	booking.name = booking_name
 	booking.start_date = start_date
 	booking.end_date = end_date
