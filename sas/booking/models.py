@@ -118,7 +118,7 @@ class Booking(models.Model):
             return False
 
     def save(self, *args, **kwargs):
-        if (self.place.is_laboratory and not self.user.is_admin()):
+        if (self.place.is_laboratory and not self.user.profile_user.is_admin()):
             self.status = 1  # status for pending booking
         if Place.objects.filter(name=self.place.name):
             self.place = Place.objects.get(name=self.place.name)
