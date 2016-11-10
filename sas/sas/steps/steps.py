@@ -77,7 +77,7 @@ def register_user(step, username, password, registration_number, category):
     user.save()
 
 @step(r'I load a semester')
-def register_semester(step, start_semester, end_semester):
+def register_semester(step):
     settings = Settings()
     settings.start_semester = datetime.strptime("21092017", "%d%m%Y")
     settings.end_semester = datetime.strptime("22092018", "%d%m%Y")
