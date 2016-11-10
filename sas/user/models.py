@@ -95,11 +95,9 @@ class UserProfile(models.Model):
         users = User.objects.all()
         choices = (('', ''),)
         for user in users:
-            try:
+            if hasattr(user, 'profile_user'):
                 new_choice = (user.profile_user, user.profile_user)
                 choices = (new_choice,) + choices
-            except:
-                pass
         return choices
 
     def __str__(self):
