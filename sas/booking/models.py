@@ -69,7 +69,7 @@ class BookTime(models.Model):
             booking.time.remove(self)
             super(BookTime, self).delete()
 
-
+BOOKING_STATUS = ((0, _("Denied")), (1, _("Pending")), (2, _("Approved")))
 class Booking(models.Model):
     user = models.ForeignKey(User, related_name="bookings",
                              on_delete=models.CASCADE)
@@ -78,7 +78,7 @@ class Booking(models.Model):
     name = models.CharField(max_length=50)
     start_date = models.DateField(null=False, blank=False)
     end_date = models.DateField(null=False, blank=False)
-    status = models.PositiveSmallIntegerField(default=2)
+    status = models.PositiveSmallIntegerField(choices=BOOKING_STATUS, default=2)
 
     def __str__(self):
         return (self.name + " " + self.user.email + " | " + str(self.place) +
@@ -118,10 +118,8 @@ class Booking(models.Model):
             return False
 
     def save(self, *args, **kwargs):
-        if (self.place.is_laboratory):
+        if (self.place.is_laboratory and not self.user.is_admin()):
             self.status = 1  # status for pending booking
-        else:
-            self.status = 2  # status for approved booking
         if Place.objects.filter(name=self.place.name):
             self.place = Place.objects.get(name=self.place.name)
         else:
