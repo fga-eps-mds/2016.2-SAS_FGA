@@ -595,3 +595,17 @@ class CheckTableTest(TestCase):
         date = dates, 7
         result = search_date(dates, 1)
         self.assertEquals(result, str(self.date))
+
+class ShowBookTimesTest(TestCase):
+    def setUp(self):
+        self.user = UserProfileFactory.create()
+        self.user.user.set_password('1234567')
+        self.user.make_as_admin()
+        self.user.save()
+        self.client = Client()
+
+    def test_booking_not_found(self):
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:showbooktimes', args=(0,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
