@@ -340,6 +340,7 @@ def delete_booktime(request, booking_id, booktime_id):
 def show_booktimes(request, booking_id):
     try:
         booking = Booking.objects.get(pk=booking_id)
+        return render(request, 'booking/showBookTimes.html', {'booking': booking})
     except:
         messages.error(request, _('Booking not found.'))
-    return render(request, 'booking/showBookTimes.html', {'booking': booking})
+    return all_bookings(request)
