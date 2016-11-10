@@ -1,5 +1,6 @@
 from django import template
 from datetime import timedelta, datetime
+from user.models import UserProfile
 
 register = template.Library()
 
@@ -78,3 +79,9 @@ def search_building(place, count):
         return str(place[count].building.pk)
     else:
         return str(place.building.pk)
+
+@register.filter()
+def search_user(value):
+    users = UserProfile.get_users()
+    print(users) 
+    return {'users':users}
