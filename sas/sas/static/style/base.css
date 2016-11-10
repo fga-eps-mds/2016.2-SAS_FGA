@@ -212,12 +212,14 @@ hr.star-light:after {
 
 /* FAQ */
 .intro-text {
-    margin-top: 1.5em;
-    font-size: 1.2em;
+    margin: auto;
+    margin-top: 2em;
+    font-size: 1.25em;
+    width: 90%;
 }
 
 .faq-content {
-  text-align: left;
+  text-align: justify;
 }
 
 .question-number {
@@ -230,5 +232,5 @@ hr.star-light:after {
 
 .answer {
     padding-left: 2em;
-    margin-bottom: 1em;
+    margin-bottom: 2em;
 }
