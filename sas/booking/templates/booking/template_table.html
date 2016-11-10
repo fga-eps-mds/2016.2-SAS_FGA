@@ -7,6 +7,7 @@
 
 {% block extrastyle %}
 <link rel="stylesheet" href="{% static "style/bookingtable.css" %}">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.0/css/selectize.bootstrap3.min.css" />
 {% endblock %}
 
 {% block title %} {% trans "Template Bookings Reports" %} {% endblock %}
@@ -90,9 +91,19 @@
           <input type="hidden" class="form-control" id="id_end_hour" name="end_hour" title="" required>
           <input type="hidden" class="form-control" id="id_start_date" name="start_date" title="" required>
           <input type="hidden" class="form-control" id="id_end_date" name="end_date" title="" required>
-
+          
           <label class="control-label" for="id_name">Booking Name:</label>
           <input class="form-control" id="id_name" name="name" placeholder="" title="" type="text" required />
+
+          <label class="control-label" for="id_responsible" >Responsible:</label>
+          <datalist id="id_responsible" name="responsible" title="">
+               
+              {% for user in search_user %}
+                <option> {{ user }} </option>
+              {% endfor %}
+
+          </datalist>
+
         </div>
         <div class="modal-footer">
            <button class="btn btn-primary btn-ok" type="submit" id="action-create">
@@ -107,7 +118,10 @@
 </div>
 {% endblock %}
 
+
+
 {% block extrajs %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.0/js/standalone/selectize.min.js"></script>
 <!-- DataTables -->
 <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
@@ -115,9 +129,27 @@
 <script src="{% static 'plugins/datatables/extensions/Responsive/js/responsive.bootstrap.min.js' %}"></script>
 <!-- page script -->
 <script>
+
+$(document).ready(function () {
+
+  $("#id_responsible").selectize({
+      delimiter: ',',
+      persist: false,
+      maxItems:1,
+      create: function(input) {
+          return {
+              value: input,
+              text: input
+          }
+      }
+  });
+});
+
+
 $('#modalNewBooking').on('show.bs.modal', function(e) {
     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 });
+
 $(document).on("click", "#create-booking", function () {
      var place_pk = $(this).data('place-pk');
      var building_pk = $(this).data('building-pk');
