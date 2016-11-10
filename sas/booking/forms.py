@@ -102,26 +102,6 @@ class SearchBookingForm(forms.Form):
             option = self.cleaned_data.get('search_options')
             start_date = self.cleaned_data.get('start_date')
 
-            if(option == 'opt_building_day'):
-                building_name = cleaned_data.get('building_name').name
-                if not Building.objects.filter(name=building_name).exists():
-                    msg = _('Doesnt exist any building with this name')
-                    self.add_error('building_name', msg)
-                    raise forms.ValidationError(msg)
-            if(option == 'opt_day_room' or option == 'opt_room_period'):
-                room_name = self.cleaned_data.get('room_name').name
-                if not Booking.objects.filter(place__name=room_name):
-                    msg = _('Doesnt exist any booking in this place')
-                    self.add_error('room_name', msg)
-                    raise forms.ValidationError(msg)
-
-            if(option == 'opt_booking_week'):
-                booking_name = cleaned_data.get('booking_name')
-                if not Booking.objects.filter(name=booking_name).exists():
-                    msg = _('Doesnt exist any booking with this name')
-                    self.add_error('booking_name', msg)
-                    raise forms.ValidationError(msg)
-
             if(option == 'opt_room_period' or option == 'opt_booking_week'):
                 end_date = self.cleaned_data.get('end_date')
 
