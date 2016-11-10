@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load bootstrap3 staticfiles %}
+{% load booktimes %}
 {% bootstrap_messages %}
 
 {% block extrastyle %}
@@ -24,7 +25,7 @@
 			<p>{% trans "End Date" %}: {{booking.end_date}}</p>
 			</div>
 			<table class="table" id="my_bookings">
-			{% for book in booking.time.all %}
+			{% for book in booking|order_booktimes %}
 				<tr>
 					<td>
 					{{ book.date_booking }}
