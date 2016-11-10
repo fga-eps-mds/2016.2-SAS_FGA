@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group
 CATEGORY = (('', '----'), ('1', _('Student')),
             ('2', _('Teaching Staff')), ('3', _('Employees')))
 
-ENGINEERING = (('', '----'), ('1', _('Software')),
+ENGINEERING = (('0', '----'), ('1', _('Software')),
             ('2', _('Eletronic')), ('3', _('Energy')), ('4', _('Automotive')),
             ('5', _('Aerospace')), ('6', _('Engineerings')))
 
