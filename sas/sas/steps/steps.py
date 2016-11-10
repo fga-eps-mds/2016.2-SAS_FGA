@@ -3,7 +3,7 @@ from aloe_webdriver.util import find_field_by_id, find_any_field, find_field_by_
 from aloe_webdriver import TEXT_FIELDS
 from selenium.common.exceptions import NoSuchElementException
 from booking.models import Booking, Place, BookTime, Building, date_range
-from user.models import UserProfile, CATEGORY
+from user.models import UserProfile, CATEGORY, ENGINEERING
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.test import Client
@@ -46,6 +46,21 @@ def click_on_element_by_value(step, value, typeelement):
         raise AssertionError("Element not found.")
     text.click()
 
+
+@step(r'I register the user "(.*)" with the password "(.*)" and registration     number "(.*)" and engineering "(.*)"')
+ def register_user(step, username, password,registration_number, engineering):
+    user = UserProfile()
+    user.user = User()
+    user.registration_number = registration_number
+    user.user.email = username
+    user.user.username = username
+    user.user.first_name = "Usuário"
+    user.user.set_password(password)
+    user.save()
+    user.make_as_academic_staff()
+    for number,engineering_type in ENGINEERING:
+        if engineering_type == engineering:
+            user.engineering = engineering
 
 
 @step(r'I register the user "(.*)" with the password "(.*)" and registration number "(.*)"')
