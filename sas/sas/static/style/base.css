@@ -234,3 +234,7 @@ hr.star-light:after {
     padding-left: 2em;
     margin-bottom: 2em;
 }
+
+.answer:last-child {
+    margin-bottom: 0;
+}
