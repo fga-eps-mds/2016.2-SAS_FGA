@@ -23,6 +23,7 @@ from booking.views import deny_booking
 from booking.templatetags.check_table import search_building
 from booking.templatetags.check_table import search_place, search_hour
 from booking.templatetags.check_table import search_date
+from booking.templatetags.booking_handling import is_all_bookings
 
 
 class DeleteBookingTest(TestCase):
@@ -600,3 +601,10 @@ class CheckTableTest(TestCase):
         date = dates, 7
         result = search_date(dates, 1)
         self.assertEquals(result, str(self.date))
+
+
+class TemplateTagsTest(TestCase):
+    def test_is_all_bookings(self):
+        name = 'All Bookings'
+        result = is_all_bookings(name)
+        self.assertTrue(result)
