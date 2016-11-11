@@ -90,6 +90,7 @@ class UserProfile(models.Model):
         except Group.DoesNotExist:
             return False
 
+
 class Settings(models.Model):
     start_semester = models.DateField(null=False, blank=False)
     end_semester = models.DateField(null=False, blank=False)
@@ -99,6 +100,7 @@ class Settings(models.Model):
 
     def get_end(self):
         return Settings.objects.get(id=1).end_semester
+
 
 class Validation():
 

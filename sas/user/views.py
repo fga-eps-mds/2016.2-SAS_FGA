@@ -125,7 +125,8 @@ def settings(request):
     if request.method == "POST":
         form = SettingsForm(request.POST)
         if not(form.is_valid()):
-            return render(request, 'user/settings.html', {'form_settings': form})
+            return render(request, 'user/settings.html',
+                          {'form_settings': form})
         else:
             form.save()
             messages.success(request, _('Settings updated'))

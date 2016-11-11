@@ -152,6 +152,7 @@ class EditUserForm(UserForm):
         model = UserProfile
         fields = ['name', 'registration_number', 'category', 'email']
 
+
 class SettingsForm(forms.Form):
     start_semester = forms.DateField(
         label=_('Semester Start:'),
