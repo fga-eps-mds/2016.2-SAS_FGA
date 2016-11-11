@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load bootstrap3 staticfiles %}
 {% load check_table %}
+{% load user_extras %}
 {% bootstrap_messages %}
 
 {% block extrastyle %}
@@ -95,14 +96,17 @@
           <label class="control-label" for="id_name">Booking Name:</label>
           <input class="form-control" id="id_name" name="name" placeholder="" title="" type="text" required />
 
-          <label class="control-label" for="id_responsible" >Responsible:</label>
-          <datalist id="id_responsible" name="responsible" title="">
-               
-              {% for user in search_user %}
-                <option> {{ user }} </option>
+          {% if user|is_admin %}
+            <label class="control-label" for="id_responsible">Responsible:</label>
+          
+            <select class="form-control selectize" id="id_responsible" name="responsible" placeholder="" title="">
+              {% search_user as users %}
+              {% for counter, user in users %}
+              <option> {{counter}} </option>
+                
               {% endfor %}
-
-          </datalist>
+            </select>
+          {% endif %}
 
         </div>
         <div class="modal-footer">
@@ -130,20 +134,20 @@
 <!-- page script -->
 <script>
 
-$(document).ready(function () {
+// $(document).ready(function () {
 
-  $("#id_responsible").selectize({
-      delimiter: ',',
-      persist: false,
-      maxItems:1,
-      create: function(input) {
-          return {
-              value: input,
-              text: input
-          }
-      }
-  });
-});
+//   $("#id_responsible").selectize({
+//       delimiter: ',',
+//       persist: false,
+//       maxItems:1,
+//       create: function(input) {
+//           return {
+//               value: input,
+//               text: input
+//           }
+//       }
+//   });
+// });
 
 
 $('#modalNewBooking').on('show.bs.modal', function(e) {
@@ -157,7 +161,6 @@ $(document).on("click", "#create-booking", function () {
      var end_hour = $(this).data('end-hour');
      var start_date = $(this).data('start-date');
      var end_date = $(this).data('end-date');
-
 
      $(".modal-body #id_place").val( place_pk );
      $(".modal-body #id_building").val( building_pk );
