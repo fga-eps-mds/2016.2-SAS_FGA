@@ -79,6 +79,7 @@ def search_building(place, count):
     else:
         return str(place.building.pk)
 
+
 @register.simple_tag(name='search_user')
 def search_user():
     users = UserProfile.get_users()

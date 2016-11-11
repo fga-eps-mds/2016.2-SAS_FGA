@@ -97,7 +97,8 @@ class UserProfile(models.Model):
         for user in users:
             new_choice = (user, user)
             choices.append(new_choice)
-        choices = sorted(choices, key=lambda user_tuple: user_tuple[0].full_name())
+        choices = sorted(choices, key=lambda user_tuple:
+                         user_tuple[0].full_name())
         choices.insert(0, ('', ''))
         return choices
 
