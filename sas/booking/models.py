@@ -155,6 +155,14 @@ class Booking(models.Model):
             choices = (new_choice,) + choices
         return choices
 
+    @staticmethod
+    def get_responsibles():
+        bookings = Booking.objects.values('responsible').distinct()
+        choices = ()
+        for booking in bookings:
+            new_choice = (booking['responsible'], booking['responsible'])
+            choices = (new_choice,) + choices
+        return choices
 
 class Validation():
 
