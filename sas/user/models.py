@@ -92,12 +92,11 @@ class UserProfile(models.Model):
 
     @staticmethod
     def get_users():
-        users = User.objects.all()
+        users = UserProfile.objects.all()
         choices = []
         for user in users:
-            if hasattr(user, 'profile_user'):
-                new_choice = (user.profile_user, user.profile_user)
-                choices.append(new_choice)
+            new_choice = (user, user)
+            choices.append(new_choice)
         choices = sorted(choices, key=lambda user_tuple: user_tuple[0].full_name())
         choices.insert(0, ('', ''))
         return choices
