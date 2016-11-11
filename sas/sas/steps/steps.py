@@ -47,8 +47,8 @@ def click_on_element_by_value(step, value, typeelement):
     text.click()
 
 
-@step(r'I register the user "(.*)" with the password "(.*)" and registration     number "(.*)" and engineering "(.*)"')
- def register_user(step, username, password,registration_number, engineering):
+@step(r'I register the user "(.*)" with the password "(.*)" and registration number "(.*)" and engineering "(.*)" and category "(.*)"')
+def register_user(step, username, password, registration_number, engineering, category):
     user = UserProfile()
     user.user = User()
     user.registration_number = registration_number
@@ -61,7 +61,10 @@ def click_on_element_by_value(step, value, typeelement):
     for number,engineering_type in ENGINEERING:
         if engineering_type == engineering:
             user.engineering = engineering
-
+    for number,category_type in CATEGORY:
+        if category_type == category:
+            user.category = number
+    user.save()
 
 @step(r'I register the user "(.*)" with the password "(.*)" and registration number "(.*)"')
 def register_user(step, username, password,registration_number):
