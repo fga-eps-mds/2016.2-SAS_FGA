@@ -26,7 +26,7 @@ class Command(BaseCommand):
             call_command('loaddata', 'user/fixtures/user.json')
             call_command('loaddata', 'user/fixtures/users.json')
             call_command('loaddata', 'user/fixtures/userprofile.json')
-
+            call_command('loaddata', 'user/fixtures/settings.json')	
         if options["booking_fixtures"]:
             call_command('loaddata', 'booking/fixtures/buildings.json')
             call_command('loaddata', 'booking/fixtures/places.json')
