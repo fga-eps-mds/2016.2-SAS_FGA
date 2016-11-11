@@ -13,6 +13,7 @@ from collections import OrderedDict
 import traceback
 from django.utils import formats
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.contrib.auth.models import User
 
 HOURS = [(6, "06-08"), (8, "08-10"), (10, "10-12"), (12, "12-14"),
          (14, "14-16"), (16, "16-18"), (18, "18-20"), (20, "20-22"),
@@ -192,6 +193,7 @@ class SearchBookingQueryView(View):
 
 @login_required(login_url='/?showLoginModal=yes')
 def new_booking(request):
+    user = request.user
     if request.method == "POST":
         form_booking = BookingForm(request.POST)
         if (form_booking.is_valid()):
@@ -205,7 +207,7 @@ def new_booking(request):
     else:
         form_booking = BookingForm()
     return render(request, 'booking/newBooking.html',
-                  {'form_booking': form_booking})
+                  {'form_booking': form_booking, 'is_staff': user.is_staff})
 
 
 def search_booking_table(request):
