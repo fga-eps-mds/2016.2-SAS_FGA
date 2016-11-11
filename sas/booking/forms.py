@@ -158,7 +158,7 @@ class BookingForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(BookingForm, self).__init__(*args, **kwargs)
         self.fields['responsible'] = forms.CharField(
-            label=_('Responsible:'),
+            label=_('Responsible (optional):'),
             required=False,
             widget=forms.widgets.Select(
                 attrs={'class': 'selectize'},
