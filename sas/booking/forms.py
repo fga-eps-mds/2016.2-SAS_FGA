@@ -30,7 +30,7 @@ class SearchBookingForm(forms.Form):
         ('opt_day_room', _("Room's Week Timetable")),
         ('opt_booking_week', _(' Booking')),
         ('opt_building_day', _(' Occupation')),
-        ('opt_room_period', _(' Room')),
+        ('opt_room_period', _(' Room ')),
     )
 
     search_options = forms.ChoiceField(label=_('Search options'),
