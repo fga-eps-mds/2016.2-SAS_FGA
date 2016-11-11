@@ -89,6 +89,40 @@ def search_booking_building_day(request, form_booking):
                    'table_header': table_header, 'place': places})
 
 
+def search_booking_responsible(request, form_booking):
+    form_day = form_booking.get_day()
+    search_booking_responsible = form_booking["responsible"].data
+    booking_responsible = form_booking["responsible"].data
+    hours = [(6, "06-08"), (8, "08-10"), (10, "10-12"),
+             (12, "12-14"), (14, "14-16"), (16, "16-18"),
+             (18, "18-20"), (20, "20-22"), (22, ("22-00"))]
+    
+    table = []
+
+    aux = []
+    bookings = Booking.objects.filter(time__date_booking=str(form_day),
+                                      responsible__contains=search_booking_responsible)
+
+    places_ = []
+
+    print(bookings)
+    for booking in bookings:
+        if (booking.responsible == booking_responsible and booking.status > 1):
+            book = booking.time.get(date_booking=str(form_day))
+            aux_tuple = (book.start_hour.hour, booking)
+            aux.append(aux_tuple)
+            p = booking.place.name.split('-')
+            places_.append(p[1])
+
+    n = len(places_) + 1
+    table.append(aux)
+
+    return render(request, 'booking/template_table.html',
+                  {'days': form_day, 'table': table,
+                   'column_header': form_day, 'hours': hours,
+                   'n': n, 'name': _(' Booking'), 'place': places_})
+
+
 def search_booking_booking_name_week(request, form_booking):
     form_days = form_booking.days_list()
     search_booking_name = form_booking["booking_name"].data
@@ -119,7 +153,6 @@ def search_booking_booking_name_week(request, form_booking):
                   {'days': form_days, 'table': table,
                    'column_header': form_days, 'hours': hours,
                    'n': n, 'name': _(' Booking'), 'place': place_id})
-
 
 def search_booking_room_period(request, form_booking):
     form_days = form_booking.days_list()
@@ -153,7 +186,8 @@ def search_booking_room_period(request, form_booking):
 search_options = {'opt_day_room': search_booking_day_room,
                   'opt_booking_week': search_booking_booking_name_week,
                   'opt_building_day': search_booking_building_day,
-                  'opt_room_period': search_booking_room_period}
+                  'opt_room_period': search_booking_room_period,
+                  'opt_responsible': search_booking_responsible}
 
 
 class SearchBookingQueryView(View):
@@ -169,6 +203,7 @@ class SearchBookingQueryView(View):
         if form.is_valid():
             option = request.POST.get('search_options')
             try:
+                print(option)
                 return search_options[option](request, form)
             except Exception as e:
                 messages.error(request, _('Invalid option'))
