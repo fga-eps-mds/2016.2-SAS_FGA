@@ -1,7 +1,7 @@
 {% extends 'sas/base.html' %}
 
 {% load i18n %}
-{% load bootstrap3 staticfiles %}
+{% load bootstrap3 staticfiles booking_handling %}
 {% bootstrap_messages %}
 
 {% block extrastyle %}
@@ -24,7 +24,8 @@
                 <th>{% trans "Name" %}</th>
                 <th>{% trans "Place" %}</th>
                 <th>{% trans "Period" %}</th>
-                <th>{% trans "Date and Time" %}</th>
+                <th>{% trans "Weekdays" %}</th>
+                <th>{% trans "Timetable" %}</th>
                 <th class="all">{% trans "Delete" %}</th>
               </tr>
             </thead>
@@ -33,11 +34,9 @@
               <tr>
                 {% if booking.status == 0 %}
                     <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-                {% endif %}
-                {% if booking.status == 1 %}
+                {% elif booking.status == 1 %}
                     <td><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></td>
-                {% endif %}
-                {% if booking.status == 2 %}
+                {% elif booking.status == 2 %}
                     <td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
                 {% endif %}
                 <td>{{ booking.name }}</td>
@@ -46,14 +45,14 @@
                   <br>{% trans " to " %}<br>
                   {{ booking.end_date }}</td>
                 <td class="text-center">
-                  {% for time in booking.time.all|slice:":7" %}
-                        <strong>{{ time.date_booking|date:"D, d/M/Y" }}</strong><br>
-                        {{ time.start_hour|date:"H:i" }} {% trans " to " %}
-                        {{ time.end_hour|date:"H:i" }}<br><hr>
-                    {% endfor %}
-                    {% if booking.time.all|length > 7 %}
-                      <strong>...</strong>
-                    {% endif %}
+                  {% for day in booking|get_timetable %}
+                    {{ day.0  }}<br>
+                  {% endfor %}
+                </td>
+                <td>
+                  {% for day in booking|get_timetable %}
+                    {{ day.0  }}: <br>{{ day.1.0|date:"H:i" }} - {{ day.1.1|date:"H:i" }} <br>
+                  {% endfor %}
                 </td>
                 <td>
                     <button class="btn btn-danger" data-href="{% url 'booking:deletebooking' booking.id %}"
@@ -70,7 +69,8 @@
               <th>{% trans "Name" %}</th>
               <th>{% trans "Place" %}</th>
               <th>{% trans "Period" %}</th>
-              <th>{% trans "Date and Time" %}</th>
+              <th>{% trans "Weekdays" %}</th>
+              <th>{% trans "Timetable" %}</th>
               <th class="all">{% trans "Delete" %}</th>
             </tr>
           </tfoot>
