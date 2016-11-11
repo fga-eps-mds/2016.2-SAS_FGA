@@ -179,9 +179,8 @@ class SearchBookingQueryView(View):
 
 @login_required(login_url='/?showLoginModal=yes')
 def new_booking(request):
-    start_semester = Settings.objects.last().start_semester       
+    start_semester = Settings.objects.last().start_semester
     end_semester = Settings.objects.last().end_semester
-    
     if request.method == "POST":
         form_booking = BookingForm(request.POST)
         if (form_booking.is_valid()):
@@ -195,7 +194,8 @@ def new_booking(request):
     else:
         form_booking = BookingForm()
     return render(request, 'booking/newBooking.html',
-                  {'form_booking': form_booking, 'start_semester': start_semester,
+                  {'form_booking': form_booking,
+                   'start_semester': start_semester,
                    'end_semester': end_semester})
 
 

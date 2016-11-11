@@ -4,7 +4,7 @@ import json
 
 register = Library()
 
+
 @register.filter(is_safe=True)
 def js_date(obj):
-	print("uee",str(obj))
 	return str(obj)

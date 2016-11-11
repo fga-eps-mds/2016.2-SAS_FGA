@@ -152,15 +152,13 @@ class BookingForm(forms.Form):
         ('opt_date_semester', _("Yes")),
         ('opt_select_date', _("No")),
     )
-
-
     name = forms.CharField(
         label=_('Booking Name:'),
         widget=forms.TextInput(attrs={'placeholder': ''}))
     date_options = forms.ChoiceField(label=_('Do you wish to register booking \
                                                 for a semester?'),
-                                       choices=DATE_CHOICES,
-                                       widget=forms.RadioSelect())
+                                     choices=DATE_CHOICES,
+                                     widget=forms.RadioSelect())
     start_date = forms.DateField(
         label=_('Start Date:'),
         required=False,
@@ -189,7 +187,7 @@ class BookingForm(forms.Form):
         required=False,
         choices=WEEKDAYS,
         widget=forms.CheckboxSelectMultiple())
-        
+
     def save(self, user, force_insert=False, force_update=False, commit=True):
         booking = Booking()
         booking.user = user
