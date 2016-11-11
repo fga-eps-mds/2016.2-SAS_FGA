@@ -96,10 +96,10 @@ class Settings(models.Model):
     end_semester = models.DateField(null=False, blank=False)
 
     def get_start(self):
-        return Settings.objects.get(id=1).start_semester
+        return Settings.objects.last().start_semester
 
     def get_end(self):
-        return Settings.objects.get(id=1).end_semester
+        return Settings.objects.last().end_semester
 
 
 class Validation():

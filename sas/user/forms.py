@@ -181,18 +181,11 @@ class SettingsForm(forms.Form):
         settings = Settings()
         settings.start_semester = self.cleaned_data.get("start_semester")
         settings.end_semester = self.cleaned_data.get("end_semester")
-
-        try:
-            settings.save()
-        except Exception as e:
-            msg = _('Failed to create settings')
-            print(e)
-            raise forms.ValidationError(msg)
-            return None
+        settings.save()
         return settings
 
     class Meta:
-        model = UserProfile
+        model = Settings
         fields = ['start_semester', 'end_semester']
 
 
