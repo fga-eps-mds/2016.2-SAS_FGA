@@ -8,7 +8,6 @@ register = template.Library()
 @register.filter(name='check_tooltip')
 def check_tooltip(cell_table, id):
     aux = 0
-
     for idx_hour, book in cell_table:
         if idx_hour == id:
             aux = 1
@@ -80,8 +79,7 @@ def search_building(place, count):
     else:
         return str(place.building.pk)
 
-@register.filter()
-def search_user(value):
+@register.simple_tag(name='search_user')
+def search_user():
     users = UserProfile.get_users()
-    print(users) 
-    return {'users':users}
+    return users
