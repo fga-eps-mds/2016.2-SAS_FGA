@@ -322,7 +322,8 @@ class TestSearchBookingQuery(TestCase):
         building_name = Building.objects.get(name='UAC')
         room_name = Place.objects.get(pk=9)
         user = UserProfileFactory.create()
-        booking = BookingFactory.create(user=user.user,start_date=start_date,end_date=end_date)
+        booking = BookingFactory.create(user=user.user, start_date=start_date,
+                                        end_date=end_date)
         parameters = {'search_options': 'opt_room_period',
                       'building_name': building_name,
                       'room_name': room_name,
@@ -365,6 +366,7 @@ class TestSearchBookingQuery(TestCase):
         book = BookTime()
         book.date_booking = datetime.strptime("21092016", "%d%m%Y")
         self.assertEqual(book.get_str_weekday(), "Wednesday")
+
 
 class TestSearchBookingForm(TestCase):
     def setUp(self):

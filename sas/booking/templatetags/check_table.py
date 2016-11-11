@@ -80,8 +80,9 @@ def search_building(place, count):
     else:
         return str(place.building.pk)
 
+
 @register.filter()
 def search_user(value):
     users = UserProfile.get_users()
-    print(users) 
-    return {'users':users}
+    print(users)
+    return {'users': users}
