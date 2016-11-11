@@ -103,7 +103,7 @@ class UserProfile(models.Model):
         return choices
 
     def __str__(self):
-        return ' '.join((self.full_name(), '<' + self.user.username + '>'))
+        return '\n'.join((self.full_name(), '<' + self.user.username + '>'))
 
 
 class Validation():
