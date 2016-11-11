@@ -31,6 +31,7 @@ class SearchBookingForm(forms.Form):
         ('opt_booking_week', _(' Booking')),
         ('opt_building_day', _(' Occupation')),
         ('opt_room_period', _(' Room ')),
+        ('opt_responsible', _(' Responsible')),
     )
 
     search_options = forms.ChoiceField(label=_('Search options'),
@@ -61,6 +62,13 @@ class SearchBookingForm(forms.Form):
         widget=forms.widgets.DateInput(
             attrs={'class': 'datepicker1 optional', 'placeholder': ''}),
         required=False)
+
+    responsible = forms.ChoiceField(
+        choices=Booking.get_responsibles(),
+        label=_('responsible:'),
+        required=False,
+        widget=forms.widgets.Select(
+            attrs={'class': 'optional'}))
 
     def search(self):
         cleaned_data = super(SearchBookingForm, self).clean()
