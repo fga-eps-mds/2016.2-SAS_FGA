@@ -20,3 +20,11 @@ def get_timetable(booking):
         except ValueError:
             break
     return timetable
+
+
+@register.filter(name='is_all_bookings')
+def is_all_bookings(name):
+    if name == _('All Bookings'):
+        return True
+    else:
+        return False
