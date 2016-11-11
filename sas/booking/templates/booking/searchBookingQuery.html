@@ -94,10 +94,10 @@ $(document).ready(function () {
 		}
 		if(selected_option == 'opt_responsible'){
 			// $("#id_room_name, #id_building_name").prop("disabled",true);
-			$("#id_start_date, #id_responsible, #id_end_date").closest('div').show();
-			$("#id_start_date, #id_responsible, #id_end_date").prop('required',true);
-			$("#id_room_name, #id_building_name, #id_booking_name").closest('div').hide();
-			$("#id_room_name, #id_building_name, #id_booking_name").prop('required',false);
+			$("#id_start_date, #id_responsible").closest('div').show();
+			$("#id_start_date, #id_responsible").prop('required',true);
+			$("#id_room_name, #id_building_name, #id_booking_name, #id_end_date").closest('div').hide();
+			$("#id_room_name, #id_building_name, #id_booking_name, #id_end_date").prop('required',false);
 		}
 	}
 
