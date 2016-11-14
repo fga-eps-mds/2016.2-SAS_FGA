@@ -23,6 +23,7 @@ from booking.views import deny_booking
 from booking.templatetags.check_table import search_building
 from booking.templatetags.check_table import search_place, search_hour
 from booking.templatetags.check_table import search_date
+from booking.templatetags.check_table import search_user
 from booking.templatetags.booking_handling import is_all_bookings
 
 
@@ -608,3 +609,7 @@ class TemplateTagsTest(TestCase):
         name = 'All Bookings'
         result = is_all_bookings(name)
         self.assertTrue(result)
+
+    def test_search_user(self):
+        users = UserProfile.get_users()
+        self.assertEquals(search_user(), users)
