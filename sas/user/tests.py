@@ -41,6 +41,16 @@ class EditUserTest(TestCase):
         self.userprofile.refresh_from_db()
         self.assertEqual('140000000', self.userprofile.registration_number)
 
+    def test_change_password(self):
+        client = self.client
+        client.login(username='gutorc@hotmail.com', password='123456')
+        new_password = '12333567'
+        parameters = {'password': '123456', 'new_password': new_password, 'renew_password': new_password}
+        client.post('/user/change/', parameters)
+        client.logout()
+        login_sucess = client.login(username='gutorc@hotmail.com', password=new_password)
+        self.assertTrue(login_sucess)
+
 
 class DeleteUserTest(TestCase):
     def setUp(self):
