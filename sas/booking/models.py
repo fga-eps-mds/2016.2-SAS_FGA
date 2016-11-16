@@ -32,7 +32,8 @@ class Place(models.Model):
 
     def __str__(self):
         try:
-            return self.building.name + " | " + self.name + " - Cap. " + str(self.capacity)
+            return (self.building.name + " | " + self.name +
+                    " - Cap. " + str(self.capacity))
         except:
             return self.name
 
@@ -70,6 +71,8 @@ class BookTime(models.Model):
             super(BookTime, self).delete()
 
 BOOKING_STATUS = ((0, _("Denied")), (1, _("Pending")), (2, _("Approved")))
+
+
 class Booking(models.Model):
     user = models.ForeignKey(User, related_name="bookings",
                              on_delete=models.CASCADE)
@@ -79,7 +82,8 @@ class Booking(models.Model):
     name = models.CharField(max_length=50)
     start_date = models.DateField(null=False, blank=False)
     end_date = models.DateField(null=False, blank=False)
-    status = models.PositiveSmallIntegerField(choices=BOOKING_STATUS, default=2)
+    status = models.PositiveSmallIntegerField(choices=BOOKING_STATUS,
+                                              default=2)
 
     def __str__(self):
         return (self.name + " " + self.user.email + " | " + str(self.place) +
@@ -119,7 +123,8 @@ class Booking(models.Model):
             return False
 
     def save(self, *args, **kwargs):
-        if (self.place.is_laboratory and not self.user.profile_user.is_admin()):
+        if (self.place.is_laboratory and not
+                self.user.profile_user.is_admin()):
             self.status = 1  # status for pending booking
         if Place.objects.filter(name=self.place.name):
             self.place = Place.objects.get(name=self.place.name)
@@ -136,11 +141,24 @@ class Booking(models.Model):
         Booking.objects.filter(pk=self.pk).update(status=status)
         self.refresh_from_db()
 
+    def update_start_date(self):
+        all_booktimes = self.time.order_by('date_booking')
+        self.start_date = all_booktimes.first().date_booking
+        self.save()
+
+    def update_end_date(self):
+        all_booktimes = self.time.order_by('date_booking')
+        self.end_date = all_booktimes.last().date_booking
+        self.save()
+
     def delete_booktime(self, id_booktime, user):
         booktime = BookTime.objects.get(pk=id_booktime)
+        all_booktimes = self.time.order_by('date_booking')
         if (user.profile_user.is_admin() or self.user.id == user.id) and \
-                booktime in self.time.all():
+                booktime in all_booktimes:
             booktime.delete()
+            self.update_start_date()
+            self.update_end_date()
         else:
             raise PermissionDenied()
 

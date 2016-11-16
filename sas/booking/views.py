@@ -332,4 +332,18 @@ def delete_booktime(request, booking_id, booktime_id):
         messages.error(request, _('You cannot delete this booking.'))
     except (ObjectDoesNotExist, Booking.DoesNotExist):
         messages.error(request, _('Booking not found.'))
-    return search_booking(request)
+    return show_booktimes(request, booking_id)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+def show_booktimes(request, booking_id):
+    try:
+        booking = Booking.objects.get(pk=booking_id)
+        return render(request, 'booking/showBookTimes.html',
+                      {'booking': booking})
+    except:
+        messages.error(request, _('Booking not found.'))
+    if request.user.profile_user.is_admin():
+        return all_bookings(request)
+    else:
+        return search_booking(request)

@@ -61,6 +61,7 @@
                 {% endwith %}
                 <td>
                     <button class="btn btn-danger" data-href="{% url 'booking:deletebooking' booking.id %}"
+                        data-href2="{% url 'booking:showbooktimes' booking.id %}"
                         data-toggle="modal" data-target="#modalDeleteBooking" id="delete-booking">
                         <span class="glyphicon glyphicon-trash" ></span> {% trans "Delete" %}
                     </button>
@@ -94,7 +95,9 @@
                 </div>
                 <div class="modal-footer delete-footer">
                    <a class="btn btn-danger btn-ok" id="action-delete">
-                    {% trans "Delete" %}</a>
+                    {% trans "Delete Entire Booking" %}</a>
+                    <a class="btn btn-danger btn-ok-booktime" id="action-delete-booktime">
+                     {% trans "Delete Specific Booking" %}</a>
                   <a class="btn btn-default" data-dismiss="modal">{% trans "Cancel" %}</a>
                 </div>
               </div>
@@ -115,6 +118,7 @@
 <script>
 $('#modalDeleteBooking').on('show.bs.modal', function(e) {
     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+    $(this).find('.btn-ok-booktime').attr('href', $(e.relatedTarget).data('href2'));
 });
   $(function () {
 
