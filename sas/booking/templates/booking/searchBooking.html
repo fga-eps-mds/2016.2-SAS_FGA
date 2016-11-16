@@ -21,6 +21,9 @@
             <thead>
               <tr>
                 <th>{% trans "Status" %}</th>
+                {% if name|is_all_bookings %}
+                <th>{% trans "Responsible" %}</th>
+                {% endif %}
                 <th>{% trans "Name" %}</th>
                 <th>{% trans "Place" %}</th>
                 <th>{% trans "Period" %}</th>
@@ -38,6 +41,9 @@
                     <td><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></td>
                 {% elif booking.status == 2 %}
                     <td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+                {% endif %}
+                {% if name|is_all_bookings %}
+                <td>{{ booking.responsible }}</td>
                 {% endif %}
                 <td>{{ booking.name }}</td>
                 <td>{{ booking.place.name }}</td>

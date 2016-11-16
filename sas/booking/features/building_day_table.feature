@@ -9,7 +9,7 @@ Background:
 Scenario: No booking in the building
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Occupation."
+    And I choose "Occupation"
     And I select "UED" from "Building"
     And I fill in "Date:" with "11/21/2018"
     Then I press "Search"
@@ -18,9 +18,8 @@ Scenario: No booking in the building
 Scenario: No booking in the day
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Occupation."
+    And I choose "Occupation"
     And I select "UAC" from "Building"
     And I fill in "Date:" with "11/19/2018"
-    Then I press "Search" 
+    Then I press "Search"
     Then I should see an element with id of "create-booking"
-
