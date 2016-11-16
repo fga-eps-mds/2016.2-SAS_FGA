@@ -12,7 +12,7 @@ from booking.views import search_booking_booking_name_week
 from booking.views import new_booking, search_booking_day_room
 from booking.views import search_booking_building_day
 from booking.urls import *
-from user.models import UserProfile
+from user.models import UserProfile, Settings
 from booking.forms import BookingForm, SearchBookingForm
 from dateutil import parser
 from booking.views import search_booking_room_period
@@ -173,6 +173,10 @@ class TestNewBooking(TestCase):
         self.user = UserProfileFactory.create()
         self.user.user.set_password('1234567')
         self.user.save()
+        self.semester = Settings()
+        self.semester.start_semester = datetime.strptime("21092017", "%d%m%Y")
+        self.semester.end_semester = datetime.strptime("22092018", "%d%m%Y")
+        self.semester.save()
         self.client = Client()
         self.factory = RequestFactory()
         self.week_days = ['3', '5']
@@ -186,7 +190,8 @@ class TestNewBooking(TestCase):
             'name': 'Reservaoiasd', 'start_hour': self.hour,
             'end_hour': self.hour2, 'start_date': self.start_date,
             'end_date': self.end_date, 'building': self.building_name,
-            'place': self.place_name, 'week_days': self.week_days}
+            'place': self.place_name, 'week_days': self.week_days,
+            'date_options': 'opt_select_date'}
 
     def test_get_request_logged(self):
         request = self.factory.get('/booking/newbooking/')

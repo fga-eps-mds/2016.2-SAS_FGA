@@ -102,26 +102,6 @@ class SearchBookingForm(forms.Form):
             option = self.cleaned_data.get('search_options')
             start_date = self.cleaned_data.get('start_date')
 
-            if(option == 'opt_building_day'):
-                building_name = cleaned_data.get('building_name').name
-                if not Building.objects.filter(name=building_name).exists():
-                    msg = _('Doesnt exist any building with this name')
-                    self.add_error('building_name', msg)
-                    raise forms.ValidationError(msg)
-            if(option == 'opt_day_room' or option == 'opt_room_period'):
-                room_name = self.cleaned_data.get('room_name').name
-                if not Booking.objects.filter(place__name=room_name):
-                    msg = _('Doesnt exist any booking in this place')
-                    self.add_error('room_name', msg)
-                    raise forms.ValidationError(msg)
-
-            if(option == 'opt_booking_week'):
-                booking_name = cleaned_data.get('booking_name')
-                if not Booking.objects.filter(name=booking_name).exists():
-                    msg = _('Doesnt exist any booking with this name')
-                    self.add_error('booking_name', msg)
-                    raise forms.ValidationError(msg)
-
             if(option == 'opt_room_period' or option == 'opt_booking_week'):
                 end_date = self.cleaned_data.get('end_date')
 
@@ -168,23 +148,34 @@ class BookingForm(forms.Form):
              (hour7, ('20:00')), (hour8, ('22:00')),
              (hour9, ('00:00')))
 
+    DATE_CHOICES = (
+        ('opt_date_semester', _("Yes")),
+        ('opt_select_date', _("No")),
+    )
     name = forms.CharField(
         label=_('Booking Name:'),
         widget=forms.TextInput(attrs={'placeholder': ''}))
+    date_options = forms.ChoiceField(label=_('Do you wish to register booking \
+                                                for a semester?'),
+                                     choices=DATE_CHOICES,
+                                     widget=forms.RadioSelect())
+    start_date = forms.DateField(
+        label=_('Start Date:'),
+        required=False,
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
+    end_date = forms.DateField(
+        label=_('End Date:'),
+        required=False,
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
     start_hour = forms.TimeField(
         label=_('Start Time:'),
         widget=forms.Select(choices=HOURS))
     end_hour = forms.TimeField(
         label=_('End Time:'),
         widget=forms.Select(choices=HOURS))
-    start_date = forms.DateField(
-        label=_('Start Date:'),
-        widget=forms.widgets.DateInput(
-            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
-    end_date = forms.DateField(
-        label=_('End Date:'),
-        widget=forms.widgets.DateInput(
-            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
+
     building = forms.ModelChoiceField(
         queryset=Building.objects,
         label=_('Building:'))
@@ -274,5 +265,6 @@ class BookingForm(forms.Form):
                 self.add_error('end_hour', msg)
                 raise forms.ValidationError(msg)
         except Exception as e:
+            print(e)
             msg = _('Inputs are invalid')
             raise forms.ValidationError(msg)

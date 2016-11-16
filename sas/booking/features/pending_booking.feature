@@ -2,6 +2,7 @@ Feature: Admin Pending Bookings
 
 Background:
 	Given I run loaddata to populate dropdowns
+	And I load a semester
 	And I register an admin with email "teste123@email.com" and password "123456" and registration number "160000000" and category "Teaching Staff"
 	And I register the booking "Eletricidade" with the building "UED" with the place name "FGA-LAB_ELETRICIDADE" and start_date "2016-11-20" and end_date "2016-11-30" of user "teste123@email.com"
 
