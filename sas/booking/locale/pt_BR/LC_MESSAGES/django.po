@@ -439,24 +439,20 @@ msgstr "Reserva aprovada!"
 msgid "Booking Denied!"
 msgstr "Reserva negada!"
 
-#~ msgid "Doesnt exist any building with this name"
-#~ msgstr "Não existe prédio com este nome"
+msgid "Doesnt exist any building with this name"
+msgstr "Não existe prédio com este nome"
 
-#~ msgid "Doesnt exist any booking in this place"
-#~ msgstr "Não existe reserva neste local"
+msgid "Doesnt exist any booking in this place"
+msgstr "Não existe reserva neste local"
 
-#~ msgid "Doesnt exist any booking with this name"
-#~ msgstr "Não existe reserva com este nome"
+msgid "Doesnt exist any booking with this name"
+msgstr "Não existe reserva com este nome"
 
-#~ msgid " Day"
-#~ msgstr " Dia"
+msgid " Day"
+msgstr " Dia"
 
-#, fuzzy
-#~| msgid "Inputs are invalid"
-#~ msgid "Inputs are in invalid format"
-#~ msgstr "Valores informados inválidos"
+msgid "Inputs are in invalid format"
+msgstr "Valores informados inválidos"
 
-#, fuzzy
-#~| msgid "Booking Name:"
-#~ msgid "Room Name:"
-#~ msgstr "Nome da Reserva"
+msgid "Nome da Sala:"
+msgstr "Nome da Sala"

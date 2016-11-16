@@ -39,6 +39,7 @@ msgid ""
 "Email address must                                        be in a valid "
 "format."
 msgstr ""
+"Endereço de e-mail precisa ser válido."
 
 #: user/forms.py:25
 msgid "Password:"
@@ -387,3 +388,7 @@ msgstr "Sair"
 
 msgid "Sign In | Sign Up"
 msgstr "Entrar | Cadastrar"
+
+#: sas/templates/sas/faq.html:12
+msgid "Frequently Asked Questions"
+msgstr "Perguntas Frequentes"
