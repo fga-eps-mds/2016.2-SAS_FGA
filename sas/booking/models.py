@@ -157,8 +157,9 @@ class Booking(models.Model):
         if (user.profile_user.is_admin() or self.user.id == user.id) and \
                 booktime in all_booktimes:
             booktime.delete()
-            self.update_start_date()
-            self.update_end_date()
+            if(all_booktimes.count() > 1):
+                self.update_start_date()
+                self.update_end_date()
         else:
             raise PermissionDenied()
 

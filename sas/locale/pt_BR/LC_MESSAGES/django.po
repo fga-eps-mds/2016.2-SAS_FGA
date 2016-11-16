@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-28 22:47-0200\n"
+"POT-Creation-Date: 2016-11-16 16:14-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,86 +18,111 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: user/forms.py:13 user/forms.py:77
-msgid "Email:"
-msgstr "Email:"
-
-#: user/forms.py:16 user/forms.py:35 user/forms.py:83
-msgid "Password:"
-msgstr "Senha:"
-
-#: user/forms.py:24
-msgid "Email or Password does not match"
-msgstr "Email ou senha inválidos"
-
-#: user/forms.py:38
-msgid "New Password:"
-msgstr "Nova senha:"
-
-#: user/forms.py:41 user/forms.py:87
-msgid "Repeat Password:"
-msgstr "Repetir Senha:"
-
-#: user/forms.py:54
-msgid "Current password is wrong"
-msgstr "Senha atual incorreta"
-
-#: user/forms.py:64
-msgid ""
-"Passwords                                                          do not "
-"match"
-msgstr "Senhas não conferem"
-
-#: user/forms.py:74
+#: user/forms.py:12
 msgid "Name:"
 msgstr "Nome:"
 
-#: user/forms.py:79
-msgid ""
-"Email address must                                        be in a valid "
-"format."
-msgstr "Email precisa estar em formato válido."
-
-#: user/forms.py:91
+#: user/forms.py:15
 msgid "Registration number:"
 msgstr "Matrícula:"
 
-#: user/forms.py:93
+#: user/forms.py:17
 msgid "Category:"
-msgstr "Categoria"
+msgstr "Categoria:"
 
-#: user/forms.py:124
-msgid "Email already used"
-msgstr "Email já está sendo utilizado"
+#: user/forms.py:19
+msgid "Email:"
+msgstr "E-mail:"
 
-#: user/forms.py:130
+#: user/forms.py:22
+msgid ""
+"Email address must                                        be in a valid "
+"format."
+msgstr ""
+
+#: user/forms.py:25
+msgid "Password:"
+msgstr "Senha:"
+
+#: user/forms.py:45
+msgid "Email or Password does not match"
+msgstr "E-mail ou Senha não conferem"
+
+#: user/forms.py:57
+msgid "New Password:"
+msgstr "Nova Senha:"
+
+#: user/forms.py:60 user/forms.py:96
+msgid "Repeat Password:"
+msgstr "Repita a Senha"
+
+#: user/forms.py:80
+msgid "Current password is wrong"
+msgstr "Senha atual está incorreta"
+
+#: user/forms.py:89
+msgid ""
+"Passwords                                                          do not "
+"match"
+msgstr ""
+"Senhas                                                          não "
+"conferem"
+
+#: user/forms.py:127 user/forms.py:140
+msgid ""
+"Something went wrong so we could not save                              your "
+"data. Try again later"
+msgstr ""
+"Algo deu errado, não podemos salvar                              seus "
+"dados. Tente novamente mais tarde."
+
+#: user/forms.py:149
+msgid "Registration Number already exists."
+msgstr "Matrícula já cadastrada."
+
+#: user/forms.py:158
+msgid "Email already used."
+msgstr "E-mail já cadastrado"
+
+#: user/forms.py:167
 msgid ""
 "Name must be                                                between 2 "
 "and                                                50 characters."
-msgstr "Nome precisa conter entre 2 e 50 caracteres."
+msgstr ""
+"Nome precisa conter                                                entre 2 "
+"e                                                50 caracteres."
 
-#: user/forms.py:135
+#: user/forms.py:172
 msgid ""
 "Name cannot                                                contain "
 "special                                                characters."
-msgstr "Nome não pode conter caracteres especiais."
+msgstr ""
+"Nome não pode                                                conter "
+"caracteres                                                especiais."
 
-#: user/forms.py:140
+#: user/forms.py:177
 msgid ""
 "Name cannot                                                contain numbers."
-msgstr "Nome não pode conter números."
+msgstr ""
+"Nome não pode                                                conter números."
 
-#: user/forms.py:166
+#: user/forms.py:189
 msgid ""
-"Password must be                                                    between "
-"6 and 15                                                    characters."
-msgstr "Senha precisa conter entre 6 e 15 caracteres."
+"Password must be                                                        "
+"between 6 and 15                                                        "
+"characters."
+msgstr ""
+"Senha conter                                                        "
+"entre 6 e 15                                                        "
+"caracteres."
 
-#: user/forms.py:171
+#: user/forms.py:194
 msgid ""
-"Passwords do                                                           not "
-"match."
-msgstr "Senhas não conferem."
+"Passwords do                                                               "
+"not match."
+msgstr ""
+"Senhas não                                                               "
+"conferem."
 
 #: user/models.py:7
 msgid "Student"
@@ -105,32 +130,36 @@ msgstr "Estudante"
 
 #: user/models.py:8
 msgid "Teaching Staff"
-msgstr "Professor"
+msgstr "Professores"
 
 #: user/models.py:8
 msgid "Employees"
-msgstr "Funcionários"
+msgstr "Corpo acadêmico"
 
 #: user/models.py:14
 msgid "Registration Number already used."
-msgstr "Matrícula já em uso"
+msgstr "Matrícula já em uso."
 
 #: user/models.py:42
 msgid ""
 "Registration number                                       must have 9 digits."
-msgstr "Matrícula precisa conter 9 dígitos"
+msgstr ""
+"Matrícula                                       precisa conter 9 dígitos."
 
 #: user/models.py:47
 msgid ""
 "Registration number                                       cannot contain "
 "letters."
-msgstr "Matrícula não poder conter letras"
+msgstr ""
+"Matrícula                                       não pode conter letras."
 
 #: user/models.py:52
 msgid ""
 "Registration number                                       cannot contain "
 "special characters."
-msgstr "Matrícula não pode conter caracteres especiais."
+msgstr ""
+"Matrícula                                      não pode conter "
+"caracteres especiais."
 
 #: user/templates/user/editUser.html:5
 msgid "Edit user data"
@@ -138,7 +167,7 @@ msgstr "Editar dados de usuário"
 
 #: user/templates/user/editUser.html:9
 msgid "Personal Data"
-msgstr "Meus Dados"
+msgstr "Dados Pessoais"
 
 #: user/templates/user/editUser.html:20 user/templates/user/editUser.html:42
 #: user/templates/user/editUser.html:53
@@ -151,15 +180,15 @@ msgstr "Salvar Dados"
 
 #: user/templates/user/editUser.html:29
 msgid "Delete my Account"
-msgstr "Escluir minha conta"
+msgstr "Excluir minha conta"
 
 #: user/templates/user/newUser.html:5 user/templates/user/newUser.html:10
 msgid "New User"
-msgstr "Novo Usuário"
+msgstr "Novo usuário"
 
 #: user/templates/user/newUser.html:17
 msgid "Register"
-msgstr "Registrar"
+msgstr "Cadastrar"
 
 #: user/templates/user/searchUser.html:13
 #: user/templates/user/searchUser.html:17
@@ -169,7 +198,7 @@ msgstr "Usuários"
 #: user/templates/user/searchUser.html:23
 #: user/templates/user/searchUser.html:54
 msgid "Name"
-msgstr "Nome:"
+msgstr "Nome"
 
 #: user/templates/user/searchUser.html:24
 #: user/templates/user/searchUser.html:55
@@ -211,29 +240,29 @@ msgstr "Administrador"
 
 #: user/templatetags/user_extras.py:21
 msgid "Academic User"
-msgstr "Usuário Corpo Acadêmico"
+msgstr "Usuário Acadêmico"
 
-#: user/views.py:21
+#: user/views.py:22
 msgid "You have been registered"
 msgstr "Você foi cadastrado"
 
-#: user/views.py:38
+#: user/views.py:33
 msgid "Your data has been updated"
 msgstr "Seus dados foram atualizados"
 
-#: user/views.py:76
+#: user/views.py:65
 msgid "You have been logged out successfully!"
-msgstr "Logout efetuado com sucesso!"
+msgstr "Você saiu!"
 
-#: user/views.py:95
+#: user/views.py:92
 msgid "Your password has been changed"
-msgstr "Sua senha foi modificada"
+msgstr "Sua senha foi modificada!"
 
-#: user/views.py:121 user/views.py:124
+#: user/views.py:120 user/views.py:123
 msgid "User "
 msgstr "Usuário "
 
-#: user/views.py:127
+#: user/views.py:126
 msgid "User not found."
 msgstr "Usuário não encontrado."
 
