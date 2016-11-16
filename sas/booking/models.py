@@ -32,7 +32,8 @@ class Place(models.Model):
 
     def __str__(self):
         try:
-            return self.building.name + " | " + self.name
+            return (self.building.name + " | " + self.name +
+                    " - Cap. " + str(self.capacity))
         except:
             return self.name
 
@@ -62,6 +63,15 @@ class BookTime(models.Model):
         return (str(self.date_booking) + " | " +
                 str(self.start_hour) + " - " + str(self.end_hour))
 
+    def delete_booktime(self, booking):
+        if booking.time.count() == 1:
+            booking.delete()
+        else:
+            booking.time.remove(self)
+            super(BookTime, self).delete()
+
+BOOKING_STATUS = ((0, _("Denied")), (1, _("Pending")), (2, _("Approved")))
+
 
 class Booking(models.Model):
     user = models.ForeignKey(User, related_name="bookings",
@@ -72,7 +82,8 @@ class Booking(models.Model):
     name = models.CharField(max_length=50)
     start_date = models.DateField(null=False, blank=False)
     end_date = models.DateField(null=False, blank=False)
-    status = models.PositiveSmallIntegerField(default=2)
+    status = models.PositiveSmallIntegerField(choices=BOOKING_STATUS,
+                                              default=2)
 
     def __str__(self):
         return (self.name + " " + self.user.email + " | " + str(self.place) +
@@ -112,10 +123,9 @@ class Booking(models.Model):
             return False
 
     def save(self, *args, **kwargs):
-        if (self.place.is_laboratory):
+        if (self.place.is_laboratory and not
+                self.user.profile_user.is_admin()):
             self.status = 1  # status for pending booking
-        else:
-            self.status = 2  # status for approved booking
         if Place.objects.filter(name=self.place.name):
             self.place = Place.objects.get(name=self.place.name)
         else:
@@ -154,7 +164,7 @@ class Booking(models.Model):
 
     @staticmethod
     def get_bookings():
-        bookings = Booking.objects.values('name').distinct()
+        bookings = Booking.objects.values('name').order_by('-name').distinct()
         choices = ()
         for booking in bookings:
             new_choice = (booking['name'], booking['name'])

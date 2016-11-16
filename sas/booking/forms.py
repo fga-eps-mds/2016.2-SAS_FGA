@@ -158,7 +158,7 @@ class BookingForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(BookingForm, self).__init__(*args, **kwargs)
         self.fields['responsible'] = forms.CharField(
-            label=_('Responsible:'),
+            label=_('Responsible (optional):'),
             required=False,
             widget=forms.widgets.Select(
                 attrs={'class': 'selectize'},
@@ -228,6 +228,8 @@ class BookingForm(forms.Form):
             ONE_FOUND = 1
             if user.profile_user.is_admin() and (users.count() is ONE_FOUND):
                 booking.user = users[0]
+        else:
+            booking.responsible = str(user.profile_user)
 
         book = BookTime()
         book.date_booking = booking.start_date

@@ -7,14 +7,34 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 
-
-class LoginForm(forms.Form):
+class UserProfileForm(forms.Form):
+    name = forms.CharField(
+        label=_('Name:'),
+        widget=forms.TextInput(attrs={'placeholder': ''}))
+    registration_number = forms.CharField(
+        label=_('Registration number:'),
+        widget=forms.TextInput(attrs={'placeholder': ''}))
+    category = forms.ChoiceField(choices=CATEGORY, label=_('Category:'))
     email = forms.EmailField(
         label=_('Email:'),
-        widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}))
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}),
+        error_messages={'invalid': _('Email address must \
+                                       be in a valid format.')})
     password = forms.CharField(
         label=_('Password:'),
+        required=True,
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
+    
+    
+
+class LoginForm(UserProfileForm):
+
+    def __init__(self, *args, **kwargs):   
+        super(LoginForm, self ).__init__(*args, **kwargs)
+        self.fields.pop("category")
+        self.fields.pop("name")
+        self.fields.pop("registration_number")
 
     def authenticate_user(self):
         username = self.cleaned_data.get("email")
@@ -31,16 +51,21 @@ class LoginForm(forms.Form):
         return cleaned_data
 
 
-class PasswordForm(forms.Form):
-    password = forms.CharField(
-        label=_('Password:'),
-        widget=forms.PasswordInput(attrs={'placeholder': ''}))
+class PasswordForm(UserProfileForm):
+    
     new_password = forms.CharField(
         label=_('New Password:'),
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
     renew_password = forms.CharField(
         label=_('Repeat Password:'),
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
+
+    def __init__(self, *args, **kwargs):   
+        super(PasswordForm, self ).__init__(*args, **kwargs)
+        self.fields.pop("email")
+        self.fields.pop("category")
+        self.fields.pop("name")
+        self.fields.pop("registration_number")
 
     def save(self, user):
         password = self.cleaned_data.get("new_password")
@@ -65,64 +90,78 @@ class PasswordForm(forms.Form):
                                                          do not match'), ]})
 
 
-class UserForm(ModelForm):
-    name = forms.CharField(
-        label=_('Name:'),
-        widget=forms.TextInput(attrs={'placeholder': ''}))
-    email = forms.EmailField(
-        label=_('Email:'),
-        widget=forms.TextInput(attrs={'placeholder': 'example@email.com'}),
-        error_messages={'invalid': _('Email address must \
-                                       be in a valid format.')})
-
-    password = forms.CharField(
-        label=_('Password:'),
-        required=False,
-        widget=forms.PasswordInput(attrs={'placeholder': ''}))
+class UserForm(UserProfileForm):
+    
     repeat_password = forms.CharField(
         label=_('Repeat Password:'),
         required=False,
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
-    registration_number = forms.CharField(
-        label=_('Registration number:'),
-        widget=forms.TextInput(attrs={'placeholder': ''}))
-    category = forms.ChoiceField(choices=CATEGORY, label=_('Category:'))
 
-    def save(self, force_insert=False, force_update=False,
-             commit=True, is_edit_form=False):
-        userprofile = super(UserForm, self).save(commit=False)
+    def __init__(self, *args, **kwargs):   
+        instance = kwargs.pop("instance", None)
+        editing = kwargs.pop("editing", None) 
+        super(UserForm, self ).__init__(*args, **kwargs)
+        if instance is not None:
+            self.__dict__["instance"] = instance
+        if instance is not  None or editing is not None:
+            self.fields.pop("password")
+            self.fields.pop("repeat_password")
+        if editing is None and instance is not None:
+            self.fields["email"].initial = instance.user.email
+            self.fields["category"].initial = instance.category 
+            self.fields["name"].initial = instance.full_name()
+            self.fields["registration_number"].initial = instance.registration_number    
 
-        # if it is a new user
-        if not hasattr(userprofile, 'user'):
-            userprofile.user = User()
-            userprofile.user.set_password(self.cleaned_data.get('password'))
-
+    def set_fields(self, userprofile):
         userprofile.name(self.cleaned_data.get('name'))
         userprofile.user.email = self.cleaned_data.get('email')
         userprofile.user.username = userprofile.user.email
+        userprofile.registration_number = self.cleaned_data.get('registration_number')
+        userprofile.category = self.cleaned_data.get('category')
 
-        if not is_edit_form:
-            userprofile.user.set_password(self.cleaned_data.get('password'))
-
-        # do custom stuff
-        if commit:
+    def update(self, userprofile):
+        self.set_fields(userprofile)
+        try:
             userprofile.save()
-        if not is_edit_form:
-            userprofile.make_as_academic_staff()
+        except:
+           raise Exception(_("Something went wrong so we could not save \
+                             your data. Try again later"))
         return userprofile
 
-    def clean(self):
-        cleaned_data = super(ModelForm, self).clean()
+    def insert(self):
+        userprofile = UserProfile()
+        userprofile.user = User()
+        self.set_fields(userprofile)
+        userprofile.user.set_password(self.cleaned_data.get('password'))
+        try:
+            userprofile.save()
+            userprofile.make_as_academic_staff()
+        except e:
+           raise Exception(_("Something went wrong so we could not save \
+                             your data. Try again later"))
+        return userprofile
+
+    def clean_registration_number(self):
+        rn = self.cleaned_data["registration_number"]
+        if hasattr(self, "instance") and self.instance.registration_number == rn:
+            return rn
+        elif UserProfile.objects.filter(registration_number=rn).exists():
+                raise ValidationError(_('Registration Number already exists.'))
+            
+        return rn
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if hasattr(self,"instance") and self.instance.user.email == email:
+            return email
+        elif User.objects.filter(email=email).exists():
+                raise ValidationError(_('Email already used.'))
+            
+        return email
+
+    def clean_name(self):
         validation = Validation()
-
-        if (not(hasattr(self.instance, 'user')) or self.instance
-                .user.email != cleaned_data.get('email')):
-            if (User.objects.filter(username=cleaned_data
-                                    .get('email')).exists()):
-                raise ValidationError({'email': [_('Email already used'), ]})
-
-        # Name validation
-        name = cleaned_data.get('name')
+        name = self.cleaned_data['name']
 
         if (len(name) < 2 or len(name) > 50):
             raise ValidationError({'name': [_('Name must be \
@@ -137,34 +176,21 @@ class UserForm(ModelForm):
         if validation.hasNumbers(name):
             raise ValidationError({'name': [_('Name cannot \
                                                contain numbers.'), ]})
-
-        return cleaned_data
-
-    class Meta:
-        model = UserProfile
-        fields = ['name', 'registration_number',
-                  'category', 'email', 'password', 'repeat_password']
-
-
-class EditUserForm(UserForm):
-
-    class Meta:
-        model = UserProfile
-        fields = ['name', 'registration_number', 'category', 'email']
-
-
-class NewUserForm(UserForm):
+        return name
 
     def clean(self):
-        cleaned_data = super(NewUserForm, self).clean()
-        password1 = cleaned_data.get('password')
-        password2 = cleaned_data.get('repeat_password')
+        cleaned_data = super(UserForm, self).clean()
+    
+        if "password" in self.fields and "repeat_password" in self.fields:
+            password1 = cleaned_data['password']
+            password2 = cleaned_data['repeat_password']
 
-        if len(password1) < 6 or len(password1) > 15:
-            raise ValidationError({'password': [_('Password must be \
-                                                   between 6 and 15 \
-                                                   characters.'), ]})
+            if len(password1) < 6 or len(password1) > 15:
+                raise ValidationError({'password': [_('Password must be \
+                                                       between 6 and 15 \
+                                                       characters.'), ]})
 
-        if password1 and password2 and password1 != password2:
-            raise ValidationError({'repeat_password': [_('Passwords do \
-                                                          not match.'), ]})
+            if password1 and password2 and password1 != password2:
+                raise ValidationError({'repeat_password': [_('Passwords do \
+                                                              not match.'), ]})
+        return cleaned_data

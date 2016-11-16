@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect
 from .forms import PasswordForm
-from .forms import NewUserForm, LoginForm, EditUserForm
+from .forms import LoginForm, UserForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile
@@ -10,52 +10,36 @@ from sas.views import index
 from django.contrib.auth.decorators import login_required
 from sas.decorators.decorators import required_to_be_admin
 from django.views.generic.edit import FormView
+from django.views import View
 
+class NewUserView(FormView):
+    template_name = "user/newUser.html"
+    form_class = UserForm
+    success_url = "/"
 
-def new_user(request):
-    if request.method == "POST":
-        form = NewUserForm(request.POST, UserProfile)
-        if not(form.is_valid()):
-            return render(request, 'user/newUser.html', {'form_user': form})
-        else:
-            form.save()
-            messages.success(request, _('You have been registered'))
-            return index(request)
-    else:
-        form = NewUserForm()
-        return render(request, 'user/newUser.html', {'form_user': form})
+    def form_valid(self, form):
+        form.insert()
+        messages.success(self.request, _('You have been registered'))
+        return super(NewUserView, self).form_valid(form)
 
-
-def list_user(request):
-    users = UserProfile.objects.all()
-    return render(request, 'user/listUser.html', {'users': users})
-
-
-def edit_user(request):
-    if request.user.is_authenticated() and request.method == "POST":
-        form = EditUserForm(request.POST, instance=request.user.profile_user)
-        if form.is_valid():
-            form.save()
+class EditUserView(View):
+    
+    def post(self, request):
+        user_form = UserForm(request.POST, editing=True,
+                             instance=request.user.profile_user)
+        if user_form.is_valid():
+            useprofile = user_form.update(request.user.profile_user)
+            request.user.refresh_from_db()
             messages.success(request, _('Your data has been updated'))
-        return render_edit_user(request, user_form=form)
-    elif not request.user.is_authenticated():
-        return index(request)
-    else:
-        return render_edit_user(request)
-
-
-def render_edit_user(request, user_form=None, change_form=PasswordForm()):
-    user = request.user
-    initial = {}
-    initial['name'] = user.profile_user.full_name()
-    initial['email'] = user.email
-
-    if user_form is None:
-        user_form = EditUserForm(initial=initial,
-                                 instance=request.user.profile_user)
-    return render(request,
-                  'user/editUser.html',
-                  {'form_user': user_form, 'change_form': change_form})
+        return self.get(request,user_form=user_form)
+            
+    def get(self, request, user_form=None):
+        if user_form is None:
+            user_form = UserForm(instance=request.user.profile_user)
+        change_form = PasswordForm()
+        return render(request,
+                      'user/editUser.html',
+                      {'form_user': user_form, 'change_form': change_form})
 
 
 class LoginView(FormView):
@@ -94,18 +78,24 @@ def delete_user(request):
 class ChangePasswordView(FormView):
     form_class = PasswordForm
 
+    def render_template(self, change_form=PasswordForm()):
+        user_form = UserForm(instance=self.request.user.profile_user)
+        return render(self.request,
+                      'user/editUser.html',
+                      {'form_user': user_form, 'change_form': change_form})
+
     def form_valid(self, form):
         if(form.is_password_valid(self.request.user.username)):
             form.save(self.request.user)
             login(self.request, self.request.user)
             messages.success(self.request,
                              _('Your password has been changed'))
-            return render_edit_user(self.request)
+            return self.render_template()
         else:
-            return render_edit_user(self.request, change_form=form)
+            return self.render_template(change_form=form)
 
     def form_invalid(self, form):
-        return render_edit_user(self.request, change_form=form)
+        return self.render_template(change_form=form)
 
     def get(self, request, *args, **kwargs):
         return redirect('index')

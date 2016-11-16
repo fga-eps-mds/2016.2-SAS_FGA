@@ -23,6 +23,7 @@ from booking.views import deny_booking
 from booking.templatetags.check_table import search_building
 from booking.templatetags.check_table import search_place, search_hour
 from booking.templatetags.check_table import search_date
+from booking.templatetags.booking_handling import is_all_bookings
 
 
 class DeleteBookingTest(TestCase):
@@ -610,3 +611,10 @@ class ShowBookTimesTest(TestCase):
         url = reverse('booking:showbooktimes', args=(0,))
         response = self.client.get(url)
         self.assertContains(response, 'Booking not found.')
+
+
+class TemplateTagsTest(TestCase):
+    def test_is_all_bookings(self):
+        name = 'All Bookings'
+        result = is_all_bookings(name)
+        self.assertTrue(result)

@@ -21,6 +21,9 @@
             <thead>
               <tr>
                 <th>{% trans "Status" %}</th>
+                {% if name|is_all_bookings %}
+                <th>{% trans "Responsible" %}</th>
+                {% endif %}
                 <th>{% trans "Name" %}</th>
                 <th>{% trans "Place" %}</th>
                 <th>{% trans "Period" %}</th>
@@ -32,28 +35,30 @@
             <tbody>
             {% for booking in bookings %}
               <tr>
-                {% if booking.status == 0 %}
-                    <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-                {% elif booking.status == 1 %}
-                    <td><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></td>
-                {% elif booking.status == 2 %}
-                    <td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+                <td>
+                  <span class="glyphicon {{booking|status_glyphicon}}" aria-hidden="true"></span>
+                </td>
+                {% if name|is_all_bookings %}
+                <td>{{ booking.responsible }}</td>
                 {% endif %}
                 <td>{{ booking.name }}</td>
-                <td>{{ booking.place.name }}</td>
+                <td>{{ booking.place }}</td>
                 <td class="text-center">{{ booking.start_date }}
                   <br>{% trans " to " %}<br>
-                  {{ booking.end_date }}</td>
+                  {{ booking.end_date }}
+                </td>
+                {% with booking|get_timetable as timetable %}
                 <td class="text-center">
-                  {% for day in booking|get_timetable %}
+                  {% for day in timetable %}
                     {{ day.0  }}<br>
                   {% endfor %}
                 </td>
                 <td>
-                  {% for day in booking|get_timetable %}
+                  {% for day in timetable %}
                     {{ day.0  }}: <br>{{ day.1.0|date:"H:i" }} - {{ day.1.1|date:"H:i" }} <br>
                   {% endfor %}
                 </td>
+                {% endwith %}
                 <td>
                     <button class="btn btn-danger" data-href="{% url 'booking:deletebooking' booking.id %}"
                         data-href2="{% url 'booking:showbooktimes' booking.id %}"
