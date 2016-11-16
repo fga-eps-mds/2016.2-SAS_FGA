@@ -14,6 +14,7 @@ import traceback
 from django.utils import formats
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from user.models import Settings
+from django.contrib.auth.models import User
 
 HOURS = [(6, "06-08"), (8, "08-10"), (10, "10-12"), (12, "12-14"),
          (14, "14-16"), (16, "16-18"), (18, "18-20"), (20, "20-22"),
@@ -181,6 +182,7 @@ class SearchBookingQueryView(View):
 def new_booking(request):
     start_semester = Settings.objects.last().start_semester
     end_semester = Settings.objects.last().end_semester
+    user = request.user
     if request.method == "POST":
         form_booking = BookingForm(request.POST)
         if (form_booking.is_valid()):
@@ -196,8 +198,8 @@ def new_booking(request):
     return render(request, 'booking/newBooking.html',
                   {'form_booking': form_booking,
                    'start_semester': start_semester,
-                   'end_semester': end_semester})
-
+                   'end_semester': end_semester,
+                   'is_staff': user.is_staff})
 
 def search_booking_table(request):
     if request.method == "POST":
@@ -321,4 +323,18 @@ def delete_booktime(request, booking_id, booktime_id):
         messages.error(request, _('You cannot delete this booking.'))
     except (ObjectDoesNotExist, Booking.DoesNotExist):
         messages.error(request, _('Booking not found.'))
-    return search_booking(request)
+    return show_booktimes(request, booking_id)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+def show_booktimes(request, booking_id):
+    try:
+        booking = Booking.objects.get(pk=booking_id)
+        return render(request, 'booking/showBookTimes.html',
+                      {'booking': booking})
+    except:
+        messages.error(request, _('Booking not found.'))
+    if request.user.profile_user.is_admin():
+        return all_bookings(request)
+    else:
+        return search_booking(request)

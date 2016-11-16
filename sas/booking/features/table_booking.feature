@@ -9,7 +9,7 @@ Background:
 Scenario: Successfully booking creation
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room."
+    And I choose "Room "
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
     And I fill in "Date:" with "10/20/2018"
@@ -25,7 +25,7 @@ Scenario: Successfully booking creation
 Scenario: canceling a book
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room."
+    And I choose "Room "
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
     And I fill in "Date:" with "10/20/2018"
@@ -41,7 +41,7 @@ Scenario: canceling a book
 Scenario: modal receives correct data
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room."
+    And I choose "Room "
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
     And I fill in "Date:" with "10/20/2018"

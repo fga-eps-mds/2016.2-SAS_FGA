@@ -43,7 +43,7 @@
                </ul>
                <li><a href="{% url 'user:searchuser' %}">{% trans "Users" %}</a></li>
                {% endif %}
-             <li><a href="#">FAQ</a></li>
+             <li><a href="{% url 'faq' %}">FAQ</a></li>
          </ul>
          {% if request.user.is_authenticated %}
          <ul class="nav navbar-nav pull-right">

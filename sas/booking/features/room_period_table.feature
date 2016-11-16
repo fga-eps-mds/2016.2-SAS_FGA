@@ -8,10 +8,10 @@ Background:
 Scenario: Inexistent booking in the specified room
 	When I login in with email "lucas@gmail.com" and password "123456"
 	Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room."
+    And I choose "Room "
     And I select "UED" from "Building"
     And I select "UED | FGA-LAB_MATERIAIS" from "Place"
-    And I fill in "Date:" with "12/21/2018"
+    And I fill in "Date:" with "11/21/2018"
     And I fill in "Date (To)" with "12/30/2018"
     Then I press "Search"
     Then I should see an element with id of "create-booking"
@@ -19,10 +19,10 @@ Scenario: Inexistent booking in the specified room
 Scenario: Inexistent booking between end date and start date
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room."
+    And I choose "Room "
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
-    And I fill in "Date:" with "12/21/2018"
+    And I fill in "Date:" with "11/21/2018"
     And I fill in "Date (To)" with "12/30/2018"
     Then I press "Search"
     Then I should see an element with id of "create-booking"
@@ -30,7 +30,7 @@ Scenario: Inexistent booking between end date and start date
 Scenario: Start date lower than actual date
 	When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room."
+    And I choose "Room "
 	And I select "UAC" from "Building"
 	And I select "UAC | FGA-I1" from "Place"
     And I fill in "Date:" with "10/10/2015"
@@ -41,7 +41,7 @@ Scenario: Start date lower than actual date
 Scenario: End date lower than actual date
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room."
+    And I choose "Room "
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
     And I fill in "Date:" with "12/30/2020"
@@ -52,11 +52,10 @@ Scenario: End date lower than actual date
 Scenario: Start Date greater then End Date
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room."
+    And I choose "Room "
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
     And I fill in "Date:" with "12/31/2020"
     And I fill in "Date (To)" with "12/30/2018"
     Then I press "Search"
     Then I should see "End date must be equal or greater then Start date"
-

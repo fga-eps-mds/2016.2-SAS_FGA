@@ -4,7 +4,8 @@ Background:
 	Given I run loaddata to populate dropdowns
 	And I load a semester
 	And I register an admin with email "teste123@email.com" and password "123456" and registration number "160000000" and category "Teaching Staff"
-	And I register the booking "Eletricidade" with the building "UED" with the place name "FGA-LAB_ELETRICIDADE" and start_date "2016-11-20" and end_date "2016-11-30" of user "teste123@email.com"
+	And I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574"
+	And I register the booking "Eletricidade" with the building "UED" with the place name "FGA-LAB_ELETRICIDADE" and start_date "2016-11-20" and end_date "2016-11-30" of user "lucas@gmail.com"
 
 Scenario: Admin View Pending Bookings
 	When I login in with email "teste123@email.com" and password "123456"

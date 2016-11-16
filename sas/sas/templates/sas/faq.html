@@ -1,0 +1,91 @@
+{% extends 'sas/base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% bootstrap_messages %}
+
+{% block title %}FAQ{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xs-8 col-sm-6 col-md-6 col-md-offset-3 col-xs-offset-2 col-sm-offset-3">
+        <h1 class="text-center">{% trans "Frequently Asked Questions" %}</h1>
+        <hr class="star-light">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="intro-text">
+            <p class="faq-content question"><span class="question-number">1)</span>  O sistema pode ser utilizado
+                para reservar espaços em qualquer campus da UnB ?
+            </p>
+            <p class="faq-content answer">Não. No momento, este sistema está voltado apenas para alocação de espaços
+                do Campus UnB Gama - FGA.
+            </p>
+
+            <p class="faq-content question"><span class="question-number">2)</span> Porque não aparece em minhas
+                reservas a reserva que acabei de fazer de um laboratório/auditório?
+            </p>
+            <p class="faq-content answer">A reserva de laboratório/auditório precisa da aprovação de um coordenador.
+                Assim que sua reserva for aprovada, aparecerá em "Minhas Reservas".
+            </p>
+
+            <p class="faq-content question"><span class="question-number">3)</span> Posso fazer reserva para qualquer
+                dia da semana?
+            </p>
+            <p class="faq-content answer">Sim, qualquer dia e horário.
+            </p>
+
+            <p class="faq-content question"><span class="question-number">4)</span> Como faço para reservar toda segunda
+                e quarta durante 3 meses e só em uma certa data reservar uma terça-feira?
+            </p>
+            <p class="faq-content answer">Uma reserva só pode possuir uma frequência para dias da semana. Dessa forma é
+                necessário criar outra reserva com a data para a terça-feira desejada.
+            </p>
+
+            <p class="faq-content question"><span class="question-number">5)</span> Como faço pra alterar a data da
+                minha reserva?
+            </p>
+            <p class="faq-content answer">Uma reserva depois de finalizada não pode ser alterada, sendo necessário
+                excluí-la e depois refazê-la com a data desejada.
+            </p>
+
+            <p class="faq-content question"><span class="question-number">6)</span> Como faço pra cadastrar uma
+                disciplina que tem horários diferentes durante a semana?
+            </p>
+            <p class="faq-content answer"> Durante o cadastro de uma reserva só é possível cadastrar um horário,
+                portanto é preciso fazer duas ou mais reservas com o mesmo nome.
+            </p>
+
+            <p class="faq-content question"><span class="question-number">7)</span> Como proceder caso queira de fazer uma reserva em um
+                espaço específico, mas já exista reserva no horário que preciso ?
+            </p>
+            <p class="faq-content answer"> Nesse caso, um coordenador que seja administrador do sistema deve ser contactado. Apenas
+                administradores podem excluir reservas de outros usuários.
+            </p>
+
+            <p class="faq-content question"><span class="question-number">8)</span> Como posso visualizar as reservas existentes ?
+            </p>
+            <p class="faq-content answer"> Basta clicar em "Pesquisar" na página inicial, nela existem quatro filtros diferentes
+                para realizar buscas de reservas.
+            </p>
+
+            <p class="faq-content question"><span class="question-number">9)</span> Como é feita a busca de reservas para cada filtro ?
+            </p>
+            <p class="faq-content answer"> O primeiro filtro serve para pesquisar as reservas de um espaço específico em uma semana. O
+                segundo para ver os horários de uma reserva específica em um período de tempo. O terceiro ver as reserva feitas em
+                em cada espaço de um prédio específico em um determinado dia. E o quarto para ver todas as reservas de um determinado
+                espaço em um período de tempo.
+            </p>
+
+            <p class="faq-content question"><span class="question-number">10)</span> Cadastrei um dado errado no meu cadastro. É possível
+                alterar ?
+            </p>
+            <p class="faq-content answer"> Sim, basta clicar onde está escrito seu nome, no canto superior direito. Após isso clicar em
+                "Dados Pessoais" e alterar ou campo que preecheu errado.
+            </p>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

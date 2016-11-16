@@ -11,7 +11,7 @@
 {% block content %}
 	<div class="row">
 		<div class="col-xs-8 col-sm-6 col-md-6 col-md-offset-3 col-xs-offset-2 col-sm-offset-3">
-			<h1 class="text-center">{% trans "Rooms Booking" %}</h1> 
+			<h1 class="text-center">{% trans "Rooms Booking" %}</h1>
 			<hr class="star-light">
 			<div class="form-content" >
 			   <form class="form-horizontal" method = 'POST'>
@@ -29,11 +29,27 @@
 
 {% block extrastyle %}
 <link rel="stylesheet" href="{% static 'plugins/datepicker/bootstrap-datepicker.css' %}" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.0/css/selectize.bootstrap3.min.css" />
 {% endblock %}
 
 {% block extrajs %}
-<script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.0/js/standalone/selectize.min.js"></script>
+<script type="text/javascript">
 $(document).ready(function () {
+
+	$(".selectize").selectize({
+	    delimiter: ',',
+	    persist: false,
+	    maxItems:1,
+	    create: function(input) {
+	        return {
+	            value: input,
+	            text: input
+	        }
+	    }
+	});
+
+  	$('.optional').closest('div').hide();
 
 	$('.datepicker1').datepicker({
 			inline: true,
@@ -57,7 +73,7 @@ $(document).ready(function () {
 			var start_date = '{{ start_semester|js_date }}';
 			var end_date = '{{ end_semester|js_date }}';
 
-			if(selected_option == 'opt_date_semester'){	
+			if(selected_option == 'opt_date_semester'){
 				$("#id_start_date").val( start_date );
 				$("#id_end_date").val( end_date );
 				$("#id_end_date, #id_start_date").closest('div').hide();

@@ -2,7 +2,7 @@ from django.test import TestCase, RequestFactory
 from user.models import UserProfile, Validation, CATEGORY
 from user.models import Settings
 from django.test import Client
-from user.views import edit_user
+from user.views import EditUserView
 from user.factories import UserProfileFactory
 from django.contrib.auth import logout
 from django.urls import reverse
@@ -27,13 +27,8 @@ class EditUserTest(TestCase):
     def test_get_request_logged(self):
         request = self.factory.get('/user/edituser/')
         request.user = self.userprofile.user
-        response = edit_user(request)
+        response = EditUserView.as_view()(request)
         self.assertEqual(response.status_code, 200)
-
-    def test_get_request_anonymous(self):
-        url = '/user/edituser/'
-        response = self.client.get(url, follow=True)
-        self.assertTemplateUsed(response, 'sas/index.html')
 
     def test_edit_post_registration_number(self):
         self.factory.get('/user/edituser/')
@@ -222,7 +217,8 @@ class LoginTest(TestCase):
         response = self.client.post('/user/login/', {'email': 'aeiou',
                                                      'password': '1234567'})
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Enter a valid email address.')
+        self.assertContains(response, 'Email address must')
+        self.assertContains(response, 'be in a valid format.')
 
     def test_invalid_password(self):
         response = self.client.post('/user/login/',
