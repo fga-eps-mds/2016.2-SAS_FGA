@@ -29,3 +29,10 @@ def status_glyphicon(booking):
         return STATUS[booking.status][1]
     except:
         return None
+
+@register.filter(name='is_all_bookings')
+def is_all_bookings(name):
+    if name == _('All Bookings'):
+        return True
+    else:
+        return False
