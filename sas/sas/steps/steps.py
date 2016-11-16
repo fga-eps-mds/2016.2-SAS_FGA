@@ -7,7 +7,7 @@ from user.models import UserProfile, CATEGORY, Settings
 from django.contrib.auth.models import User
 from django.test import Client
 from django.core.management import call_command
-from datetime import timedelta
+from datetime import timedelta, datetime
 from dateutil import parser
 from sas.basic import Configuration
 
