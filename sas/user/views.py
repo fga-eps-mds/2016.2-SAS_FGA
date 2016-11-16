@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect
-from .forms import PasswordForm
-from .forms import LoginForm, UserForm
+from .forms import PasswordForm, SettingsForm
+from .forms import NewUserForm, LoginForm, EditUserForm, UserForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile
@@ -23,7 +23,7 @@ class NewUserView(FormView):
         return super(NewUserView, self).form_valid(form)
 
 class EditUserView(View):
-    
+
     def post(self, request):
         user_form = UserForm(request.POST, editing=True,
                              instance=request.user.profile_user)
@@ -32,7 +32,7 @@ class EditUserView(View):
             request.user.refresh_from_db()
             messages.success(request, _('Your data has been updated'))
         return self.get(request,user_form=user_form)
-            
+
     def get(self, request, user_form=None):
         if user_form is None:
             user_form = UserForm(instance=request.user.profile_user)
@@ -107,6 +107,23 @@ def search_user(request):
     id = request.user.profile_user.id
     users = UserProfile.objects.all().exclude(pk=id)
     return render(request, 'user/searchUser.html', {'users': users})
+
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
+def settings(request):
+    if request.method == "POST":
+        form = SettingsForm(request.POST)
+        if not(form.is_valid()):
+            return render(request, 'user/settings.html',
+                          {'form_settings': form})
+        else:
+            form.save()
+            messages.success(request, _('Settings updated'))
+            return index(request)
+    else:
+        form = SettingsForm()
+        return render(request, 'user/settings.html', {'form_settings': form})
 
 
 @login_required(login_url='/?showLoginModal=yes')

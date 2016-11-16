@@ -2,8 +2,8 @@ from aloe import step, world
 from aloe_webdriver.util import find_any_field, find_field_by_value
 from aloe_webdriver import TEXT_FIELDS
 from selenium.common.exceptions import NoSuchElementException
-from booking.models import Booking, Place, BookTime, Building
-from user.models import UserProfile, CATEGORY
+from booking.models import Booking, Place, BookTime, Building, date_range
+from user.models import UserProfile, CATEGORY, Settings
 from django.contrib.auth.models import User
 from django.test import Client
 from django.core.management import call_command
@@ -74,6 +74,12 @@ def register_user(step, username, password, registration_number, category):
             user.category = number
     user.save()
 
+@step(r'I load a semester')
+def register_semester(step):
+    settings = Settings()
+    settings.start_semester = datetime.strptime("21092017", "%d%m%Y")
+    settings.end_semester = datetime.strptime("22092018", "%d%m%Y")
+    settings.save()
 
 @step(r'I register an admin with email "(.*)" and password "(.*)" and registration number "(.*)" and category "(.*)"')
 def register_admin(step, username, password, registration_number, category):

@@ -4,6 +4,7 @@ from .views import delete_user
 from .views import search_user
 from .views import make_user_an_admin
 from .views import LoginView, ChangePasswordView
+from .views import settings
 from .views import NewUserView, EditUserView
 
 urlpatterns = [
@@ -14,5 +15,6 @@ urlpatterns = [
     url(r'^edituser/$', EditUserView.as_view(), name='edituser'),
     url(r'^change/$', ChangePasswordView.as_view(), name='changepassword'),
     url(r'^searchuser/$', search_user, name='searchuser'),
+    url(r'^settings/$', settings, name='settings'),
     url(r'^usertoadmin/(\d+)$', make_user_an_admin, name='usertoadmin'),
 ]

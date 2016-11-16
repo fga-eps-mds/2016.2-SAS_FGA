@@ -180,23 +180,37 @@ class BookingForm(forms.Form):
              (hour5, ('16:00')), (hour6, ('18:00')),
              (hour7, ('20:00')), (hour8, ('22:00')),
              (hour9, ('00:00')))
+
+
+    DATE_CHOICES = (
+        ('opt_date_semester', _("Yes")),
+        ('opt_select_date', _("No")),
+    )
+
     name = forms.CharField(
         label=_('Booking Name:'),
         widget=forms.TextInput(attrs={'placeholder': ''}))
+    date_options = forms.ChoiceField(label=_('Do you wish to register booking \
+                                                for a semester?'),
+                                     choices=DATE_CHOICES,
+                                     widget=forms.RadioSelect())
+    start_date = forms.DateField(
+        label=_('Start Date:'),
+        required=False,
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
+    end_date = forms.DateField(
+        label=_('End Date:'),
+        required=False,
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
     start_hour = forms.TimeField(
         label=_('Start Time:'),
         widget=forms.Select(choices=HOURS))
     end_hour = forms.TimeField(
         label=_('End Time:'),
         widget=forms.Select(choices=HOURS))
-    start_date = forms.DateField(
-        label=_('Start Date:'),
-        widget=forms.widgets.DateInput(
-            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
-    end_date = forms.DateField(
-        label=_('End Date:'),
-        widget=forms.widgets.DateInput(
-            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
+
     building = forms.ModelChoiceField(
         queryset=Building.objects,
         label=_('Building:'))
@@ -300,5 +314,6 @@ class BookingForm(forms.Form):
                 raise forms.ValidationError(msg)
 
         except Exception as e:
+            print(e)
             msg = _('Inputs are invalid')
             raise forms.ValidationError(msg)

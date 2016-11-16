@@ -13,6 +13,7 @@ from collections import OrderedDict
 import traceback
 from django.utils import formats
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from user.models import Settings
 from django.contrib.auth.models import User
 
 HOURS = [(6, "06-08"), (8, "08-10"), (10, "10-12"), (12, "12-14"),
@@ -176,23 +177,11 @@ class SearchBookingQueryView(View):
                 traceback.print_exc()
         return render(request, self.template_name, {'search_booking': form})
 
-# def search_booking_query(request):
-#     if request.method == "POST":
-#         form_booking = SearchBookingForm(request.POST)
-#         if form_booking.is_valid():
-#             option = request.POST.get('search_options')
-#             try:
-#                 return search_options[option](request, form_booking)
-#             except:
-#                 messages.error(request, _('Invalid option'))
-#     else:
-#         form_booking = SearchBookingForm()
-#     return render(request, 'booking/searchBookingQuery.html',
-#                   {'search_booking': form_booking})
-
 
 @login_required(login_url='/?showLoginModal=yes')
 def new_booking(request):
+    start_semester = Settings.objects.last().start_semester
+    end_semester = Settings.objects.last().end_semester
     user = request.user
     if request.method == "POST":
         form_booking = BookingForm(request.POST)
@@ -207,8 +196,10 @@ def new_booking(request):
     else:
         form_booking = BookingForm()
     return render(request, 'booking/newBooking.html',
-                  {'form_booking': form_booking, 'is_staff': user.is_staff})
-
+                  {'form_booking': form_booking,
+                   'start_semester': start_semester,
+                   'end_semester': end_semester,
+                   'is_staff': user.is_staff})
 
 def search_booking_table(request):
     if request.method == "POST":

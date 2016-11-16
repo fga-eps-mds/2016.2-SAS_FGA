@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm
 from .models import UserProfile, Validation
-from .models import CATEGORY
+from .models import CATEGORY, Settings
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -25,12 +25,12 @@ class UserProfileForm(forms.Form):
         label=_('Password:'),
         required=True,
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
-    
-    
+
+
 
 class LoginForm(UserProfileForm):
 
-    def __init__(self, *args, **kwargs):   
+    def __init__(self, *args, **kwargs):
         super(LoginForm, self ).__init__(*args, **kwargs)
         self.fields.pop("category")
         self.fields.pop("name")
@@ -52,7 +52,7 @@ class LoginForm(UserProfileForm):
 
 
 class PasswordForm(UserProfileForm):
-    
+
     new_password = forms.CharField(
         label=_('New Password:'),
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
@@ -60,7 +60,7 @@ class PasswordForm(UserProfileForm):
         label=_('Repeat Password:'),
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
 
-    def __init__(self, *args, **kwargs):   
+    def __init__(self, *args, **kwargs):
         super(PasswordForm, self ).__init__(*args, **kwargs)
         self.fields.pop("email")
         self.fields.pop("category")
@@ -91,15 +91,15 @@ class PasswordForm(UserProfileForm):
 
 
 class UserForm(UserProfileForm):
-    
+
     repeat_password = forms.CharField(
         label=_('Repeat Password:'),
         required=False,
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
 
-    def __init__(self, *args, **kwargs):   
+    def __init__(self, *args, **kwargs):
         instance = kwargs.pop("instance", None)
-        editing = kwargs.pop("editing", None) 
+        editing = kwargs.pop("editing", None)
         super(UserForm, self ).__init__(*args, **kwargs)
         if instance is not None:
             self.__dict__["instance"] = instance
@@ -108,9 +108,9 @@ class UserForm(UserProfileForm):
             self.fields.pop("repeat_password")
         if editing is None and instance is not None:
             self.fields["email"].initial = instance.user.email
-            self.fields["category"].initial = instance.category 
+            self.fields["category"].initial = instance.category
             self.fields["name"].initial = instance.full_name()
-            self.fields["registration_number"].initial = instance.registration_number    
+            self.fields["registration_number"].initial = instance.registration_number
 
     def set_fields(self, userprofile):
         userprofile.name(self.cleaned_data.get('name'))
@@ -147,7 +147,7 @@ class UserForm(UserProfileForm):
             return rn
         elif UserProfile.objects.filter(registration_number=rn).exists():
                 raise ValidationError(_('Registration Number already exists.'))
-            
+
         return rn
 
     def clean_email(self):
@@ -156,7 +156,7 @@ class UserForm(UserProfileForm):
             return email
         elif User.objects.filter(email=email).exists():
                 raise ValidationError(_('Email already used.'))
-            
+
         return email
 
     def clean_name(self):
@@ -176,11 +176,63 @@ class UserForm(UserProfileForm):
         if validation.hasNumbers(name):
             raise ValidationError({'name': [_('Name cannot \
                                                contain numbers.'), ]})
+
         return name
+
+    class Meta:
+        model = UserProfile
+        fields = ['name', 'registration_number',
+                  'category', 'email', 'password', 'repeat_password']
+
+
+class EditUserForm(UserForm):
+
+    class Meta:
+        model = UserProfile
+        fields = ['name', 'registration_number', 'category', 'email']
+
+
+class SettingsForm(forms.Form):
+    start_semester = forms.DateField(
+        label=_('Semester Start:'),
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
+    end_semester = forms.DateField(
+        label=_('Semester End:'),
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
+
+    def clean(self):
+        try:
+            cleaned_data = super(SettingsForm, self).clean()
+            start_semester = cleaned_data.get('start_semester')
+            end_semester = cleaned_data.get('end_semester')
+            if not (start_semester <= end_semester):
+                msg = _('Semester start must be before the end of it.')
+                self.add_error('start_semester', msg)
+                self.add_error('end_semester', msg)
+                raise forms.ValidationError(msg)
+        except Exception as e:
+            msg = _('Inputs are invalid')
+            raise forms.ValidationError(msg)
+
+    def save(self, force_insert=False, force_update=False, commit=True):
+        settings = Settings()
+        settings.start_semester = self.cleaned_data.get("start_semester")
+        settings.end_semester = self.cleaned_data.get("end_semester")
+        settings.save()
+        return settings
+
+    class Meta:
+        model = Settings
+        fields = ['start_semester', 'end_semester']
+
+
+class NewUserForm(UserForm):
 
     def clean(self):
         cleaned_data = super(UserForm, self).clean()
-    
+
         if "password" in self.fields and "repeat_password" in self.fields:
             password1 = cleaned_data['password']
             password2 = cleaned_data['repeat_password']
