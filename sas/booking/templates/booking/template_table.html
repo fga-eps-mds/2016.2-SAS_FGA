@@ -7,8 +7,8 @@
 {% bootstrap_messages %}
 
 {% block extrastyle %}
-<link rel="stylesheet" href="{% static "style/bookingtable.css" %}">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.0/css/selectize.bootstrap3.min.css" />
+<link rel="stylesheet" href="{% static 'style/bookingtable.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/selectize/css/selectize.bootstrap3.min.css' %}" />
 {% endblock %}
 
 {% block title %} {% trans "Template Bookings Reports" %} {% endblock %}
@@ -127,7 +127,7 @@
 
 
 {% block extrajs %}
-<script src="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.0/js/standalone/selectize.min.js"></script>
+<script src="{% static 'plugins/selectize/js/selectize.min.js' %}"></script>
 <!-- DataTables -->
 <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
