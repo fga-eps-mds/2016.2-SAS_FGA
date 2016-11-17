@@ -29,11 +29,11 @@
 
 {% block extrastyle %}
 <link rel="stylesheet" href="{% static 'plugins/datepicker/bootstrap-datepicker.css' %}" />
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.0/css/selectize.bootstrap3.min.css" />
+<link rel="stylesheet" href="{% static 'plugins/selectize/css/selectize.bootstrap3.min.css' %}" />
 {% endblock %}
 
 {% block extrajs %}
-<script src="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.0/js/standalone/selectize.min.js"></script>
+<script src="{% static 'plugins/selectize/js/selectize.min.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function () {
 
