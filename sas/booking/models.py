@@ -183,7 +183,19 @@ class Tag(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
-        return name
+        return self.name
+
+    @staticmethod
+    def get_tags():
+        tags = Tag.objects.all()
+        choices = []
+        for tag in tags:
+            new_choice = (tag, tag)
+            choices.append(new_choice)
+        choices = sorted(choices, key=lambda tag_tuple:
+                         tag_tuple[0].name)
+        choices.insert(0, ('', ''))
+        return choices
 
 
 class Validation():
