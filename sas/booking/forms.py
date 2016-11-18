@@ -165,12 +165,12 @@ class BookingForm(forms.Form):
                 choices=UserProfile.get_users(),
             )
         )
-        self.fields['tags'] = forms.MultipleChoiceField(
+        self.fields['tags'] = forms.CharField(
             label=_('Tags (optional):'),
             required=False,
-            choices=Tag.get_tags(),
             widget=forms.widgets.SelectMultiple(
-                attrs={'class': 'selectize_multiple'},
+                attrs={'class': 'selectize_multiple'},                
+                choices=Tag.get_tags(),
             )
         )
     hour = datetime.strptime("08:00", "%H:%M").time()
