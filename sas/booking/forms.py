@@ -226,6 +226,11 @@ class BookingForm(forms.Form):
         label=_('Engineering:'),
         choices=ENGINEERINGS)
 
+    def __init__(self, user=None, *args, **kwargs):
+        super(BookingForm, self).__init__(*args, **kwargs)
+        if not(user and user.profile_user.is_admin()):
+            self.fields.pop('engineering_choice')
+
     def save(self, user, force_insert=False, force_update=False, commit=True):
         booking = Booking()
         booking.user = user
