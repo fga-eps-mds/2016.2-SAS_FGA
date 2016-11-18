@@ -99,28 +99,31 @@ def search_booking_responsible(request, form_booking):
     
     table = []
 
-    aux = []
-    bookings = Booking.objects.filter(time__date_booking=str(form_day),
-                                      responsible__contains=search_booking_responsible)
 
-    places_ = []
 
-    print(bookings)
-    for booking in bookings:
-        if (booking.responsible == booking_responsible and booking.status > 1):
-            book = booking.time.get(date_booking=str(form_day))
-            aux_tuple = (book.start_hour.hour, booking)
-            aux.append(aux_tuple)
+    r = booking_responsible.split('\r')
+    bookings = Booking.objects.filter(responsible__contains=r[0])
+    places,place_names = Booking.get_places(bookings)
+    print('p',places[0].pk)
+
+    for place in place_names:
+        aux = []
+        for booking in bookings:
             p = booking.place.name.split('-')
-            places_.append(p[1])
+            if (booking.status > 1 and p[1] == place):
+                book = booking.time.get(date_booking=str(form_day))
+                aux_tuple = (book.start_hour.hour, booking)
+                aux.append(aux_tuple)
+                         
+        table.append(aux)
+    
+    n = len(places) + 1
 
-    n = len(places_) + 1
-    table.append(aux)
-
+    print(table)
     return render(request, 'booking/template_table.html',
                   {'days': form_day, 'table': table,
-                   'column_header': form_day, 'hours': hours,
-                   'n': n, 'name': _(' Booking'), 'place': places_})
+                   'column_header': place_names , 'hours': hours,
+                   'n': n, 'name': _(' Responsible'), 'place': places})
 
 
 def search_booking_booking_name_week(request, form_booking):
@@ -203,7 +206,7 @@ class SearchBookingQueryView(View):
         if form.is_valid():
             option = request.POST.get('search_options')
             try:
-                print(option)
+                print('ueee',option)
                 return search_options[option](request, form)
             except Exception as e:
                 messages.error(request, _('Invalid option'))
