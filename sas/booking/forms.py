@@ -165,12 +165,12 @@ class BookingForm(forms.Form):
                 choices=UserProfile.get_users(),
             )
         )
-        self.fields['tags'] = forms.CharField(
+        self.fields['tags'] = forms.MultipleChoiceField(
             label=_('Tags (optional):'),
             required=False,
-            widget=forms.widgets.Select(
+            choices=Tag.get_tags(),
+            widget=forms.widgets.SelectMultiple(
                 attrs={'class': 'selectize_multiple'},
-                choices=Tag.get_tags(),
             )
         )
     hour = datetime.strptime("08:00", "%H:%M").time()
@@ -240,6 +240,8 @@ class BookingForm(forms.Form):
         weekdays = self.cleaned_data.get("week_days")
 
         if user.profile_user.is_admin():
+            tags = self.cleaned_data['tags']
+            print(tags)
             booking.responsible = self.cleaned_data.get("responsible")
             name = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+',
                              booking.responsible)
