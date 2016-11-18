@@ -338,3 +338,18 @@ def show_booktimes(request, booking_id):
         return all_bookings(request)
     else:
         return search_booking(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+def booking_details(request, booking_id):
+    try:
+        booking = Booking.objects.get(pk=booking_id)
+        tags = booking.tags.all()
+        return render(request, 'booking/bookingDetails.html',
+                      {'booking': booking, 'tags': tags})
+    except:
+        messages.error(request, _('Booking not found.'))
+    if request.user.profile_user.is_admin():
+        return all_bookings(request)
+    else:
+        return search_booking(request)
