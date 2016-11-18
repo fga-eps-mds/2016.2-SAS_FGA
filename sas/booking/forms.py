@@ -13,7 +13,7 @@ from user.models import UserProfile
 import copy
 import re
 import traceback
-
+import ast
 
 class SearchBookingForm(forms.Form):
 
@@ -169,7 +169,7 @@ class BookingForm(forms.Form):
             label=_('Tags (optional):'),
             required=False,
             widget=forms.widgets.SelectMultiple(
-                attrs={'class': 'selectize_multiple'},                
+                attrs={'class': 'selectize_multiple'},
                 choices=Tag.get_tags(),
             )
         )
@@ -241,7 +241,12 @@ class BookingForm(forms.Form):
 
         if user.profile_user.is_admin():
             tags = self.cleaned_data['tags']
-            print(tags)
+            tags = ast.literal_eval(tags)
+            for name in tags:
+                if not Tag.objects.filter(name=name).exists():
+                    tag = Tag()
+                    tag.name = name
+                    tag.save()
             booking.responsible = self.cleaned_data.get("responsible")
             name = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+',
                              booking.responsible)
