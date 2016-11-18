@@ -240,13 +240,6 @@ class BookingForm(forms.Form):
         weekdays = self.cleaned_data.get("week_days")
 
         if user.profile_user.is_admin():
-            tags = self.cleaned_data['tags']
-            tags = ast.literal_eval(tags)
-            for name in tags:
-                if not Tag.objects.filter(name=name).exists():
-                    tag = Tag()
-                    tag.name = name
-                    tag.save()
             booking.responsible = self.cleaned_data.get("responsible")
             name = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+',
                              booking.responsible)
@@ -265,6 +258,17 @@ class BookingForm(forms.Form):
         book.end_hour = self.cleaned_data.get("end_hour")
         try:
             booking.save()
+            tags = self.cleaned_data['tags']
+            tags = ast.literal_eval(tags)
+            for name in tags:
+                if not Tag.objects.filter(name=name).exists():
+                    tag = Tag()
+                    tag.name = name
+                    tag.save()
+                tag =  Tag.objects.get(name=name)
+                booking.content_object = tag
+                booking.tag = tag.name
+                booking.save()
             if booking.exists(book.start_hour, book.end_hour, weekdays):
                 booking.delete()
                 return None
@@ -277,6 +281,8 @@ class BookingForm(forms.Form):
                         newBookTime.save()
                         booking.time.add(newBookTime)
                 booking.save()
+
+
         except Exception as e:
             booking.delete()
             msg = _('Failed to book selected period')
