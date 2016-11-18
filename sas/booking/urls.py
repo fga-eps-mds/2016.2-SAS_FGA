@@ -13,6 +13,7 @@ from .views import pending_bookings
 from .views import approve_booking
 from .views import deny_booking
 from .views import show_booktimes
+from .views import booking_details
 
 urlpatterns = [
     url(r'^newbooking/$',
@@ -34,6 +35,8 @@ urlpatterns = [
         approve_booking, name='approvebooking'),
     url(r'^denybooking/(\d+)$',
         deny_booking, name='denybooking'),
+    url(r'^bookingdetails/(\d+)$',
+        booking_details, name='bookingdetails'),
     url(r'^deletebooktime/(\d+)/(\d+)$',
         delete_booktime, name='deletebooktime'),
     url(r'^allbookings/$',
