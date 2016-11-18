@@ -1,0 +1,63 @@
+{% extends 'sas/base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 staticfiles %}
+{% load booktimes %}
+{% bootstrap_messages %}
+
+{% block extrastyle %}
+  <link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.css" %}">
+  <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css" %}">
+  <link rel="stylesheet" href="{% static "plugins/datatables/extensions/Responsive/css/dataTables.responsive.css" %}">
+{% endblock %}
+
+{% block title %} {% trans "Delete Booking" %} {% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-xs-8 col-sm-6 col-md-6 col-md-offset-3 col-xs-offset-2 col-sm-offset-3">
+		<h1 class="text-center">{% trans "Booking Summary" %}</h1>
+		<div class="panel panel-default">
+			<div class="panel-heading">{% trans "Booking" %}: {{booking.name}} </div>
+			<div class="panel-body">
+			<p>{% trans "Place" %}: {{booking.place.name}}</p>
+			<p>{% trans "Start Date" %}: {{booking.start_date}}</p>
+			<p>{% trans "End Date" %}: {{booking.end_date}}</p>
+			<p>{% trans "Responsible" %}: {{booking.responsible}}</p>
+			<p>{% trans "Tags" %}:
+      {% for tag in tags %}
+          {{ tag.name }}
+      {% endfor %}
+      </p>
+			</div>
+			<table class="table" id="my_bookings">
+			{% for book in booking|order_booktimes %}
+				<tr>
+					<td>
+					{{ book.date_booking }}
+					</td>
+					<td>
+					{{ book.get_str_weekday }}
+					</td>
+					<td>
+					{{ book.start_hour }}
+					</td>
+					<td>
+					{{ book.end_hour }}
+					</td>
+
+				</tr>
+				{% endfor %}
+			</table>
+
+
+{% endblock %}
+
+{% block extrajs %}
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/extensions/Responsive/js/responsive.bootstrap.min.js' %}"></script>
+<!-- page script -->
+{% endblock %}
