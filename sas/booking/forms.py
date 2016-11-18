@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from booking.models import (WEEKDAYS, Booking, BookTime, Place, Building,
-                            date_range, Validation)
+                            date_range, Validation, Tag)
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
@@ -165,7 +165,14 @@ class BookingForm(forms.Form):
                 choices=UserProfile.get_users(),
             )
         )
-
+        self.fields['tags'] = forms.CharField(
+            label=_('Tags (optional):'),
+            required=False,
+            widget=forms.widgets.Select(
+                attrs={'class': 'selectize_multiple'},
+                choices=Tag.objects.all(),
+            )
+        )
     hour = datetime.strptime("08:00", "%H:%M").time()
     hour2 = datetime.strptime("10:00", "%H:%M").time()
     hour3 = datetime.strptime("12:00", "%H:%M").time()
