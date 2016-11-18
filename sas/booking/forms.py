@@ -170,7 +170,7 @@ class BookingForm(forms.Form):
             required=False,
             widget=forms.widgets.Select(
                 attrs={'class': 'selectize_multiple'},
-                choices=Tag.objects.all(),
+                choices=Tag.get_tags(),
             )
         )
     hour = datetime.strptime("08:00", "%H:%M").time()
