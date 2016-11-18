@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from booking.models import (WEEKDAYS, Booking, BookTime, Place, Building,
-                            date_range, Validation)
+                            date_range, Validation, ENGINEERINGS)
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
@@ -222,6 +222,9 @@ class BookingForm(forms.Form):
         required=False,
         choices=WEEKDAYS,
         widget=forms.CheckboxSelectMultiple())
+    engineering_choice = forms.ChoiceField(
+        label=_('Engineering:'),
+        choices=ENGINEERINGS)
 
     def save(self, user, force_insert=False, force_update=False, commit=True):
         booking = Booking()
@@ -233,6 +236,7 @@ class BookingForm(forms.Form):
         weekdays = self.cleaned_data.get("week_days")
 
         if user.profile_user.is_admin():
+            booking.engineering = self.cleaned_data.get("engineering_choice")
             booking.responsible = self.cleaned_data.get("responsible")
             name = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+',
                              booking.responsible)

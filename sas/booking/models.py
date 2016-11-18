@@ -7,14 +7,14 @@ from datetime import datetime, timedelta
 import copy
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 
-CATEGORY = (('', '----'), ('1', _('Student')),
+CATEGORY = (('', '----------'), ('1', _('Student')),
             ('2', _('Teaching Staff')), ('3', _('Employees')))
 
 WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
             ('3', _("Thursday")), ('4', _("Friday")), ('5', _("Saturday")),
             ('6', _("Sunday")))
 
-ENGINEERING = (('0', _("Select the Engineering")), ('1', _("Aerospace Engineering")), 
+ENGINEERINGS = (('0', _("----------")), ('1', _("Aerospace Engineering")), 
             ('2', _("Automotive Engineering")), ('3', _("Electronic Engineering")), 
             ('4', _("Energy Engineering")), ('5', _("Software Engineering")),
             ('6', _("Engineerings")))
@@ -90,7 +90,7 @@ class Booking(models.Model):
     status = models.PositiveSmallIntegerField(choices=BOOKING_STATUS,
                                               default=2)
 
-    engineering = models.CharField(choices=ENGINEERING, max_length=5)
+    engineering = models.CharField(choices=ENGINEERINGS, max_length=5)
 
     def __str__(self):
         return (self.name + " " + self.user.email + " | " + str(self.place) +
