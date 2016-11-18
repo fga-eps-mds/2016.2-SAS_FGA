@@ -247,6 +247,7 @@ class BookingForm(forms.Form):
             if user.profile_user.is_admin() and (users.count() is ONE_FOUND):
                 booking.user = users[0]
         else:
+            booking.engineering = "6";
             booking.responsible = str(user.profile_user)
 
         book = BookTime()

@@ -1,7 +1,7 @@
 {% extends 'sas/base.html' %}
 
 {% load i18n %}
-{% load bootstrap3 staticfiles %}
+{% load bootstrap3 staticfiles booking_handling %}
 {% load settings_js %}
 {% bootstrap_messages %}
 
@@ -17,6 +17,9 @@
 			   <form class="form-horizontal" method = 'POST'>
 					{% csrf_token %}
 					{% bootstrap_form form_booking %}
+					{% if request.user.is_admin|is_false %}
+			            {{ form_booking.engineering_choice.as_hidden }}
+			        {% endif %}
 					{% buttons %}
 						<button class="btn btn-info btn-block" type = 'submit'>{% trans "Perform Booking" %}</button>
 					{% endbuttons %}
