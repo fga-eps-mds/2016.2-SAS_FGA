@@ -6,6 +6,8 @@ from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 import copy
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 CATEGORY = (('', '----'), ('1', _('Student')),
             ('2', _('Teaching Staff')), ('3', _('Employees')))
@@ -84,6 +86,11 @@ class Booking(models.Model):
     end_date = models.DateField(null=False, blank=False)
     status = models.PositiveSmallIntegerField(choices=BOOKING_STATUS,
                                               default=2)
+    tag = models.SlugField(null=True, blank=True)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,
+                                     null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
         return (self.name + " " + self.user.email + " | " + str(self.place) +
@@ -172,6 +179,12 @@ class Booking(models.Model):
             choices = (new_choice,) + choices
         return choices
 
+class Tag(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return name
+
 
 class Validation():
 
@@ -187,7 +200,6 @@ class Validation():
         for character in '@#$%^&+=/\{[]()}-_+=*!§|':
             if character in string:
                 return True
-
 
 def date_range(start_date, end_date):
     return [start_date + timedelta(days=x)
