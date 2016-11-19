@@ -229,8 +229,10 @@ class BookingForm(forms.Form):
         try:
             if not(user and user.profile_user.is_admin()):
                 self.fields.pop('engineering_choice')
+                self.fields.pop('responsible')
         except:
             self.fields.pop('engineering_choice')
+            self.fields.pop('responsible')
 
     def save(self, user, force_insert=False, force_update=False, commit=True):
         booking = Booking()
