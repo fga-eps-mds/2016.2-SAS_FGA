@@ -126,8 +126,8 @@ class UserForm(UserProfileForm):
             self.fields["email"].initial = instance.user.email
             self.fields["category"].initial = instance.category
             self.fields["name"].initial = instance.full_name()
-            self.fields["registration_number\
-                         "].initial = instance.registration_number
+            registration_number = instance.registration_number
+            self.fields["registration_number"].initial = registration_number
 
     def set_fields(self, userprofile):
         userprofile.name(self.cleaned_data.get('name'))
