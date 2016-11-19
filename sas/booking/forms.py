@@ -155,16 +155,6 @@ class SearchBookingForm(forms.Form):
 
 
 class BookingForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super(BookingForm, self).__init__(*args, **kwargs)
-        self.fields['responsible'] = forms.CharField(
-            label=_('Responsible (optional):'),
-            required=False,
-            widget=forms.widgets.Select(
-                attrs={'class': 'selectize'},
-                choices=UserProfile.get_users(),
-            )
-        )
 
     hour = datetime.strptime("08:00", "%H:%M").time()
     hour2 = datetime.strptime("10:00", "%H:%M").time()
@@ -228,7 +218,18 @@ class BookingForm(forms.Form):
 
     def __init__(self, user=None, *args, **kwargs):
         super(BookingForm, self).__init__(*args, **kwargs)
-        if not(user and user.profile_user.is_admin()):
+        self.fields['responsible'] = forms.CharField(
+            label=_('Responsible (optional):'),
+            required=False,
+            widget=forms.widgets.Select(
+                attrs={'class': 'selectize'},
+                choices=UserProfile.get_users(),
+            )
+        )
+        try:
+            if not(user and user.profile_user.is_admin()):
+                self.fields.pop('engineering_choice')
+        except:
             self.fields.pop('engineering_choice')
 
     def save(self, user, force_insert=False, force_update=False, commit=True):
