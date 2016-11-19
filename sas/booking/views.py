@@ -101,7 +101,6 @@ def search_booking_responsible(request, form_booking):
 
     bookings = Booking.objects.filter(responsible=booking_responsible)
     places,place_names = Booking.get_places(bookings)
-    print('p',places[0].pk)
 
     for place in place_names:
         aux = []
