@@ -117,7 +117,8 @@ class UserForm(UserProfileForm):
         userprofile.name(self.cleaned_data.get('name'))
         userprofile.user.email = self.cleaned_data.get('email')
         userprofile.user.username = userprofile.user.email
-        userprofile.registration_number = self.cleaned_data.get('registration_number')
+        userprofile.registration_number = self.cleaned_data.get(
+            'registration_number')
         userprofile.category = self.cleaned_data.get('category')
 
     def update(self, userprofile):
@@ -144,8 +145,8 @@ class UserForm(UserProfileForm):
 
     def clean_registration_number(self):
         rn = self.cleaned_data["registration_number"]
-        if hasattr(self, "instance") and (
-           self.instance.registration_number == rn):
+        if hasattr(self, "instance")and \
+           self.instance.registration_number == rn:
             return rn
         elif UserProfile.objects.filter(registration_number=rn).exists():
                 raise ValidationError(_('Registration Number already exists.'))

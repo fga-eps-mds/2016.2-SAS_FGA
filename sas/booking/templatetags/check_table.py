@@ -1,6 +1,7 @@
 from django import template
 from datetime import timedelta, datetime
 from user.models import UserProfile
+from booking.models import Tag
 
 register = template.Library()
 
@@ -89,3 +90,9 @@ def search_building(place, count):
 def search_user():
     users = UserProfile.get_users()
     return users
+
+
+@register.simple_tag(name='search_tags')
+def search_tags():
+    tags = Tag.get_tags()
+    return tags

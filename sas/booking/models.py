@@ -70,6 +70,26 @@ class BookTime(models.Model):
             booking.time.remove(self)
             super(BookTime, self).delete()
 
+
+class Tag(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def get_tags():
+        tags = Tag.objects.all()
+        choices = []
+        for tag in tags:
+            new_choice = (tag, tag)
+            choices.append(new_choice)
+        choices = sorted(choices, key=lambda tag_tuple:
+                         tag_tuple[0].name)
+        choices.insert(0, ('', ''))
+        return choices
+
+
 BOOKING_STATUS = ((0, _("Denied")), (1, _("Pending")), (2, _("Approved")))
 
 
@@ -84,6 +104,7 @@ class Booking(models.Model):
     end_date = models.DateField(null=False, blank=False)
     status = models.PositiveSmallIntegerField(choices=BOOKING_STATUS,
                                               default=2)
+    tags = models.ManyToManyField(Tag, related_name="tags")
 
     def __str__(self):
         return (self.name + " " + self.user.email + " | " + str(self.place) +
