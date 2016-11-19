@@ -103,7 +103,7 @@
           <select class="form-control selectize_multiple" id="id_tags" name="tags" placeholder="" title="">
             {% search_tags as tags %}
             {% for counter, tag in tags %}
-            <option> {{counter}} </option>
+            <option value={{counter}}> {{counter}} </option>
 
             {% endfor %}
           </select>
@@ -162,7 +162,7 @@
 $("#id_tags").selectize({
     delimiter: ',',
     persist: false,
-    maxItems:5,
+    maxItems:10,
     create: function(input) {
         return {
             value: input,
