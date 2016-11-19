@@ -98,8 +98,14 @@ def search_booking_responsible(request, form_booking):
              (18, "18-20"), (20, "20-22"), (22, ("22-00"))]
     
     table = []
+    responsible = booking_responsible.split('\r')
 
-    bookings = Booking.objects.filter(responsible=booking_responsible)
+    bookings = Booking.objects.filter(responsible__contains=responsible[0])
+
+    if len(responsible) > 1:
+        responsible_ = responsible[1].split('\n')
+        bookings = Booking.objects.filter(responsible__contains=responsible_[1])
+    
     places,place_names = Booking.get_places(bookings)
 
     for place in place_names:
@@ -202,7 +208,6 @@ class SearchBookingQueryView(View):
         if form.is_valid():
             option = request.POST.get('search_options')
             try:
-                print('ueee',option)
                 return search_options[option](request, form)
             except Exception as e:
                 messages.error(request, _('Invalid option'))
