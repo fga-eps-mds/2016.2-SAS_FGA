@@ -623,3 +623,27 @@ class TemplateTagsTest(TestCase):
         name = 'All Bookings'
         result = is_all_bookings(name)
         self.assertTrue(result)
+
+class TestBookingTags(TestCase):
+    def setUp(self):
+        self.tag = Tag(name="teste")
+        self.tag.save()
+        self.tag2 = Tag(name="teste2")
+        self.tag2.save()
+        self.user = UserProfileFactory.create()
+        self.user.user.set_password('1234567')
+        self.user.make_as_admin()
+        self.user.save()
+        self.client = Client()
+
+    def test_booking_details_not_found(self):
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:bookingdetails', args=(0,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
+
+    def test_get_tags(self):
+        self.assertEquals(Tag.get_tags()[1][0],self.tag)
+
+    def test_print_tags(self):
+        self.assertEquals("teste",self.tag.__str__())

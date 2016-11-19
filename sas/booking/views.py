@@ -362,8 +362,7 @@ def tagged_bookings(request, tag_id):
         return render(request, 'booking/searchBooking.html',
                           {'bookings': bookings})
     except Exception as e:
-        print(e)
-        messages.error(request, _('Booking not found.'))
+        messages.error(request, _('No Bookings with this tag were found.'))
     if request.user.profile_user.is_admin():
         return all_bookings(request)
     else:
