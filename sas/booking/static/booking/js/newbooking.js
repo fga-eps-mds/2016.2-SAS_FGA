@@ -114,14 +114,7 @@ $(document).ready(function(){
         back(val);
     });
 
-    $('.datepicker1').datepicker({
-			inline: true,
-			useCurrent: true,
-			format: '{% trans "mm/dd/yyyy" %}',
-			language: '{% trans "en" %}',
-			autoclose: true,
-	});
-
+    
     $("#input_slider_begin_time").attr("disabled", true);
     $( "#slider_begin_time" ).on( "slidechange", function( event, ui ) {
         var text = $( "#slider_begin_time" ).slider("value");

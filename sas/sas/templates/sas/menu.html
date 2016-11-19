@@ -16,7 +16,7 @@
              <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
              <li><a href="{% url 'booking:searchbookingtable' %}">{% trans "Search" %}</a></li>
              {% if not request.user|is_admin and request.user.is_authenticated %}
-             <li><a href="{% url 'booking:newbooking' %}">{% trans "Book a Place" %}</a></li>
+             <li><a href="{% url 'booking:newbooking2' %}">{% trans "Book a Place" %}</a></li>
              {% endif %}
              <!-- IF request.user is ADM -->
                {% if request.user|is_admin %}
@@ -30,10 +30,10 @@
                        <ul class="dropdown-menu pull-right" aria-labelledby="user-link">
                          <li class="user-menu-info"><a href="{% url 'booking:newbooking' %}">
                            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                            {% trans "Book a Place" %}</a></li>
+                            {% trans "Adm Booking" %}</a></li>
                         <li class="user-menu-info"><a href="{% url 'booking:newbooking2' %}">
                            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                            {% trans "Book a Place Diff" %}</a></li>
+                            {% trans "Book a Place" %}</a></li>
                            <li class="user-menu-info"><a href="{% url 'booking:allbookings' %}">
                              <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                             {% trans "View All Bookings" %}</a></li>

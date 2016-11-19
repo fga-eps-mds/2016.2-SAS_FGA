@@ -219,4 +219,21 @@
 {% endblock %}
 
 {% block extrajs %}
+<script src="{% static "booking/js/place.js" %}"></script> 
+<script src="{% static "booking/js/building.js" %}"></script> 
+<script src="{% static "booking/js/booking.js" %}"></script> 
+<script src="{% static "booking/js/newbooking.js" %}"></script>
+<script type="text/javascript">
+ $(document).ready(function () {
+	$('.datepicker1').datepicker({
+			inline: true,
+			useCurrent: true,
+			format: '{% trans "mm/dd/yyyy" %}',
+			language: '{% trans "en" %}',
+			autoclose: true,
+	});
+
+});   
+</script>
+
 {% endblock %}
