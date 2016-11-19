@@ -22,7 +22,7 @@ from booking.views import approve_booking
 from booking.views import deny_booking
 from booking.templatetags.check_table import search_building
 from booking.templatetags.check_table import search_place, search_hour
-from booking.templatetags.check_table import search_date
+from booking.templatetags.check_table import search_date, search_tags
 from booking.templatetags.booking_handling import is_all_bookings
 
 
@@ -644,6 +644,9 @@ class TestBookingTags(TestCase):
 
     def test_get_tags(self):
         self.assertEquals(Tag.get_tags()[1][0],self.tag)
+
+    def test_search_tags_tag(self):
+        self.assertEquals(search_tags()[1][0],self.tag)
 
     def test_print_tags(self):
         self.assertEquals("teste",self.tag.__str__())
