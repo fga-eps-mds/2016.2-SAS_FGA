@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-28 22:47-0200\n"
+"POT-Creation-Date: 2016-11-16 16:14-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,6 +45,14 @@ msgstr "secretaria"
 #: sas/templates/sas/base.html:112
 msgid "board"
 msgstr "direção"
+
+#: sas/templates/sas/faq.html:7
+msgid "My name"
+msgstr "Meu nome"
+
+#: sas/templates/sas/faq.html:12
+msgid "Frequently Asked Questions"
+msgstr "Perguntas Frequentes"
 
 #: sas/templates/sas/home.html:11 sas/templates/sas/index.html:12
 msgid "Welcome"

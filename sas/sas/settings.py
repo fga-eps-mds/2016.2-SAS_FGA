@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'django_nose',
+    'django_nose',
     'booking',
     'user',
     'bootstrap3',
@@ -123,8 +123,8 @@ USE_L10N = True
 USE_TZ = True
 
 LANGUAGES = (
-	('en', u'English'),
-	('pt-br', u'Portugues')
+    ('en', u'English'),
+    ('pt-br', u'Portugues')
 )
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -141,20 +141,57 @@ STATIC_ROOT = 'static'
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = ( os.path.join(BASE_DIR, "sas/static"), )
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "sas/static"), )
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # Tell nose to measure coverage on the 'foo' and 'bar' apps
 NOSE_ARGS = [
     '--with-coverage',
-	'--cover-package=booking,user',
+    '--cover-package=booking,user',
     '--cover-html',
 ]
 
 PROJECT_DIR = os.path.dirname(__file__)
 
-TEST_PEP8_DIRS = [os.path.join(BASE_DIR,'booking'), os.path.join(BASE_DIR,'user'),]
+TEST_PEP8_DIRS = [os.path.join(BASE_DIR, 'booking'), os.path.join(BASE_DIR, 'user'), ]
 
-TEST_PEP8_EXCLUDE = ['migrations', ] # Exclude this paths from tests
+TEST_PEP8_EXCLUDE = ['migrations', ]  # Exclude this paths from tests
 TEST_PEP8_IGNORE = ['W191', ]
+
+BOOTSTRAP3 = {
+    'base_url': '/static/bootstrap/'
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'sas.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'sas': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    }
+}

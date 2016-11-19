@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load bootstrap3 staticfiles %}
+{% load settings_js %}
 {% bootstrap_messages %}
 
 {% block title %} {% trans "New Booking" %} {% endblock %}
@@ -28,11 +29,27 @@
 
 {% block extrastyle %}
 <link rel="stylesheet" href="{% static 'plugins/datepicker/bootstrap-datepicker.css' %}" />
+<link rel="stylesheet" href="{% static 'plugins/selectize/css/selectize.bootstrap3.min.css' %}" />
 {% endblock %}
 
 {% block extrajs %}
-<script>
+<script src="{% static 'plugins/selectize/js/selectize.min.js' %}"></script>
+<script type="text/javascript">
 $(document).ready(function () {
+
+	$(".selectize").selectize({
+	    delimiter: ',',
+	    persist: false,
+	    maxItems:1,
+	    create: function(input) {
+	        return {
+	            value: input,
+	            text: input
+	        }
+	    }
+	});
+
+  	$('.optional').closest('div').hide();
 
 	$('.datepicker1').datepicker({
 			inline: true,
@@ -50,6 +67,26 @@ $(document).ready(function () {
 				    return $.trim($(this).text()).indexOf(selected_building) != -1
 				}).show();
     });
+
+		$('#id_date_options').change(function () {
+			var selected_option = $('input[name=date_options]:checked', '.form-horizontal').val();
+			var start_date = '{{ start_semester|js_date }}';
+			var end_date = '{{ end_semester|js_date }}';
+
+			if(selected_option == 'opt_date_semester'){
+				$("#id_start_date").val( start_date );
+				$("#id_end_date").val( end_date );
+				$("#id_end_date, #id_start_date").closest('div').hide();
+				$("#id_end_date, #id_start_date").prop('required',false);
+			}
+			if(selected_option == 'opt_select_date'){
+				$("#id_start_date").val( "" );
+				$("#id_end_date").val( "" );
+				$("#id_start_date, #id_end_date").closest('div').show();
+				$("#id_start_date, #id_end_date").prop('required',true);
+			}
+    });
+
 });
 </script>
 <script src= "{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>

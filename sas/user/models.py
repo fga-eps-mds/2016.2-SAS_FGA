@@ -90,6 +90,32 @@ class UserProfile(models.Model):
         except Group.DoesNotExist:
             return False
 
+    @staticmethod
+    def get_users():
+        users = UserProfile.objects.all()
+        choices = []
+        for user in users:
+            new_choice = (user, user)
+            choices.append(new_choice)
+        choices = sorted(choices, key=lambda user_tuple:
+                         user_tuple[0].full_name())
+        choices.insert(0, ('', ''))
+        return choices
+
+    def __str__(self):
+        return '\n'.join((self.full_name(), '<' + self.user.username + '>'))
+
+
+class Settings(models.Model):
+    start_semester = models.DateField(null=False, blank=False)
+    end_semester = models.DateField(null=False, blank=False)
+
+    def get_start(self):
+        return Settings.objects.last().start_semester
+
+    def get_end(self):
+        return Settings.objects.last().end_semester
+
 
 class Validation():
 

@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from booking.models import (WEEKDAYS, Booking, BookTime, Place, Building,
-                            date_range)
+                            date_range, Validation)
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
@@ -9,7 +9,9 @@ from django.core.exceptions import ValidationError
 from datetime import date, datetime, timedelta, time
 from django.conf import settings
 from django.utils import formats
+from user.models import UserProfile
 import copy
+import re
 import traceback
 
 
@@ -21,13 +23,14 @@ class SearchBookingForm(forms.Form):
             choices=Booking.get_bookings(),
             label=_('Booking:'),
             required=False,
-            widget=forms.widgets.Select(attrs={'class': 'select2 optional'})
+            widget=forms.widgets.Select(
+                attrs={'class': 'select2 optional'})
         )
     SEARCH_CHOICES = (
-        ('opt_day_room', _("Room's Week Timetable.")),
-        ('opt_booking_week', _(' Booking.')),
-        ('opt_building_day', _(' Occupation.')),
-        ('opt_room_period', _(' Room.')),
+        ('opt_day_room', _("Room's Week Timetable")),
+        ('opt_booking_week', _(' Booking')),
+        ('opt_building_day', _(' Occupation')),
+        ('opt_room_period', _(' Room ')),
     )
 
     search_options = forms.ChoiceField(label=_('Search options'),
@@ -58,6 +61,20 @@ class SearchBookingForm(forms.Form):
         widget=forms.widgets.DateInput(
             attrs={'class': 'datepicker1 optional', 'placeholder': ''}),
         required=False)
+
+    def search(self):
+        cleaned_data = super(SearchBookingForm, self).clean()
+        all_bookings = Booking.objects.all()
+        end_date = self.cleaned_data.get('end_date')
+        start_date = self.cleaned_data.get('start_date')
+        bookings = []
+
+        for booking in all_bookings:
+            if not(booking.end_date < start_date or
+                   booking.start_date > end_date):
+                bookings.append(booking)
+
+        return bookings
 
     def count_days(self, start_date, end_date):
 
@@ -102,26 +119,6 @@ class SearchBookingForm(forms.Form):
             option = self.cleaned_data.get('search_options')
             start_date = self.cleaned_data.get('start_date')
 
-            if(option == 'opt_building_day'):
-                building_name = cleaned_data.get('building_name').name
-                if not Building.objects.filter(name=building_name).exists():
-                    msg = _('Doesnt exist any building with this name')
-                    self.add_error('building_name', msg)
-                    raise forms.ValidationError(msg)
-            if(option == 'opt_day_room' or option == 'opt_room_period'):
-                room_name = self.cleaned_data.get('room_name').name
-                if not Booking.objects.filter(place__name=room_name):
-                    msg = _('Doesnt exist any booking in this place')
-                    self.add_error('room_name', msg)
-                    raise forms.ValidationError(msg)
-
-            if(option == 'opt_booking_week'):
-                booking_name = cleaned_data.get('booking_name')
-                if not Booking.objects.filter(name=booking_name).exists():
-                    msg = _('Doesnt exist any booking with this name')
-                    self.add_error('booking_name', msg)
-                    raise forms.ValidationError(msg)
-
             if(option == 'opt_room_period' or option == 'opt_booking_week'):
                 end_date = self.cleaned_data.get('end_date')
 
@@ -143,6 +140,13 @@ class SearchBookingForm(forms.Form):
                     self.add_error('start_date', msg)
                     self.add_error('end_date', msg)
                     raise forms.ValidationError(msg)
+                booking = self.search()
+                if not booking:
+                    msg = _('Doesnt exist any booking in \
+                             this period of time')
+                    self.add_error('start_date', msg)
+                    self.add_error('end_date', msg)
+                    raise forms.ValidationError(msg)
 
         except Exception as e:
             msg = _('Fill all the fields correctly')
@@ -151,40 +155,62 @@ class SearchBookingForm(forms.Form):
 
 
 class BookingForm(forms.Form):
-    hour = timedelta(hours=6)
-    hour1 = timedelta(hours=8)
-    hour2 = timedelta(hours=10)
-    hour3 = timedelta(hours=12)
-    hour4 = timedelta(hours=14)
-    hour5 = timedelta(hours=16)
-    hour6 = timedelta(hours=18)
-    hour7 = timedelta(hours=20)
-    hour8 = timedelta(hours=22)
-    hour9 = timedelta(hours=0)
-    HOURS = (('', '----'), (hour, '06:00'),
-             (hour1, '08:00'), (hour2, ('10:00')),
+    def __init__(self, *args, **kwargs):
+        super(BookingForm, self).__init__(*args, **kwargs)
+        self.fields['responsible'] = forms.CharField(
+            label=_('Responsible (optional):'),
+            required=False,
+            widget=forms.widgets.Select(
+                attrs={'class': 'selectize'},
+                choices=UserProfile.get_users(),
+            )
+        )
+
+    hour = datetime.strptime("08:00", "%H:%M").time()
+    hour2 = datetime.strptime("10:00", "%H:%M").time()
+    hour3 = datetime.strptime("12:00", "%H:%M").time()
+    hour4 = datetime.strptime("14:00", "%H:%M").time()
+    hour5 = datetime.strptime("16:00", "%H:%M").time()
+    hour6 = datetime.strptime("18:00", "%H:%M").time()
+    hour7 = datetime.strptime("20:00", "%H:%M").time()
+    hour8 = datetime.strptime("22:00", "%H:%M").time()
+    hour9 = datetime.strptime("00:00", "%H:%M").time()
+    HOURS = (('', '----'), (hour, '08:00'), (hour2, ('10:00')),
              (hour3, ('12:00')), (hour4, ('14:00')),
              (hour5, ('16:00')), (hour6, ('18:00')),
              (hour7, ('20:00')), (hour8, ('22:00')),
              (hour9, ('00:00')))
 
+
+    DATE_CHOICES = (
+        ('opt_date_semester', _("Yes")),
+        ('opt_select_date', _("No")),
+    )
+
     name = forms.CharField(
         label=_('Booking Name:'),
         widget=forms.TextInput(attrs={'placeholder': ''}))
+    date_options = forms.ChoiceField(label=_('Do you wish to register booking \
+                                                for a semester?'),
+                                     choices=DATE_CHOICES,
+                                     widget=forms.RadioSelect())
+    start_date = forms.DateField(
+        label=_('Start Date:'),
+        required=False,
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
+    end_date = forms.DateField(
+        label=_('End Date:'),
+        required=False,
+        widget=forms.widgets.DateInput(
+            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
     start_hour = forms.TimeField(
         label=_('Start Time:'),
         widget=forms.Select(choices=HOURS))
     end_hour = forms.TimeField(
         label=_('End Time:'),
         widget=forms.Select(choices=HOURS))
-    start_date = forms.DateField(
-        label=_('Start Date:'),
-        widget=forms.widgets.DateInput(
-            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
-    end_date = forms.DateField(
-        label=_('End Date:'),
-        widget=forms.widgets.DateInput(
-            attrs={'class': 'datepicker1', 'placeholder': _("mm/dd/yyyy")}))
+
     building = forms.ModelChoiceField(
         queryset=Building.objects,
         label=_('Building:'))
@@ -205,6 +231,19 @@ class BookingForm(forms.Form):
         booking.end_date = self.cleaned_data.get("end_date")
         booking.place = self.cleaned_data.get("place")
         weekdays = self.cleaned_data.get("week_days")
+
+        if user.profile_user.is_admin():
+            booking.responsible = self.cleaned_data.get("responsible")
+            name = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+',
+                             booking.responsible)
+            if name is not None:
+                name = name.group()
+            users = User.objects.filter(username=name)
+            ONE_FOUND = 1
+            if user.profile_user.is_admin() and (users.count() is ONE_FOUND):
+                booking.user = users[0]
+        else:
+            booking.responsible = str(user.profile_user)
 
         book = BookTime()
         book.date_booking = booking.start_date
@@ -273,6 +312,8 @@ class BookingForm(forms.Form):
                 self.add_error('start_hour', msg)
                 self.add_error('end_hour', msg)
                 raise forms.ValidationError(msg)
+
         except Exception as e:
+            print(e)
             msg = _('Inputs are invalid')
             raise forms.ValidationError(msg)

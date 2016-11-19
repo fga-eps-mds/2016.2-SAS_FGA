@@ -2,13 +2,14 @@ Feature: table_booking
 
 Background:
 	Given I run loaddata to populate dropdowns
+	And I load a semester
 	And I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574"
 	And I register the booking "monitoria" with the building "UAC" with the place name "FGA-I1" and start_date "2018-10-20" and end_date "2018-10-30" of user "lucas@gmail.com"
 
 Scenario: Successfully booking creation
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room."
+    And I choose "Room "
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
     And I fill in "Date:" with "10/20/2018"
@@ -24,7 +25,7 @@ Scenario: Successfully booking creation
 Scenario: canceling a book
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room."
+    And I choose "Room "
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
     And I fill in "Date:" with "10/20/2018"
@@ -40,7 +41,7 @@ Scenario: canceling a book
 Scenario: modal receives correct data
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
-    And I choose "Room."
+    And I choose "Room "
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
     And I fill in "Date:" with "10/20/2018"

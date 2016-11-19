@@ -1,5 +1,6 @@
 from django import template
 from datetime import timedelta, datetime
+from user.models import UserProfile
 
 register = template.Library()
 
@@ -7,13 +8,12 @@ register = template.Library()
 @register.filter(name='check_tooltip')
 def check_tooltip(cell_table, id):
     aux = 0
-
     for idx_hour, book in cell_table:
         if idx_hour == id:
             aux = 1
             booking = book
     if aux == 1:
-        return booking.user.get_full_name()
+        return booking.responsible
     else:
         return None
 
@@ -78,3 +78,9 @@ def search_building(place, count):
         return str(place[count].building.pk)
     else:
         return str(place.building.pk)
+
+
+@register.simple_tag(name='search_user')
+def search_user():
+    users = UserProfile.get_users()
+    return users

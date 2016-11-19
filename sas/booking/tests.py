@@ -12,7 +12,7 @@ from booking.views import search_booking_booking_name_week
 from booking.views import new_booking, search_booking_day_room
 from booking.views import search_booking_building_day
 from booking.urls import *
-from user.models import UserProfile
+from user.models import UserProfile, Settings
 from booking.forms import BookingForm, SearchBookingForm
 from dateutil import parser
 from booking.views import search_booking_room_period
@@ -23,34 +23,7 @@ from booking.views import deny_booking
 from booking.templatetags.check_table import search_building
 from booking.templatetags.check_table import search_place, search_hour
 from booking.templatetags.check_table import search_date
-
-
-class TestSearchBookingQuery(TestCase):
-    def setUp(self):
-        self.factory = RequestFactory()
-
-    def test_days_list(self):
-        start_date = datetime.strptime("21092017", "%d%m%Y")
-        end_date = datetime.strptime("22092017", "%d%m%Y")
-        building_name = Building.objects.get(name='UAC')
-        room_name = Place.objects.get(pk=9)
-        parameters = {'search_options': 'opt_room_period',
-                      'building_name': building_name,
-                      'room_name': room_name,
-                      'start_date': start_date,
-                      'end_date': end_date}
-        form = SearchBookingForm(data=parameters)
-        form.is_valid()
-        days = []
-        days.append(start_date.date())
-        days.append(end_date.date())
-        days2 = form.days_list()
-        self.assertEqual(days, days2)
-
-    def test_get_str_weekday(self):
-        book = BookTime()
-        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
-        self.assertEqual(book.get_str_weekday(), "Wednesday")
+from booking.templatetags.booking_handling import is_all_bookings
 
 
 class DeleteBookingTest(TestCase):
@@ -115,11 +88,6 @@ class DeleteBooktimeTest(TestCase):
         self.id_booking = self.booking.id
         self.id_booktime = self.booking.time.all()[0].id
 
-    def test_delete_booktime(self):
-        count = self.booking.time.all().count() - 1
-        self.booking.time.all()[count].delete_booktime(self.booking)
-        self.assertEquals(self.booking.time.all().count(), count)
-
     def test_admin_delete_booktime(self):
         self.user.make_as_admin()
         self.user.save()
@@ -173,11 +141,15 @@ class TestNewBooking(TestCase):
         self.user = UserProfileFactory.create()
         self.user.user.set_password('1234567')
         self.user.save()
+        self.semester = Settings()
+        self.semester.start_semester = datetime.strptime("21092017", "%d%m%Y")
+        self.semester.end_semester = datetime.strptime("22092018", "%d%m%Y")
+        self.semester.save()
         self.client = Client()
         self.factory = RequestFactory()
         self.week_days = ['3', '5']
-        self.start_date = datetime.strptime("21092017", "%d%m%Y")
-        self.end_date = datetime.strptime("22092017", "%d%m%Y")
+        self.start_date = datetime.strptime("21092017", "%d%m%Y").date()
+        self.end_date = datetime.strptime("22102017", "%d%m%Y").date()
         self.hour = datetime.strptime("08:00", "%H:%M").time()
         self.hour2 = datetime.strptime("10:00", "%H:%M").time()
         self.building_name = Building.objects.filter(name='UAC')
@@ -185,8 +157,9 @@ class TestNewBooking(TestCase):
         self.parameters = {
             'name': 'Reservaoiasd', 'start_hour': self.hour,
             'end_hour': self.hour2, 'start_date': self.start_date,
-            'end_date': self.end_date, 'building': self.building_name,
-            'place': self.place_name, 'week_days': self.week_days}
+            'end_date': self.end_date, 'building': self.building_name[0].pk,
+            'place': self.place_name[0].pk, 'week_days': self.week_days,
+            'date_options': 'opt_select_date'}
 
     def test_get_request_logged(self):
         request = self.factory.get('/booking/newbooking/')
@@ -218,6 +191,28 @@ class TestNewBooking(TestCase):
     def test_form_is_valid(self):
         form = BookingForm(data=self.parameters)
         self.assertTrue(form.is_valid())
+
+    def test_responsible(self):
+        username = self.user.user.username
+        client = self.client
+        self.user.make_as_admin()
+        responsible_user = UserProfileFactory.create()
+        self.parameters['responsible'] = str(responsible_user)
+        client.login(username=username, password='1234567')
+        response = client.post('/booking/newbooking/', self.parameters)
+        booking = Booking.objects.get(name=self.parameters['name'])
+        self.assertEqual(booking.user.id, responsible_user.user.id)
+
+    def test_responsible_not_an_user(self):
+        username = self.user.user.username
+        client = self.client
+        self.user.make_as_admin()
+        self.parameters['responsible'] = 'Carla Rocha'
+        client.login(username=username, password='1234567')
+        response = client.post('/booking/newbooking/', self.parameters)
+        booking = Booking.objects.get(name=self.parameters['name'])
+        self.assertEqual(booking.user.id, self.user.user.id)
+        self.assertEqual(booking.responsible, self.parameters['responsible'])
 
 
 class TestSearchBooking(TestCase):
@@ -327,6 +322,9 @@ class TestSearchBookingQuery(TestCase):
         end_date = datetime.strptime("22092017", "%d%m%Y")
         building_name = Building.objects.get(name='UAC')
         room_name = Place.objects.get(pk=9)
+        user = UserProfileFactory.create()
+        booking = BookingFactory.create(user=user.user, start_date=start_date,
+                                        end_date=end_date)
         parameters = {'search_options': 'opt_room_period',
                       'building_name': building_name,
                       'room_name': room_name,
@@ -364,6 +362,11 @@ class TestSearchBookingQuery(TestCase):
 
         form = SearchBookingForm(data=parameters)
         self.assertTrue(form.is_valid())
+
+    def test_get_str_weekday(self):
+        book = BookTime()
+        book.date_booking = datetime.strptime("21092016", "%d%m%Y")
+        self.assertEqual(book.get_str_weekday(), "Wednesday")
 
 
 class TestSearchBookingForm(TestCase):
@@ -598,3 +601,25 @@ class CheckTableTest(TestCase):
         date = dates, 7
         result = search_date(dates, 1)
         self.assertEquals(result, str(self.date))
+
+
+class ShowBookTimesTest(TestCase):
+    def setUp(self):
+        self.user = UserProfileFactory.create()
+        self.user.user.set_password('1234567')
+        self.user.make_as_admin()
+        self.user.save()
+        self.client = Client()
+
+    def test_booking_not_found(self):
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:showbooktimes', args=(0,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
+
+
+class TemplateTagsTest(TestCase):
+    def test_is_all_bookings(self):
+        name = 'All Bookings'
+        result = is_all_bookings(name)
+        self.assertTrue(result)

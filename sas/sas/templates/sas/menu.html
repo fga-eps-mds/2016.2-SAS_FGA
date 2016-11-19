@@ -46,7 +46,7 @@
                </ul>
                <li><a href="{% url 'user:searchuser' %}">{% trans "Users" %}</a></li>
                {% endif %}
-             <li><a href="#">FAQ</a></li>
+             <li><a href="{% url 'faq' %}">FAQ</a></li>
          </ul>
          {% if request.user.is_authenticated %}
          <ul class="nav navbar-nav pull-right">
@@ -64,6 +64,11 @@
                        <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
                       {% trans "My Bookings" %}</a></li>
                      <li role="separator" class="divider"></li>
+                     {% if request.user|is_admin %}
+                     <li class="user-menu-info"><a href="{% url 'user:settings' %}">
+                       <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                       {% trans "Settings" %}</a></li>
+                     {% endif %}
                      <li class="user-menu-info"><a href="{% url 'user:logout' %}">
                        <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
                        {% trans "Logout" %}</a></li>
