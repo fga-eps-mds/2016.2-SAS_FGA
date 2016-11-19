@@ -1,10 +1,14 @@
 from django.test import TestCase, RequestFactory
 from user.models import UserProfile, Validation, CATEGORY
+from user.models import Settings
 from django.test import Client
-from user.views import edit_user
+from user.views import EditUserView
 from user.factories import UserProfileFactory
 from django.contrib.auth import logout
 from django.urls import reverse
+from user.forms import SettingsForm
+from datetime import datetime, timedelta
+from user.views import settings
 
 
 class EditUserTest(TestCase):
@@ -23,13 +27,8 @@ class EditUserTest(TestCase):
     def test_get_request_logged(self):
         request = self.factory.get('/user/edituser/')
         request.user = self.userprofile.user
-        response = edit_user(request)
+        response = EditUserView.as_view()(request)
         self.assertEqual(response.status_code, 200)
-
-    def test_get_request_anonymous(self):
-        url = '/user/edituser/'
-        response = self.client.get(url, follow=True)
-        self.assertTemplateUsed(response, 'sas/index.html')
 
     def test_edit_post_registration_number(self):
         self.factory.get('/user/edituser/')
@@ -221,7 +220,8 @@ class LoginTest(TestCase):
         response = self.client.post('/user/login/', {'email': 'aeiou',
                                                      'password': '1234567'})
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Enter a valid email address.')
+        self.assertContains(response, 'Email address must')
+        self.assertContains(response, 'be in a valid format.')
 
     def test_invalid_password(self):
         response = self.client.post('/user/login/',
@@ -341,3 +341,59 @@ class MakeUserAnAdminTest(TestCase):
         url = reverse('user:usertoadmin', args=(9999,))
         response = self.client.get(url)
         self.assertContains(response, 'You cannot access this page.')
+
+
+class SettingsTest(TestCase):
+    def setUp(self):
+        self.start_date = datetime.strptime("21092017", "%d%m%Y")
+        self.end_date = datetime.strptime("22102017", "%d%m%Y")
+        self.parameters = {'start_semester': "09/20/2017",
+                           'end_semester': "09/24/2017"}
+        self.user = UserProfileFactory.create()
+        self.user.user.set_password('123456')
+        self.user.make_as_admin()
+        self.user.save()
+        self.client = Client()
+        self.factory = RequestFactory()
+        self.settings = Settings()
+
+    def test_form_is_valid(self):
+        form = SettingsForm(data=self.parameters)
+        self.assertTrue(form.is_valid())
+
+    def test_get_request_admin(self):
+        request = self.factory.get('/user/settings/')
+        request.user = self.user.user
+        response = settings(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_except(self):
+        start_date = datetime.strptime("21092030", "%d%m%Y")
+        parameters = {'start_semester': start_date,
+                      'end_semester': self.end_date}
+        client = self.client
+        username = self.user.user.username
+        client.login(username=username, password='123456')
+        response = client.post('/user/settings/', parameters)
+        self.assertTemplateUsed(response, 'user/settings.html')
+        self.assertContains(response, 'Inputs are invalid')
+
+    def test_post_not_valid(self):
+        start_date = datetime.strptime("21092030", "%d%m%Y")
+        parameters = {'start_semester': "09/20/2030",
+                      'end_semester': "09/20/2017"}
+        client = self.client
+        username = self.user.user.username
+        client.login(username=username, password='123456')
+        response = client.post('/user/settings/', parameters)
+        self.assertTemplateUsed(response, 'user/settings.html')
+        self.assertContains(response, 'Semester start must be')
+
+    def test_post_valid(self):
+        client = self.client
+        end_date = datetime.strptime("24092017", "%d%m%Y").date()
+        username = self.user.user.username
+        client.login(username=username, password='123456')
+        response = client.post('/user/settings/', self.parameters)
+        self.assertContains(response, 'Settings updated')
+        self.assertEqual(self.settings.get_end(), end_date)

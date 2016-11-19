@@ -1,0 +1,103 @@
+{% extends 'sas/base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 staticfiles %}
+{% load booktimes %}
+{% bootstrap_messages %}
+
+{% block extrastyle %}
+  <link rel="stylesheet" href="{% static "plugins/datatables/jquery.dataTables.css" %}">
+  <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css" %}">
+  <link rel="stylesheet" href="{% static "plugins/datatables/extensions/Responsive/css/dataTables.responsive.css" %}">
+{% endblock %}
+
+{% block title %} {% trans "Delete Booking" %} {% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-xs-8 col-sm-6 col-md-6 col-md-offset-3 col-xs-offset-2 col-sm-offset-3">
+		<h1 class="text-center">{% trans "Booking Summary" %}</h1>
+		<div class="panel panel-default">
+			<div class="panel-heading">{% trans "Booking" %}: {{booking.name}} </div>
+			<div class="panel-body">
+			<p>{% trans "Place" %}: {{booking.place.name}}</p>
+			<p>{% trans "Start Date" %}: {{booking.start_date}}</p>
+			<p>{% trans "End Date" %}: {{booking.end_date}}</p>
+			</div>
+			<table class="table" id="my_bookings">
+			{% for book in booking|order_booktimes %}
+				<tr>
+					<td>
+					{{ book.date_booking }}
+					</td>
+					<td>
+					{{ book.get_str_weekday }}
+					</td>
+					<td>
+					{{ book.start_hour }}
+					</td>
+					<td>
+					{{ book.end_hour }}
+					</td>
+                    <td>
+                        <button class="btn btn-danger" data-href="{% url 'booking:deletebooktime' booking.id book.id %}"
+                            data-toggle="modal" data-target="#modalDeleteBookTime" id="delete-booktime">
+                            <span class="glyphicon glyphicon-trash" ></span> {% trans "Delete" %}
+                        </button>
+                    </td>
+				</tr>
+				{% endfor %}
+			</table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalDeleteBookTime" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+          <div class="modal-header delete-header">
+            <button class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p class="modal-title" id="myModalLabel">{% trans "Confirm booking deletion" %}</p>
+          </div>
+          <div class="modal-body delete-body">
+            <p>{% trans "Are you sure you want to delete this booking?" %}</p>
+          </div>
+          <div class="modal-footer delete-footer">
+             <a class="btn btn-danger btn-ok" id="action-delete">
+              {% trans "Delete" %}</a>
+            <a class="btn btn-default" data-dismiss="modal">{% trans "Cancel" %}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+   </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/extensions/Responsive/js/responsive.bootstrap.min.js' %}"></script>
+<!-- page script -->
+<script>
+$('#modalDeleteBookTime').on('show.bs.modal', function(e) {
+    $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+});
+  $(function () {
+
+    var table = $('#my_bookings').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "language": {
+    		"url": "{% static 'plugins/datatables/Portuguese-Brasil.json' %}"
+      }
+    });
+  });
+
+</script>
+{% endblock %}

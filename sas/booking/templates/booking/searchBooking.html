@@ -1,7 +1,7 @@
 {% extends 'sas/base.html' %}
 
 {% load i18n %}
-{% load bootstrap3 staticfiles %}
+{% load bootstrap3 staticfiles booking_handling %}
 {% bootstrap_messages %}
 
 {% block extrastyle %}
@@ -21,42 +21,47 @@
             <thead>
               <tr>
                 <th>{% trans "Status" %}</th>
+                {% if name|is_all_bookings %}
+                <th>{% trans "Responsible" %}</th>
+                {% endif %}
                 <th>{% trans "Name" %}</th>
                 <th>{% trans "Place" %}</th>
                 <th>{% trans "Period" %}</th>
-                <th>{% trans "Date and Time" %}</th>
+                <th>{% trans "Weekdays" %}</th>
+                <th>{% trans "Timetable" %}</th>
                 <th class="all">{% trans "Delete" %}</th>
               </tr>
             </thead>
             <tbody>
             {% for booking in bookings %}
               <tr>
-                {% if booking.status == 0 %}
-                    <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-                {% endif %}
-                {% if booking.status == 1 %}
-                    <td><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></td>
-                {% endif %}
-                {% if booking.status == 2 %}
-                    <td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+                <td>
+                  <span class="glyphicon {{booking|status_glyphicon}}" aria-hidden="true"></span>
+                </td>
+                {% if name|is_all_bookings %}
+                <td>{{ booking.responsible }}</td>
                 {% endif %}
                 <td>{{ booking.name }}</td>
-                <td>{{ booking.place.name }}</td>
+                <td>{{ booking.place }}</td>
                 <td class="text-center">{{ booking.start_date }}
                   <br>{% trans " to " %}<br>
-                  {{ booking.end_date }}</td>
+                  {{ booking.end_date }}
+                </td>
+                {% with booking|get_timetable as timetable %}
                 <td class="text-center">
-                  {% for time in booking.time.all|slice:":7" %}
-                        <strong>{{ time.date_booking|date:"D, d/M/Y" }}</strong><br>
-                        {{ time.start_hour|date:"H:i" }} {% trans " to " %}
-                        {{ time.end_hour|date:"H:i" }}<br><hr>
-                    {% endfor %}
-                    {% if booking.time.all|length > 7 %}
-                      <strong>...</strong>
-                    {% endif %}
+                  {% for day in timetable %}
+                    {{ day.0  }}<br>
+                  {% endfor %}
                 </td>
                 <td>
+                  {% for day in timetable %}
+                    {{ day.0  }}: <br>{{ day.1.0|date:"H:i" }} - {{ day.1.1|date:"H:i" }} <br>
+                  {% endfor %}
+                </td>
+                {% endwith %}
+                <td>
                     <button class="btn btn-danger" data-href="{% url 'booking:deletebooking' booking.id %}"
+                        data-href2="{% url 'booking:showbooktimes' booking.id %}"
                         data-toggle="modal" data-target="#modalDeleteBooking" id="delete-booking">
                         <span class="glyphicon glyphicon-trash" ></span> {% trans "Delete" %}
                     </button>
@@ -70,7 +75,8 @@
               <th>{% trans "Name" %}</th>
               <th>{% trans "Place" %}</th>
               <th>{% trans "Period" %}</th>
-              <th>{% trans "Date and Time" %}</th>
+              <th>{% trans "Weekdays" %}</th>
+              <th>{% trans "Timetable" %}</th>
               <th class="all">{% trans "Delete" %}</th>
             </tr>
           </tfoot>
@@ -89,7 +95,9 @@
                 </div>
                 <div class="modal-footer delete-footer">
                    <a class="btn btn-danger btn-ok" id="action-delete">
-                    {% trans "Delete" %}</a>
+                    {% trans "Delete Entire Booking" %}</a>
+                    <a class="btn btn-danger btn-ok-booktime" id="action-delete-booktime">
+                     {% trans "Delete Specific Booking" %}</a>
                   <a class="btn btn-default" data-dismiss="modal">{% trans "Cancel" %}</a>
                 </div>
               </div>
@@ -110,6 +118,7 @@
 <script>
 $('#modalDeleteBooking').on('show.bs.modal', function(e) {
     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+    $(this).find('.btn-ok-booktime').attr('href', $(e.relatedTarget).data('href2'));
 });
   $(function () {
 

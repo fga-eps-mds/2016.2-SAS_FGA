@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-28 22:47-0200\n"
+"POT-Creation-Date: 2016-11-16 16:14-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,85 +17,96 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: user/forms.py:13 user/forms.py:77
-msgid "Email:"
-msgstr ""
-
-#: user/forms.py:16 user/forms.py:35 user/forms.py:83
-msgid "Password:"
-msgstr ""
-
-#: user/forms.py:24
-msgid "Email or Password does not match"
-msgstr ""
-
-#: user/forms.py:38
-msgid "New Password:"
-msgstr ""
-
-#: user/forms.py:41 user/forms.py:87
-msgid "Repeat Password:"
-msgstr ""
-
-#: user/forms.py:54
-msgid "Current password is wrong"
-msgstr ""
-
-#: user/forms.py:64
-msgid ""
-"Passwords                                                          do not "
-"match"
-msgstr ""
-
-#: user/forms.py:74
+#: user/forms.py:12
 msgid "Name:"
 msgstr ""
 
-#: user/forms.py:79
+#: user/forms.py:15
+msgid "Registration number:"
+msgstr ""
+
+#: user/forms.py:17
+msgid "Category:"
+msgstr ""
+
+#: user/forms.py:19
+msgid "Email:"
+msgstr ""
+
+#: user/forms.py:22
 msgid ""
 "Email address must                                        be in a valid "
 "format."
 msgstr ""
 
-#: user/forms.py:91
-msgid "Registration number:"
+#: user/forms.py:25
+msgid "Password:"
 msgstr ""
 
-#: user/forms.py:93
-msgid "Category:"
+#: user/forms.py:45
+msgid "Email or Password does not match"
 msgstr ""
 
-#: user/forms.py:124
-msgid "Email already used"
+#: user/forms.py:57
+msgid "New Password:"
 msgstr ""
 
-#: user/forms.py:130
+#: user/forms.py:60 user/forms.py:96
+msgid "Repeat Password:"
+msgstr ""
+
+#: user/forms.py:80
+msgid "Current password is wrong"
+msgstr ""
+
+#: user/forms.py:89
+msgid ""
+"Passwords                                                          do not "
+"match"
+msgstr ""
+
+#: user/forms.py:127 user/forms.py:140
+msgid ""
+"Something went wrong so we could not save                              your "
+"data. Try again later"
+msgstr ""
+
+#: user/forms.py:149
+msgid "Registration Number already exists."
+msgstr ""
+
+#: user/forms.py:158
+msgid "Email already used."
+msgstr ""
+
+#: user/forms.py:167
 msgid ""
 "Name must be                                                between 2 "
 "and                                                50 characters."
 msgstr ""
 
-#: user/forms.py:135
+#: user/forms.py:172
 msgid ""
 "Name cannot                                                contain "
 "special                                                characters."
 msgstr ""
 
-#: user/forms.py:140
+#: user/forms.py:177
 msgid ""
 "Name cannot                                                contain numbers."
 msgstr ""
 
-#: user/forms.py:166
+#: user/forms.py:189
 msgid ""
-"Password must be                                                    between "
-"6 and 15                                                    characters."
+"Password must be                                                        "
+"between 6 and 15                                                        "
+"characters."
 msgstr ""
 
-#: user/forms.py:171
+#: user/forms.py:194
 msgid ""
-"Passwords do                                                           not "
-"match."
+"Passwords do                                                               "
+"not match."
 msgstr ""
 
 #: user/models.py:7
@@ -212,26 +223,26 @@ msgstr ""
 msgid "Academic User"
 msgstr ""
 
-#: user/views.py:21
+#: user/views.py:22
 msgid "You have been registered"
 msgstr ""
 
-#: user/views.py:38
+#: user/views.py:33
 msgid "Your data has been updated"
 msgstr ""
 
-#: user/views.py:76
+#: user/views.py:65
 msgid "You have been logged out successfully!"
 msgstr ""
 
-#: user/views.py:95
+#: user/views.py:92
 msgid "Your password has been changed"
 msgstr ""
 
-#: user/views.py:121 user/views.py:124
+#: user/views.py:120 user/views.py:123
 msgid "User "
 msgstr ""
 
-#: user/views.py:127
+#: user/views.py:126
 msgid "User not found."
 msgstr ""
