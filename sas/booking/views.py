@@ -201,6 +201,7 @@ def new_booking(request):
                    'end_semester': end_semester,
                    'is_staff': user.is_staff})
 
+
 def search_booking_table(request):
     if request.method == "POST":
         form_booking = SearchBooking(request.POST)

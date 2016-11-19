@@ -181,7 +181,6 @@ class BookingForm(forms.Form):
              (hour7, ('20:00')), (hour8, ('22:00')),
              (hour9, ('00:00')))
 
-
     DATE_CHOICES = (
         ('opt_date_semester', _("Yes")),
         ('opt_select_date', _("No")),
