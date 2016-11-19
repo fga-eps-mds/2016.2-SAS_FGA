@@ -103,7 +103,6 @@ $(document).ready(function(){
     $("#page2").hide();
     $("#page3").hide();
     $("#page4").hide();
-    $("#page5").hide();
     $("#period-dates").hide();
     $("#id_week_days").hide();
 
@@ -156,7 +155,6 @@ $(document).ready(function(){
         $("#page2").show();
         $("#page3").hide();
         $("#page4").hide();
-        $("#page5").hide();
 
         breadcrumbsadd(1);
     });
@@ -202,7 +200,6 @@ $(document).ready(function(){
         $("#page2").hide();
         $("#page3").show();
         $("#page4").hide();
-        $("#page5").hide();
         $("#booking-buildings").find(".place-span").remove();
 
         breadcrumbsadd(2);
@@ -235,7 +232,6 @@ $(document).ready(function(){
         $("#page2").hide();
         $("#page3").hide();
         $("#page4").show();
-        $("#page5").hide();
 
         breadcrumbsadd(3);
         //TODO: breadcrumps refresh
@@ -277,47 +273,6 @@ $(document).ready(function(){
             $('.help-block').css('text-align', 'center');
             return 0;
         }
-
-        $("#page1").hide();
-        $("#page2").hide();
-        $("#page3").hide();
-        $("#page4").hide();
-        $("#page5").show();
-        breadcrumbsadd(4);
-
-        $('#result-booking').html('\
-            <div class="row">\
-                <div class="col-md-12 col-sm-12 col-xs-12">\
-                    <p><strong>Booking Name: </strong>' + booking_name + '\
-                <div>\
-            <div>\
-            <div class="row">\
-                <div class="col-md-6 col-sm-6 col-xs-6">\
-                    <p><strong>Start Date: </strong>' + start_date + '\
-                </div>\
-                <div class="col-md-6 col-sm-6 col-xs-6">\
-                    <p><strong>End Date: </strong>' + end_date + '\
-                </div>\
-            </div>\
-            <div class="row">\
-                <div class="col-md-6 col-sm-6 col-xs-6">\
-                    <p><strong>Begin Time: </strong>' + start_hour + '\
-                </div>\
-                <div class="col-md-6 col-sm-6 col-xs-6">\
-                    <p><strong>End Time: </strong>' + end_hour + '\
-                </div>\
-            </div>\
-            <div class="row">\
-                <div class="col-md-12 col-sm-12 col-xs-12">\
-                    <p><strong>Week Days: </strong>' + ar_week_days_names + '\
-                <div>\
-            </div>\
-            <div class="row">\
-                <div class="col-md-12 col-sm-12 col-xs-12">\
-                    <p><strong>Place: </strong>' + building_name + ' - ' + place_name + '\
-                <div>\
-            </div>\
-        ');
     });
 
     $("#newbooking").submit(function(){
