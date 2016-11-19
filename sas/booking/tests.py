@@ -159,7 +159,7 @@ class TestNewBooking(TestCase):
             'end_hour': self.hour2, 'start_date': self.start_date,
             'end_date': self.end_date, 'building': self.building_name[0].pk,
             'place': self.place_name[0].pk, 'week_days': self.week_days,
-            'date_options': 'opt_select_date', 'tags':'hello'}
+            'date_options': 'opt_select_date', 'tags': 'hello'}
 
     def test_get_request_logged(self):
         request = self.factory.get('/booking/newbooking/')
@@ -625,6 +625,7 @@ class TemplateTagsTest(TestCase):
         result = is_all_bookings(name)
         self.assertTrue(result)
 
+
 class TestBookingTags(TestCase):
     def setUp(self):
         self.booking = BookingFactory.create()
@@ -674,10 +675,10 @@ class TestBookingTags(TestCase):
         self.assertContains(response, "0")
 
     def test_get_tags(self):
-        self.assertEquals(Tag.get_tags()[1][0],self.tag)
+        self.assertEquals(Tag.get_tags()[1][0], self.tag)
 
     def test_search_tags_tag(self):
-        self.assertEquals(search_tags()[1][0],self.tag)
+        self.assertEquals(search_tags()[1][0], self.tag)
 
     def test_print_tags(self):
-        self.assertEquals("teste",self.tag.__str__())
+        self.assertEquals("teste", self.tag.__str__())
