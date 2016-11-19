@@ -67,7 +67,7 @@ class SearchBookingForm(forms.Form):
         label=_('Responsible:'),
         required=False,
         widget=forms.widgets.Select(
-            attrs={'class': 'optional'},choices=Booking.get_responsibles(),))
+            attrs={'class': 'select2 optional'},choices=Booking.get_responsibles(),))
 
     def search(self):
         cleaned_data = super(SearchBookingForm, self).clean()
