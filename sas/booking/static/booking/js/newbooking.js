@@ -68,24 +68,25 @@ function test(places){
     }
 }
 
-$("#slider_begin_time").slider({
-    min: 8,
-    max: 22,
-    step: 2,
-    create: function( event, ui ) {
-        $("#input_slider_begin_time").val("8:00");
-    }
-});
-$("#slider_end_time").slider({
-    min: 8,
-    max: 22,
-    step: 2,
-    create: function( event, ui ) {
-        $("#input_slider_end_time").val("8:00");
-    }
-});
+
 
 $(document).ready(function(){
+    $("#slider_begin_time").slider({
+        min: 8,
+        max: 22,
+        step: 2,
+        create: function( event, ui ) {
+            $("#input_slider_begin_time").val("8:00");
+        }
+    });
+    $("#slider_end_time").slider({
+        min: 8,
+        max: 22,
+        step: 2,
+        create: function( event, ui ) {
+            $("#input_slider_end_time").val("8:00");
+        }
+    });
     var building = '';
     var building_name = '';
     var place = '';
@@ -333,7 +334,15 @@ $(document).ready(function(){
         $("#booking-place-hidden").val(place);
         $("#input_slider_end_time").prop("disabled", false);
         $("#input_slider_begin_time").prop("disabled", false);
-        
+        if($('input[name=times]:checked', '#page2').val() == "oneday") {
+            var date = $("#id_one_day_date").val();   
+            $("#id_start_date").val(date);
+            $("#id_end_date").val(date);
+            var weekdayOneDate = new Date(date);
+            var day = weekdayOneData.getDay() - 1; 
+            if(day == -1){ day = 6; }
+            $("input[name='week_days'][value='" + day + "']").prop("checked", true);
+        }        
     });
     
 });

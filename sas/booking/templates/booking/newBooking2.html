@@ -11,6 +11,7 @@
     <div class="row">
         <form id="newbooking" action="{% url 'booking:newbooking' %}" method="POST">
         {% csrf_token %}
+        <input class="" id="id_date_options_1" name="date_options" title="" type="hidden" value="opt_select_date" >
 	    <div id="con" class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
             <h1 class="text-center">{% trans "New Booking" %}</h1>
             <hr class="star-light"></hr>
@@ -65,7 +66,7 @@
                 <hr>
                 <div id="one-day">
                     <div class="form-group newbooking-dates">
-                        <label class="control-label" for="id_start_date">{% trans "Date" %}:</label>
+                        <label class="control-label" for="id_one_day_date">{% trans "Date" %}:</label>
                         <input class="form-control newbooking-dates-input datepicker1" id="id_one_day_date"
                             placeholder="{% trans 'dd/mm/yyyy' %}" name="date" type="text" style="width:200px">
                     </div>

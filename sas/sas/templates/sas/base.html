@@ -10,6 +10,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   {% bootstrap_css %}
+  <link rel="stylesheet" type="text/css" href="{% static "jquery/ui/jquery-ui.min.css" %}">>
   <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{% static "font-awesome/font-awesome.min.css" %}">
@@ -121,12 +122,14 @@
 <!-- end wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
+<script src="{% static "jquery/jquery.min.js" %}"></script>
+<script src="{% static "jquery/ui/jquery-ui.min.js" %}"></script>
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
 <script src="{% static "booking/js/place.js" %}"></script> 
 <script src="{% static "booking/js/building.js" %}"></script> 
 <script src="{% static "booking/js/booking.js" %}"></script> 
 <script src="{% static "booking/js/newbooking.js" %}"></script>
-<script src="{% static "jquery//jquery.min.js" %}"></script>
-<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+
 {% block extrajs %}{% endblock %}
  
 </body>
