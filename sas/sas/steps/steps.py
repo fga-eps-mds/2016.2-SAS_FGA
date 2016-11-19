@@ -114,7 +114,7 @@ def new_booking(step, booking_name, building, place_name, start_date, end_date, 
 		booking.time.add(book)
 	booking.save()
 
-@step(r'I register the booking "(.*)" with the building "(.*)" with the place name "(.*)" and start_date "(.*)" and end_date "(.*)" of responsible"(.*)"')
+@step(r'I register the booking "(.*)" with the building "(.*)" with the place name "(.*)" and start_date "(.*)" and end_date "(.*)" of responsible "(.*)"')
 def new_booking(step, booking_name, building, place_name, start_date, end_date, responsible):
     booking = Booking()
     booking.user = User()
