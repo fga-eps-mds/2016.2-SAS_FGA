@@ -18,5 +18,6 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')), 
     url(r'buildings/places/(?P<id_building>\d+)/$',views.BuildingPlaceList.as_view()),
+    url(r'buildings/places/unoccupied/$',views.UnoccupiedPlaceList.as_view({'post': 'list'})),
     url(r'^faq/', faq, name="faq"),
 ]

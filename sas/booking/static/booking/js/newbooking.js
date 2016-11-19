@@ -196,6 +196,14 @@ $(document).ready(function(){
             }
         }
 
+        ar_week_days = [];
+        ar_week_days_names = [];
+
+        $("input[name=week_days]:checked").each(function(index){
+            ar_week_days.push($(this).val());
+            ar_week_days_names.push($(this).parent().text());
+        });
+
         $("#page1").hide();
         $("#page2").hide();
         $("#page3").show();
@@ -238,20 +246,12 @@ $(document).ready(function(){
         $("#booking-places").find(".place-span").remove();
         //places = Place.all();
         var id = $(".building-selected > input").attr("value");
-        Place.make_places(id, test);
+        booking.post_form(building, start_date, end_date, start_hour, end_hour, ar_week_days, test);
     });
 
     $("#next-finish").click(function(){
         place = $(".place-selected > input").attr("value");
         place_name = $(".place-selected").text();
-
-        ar_week_days = [];
-        ar_week_days_names = [];
-
-        $("input[name=week_days]:checked").each(function(index){
-            ar_week_days.push($(this).val());
-            ar_week_days_names.push($(this).parent().text());
-        });
 
         if(start_date == end_date) {
             var weekdays = new Array(7);
@@ -278,17 +278,24 @@ $(document).ready(function(){
     $("#newbooking").submit(function(){
         var place = $(".place-selected > input").attr("value");
         var building = $(".building-selected > input").attr("value");
+
         $("#booking-building-hidden").val(building);
         $("#booking-place-hidden").val(place);
         $("#input_slider_end_time").prop("disabled", false);
         $("#input_slider_begin_time").prop("disabled", false);
+
         if($('input[name=times]:checked', '#page2').val() == "oneday") {
             var date = $("#id_one_day_date").val();   
             $("#id_start_date").val(date);
             $("#id_end_date").val(date);
+
             var weekdayOneDate = new Date(date);
-            var day = weekdayOneData.getDay() - 1; 
-            if(day == -1){ day = 6; }
+            var day = weekdayOneData.getDay() - 1;
+
+            if(day == -1){ 
+                day = 6; 
+            }
+
             $("input[name='week_days'][value='" + day + "']").prop("checked", true);
         }        
     });

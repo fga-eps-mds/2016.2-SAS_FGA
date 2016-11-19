@@ -35,6 +35,15 @@ function Place(pk, name){
         });
     }
 
+    this.make_unoccupied_places = function(data, callback) {
+        all = new Array()
+        for(var i = 0; i < data.length; i++){
+            p = new Place(data[i].pk, data[i].name);
+            all.push(p);
+        }
+        callback(all);
+    }
+
     this.by_building = function(id){
         all = new Array()
         url = "/buildings/places/" +id + "/";
@@ -62,5 +71,9 @@ Place.by_building = function(id){
 Place.make_places = function(id, callback){
     p = new Place();
     return p.make_places(id, callback);
+}
 
+Place.make_unoccupied_places = function(data, callback) {
+    p = new Place();
+    return p.make_unoccupied_places(data, callback);
 }
