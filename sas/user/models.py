@@ -19,7 +19,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 related_name="profile_user")
     category = models.CharField(choices=CATEGORY, max_length=20)
-    engineering = models.CharField(choices=ENGINEERING, max_length=15, 
+    engineering = models.CharField(choices=ENGINEERING, max_length=15,
                                    default=1)
 
     def create_user(self):
