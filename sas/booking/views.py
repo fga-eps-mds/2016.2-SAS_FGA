@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render, redirect, get_object_or_404
 from booking.forms import BookingForm, SearchBookingForm
-from booking.models import Booking, BookTime, Place, Building
+from booking.models import Booking, BookTime, Place, Building, Tag
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from sas.decorators.decorators import required_to_be_admin
@@ -348,6 +348,21 @@ def booking_details(request, booking_id):
         return render(request, 'booking/bookingDetails.html',
                       {'booking': booking, 'tags': tags})
     except:
+        messages.error(request, _('Booking not found.'))
+    if request.user.profile_user.is_admin():
+        return all_bookings(request)
+    else:
+        return search_booking(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+def tagged_bookings(request, tag_id):
+    try:
+        bookings = Booking.objects.filter(tags__id=tag_id).prefetch_related('tags')
+        return render(request, 'booking/searchBooking.html',
+                          {'bookings': bookings})
+    except Exception as e:
+        print(e)
         messages.error(request, _('Booking not found.'))
     if request.user.profile_user.is_admin():
         return all_bookings(request)
