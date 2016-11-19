@@ -99,10 +99,7 @@ def search_booking_responsible(request, form_booking):
     
     table = []
 
-
-
-    r = booking_responsible.split('\r')
-    bookings = Booking.objects.filter(responsible__contains=r[0])
+    bookings = Booking.objects.filter(responsible=booking_responsible)
     places,place_names = Booking.get_places(bookings)
     print('p',places[0].pk)
 
