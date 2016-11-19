@@ -11,8 +11,10 @@ from booking.views import delete_booking
 from booking.views import search_booking_booking_name_week
 from booking.views import new_booking, search_booking_day_room
 from booking.views import search_booking_building_day
+from booking.views import search_booking_responsible
 from booking.urls import *
 from user.models import UserProfile, Settings
+from booking.models import Booking
 from booking.forms import BookingForm, SearchBookingForm
 from dateutil import parser
 from booking.views import search_booking_room_period
@@ -245,6 +247,24 @@ class TestSearchBooking(TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, 'Booking')
 
+    def test_search_booking_responsible(self):
+        factory = self.factory
+        date = datetime.strptime("22112016", "%d%m%Y")
+        booking_responsible = 'rocha.carla@gmail.com'
+
+        parameters = {'search_options': 'opt_responsible',
+                      'responsible': booking_responsible,
+                      'start_date': date}
+
+        form = SearchBookingForm(data=parameters)
+
+        form.is_valid()
+        request = factory.post('/booking/searchbookingg', parameters)
+        page = search_booking_responsible(request=request,
+                                          form_booking=form)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, 'Responsible')
+
     def test_search_booking_post_not_valid(self):
         client = self.client
         start_date = datetime.now().date() - timedelta(days=6)
@@ -406,6 +426,30 @@ class TestSearchBookingForm(TestCase):
         page = search_booking_building_day(request=request, form_booking=form)
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, 'Occupation')
+
+
+class BookingTest(TestCase):
+    def setup(self):
+        self.booking = Booking()
+        self.place = Place()
+
+    def test_get_bookings(self):
+        self.booking = Booking.objects.order_by('name').first()
+        result = Booking.get_bookings()
+        self.assertEqual(result[0][0], self.booking.name)
+
+    def test_get_responsibles(self):
+        result = Booking.get_responsibles()
+        self.booking = Booking.objects.first()
+        self.assertEqual(result[1][1], self.booking.responsible)
+
+    def test_get_places(self):
+        self.booking = Booking.objects.all()
+        self.place = Place.objects.get(id=8)
+        result_place, result_place_name = Booking.get_places(self.booking)
+        place_name = self.place.name.split('-')
+        self.assertEqual(result_place[0], self.place)
+        self.assertEqual(result_place_name[0], place_name[1])
 
 
 class ValidationTest(TestCase):

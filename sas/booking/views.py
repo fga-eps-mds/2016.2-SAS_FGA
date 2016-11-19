@@ -90,6 +90,46 @@ def search_booking_building_day(request, form_booking):
                    'table_header': table_header, 'place': places})
 
 
+def search_booking_responsible(request, form_booking):
+    form_day = form_booking.get_day()
+    search_booking_responsible = form_booking["responsible"].data
+    booking_responsible = form_booking["responsible"].data
+    hours = [(6, "06-08"), (8, "08-10"), (10, "10-12"),
+             (12, "12-14"), (14, "14-16"), (16, "16-18"),
+             (18, "18-20"), (20, "20-22"), (22, ("22-00"))]
+
+    table = []
+    responsible = booking_responsible.split('\r')
+
+    bookings = Booking.objects.filter(responsible__contains=responsible[0])
+
+    if len(responsible) > 1:
+        responsible_ = responsible[1].split('\n')
+        bookings = Booking.objects.filter(
+            responsible__contains=responsible_[1])
+
+    places, place_names = Booking.get_places(bookings)
+
+    for place in place_names:
+        aux = []
+        for booking in bookings:
+            p = booking.place.name.split('-')
+            if (booking.status > 1 and p[1] == place):
+                book = booking.time.get(date_booking=str(form_day))
+                aux_tuple = (book.start_hour.hour, booking)
+                aux.append(aux_tuple)
+
+        table.append(aux)
+
+    n = len(places) + 1
+
+    print(table)
+    return render(request, 'booking/template_table.html',
+                  {'days': form_day, 'table': table,
+                   'column_header': place_names, 'hours': hours,
+                   'n': n, 'name': _(' Responsible'), 'place': places})
+
+
 def search_booking_booking_name_week(request, form_booking):
     form_days = form_booking.days_list()
     search_booking_name = form_booking["booking_name"].data
@@ -154,7 +194,8 @@ def search_booking_room_period(request, form_booking):
 search_options = {'opt_day_room': search_booking_day_room,
                   'opt_booking_week': search_booking_booking_name_week,
                   'opt_building_day': search_booking_building_day,
-                  'opt_room_period': search_booking_room_period}
+                  'opt_room_period': search_booking_room_period,
+                  'opt_responsible': search_booking_responsible}
 
 
 class SearchBookingQueryView(View):
@@ -200,6 +241,7 @@ def new_booking(request):
                    'start_semester': start_semester,
                    'end_semester': end_semester,
                    'is_staff': user.is_staff})
+
 
 def search_booking_table(request):
     if request.method == "POST":

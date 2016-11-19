@@ -26,11 +26,21 @@ class SearchBookingForm(forms.Form):
             widget=forms.widgets.Select(
                 attrs={'class': 'select2 optional'})
         )
+
+        self.fields['responsible'] = forms.CharField(
+            label=_('Responsible:'),
+            required=False,
+            widget=forms.widgets.Select(
+                attrs={'class': 'select2 optional'},
+                choices=Booking.get_responsibles(),)
+        )
+
     SEARCH_CHOICES = (
         ('opt_day_room', _("Room's Week Timetable")),
         ('opt_booking_week', _(' Booking')),
         ('opt_building_day', _(' Occupation')),
         ('opt_room_period', _(' Room ')),
+        ('opt_responsible', _(' Responsible')),
     )
 
     search_options = forms.ChoiceField(label=_('Search options'),
@@ -180,7 +190,6 @@ class BookingForm(forms.Form):
              (hour5, ('16:00')), (hour6, ('18:00')),
              (hour7, ('20:00')), (hour8, ('22:00')),
              (hour9, ('00:00')))
-
 
     DATE_CHOICES = (
         ('opt_date_semester', _("Yes")),

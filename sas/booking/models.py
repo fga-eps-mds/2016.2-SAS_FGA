@@ -172,6 +172,27 @@ class Booking(models.Model):
             choices = (new_choice,) + choices
         return choices
 
+    @staticmethod
+    def get_responsibles():
+        bookings = Booking.objects.values('responsible').distinct()
+        choices = ()
+        for booking in bookings:
+            new_choice = (booking['responsible'], booking['responsible'])
+            choices = (new_choice,) + choices
+        return choices
+
+    @staticmethod
+    def get_places(bookings):
+        place_name = []
+        place = []
+
+        for booking in bookings:
+            p = booking.place.name.split('-')
+            if (booking.status > 1) and (p[1] not in place_name):
+                place_name.append(p[1])
+                place.append(booking.place)
+        return place, place_name
+
 
 class Validation():
 
