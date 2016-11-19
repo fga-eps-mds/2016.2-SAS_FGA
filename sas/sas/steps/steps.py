@@ -114,6 +114,28 @@ def new_booking(step, booking_name, building, place_name, start_date, end_date, 
 		booking.time.add(book)
 	booking.save()
 
+@step(r'I register the booking "(.*)" with the building "(.*)" with the place name "(.*)" and start_date "(.*)" and end_date "(.*)" of responsible"(.*)"')
+def new_booking(step, booking_name, building, place_name, start_date, end_date, responsible):
+    booking = Booking()
+    booking.user = User()
+    booking.user = User.objects.get(username=responsible)
+    booking.name = booking_name
+    booking.start_date = start_date
+    booking.end_date = end_date
+    booking.place = Place()
+    booking.place.name = place_name
+    booking.place.building = Building()
+    booking.place.building.name = building
+    booking.responsible = responsible
+    booking.save()
+    for day in range(0, 10):
+        book = BookTime()
+        book.date_booking = parser.parse(start_date) + timedelta(days=day)
+        book.start_hour = "20:00"
+        book.end_hour = "22:00"
+        book.save()
+        booking.time.add(book)
+    booking.save()
 
 @step(r'I login in with email "(.*)" and password "(.*)"')
 def login_user(step, email, password):
