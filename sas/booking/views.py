@@ -97,7 +97,7 @@ def search_booking_responsible(request, form_booking):
     hours = [(6, "06-08"), (8, "08-10"), (10, "10-12"),
              (12, "12-14"), (14, "14-16"), (16, "16-18"),
              (18, "18-20"), (20, "20-22"), (22, ("22-00"))]
-    
+
     table = []
     responsible = booking_responsible.split('\r')
 
@@ -105,9 +105,10 @@ def search_booking_responsible(request, form_booking):
 
     if len(responsible) > 1:
         responsible_ = responsible[1].split('\n')
-        bookings = Booking.objects.filter(responsible__contains=responsible_[1])
-    
-    places,place_names = Booking.get_places(bookings)
+        bookings = Booking.objects.filter(
+            responsible__contains=responsible_[1])
+
+    places, place_names = Booking.get_places(bookings)
 
     for place in place_names:
         aux = []
@@ -117,15 +118,15 @@ def search_booking_responsible(request, form_booking):
                 book = booking.time.get(date_booking=str(form_day))
                 aux_tuple = (book.start_hour.hour, booking)
                 aux.append(aux_tuple)
-                         
+
         table.append(aux)
-    
+
     n = len(places) + 1
 
     print(table)
     return render(request, 'booking/template_table.html',
                   {'days': form_day, 'table': table,
-                   'column_header': place_names , 'hours': hours,
+                   'column_header': place_names, 'hours': hours,
                    'n': n, 'name': _(' Responsible'), 'place': places})
 
 
@@ -159,6 +160,7 @@ def search_booking_booking_name_week(request, form_booking):
                   {'days': form_days, 'table': table,
                    'column_header': form_days, 'hours': hours,
                    'n': n, 'name': _(' Booking'), 'place': place_id})
+
 
 def search_booking_room_period(request, form_booking):
     form_days = form_booking.days_list()
@@ -239,6 +241,7 @@ def new_booking(request):
                    'start_semester': start_semester,
                    'end_semester': end_semester,
                    'is_staff': user.is_staff})
+
 
 def search_booking_table(request):
     if request.method == "POST":

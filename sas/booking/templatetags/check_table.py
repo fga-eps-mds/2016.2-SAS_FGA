@@ -67,9 +67,9 @@ def search_place(place, count):
 
     if str(type(place)) == "<class 'django.db.models.query.QuerySet'>":
         return str(place[count].pk)
-    
+
     elif type(place) is list:
-        return str(place[count].pk)     
+        return str(place[count].pk)
     else:
         return str(place.pk)
 

@@ -31,7 +31,8 @@ class SearchBookingForm(forms.Form):
             label=_('Responsible:'),
             required=False,
             widget=forms.widgets.Select(
-                attrs={'class': 'select2 optional'},choices=Booking.get_responsibles(),)
+                attrs={'class': 'select2 optional'},
+                choices=Booking.get_responsibles(),)
         )
 
     SEARCH_CHOICES = (
@@ -70,19 +71,6 @@ class SearchBookingForm(forms.Form):
         widget=forms.widgets.DateInput(
             attrs={'class': 'datepicker1 optional', 'placeholder': ''}),
         required=False)
-
-
-    # responsible = forms.ChoiceField(label=_('responsible'),
-    #                                    choices=Booking.get_responsibles(),
-    #                                    widget=forms.widgets.Select(
-    #                                    attrs={'class': 'select2 optional'},))
-
-    # responsible = forms.ModelChoiceField(
-    #     queryset=Booking.get_responsibles(),
-    #     label=_('Responsible:'),
-    #     required=False,
-    #     widget=forms.widgets.Select(
-    #         attrs={'class': 'select2 optional'},))
 
     def search(self):
         cleaned_data = super(SearchBookingForm, self).clean()
@@ -202,7 +190,6 @@ class BookingForm(forms.Form):
              (hour5, ('16:00')), (hour6, ('18:00')),
              (hour7, ('20:00')), (hour8, ('22:00')),
              (hour9, ('00:00')))
-
 
     DATE_CHOICES = (
         ('opt_date_semester', _("Yes")),

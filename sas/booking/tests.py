@@ -261,7 +261,7 @@ class TestSearchBooking(TestCase):
         form.is_valid()
         request = factory.post('/booking/searchbookingg', parameters)
         page = search_booking_responsible(request=request,
-                                                form_booking=form)
+                                          form_booking=form)
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, 'Responsible')
 
@@ -427,29 +427,29 @@ class TestSearchBookingForm(TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, 'Occupation')
 
+
 class BookingTest(TestCase):
     def setup(self):
         self.booking = Booking()
         self.place = Place()
 
     def test_get_bookings(self):
-        self.booking = Booking.objects.first()
+        self.booking = Booking.objects.order_by('name').first()
         result = Booking.get_bookings()
-        self.assertEqual(result[-1][-1],self.booking.name)
+        self.assertEqual(result[0][0], self.booking.name)
 
     def test_get_responsibles(self):
         result = Booking.get_responsibles()
         self.booking = Booking.objects.first()
-        self.assertEqual(result[1][1],self.booking.responsible)
+        self.assertEqual(result[1][1], self.booking.responsible)
 
     def test_get_places(self):
         self.booking = Booking.objects.all()
         self.place = Place.objects.get(id=8)
-        result_place,result_place_name = Booking.get_places(self.booking)
+        result_place, result_place_name = Booking.get_places(self.booking)
         place_name = self.place.name.split('-')
-        self.assertEqual(result_place[0],self.place)
-        self.assertEqual(result_place_name[0],place_name[1])   
-
+        self.assertEqual(result_place[0], self.place)
+        self.assertEqual(result_place_name[0], place_name[1])
 
 
 class ValidationTest(TestCase):

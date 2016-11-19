@@ -185,13 +185,14 @@ class Booking(models.Model):
     def get_places(bookings):
         place_name = []
         place = []
-        
+
         for booking in bookings:
             p = booking.place.name.split('-')
             if (booking.status > 1) and (p[1] not in place_name):
                 place_name.append(p[1])
                 place.append(booking.place)
-        return place,place_name    
+        return place, place_name
+
 
 class Validation():
 

@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 
+
 class UserProfileForm(forms.Form):
     name = forms.CharField(
         label=_('Name:'),
@@ -27,11 +28,10 @@ class UserProfileForm(forms.Form):
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
 
 
-
 class LoginForm(UserProfileForm):
 
     def __init__(self, *args, **kwargs):
-        super(LoginForm, self ).__init__(*args, **kwargs)
+        super(LoginForm, self).__init__(*args, **kwargs)
         self.fields.pop("category")
         self.fields.pop("name")
         self.fields.pop("registration_number")
@@ -61,7 +61,7 @@ class PasswordForm(UserProfileForm):
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
 
     def __init__(self, *args, **kwargs):
-        super(PasswordForm, self ).__init__(*args, **kwargs)
+        super(PasswordForm, self).__init__(*args, **kwargs)
         self.fields.pop("email")
         self.fields.pop("category")
         self.fields.pop("name")
@@ -100,17 +100,18 @@ class UserForm(UserProfileForm):
     def __init__(self, *args, **kwargs):
         instance = kwargs.pop("instance", None)
         editing = kwargs.pop("editing", None)
-        super(UserForm, self ).__init__(*args, **kwargs)
+        super(UserForm, self).__init__(*args, **kwargs)
         if instance is not None:
             self.__dict__["instance"] = instance
-        if instance is not  None or editing is not None:
+        if instance is not None or editing is not None:
             self.fields.pop("password")
             self.fields.pop("repeat_password")
         if editing is None and instance is not None:
             self.fields["email"].initial = instance.user.email
             self.fields["category"].initial = instance.category
             self.fields["name"].initial = instance.full_name()
-            self.fields["registration_number"].initial = instance.registration_number
+            instance = instance.registration_number
+            self.fields["registration_number"].initial = instance
 
     def set_fields(self, userprofile):
         userprofile.name(self.cleaned_data.get('name'))
@@ -124,7 +125,7 @@ class UserForm(UserProfileForm):
         try:
             userprofile.save()
         except:
-           raise Exception(_("Something went wrong so we could not save \
+            raise Exception(_("Something went wrong so we could not save \
                              your data. Try again later"))
         return userprofile
 
@@ -137,13 +138,14 @@ class UserForm(UserProfileForm):
             userprofile.save()
             userprofile.make_as_academic_staff()
         except e:
-           raise Exception(_("Something went wrong so we could not save \
+            raise Exception(_("Something went wrong so we could not save \
                              your data. Try again later"))
         return userprofile
 
     def clean_registration_number(self):
         rn = self.cleaned_data["registration_number"]
-        if hasattr(self, "instance") and self.instance.registration_number == rn:
+        if hasattr(self, "instance") and (
+           self.instance.registration_number == rn):
             return rn
         elif UserProfile.objects.filter(registration_number=rn).exists():
                 raise ValidationError(_('Registration Number already exists.'))
@@ -152,7 +154,7 @@ class UserForm(UserProfileForm):
 
     def clean_email(self):
         email = self.cleaned_data["email"]
-        if hasattr(self,"instance") and self.instance.user.email == email:
+        if hasattr(self, "instance") and self.instance.user.email == email:
             return email
         elif User.objects.filter(email=email).exists():
                 raise ValidationError(_('Email already used.'))
