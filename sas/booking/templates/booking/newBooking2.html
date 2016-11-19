@@ -9,6 +9,8 @@
 
 {% block content %}
     <div class="row">
+        <form id="newbooking" action="{% url 'booking:newbooking' %}" method="POST">
+        {% csrf_token %}
 	    <div id="con" class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
             <h1 class="text-center">{% trans "New Booking" %}</h1>
             <hr class="star-light"></hr>
@@ -40,9 +42,9 @@
             <div id="page1" class="form-content">
                 <div class="form-group">
                     <label class="control-label" id="id_name">{% trans "Booking name" %}:</label>
-                    <input id="name_of_booking" class="form-control" type="text" \>
+                    <input id="name_of_booking" name="name" class="form-control" type="text" \>
                 </div>
-                <button id="next-date" class="btn btn-primary btn-newbooking" value="Next">
+                <button id="next-date" type="button" class="btn btn-primary btn-newbooking" value="Next">
                   {% trans "Next" %}
                   <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 </button>
@@ -65,7 +67,7 @@
                     <div class="form-group newbooking-dates">
                         <label class="control-label" for="id_start_date">{% trans "Date" %}:</label>
                         <input class="form-control newbooking-dates-input datepicker1" id="id_one_day_date"
-                            placeholder="{% trans 'dd/mm/yyyy' %}" name="start_date" type="text" style="width:200px">
+                            placeholder="{% trans 'dd/mm/yyyy' %}" name="date" type="text" style="width:200px">
                     </div>
                 </div>
                 <div id="period-dates" class="row">
@@ -88,7 +90,7 @@
                           <div id="slider_begin_time" ></div>
                         </div>
                         <div style="padding:10px 0">
-                          <input id="input_slider_begin_time" class="form-control" style="width:200px" type="text" />
+                          <input id="input_slider_begin_time" name="start_hour" class="form-control" style="width:200px" type="text" />
                         </div>
                     </div>
                   </div>
@@ -99,7 +101,7 @@
                           <div id="slider_end_time" ></div>
                         </div>
                         <div style="padding:10px 0">
-                            <input id="input_slider_end_time"  class="form-control" style="width:200px" type="text" />
+                            <input id="input_slider_end_time" name="end_hour"  class="form-control" style="width:200px" type="text" />
                         </div>
                     </div>
                 </div>
@@ -157,39 +159,41 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary btn-newbooking btn-back" value="2">
+                <button type="button" class="btn btn-primary btn-newbooking btn-back" value="2">
                   <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
                   {% trans "Back" %}
                 </button>
-                <button id="next-building" class="btn btn-primary btn-newbooking" value="Next">
+                <button type="button" id="next-building" class="btn btn-primary btn-newbooking" value="Next">
                   {% trans "Next" %}
                   <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 </button>
             </div>
             <div id="page3" class="form-content">
+                <input id="booking-building-hidden" type="hidden" name="building" />
                 <table id="booking-buildings" class="place" style="table-layout:fixed;">
                     <tr>
                     </tr>
                 </table>
-                <button class="btn btn-primary btn-newbooking btn-back" value="3">
+                <button type="button" class="btn btn-primary btn-newbooking btn-back" value="3">
                   <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
                   {% trans "Back" %}
                 </button>
-                <button id="next-place" class="btn btn-primary btn-newbooking" value="Next">
+                <button type="button" id="next-place" class="btn btn-primary btn-newbooking" value="Next">
                   {% trans "Next" %}
                   <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 </button>
             </div>
              <div id="page4" class="form-content">
+                <input id="booking-place-hidden" type="hidden" name="place" />
                 <table id="booking-places" class="place">
                     <tr>
                     </tr>
                 </table>
-                <button class="btn btn-primary btn-newbooking btn-back" value="4">
+                <button type="button" class="btn btn-primary btn-newbooking btn-back" value="4">
                   <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
                   {% trans "Back" %}
                 </button>
-                <button id="next-finish" class="btn btn-primary btn-newbooking" value="Next">
+                <button id="next-finish" type="button" class="btn btn-primary btn-newbooking" value="Next">
                   {% trans "Next" %}
                   <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 </button>
@@ -197,12 +201,13 @@
             </div>
             <div id="page5" class="form-content">
                 <div id="result-booking"></div>
-                <button id="finish-form" class="btn btn-primary btn-newbooking" value="Next">
+                <button id="finish-form" type="submit" form="newbooking" class="btn btn-primary btn-newbooking" value="Next">
                   {% trans "Confirm" %}
                   <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 </button>
             </div>
 		</div>
+        </form>
 	</div>
 {% endblock %}
 

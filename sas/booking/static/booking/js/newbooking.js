@@ -153,6 +153,7 @@ $(document).ready(function(){
 
     var booking = new Booking();
     $("#next-date").click(function(){
+        
         booking_name = $("#name_of_booking").val();
         if(!booking.check_name_element($("#name_of_booking"))){
             return 0;
@@ -325,7 +326,14 @@ $(document).ready(function(){
         ');
     });
 
-    $('#finish-form').click(function() {
-        booking.post_form(building, place, booking_name, start_date, end_date, start_hour, end_hour, ar_week_days);
+    $("#newbooking").submit(function(){
+        var place = $(".place-selected > input").attr("value");
+        var building = $(".building-selected > input").attr("value");
+        $("#booking-building-hidden").val(building);
+        $("#booking-place-hidden").val(place);
+        $("#input_slider_end_time").prop("disabled", false);
+        $("#input_slider_begin_time").prop("disabled", false);
+        
     });
+    
 });

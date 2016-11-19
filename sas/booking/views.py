@@ -199,6 +199,7 @@ class NewBooking(View):
 @login_required(login_url='/?showLoginModal=yes')
 def new_booking(request):
     if request.method == "POST":
+        print(request.POST)
         form_booking = BookingForm(request.POST)
         if (form_booking.is_valid()):
             booking = form_booking.save(request.user)
