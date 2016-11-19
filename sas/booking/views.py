@@ -201,6 +201,7 @@ def new_booking(request):
                    'end_semester': end_semester,
                    'is_staff': user.is_staff})
 
+
 def search_booking_table(request):
     if request.method == "POST":
         form_booking = SearchBooking(request.POST)
@@ -357,13 +358,6 @@ def booking_details(request, booking_id):
 
 @login_required(login_url='/?showLoginModal=yes')
 def tagged_bookings(request, tag_id):
-    try:
-        bookings = Booking.objects.filter(tags__id=tag_id).prefetch_related('tags')
-        return render(request, 'booking/searchBooking.html',
-                          {'bookings': bookings})
-    except Exception as e:
-        messages.error(request, _('No Bookings with this tag were found.'))
-    if request.user.profile_user.is_admin():
-        return all_bookings(request)
-    else:
-        return search_booking(request)
+    bookings = Booking.objects.filter(tags__id=tag_id).prefetch_related('tags')
+    return render(request, 'booking/searchBooking.html',
+                  {'bookings': bookings})

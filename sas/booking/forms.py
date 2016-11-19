@@ -15,6 +15,7 @@ import re
 import traceback
 import ast
 
+
 class SearchBookingForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
@@ -187,8 +188,6 @@ class BookingForm(forms.Form):
              (hour5, ('16:00')), (hour6, ('18:00')),
              (hour7, ('20:00')), (hour8, ('22:00')),
              (hour9, ('00:00')))
-
-
     DATE_CHOICES = (
         ('opt_date_semester', _("Yes")),
         ('opt_select_date', _("No")),
@@ -276,11 +275,9 @@ class BookingForm(forms.Form):
                         if not Tag.objects.filter(name=name).exists():
                             tag = Tag(name=name)
                             tag.save()
-                        tag =  Tag.objects.get(name=name)
+                        tag = Tag.objects.get(name=name)
                         booking.tags.add(tag)
                 booking.save()
-
-
         except Exception as e:
             booking.delete()
             msg = _('Failed to book selected period')
