@@ -81,8 +81,13 @@ class Tag(models.Model):
     def get_tags():
         tags = Tag.objects.all()
         choices = []
+        print(tags)
         for tag in tags:
-            new_choice = (tag.name)
+            new_choice = (tag, tag)
+            choices.append(new_choice)
+        choices = sorted(choices, key=lambda tag_tuple:
+                         tag_tuple[0].name)
+        choices.insert(0, ('', ''))
         return choices
 
 
