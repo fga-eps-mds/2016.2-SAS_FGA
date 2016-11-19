@@ -11,7 +11,7 @@
   {% bootstrap_css %}
   <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static "font-awesome/font-awesome.min.css" %}">
   {% block extrastyle %}{% endblock %}
 </head>
 <body>
@@ -120,8 +120,8 @@
 <!-- end wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="{% static "jquery//jquery.min.js" %}"></script>
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
 {% block extrajs %}{% endblock %}
 
 </body>

@@ -13,7 +13,7 @@ from booking.views import new_booking, search_booking_day_room
 from booking.views import search_booking_building_day
 from booking.views import search_booking_responsible
 from booking.urls import *
-from user.models import UserProfile
+from user.models import UserProfile, Settings
 from booking.models import Booking
 from booking.forms import BookingForm, SearchBookingForm
 from dateutil import parser
@@ -90,11 +90,6 @@ class DeleteBooktimeTest(TestCase):
         self.id_booking = self.booking.id
         self.id_booktime = self.booking.time.all()[0].id
 
-    def test_delete_booktime(self):
-        count = self.booking.time.all().count() - 1
-        self.booking.time.all()[count].delete_booktime(self.booking)
-        self.assertEquals(self.booking.time.all().count(), count)
-
     def test_admin_delete_booktime(self):
         self.user.make_as_admin()
         self.user.save()
@@ -148,6 +143,10 @@ class TestNewBooking(TestCase):
         self.user = UserProfileFactory.create()
         self.user.user.set_password('1234567')
         self.user.save()
+        self.semester = Settings()
+        self.semester.start_semester = datetime.strptime("21092017", "%d%m%Y")
+        self.semester.end_semester = datetime.strptime("22092018", "%d%m%Y")
+        self.semester.save()
         self.client = Client()
         self.factory = RequestFactory()
         self.week_days = ['3', '5']
@@ -161,7 +160,8 @@ class TestNewBooking(TestCase):
             'name': 'Reservaoiasd', 'start_hour': self.hour,
             'end_hour': self.hour2, 'start_date': self.start_date,
             'end_date': self.end_date, 'building': self.building_name[0].pk,
-            'place': self.place_name[0].pk, 'week_days': self.week_days}
+            'place': self.place_name[0].pk, 'week_days': self.week_days,
+            'date_options': 'opt_select_date'}
 
     def test_get_request_logged(self):
         request = self.factory.get('/booking/newbooking/')
@@ -645,6 +645,21 @@ class CheckTableTest(TestCase):
         date = dates, 7
         result = search_date(dates, 1)
         self.assertEquals(result, str(self.date))
+
+
+class ShowBookTimesTest(TestCase):
+    def setUp(self):
+        self.user = UserProfileFactory.create()
+        self.user.user.set_password('1234567')
+        self.user.make_as_admin()
+        self.user.save()
+        self.client = Client()
+
+    def test_booking_not_found(self):
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:showbooktimes', args=(0,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
 
 
 class TemplateTagsTest(TestCase):

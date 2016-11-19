@@ -7,8 +7,8 @@
 {% bootstrap_messages %}
 
 {% block extrastyle %}
-<link rel="stylesheet" href="{% static "style/bookingtable.css" %}">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.0/css/selectize.bootstrap3.min.css" />
+<link rel="stylesheet" href="{% static 'style/bookingtable.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/selectize/css/selectize.bootstrap3.min.css' %}" />
 {% endblock %}
 
 {% block title %} {% trans "Template Bookings Reports" %} {% endblock %}
@@ -43,7 +43,8 @@
                 {% if request.user.is_authenticated %}
                   <button class="btn btn-xs btn-primary" data-href="{% url 'booking:newbooking' %}"
                       data-toggle="modal" data-start-hour="{{id|search_hour:0}}" data-end-hour="{{id|search_hour:1}}" data-start-date="{{ days|aux_search_date:n|search_date:count }}" data-end-date="{{ days|aux_search_date:n|search_date:count }}"
-                      data-place-pk="{{place|search_place:count}}" data-building-pk="{{ place|search_building:count }}" data-target="#modalNewBooking" id="create-booking">
+                      data-place-pk="{{place|search_place:count}}" data-building-pk="{{ place|search_building:count }}" data-target="#modalNewBooking" id="create-booking"
+                      data-date-options="opt_select_date">
                       <span class="glyphicon glyphicon-plus-sign" ></span> {% trans "Book" %}
                   </button>
                 {%endif%}
@@ -58,7 +59,7 @@
                   {% elif request.user.is_authenticated %}
                   <button class="btn btn-xs btn-primary" data-href="{% url 'booking:newbooking' %}"
                       data-toggle="modal" data-start-hour="{{id|search_hour:0}}" data-end-hour="{{id|search_hour:1}}" data-start-date="{{ days|aux_search_date:n|search_date:count }}" data-end-date="{{ days|aux_search_date:n|search_date:count }}"
-                      data-place-pk="{{ place|search_place:count }}" data-place="{{cell_table.0.1.place}}" data-building-pk="{{ place|search_building:count }}" data-target="#modalNewBooking" id="create-booking" >
+                      data-place-pk="{{ place|search_place:count }}" data-place="{{cell_table.0.1.place}}" data-building-pk="{{ place|search_building:count }}" data-target="#modalNewBooking" id="create-booking" data-date-options="opt_select_date">
                       <span class="glyphicon glyphicon-plus-sign" ></span> {% trans "Book" %}
                   </button>
                   {%endif%}
@@ -86,6 +87,7 @@
           <p>{% trans "Are you sure you want to book this place?" %}<br>
             <strong><span id="place"></span></strong>
           </p>
+          <input type="hidden" class="form-control" id="id_date_options_1" name="date_options" title="" required>
           <input type="hidden" class="form-control" id="id_building" name="building" title="" required>
           <input type="hidden" class="form-control" id="id_place" name="place" title="" required>
           <input type="hidden" class="form-control" id="id_start_hour" name="start_hour" title="" required>
@@ -125,7 +127,7 @@
 
 
 {% block extrajs %}
-<script src="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.0/js/standalone/selectize.min.js"></script>
+<script src="{% static 'plugins/selectize/js/selectize.min.js' %}"></script>
 <!-- DataTables -->
 <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
@@ -161,6 +163,7 @@ $(document).on("click", "#create-booking", function () {
      var end_hour = $(this).data('end-hour');
      var start_date = $(this).data('start-date');
      var end_date = $(this).data('end-date');
+     var select_date = $(this).data('date-options');
 
      $(".modal-body #id_place").val( place_pk );
      $(".modal-body #id_building").val( building_pk );
@@ -168,6 +171,7 @@ $(document).on("click", "#create-booking", function () {
      $(".modal-body #id_end_hour").val( end_hour );
      $(".modal-body #id_start_date").val( start_date );
      $(".modal-body #id_end_date").val( end_date );
+     $(".modal-body #id_date_options_1").val( select_date );
 
 });
 </script>
