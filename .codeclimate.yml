@@ -29,3 +29,5 @@ exclude_paths:
 - "spec/"
 - "**/vendor/"
 - "static/"
+- "sas/booking/tests.py"
+- "sas/user/tests.py"
