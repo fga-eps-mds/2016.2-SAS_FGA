@@ -270,16 +270,14 @@ class BookingForm(forms.Form):
                         newBookTime.save()
                         booking.time.add(newBookTime)
                 tags = self.cleaned_data['tags']
-                tags = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+',
-                                  tags)
-                if tags is not None:
+                if tags:
                     tags = ast.literal_eval(tags)
                     for name in tags:
                         if not Tag.objects.filter(name=name).exists():
                             tag = Tag(name=name)
                             tag.save()
-                            tag =  Tag.objects.get(name=name)
-                            booking.tags.add(tag)
+                        tag =  Tag.objects.get(name=name)
+                        booking.tags.add(tag)
                 booking.save()
 
 
