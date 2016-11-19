@@ -94,18 +94,27 @@
           <input type="hidden" class="form-control" id="id_end_hour" name="end_hour" title="" required>
           <input type="hidden" class="form-control" id="id_start_date" name="start_date" title="" required>
           <input type="hidden" class="form-control" id="id_end_date" name="end_date" title="" required>
-          
+
           <label class="control-label" for="id_name">Booking Name:</label>
           <input class="form-control" id="id_name" name="name" placeholder="" title="" type="text" required />
 
+          <label class="control-label" for="id_responsible">Tags:</label>
+
+          <select class="form-control selectize_multiple" id="id_tags" name="tags" placeholder="" title="">
+            {% search_tags as tags %}
+            {% for counter, tag in tags %}
+            <option> {{counter}} </option>
+
+            {% endfor %}
+          </select>
           {% if user|is_admin %}
             <label class="control-label" for="id_responsible">Responsible:</label>
-          
+
             <select class="form-control selectize" id="id_responsible" name="responsible" placeholder="" title="">
               {% search_user as users %}
               {% for counter, user in users %}
               <option> {{counter}} </option>
-                
+
               {% endfor %}
             </select>
           {% endif %}
@@ -150,7 +159,17 @@
 //       }
 //   });
 // });
-
+$("#id_tags").selectize({
+    delimiter: ',',
+    persist: false,
+    maxItems:5,
+    create: function(input) {
+        return {
+            value: input,
+            text: input
+        }
+    }
+});
 
 $('#modalNewBooking').on('show.bs.modal', function(e) {
     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
