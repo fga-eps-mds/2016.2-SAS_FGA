@@ -28,7 +28,7 @@
 
 
 {% block extrastyle %}
-<link rel="stylesheet" href="{% static 'plugins/datepicker/bootstrap-datepicker.css' %}" />
+<link rel="stylesheet" href="{% static 'jquery/ui/jquery-ui.min.css' %}" />
 <link rel="stylesheet" href="{% static 'plugins/selectize/css/selectize.bootstrap3.min.css' %}" />
 {% endblock %}
 
@@ -89,6 +89,6 @@ $(document).ready(function () {
 
 });
 </script>
-<script src= "{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+<script src= "{% static 'jquery/ui/jquery-ui.min.js' %}"></script>
 <script src= "{% static 'plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
 {% endblock %}
