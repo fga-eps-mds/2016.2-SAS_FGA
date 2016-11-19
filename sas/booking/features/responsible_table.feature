@@ -9,7 +9,7 @@ Scenario: No booking in the day
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/searchbookingg/"
     And I choose "Responsible"
-    And I fill in "Data:" with "11/21/2018"
+    And I fill in "Date:" with "11/21/2018"
     And I select "lucas@gmail.com" from "Responsible"
     Then I press "Search"
     Then I should see "Responsible"
