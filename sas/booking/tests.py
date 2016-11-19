@@ -23,7 +23,7 @@ from booking.views import deny_booking
 from booking.templatetags.check_table import search_building
 from booking.templatetags.check_table import search_place, search_hour
 from booking.templatetags.check_table import search_date
-from booking.templatetags.check_table import search_user, aux_search_date()
+from booking.templatetags.check_table import search_user, aux_search_date
 from booking.templatetags.booking_handling import is_all_bookings
 
 
