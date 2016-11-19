@@ -134,7 +134,7 @@ def new_booking(step, booking_name, building, place_name, start_date, end_date, 
     booking.place.building.name = building
     booking.responsible = responsible
     booking.save()
-    tag_o = Tag(name=tag)
+    tag_o = Tag(name="Software")
     tag_o.save()
     booking.tags.add(tag_o)
     for day in range(0, 10):
