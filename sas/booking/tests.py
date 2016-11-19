@@ -11,6 +11,7 @@ from booking.views import delete_booking
 from booking.views import search_booking_booking_name_week
 from booking.views import new_booking, search_booking_day_room
 from booking.views import search_booking_building_day
+from booking.views import search_booking_responsible
 from booking.urls import *
 from user.models import UserProfile
 from booking.forms import BookingForm, SearchBookingForm
@@ -244,6 +245,24 @@ class TestSearchBooking(TestCase):
                                                 form_booking=form)
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, 'Booking')
+
+    def test_search_booking_responsible(self):
+        factory = self.factory
+        start_date = datetime.now().date()
+        booking_responsible = Booking.objects.get(responsible='rocha.carla@gmail.com')
+
+        parameters = {'search_options': 'opt_responsible',
+                      'responsible': booking_responsible,
+                      'start_date': start_date}
+
+        form = SearchBookingForm(data=parameters)
+
+        form.is_valid()
+        request = factory.post('/booking/searchbookingg', parameters)
+        page = search_booking_responsible(request=request,
+                                                form_booking=form)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, 'Responsible')
 
     def test_search_booking_post_not_valid(self):
         client = self.client
