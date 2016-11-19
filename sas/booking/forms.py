@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from booking.models import (WEEKDAYS, Booking, BookTime, Place, Building,
-                            date_range, Validation)
+                            date_range, Validation, Tag)
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
@@ -13,6 +13,7 @@ from user.models import UserProfile
 import copy
 import re
 import traceback
+import ast
 
 
 class SearchBookingForm(forms.Form):
@@ -175,7 +176,14 @@ class BookingForm(forms.Form):
                 choices=UserProfile.get_users(),
             )
         )
-
+        self.fields['tags'] = forms.CharField(
+            label=_('Tags (optional):'),
+            required=False,
+            widget=forms.widgets.SelectMultiple(
+                attrs={'class': 'selectize_multiple'},
+                choices=Tag.get_tags(),
+            )
+        )
     hour = datetime.strptime("08:00", "%H:%M").time()
     hour2 = datetime.strptime("10:00", "%H:%M").time()
     hour3 = datetime.strptime("12:00", "%H:%M").time()
@@ -271,6 +279,15 @@ class BookingForm(forms.Form):
                                                date_booking=day)
                         newBookTime.save()
                         booking.time.add(newBookTime)
+                tags = self.cleaned_data['tags']
+                if tags:
+                    tags = ast.literal_eval(tags)
+                    for name in tags:
+                        if not Tag.objects.filter(name=name).exists():
+                            tag = Tag(name=name)
+                            tag.save()
+                        tag = Tag.objects.get(name=name)
+                        booking.tags.add(tag)
                 booking.save()
         except Exception as e:
             booking.delete()

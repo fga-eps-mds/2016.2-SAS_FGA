@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render, redirect, get_object_or_404
 from booking.forms import BookingForm, SearchBookingForm
-from booking.models import Booking, BookTime, Place, Building
+from booking.models import Booking, BookTime, Place, Building, Tag
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from sas.decorators.decorators import required_to_be_admin
@@ -233,7 +233,7 @@ def new_booking(request):
                 return render(request, 'booking/showDates.html',
                               {'booking': booking})
             else:
-                messages.error(request, _("Booking alread exists"))
+                messages.error(request, _("Booking already exists"))
     else:
         form_booking = BookingForm()
     return render(request, 'booking/newBooking.html',
@@ -380,3 +380,25 @@ def show_booktimes(request, booking_id):
         return all_bookings(request)
     else:
         return search_booking(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+def booking_details(request, booking_id):
+    try:
+        booking = Booking.objects.get(pk=booking_id)
+        tags = booking.tags.all()
+        return render(request, 'booking/bookingDetails.html',
+                      {'booking': booking, 'tags': tags})
+    except:
+        messages.error(request, _('Booking not found.'))
+    if request.user.profile_user.is_admin():
+        return all_bookings(request)
+    else:
+        return search_booking(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+def tagged_bookings(request, tag_id):
+    bookings = Booking.objects.filter(tags__id=tag_id).prefetch_related('tags')
+    return render(request, 'booking/searchBooking.html',
+                  {'bookings': bookings})

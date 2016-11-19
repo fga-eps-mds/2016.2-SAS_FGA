@@ -24,8 +24,8 @@ from booking.views import approve_booking
 from booking.views import deny_booking
 from booking.templatetags.check_table import search_building
 from booking.templatetags.check_table import search_place, search_hour
-from booking.templatetags.check_table import search_date
 from booking.templatetags.check_table import search_user, aux_search_date
+from booking.templatetags.check_table import search_date, search_tags
 from booking.templatetags.booking_handling import is_all_bookings
 
 
@@ -162,7 +162,7 @@ class TestNewBooking(TestCase):
             'end_hour': self.hour2, 'start_date': self.start_date,
             'end_date': self.end_date, 'building': self.building_name[0].pk,
             'place': self.place_name[0].pk, 'week_days': self.week_days,
-            'date_options': 'opt_select_date'}
+            'date_options': 'opt_select_date', 'tags': 'hello'}
 
     def test_get_request_logged(self):
         request = self.factory.get('/booking/newbooking/')
@@ -652,11 +652,12 @@ class ShowBookTimesTest(TestCase):
     def setUp(self):
         self.user = UserProfileFactory.create()
         self.user.user.set_password('1234567')
-        self.user.make_as_admin()
         self.user.save()
         self.client = Client()
 
     def test_booking_not_found(self):
+        self.user.make_as_admin()
+        self.user.save()
         self.client.login(username=self.user.user.username, password='1234567')
         url = reverse('booking:showbooktimes', args=(0,))
         response = self.client.get(url)
@@ -676,3 +677,61 @@ class TemplateTagsTest(TestCase):
     def test_aux_search_date(self):
         days_n = (7, 8)
         self.assertEquals(aux_search_date(7, 8), days_n)
+
+
+class TestBookingTags(TestCase):
+    def setUp(self):
+        self.booking = BookingFactory.create()
+        self.booking.place.is_laboratory = True
+        self.booking.save()
+        self.tag = Tag(name="teste")
+        self.tag.save()
+        self.tag2 = Tag(name="teste2")
+        self.tag2.save()
+        self.user = UserProfileFactory.create()
+        self.user.user.set_password('1234567')
+        self.user.save()
+        self.client = Client()
+        self.booking.tags.add(self.tag)
+        self.booking.save()
+
+    def test_booking_details_not_found_admin(self):
+        self.user.make_as_admin()
+        self.user.save()
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:bookingdetails', args=(0,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
+
+    def test_booking_details_not_found_user(self):
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:bookingdetails', args=(0,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
+
+    def test_booking_details_found(self):
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:bookingdetails', args=(self.booking.pk,))
+        response = self.client.get(url)
+        self.assertContains(response, self.booking.name)
+
+    def test_tagged_bookings_found(self):
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:taggedbookings', args=(self.tag.pk,))
+        response = self.client.get(url)
+        self.assertContains(response, self.booking.name)
+
+    def test_tagged_bookings_not_found(self):
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:taggedbookings', args=(self.tag2.pk,))
+        response = self.client.get(url)
+        self.assertContains(response, "0")
+
+    def test_get_tags(self):
+        self.assertEquals(Tag.get_tags()[1][0], self.tag)
+
+    def test_search_tags_tag(self):
+        self.assertEquals(search_tags()[1][0], self.tag)
+
+    def test_print_tags(self):
+        self.assertEquals("teste", self.tag.__str__())
