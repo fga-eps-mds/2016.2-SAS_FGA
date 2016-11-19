@@ -81,7 +81,6 @@ class Tag(models.Model):
     def get_tags():
         tags = Tag.objects.all()
         choices = []
-        print(tags)
         for tag in tags:
             new_choice = (tag, tag)
             choices.append(new_choice)
@@ -209,6 +208,7 @@ class Validation():
         for character in '@#$%^&+=/\{[]()}-_+=*!§|':
             if character in string:
                 return True
+
 
 def date_range(start_date, end_date):
     return [start_date + timedelta(days=x)
