@@ -159,7 +159,7 @@ class TestNewBooking(TestCase):
             'end_hour': self.hour2, 'start_date': self.start_date,
             'end_date': self.end_date, 'building': self.building_name[0].pk,
             'place': self.place_name[0].pk, 'week_days': self.week_days,
-            'date_options': 'opt_select_date'}
+            'date_options': 'opt_select_date', 'tags':'hello'}
 
     def test_get_request_logged(self):
         request = self.factory.get('/booking/newbooking/')
