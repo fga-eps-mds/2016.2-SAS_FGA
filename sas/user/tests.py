@@ -184,7 +184,7 @@ class UserProfileTest(TestCase):
         if(password_form.is_valid()):
             valid = passowrd_form.is_passoword_valid()
             self.assertTrue(valid)
-      
+
     def test_clean(self):
         new_form = NewUserForm()
         if(new_form.is_valid()):
