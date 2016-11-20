@@ -163,7 +163,7 @@ class UserProfileTest(TestCase):
         user_form.repeat_password = "1234567"
         user_form.registration_number = "123456789"
         user_form.category = 1
-        user_form.engineering = "Sofware"
+        user_form.engineering = "Software"
         if(user_form.is_valid()):
             new_user = user_form.insert()
             self.assertEqual(new_user.engineering, "Software")
@@ -182,7 +182,7 @@ class UserProfileTest(TestCase):
         password_form.new_password = "1234567"
         password_form.renew_password = "1234567"
         if(password_form.is_valid()):
-            valid = passowrd_form.is_passoword_valid()
+            valid = password_form.is_password_valid()
             self.assertTrue(valid)
 
     def test_clean(self):
