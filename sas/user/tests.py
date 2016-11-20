@@ -6,7 +6,7 @@ from user.views import EditUserView
 from user.factories import UserProfileFactory
 from django.contrib.auth import logout
 from django.urls import reverse
-from user.forms import SettingsForm, UserForm, PasswordForm
+from user.forms import *
 from datetime import datetime, timedelta
 from user.views import settings
 
@@ -184,6 +184,12 @@ class UserProfileTest(TestCase):
         if(password_form.is_valid()):
             valid = passowrd_form.is_passoword_valid()
             self.assertTrue(valid)
+      
+    def test_clean(self):
+        new_form = NewUserForm()
+        if(new_form.is_valid()):
+            clean = new_form.clean()
+            self.assertTrue(clean)
 
 
 class ValidationTest(TestCase):
