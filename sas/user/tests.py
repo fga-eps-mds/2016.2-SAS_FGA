@@ -61,7 +61,6 @@ class EditUserTest(TestCase):
         response = client.post('/user/change/', parameters)
         self.assertContains(response, 'Current password is wrong')
 
-
 class DeleteUserTest(TestCase):
     def setUp(self):
         self.userprofile = UserProfile()
