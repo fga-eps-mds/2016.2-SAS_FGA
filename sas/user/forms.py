@@ -77,8 +77,8 @@ class PasswordForm(UserProfileForm):
         password = cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         if user is None:
-            self.add_error('password', _('Current \
-                                          password is wrong'))
+            msg = 'Current password is wrong'
+            self.add_error('password', _(msg))
             return False
         return True
 
