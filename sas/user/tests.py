@@ -6,7 +6,7 @@ from user.views import EditUserView
 from user.factories import UserProfileFactory
 from django.contrib.auth import logout
 from django.urls import reverse
-from user.forms import SettingsForm, UserForm
+from user.forms import SettingsForm, UserForm, PasswordForm
 from datetime import datetime, timedelta
 from user.views import settings
 
@@ -167,6 +167,23 @@ class UserProfileTest(TestCase):
         if(user_form.is_valid()):
             new_user = user_form.insert()
             self.assertEqual(new_user.engineering, "Software")
+            self.assertEqual(new_user.user.password, "1234567")
+            self.assertEqual(new_user.registration_number, "123456789")
+            self.assertEqual(new_user.category, 1)
+
+    def test_is_password_valid(self):
+        self.userprofile.name("Gustavo Rodrigues Coelho")
+        self.userprofile.registration_number = "11/0030559"
+        self.userprofile.user.username = "gutorc@hotmail.com"
+        self.userprofile.user.email = "gutorc@hotmail.com"
+        self.userprofile.user.set_password("1234567")
+        self.userprofile.save()
+        password_form = PasswordForm()
+        password_form.new_password = "1234567"
+        password_form.renew_password = "1234567"
+        if(password_form.is_valid()):
+            valid = passowrd_form.is_passoword_valid()
+            self.assertTrue(valid)
 
 class ValidationTest(TestCase):
     def setUp(self):
