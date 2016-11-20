@@ -11,8 +11,10 @@ from booking.views import delete_booking
 from booking.views import search_booking_booking_name_week
 from booking.views import new_booking, search_booking_day_room
 from booking.views import search_booking_building_day
+from booking.views import search_booking_responsible
 from booking.urls import *
 from user.models import UserProfile, Settings
+from booking.models import Booking
 from booking.forms import BookingForm, SearchBookingForm
 from dateutil import parser
 from booking.views import search_booking_room_period
@@ -22,7 +24,8 @@ from booking.views import approve_booking
 from booking.views import deny_booking
 from booking.templatetags.check_table import search_building
 from booking.templatetags.check_table import search_place, search_hour
-from booking.templatetags.check_table import search_date
+from booking.templatetags.check_table import search_user, aux_search_date
+from booking.templatetags.check_table import search_date, search_tags
 from booking.templatetags.booking_handling import is_all_bookings
 
 
@@ -159,7 +162,7 @@ class TestNewBooking(TestCase):
             'end_hour': self.hour2, 'start_date': self.start_date,
             'end_date': self.end_date, 'building': self.building_name[0].pk,
             'place': self.place_name[0].pk, 'week_days': self.week_days,
-            'date_options': 'opt_select_date'}
+            'date_options': 'opt_select_date', 'tags': 'hello'}
 
     def test_get_request_logged(self):
         request = self.factory.get('/booking/newbooking/')
@@ -244,6 +247,24 @@ class TestSearchBooking(TestCase):
                                                 form_booking=form)
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, 'Booking')
+
+    def test_search_booking_responsible(self):
+        factory = self.factory
+        date = datetime.strptime("22112016", "%d%m%Y")
+        booking_responsible = 'rocha.carla@gmail.com'
+
+        parameters = {'search_options': 'opt_responsible',
+                      'responsible': booking_responsible,
+                      'start_date': date}
+
+        form = SearchBookingForm(data=parameters)
+
+        form.is_valid()
+        request = factory.post('/booking/searchbookingg', parameters)
+        page = search_booking_responsible(request=request,
+                                          form_booking=form)
+        self.assertEqual(page.status_code, 200)
+        self.assertContains(page, 'Responsible')
 
     def test_search_booking_post_not_valid(self):
         client = self.client
@@ -406,6 +427,30 @@ class TestSearchBookingForm(TestCase):
         page = search_booking_building_day(request=request, form_booking=form)
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, 'Occupation')
+
+
+class BookingTest(TestCase):
+    def setup(self):
+        self.booking = Booking()
+        self.place = Place()
+
+    def test_get_bookings(self):
+        self.booking = Booking.objects.order_by('name').first()
+        result = Booking.get_bookings()
+        self.assertEqual(result[0][0], self.booking.name)
+
+    def test_get_responsibles(self):
+        result = Booking.get_responsibles()
+        self.booking = Booking.objects.first()
+        self.assertEqual(result[1][1], self.booking.responsible)
+
+    def test_get_places(self):
+        self.booking = Booking.objects.all()
+        self.place = Place.objects.get(id=8)
+        result_place, result_place_name = Booking.get_places(self.booking)
+        place_name = self.place.name.split('-')
+        self.assertEqual(result_place[0], self.place)
+        self.assertEqual(result_place_name[0], place_name[1])
 
 
 class ValidationTest(TestCase):
@@ -607,11 +652,12 @@ class ShowBookTimesTest(TestCase):
     def setUp(self):
         self.user = UserProfileFactory.create()
         self.user.user.set_password('1234567')
-        self.user.make_as_admin()
         self.user.save()
         self.client = Client()
 
     def test_booking_not_found(self):
+        self.user.make_as_admin()
+        self.user.save()
         self.client.login(username=self.user.user.username, password='1234567')
         url = reverse('booking:showbooktimes', args=(0,))
         response = self.client.get(url)
@@ -623,3 +669,69 @@ class TemplateTagsTest(TestCase):
         name = 'All Bookings'
         result = is_all_bookings(name)
         self.assertTrue(result)
+
+    def test_search_user(self):
+        users = UserProfile.get_users()
+        self.assertEquals(search_user(), users)
+
+    def test_aux_search_date(self):
+        days_n = (7, 8)
+        self.assertEquals(aux_search_date(7, 8), days_n)
+
+
+class TestBookingTags(TestCase):
+    def setUp(self):
+        self.booking = BookingFactory.create()
+        self.booking.place.is_laboratory = True
+        self.booking.save()
+        self.tag = Tag(name="teste")
+        self.tag.save()
+        self.tag2 = Tag(name="teste2")
+        self.tag2.save()
+        self.user = UserProfileFactory.create()
+        self.user.user.set_password('1234567')
+        self.user.save()
+        self.client = Client()
+        self.booking.tags.add(self.tag)
+        self.booking.save()
+
+    def test_booking_details_not_found_admin(self):
+        self.user.make_as_admin()
+        self.user.save()
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:bookingdetails', args=(0,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
+
+    def test_booking_details_not_found_user(self):
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:bookingdetails', args=(0,))
+        response = self.client.get(url)
+        self.assertContains(response, 'Booking not found.')
+
+    def test_booking_details_found(self):
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:bookingdetails', args=(self.booking.pk,))
+        response = self.client.get(url)
+        self.assertContains(response, self.booking.name)
+
+    def test_tagged_bookings_found(self):
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:taggedbookings', args=(self.tag.pk,))
+        response = self.client.get(url)
+        self.assertContains(response, self.booking.name)
+
+    def test_tagged_bookings_not_found(self):
+        self.client.login(username=self.user.user.username, password='1234567')
+        url = reverse('booking:taggedbookings', args=(self.tag2.pk,))
+        response = self.client.get(url)
+        self.assertContains(response, "0")
+
+    def test_get_tags(self):
+        self.assertEquals(Tag.get_tags()[1][0], self.tag)
+
+    def test_search_tags_tag(self):
+        self.assertEquals(search_tags()[1][0], self.tag)
+
+    def test_print_tags(self):
+        self.assertEquals("teste", self.tag.__str__())

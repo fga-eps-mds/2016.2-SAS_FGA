@@ -126,16 +126,16 @@ class UserForm(UserProfileForm):
             self.fields["email"].initial = instance.user.email
             self.fields["category"].initial = instance.category
             self.fields["name"].initial = instance.full_name()
-            registration_number = instance.registration_number
-            self.fields["registration_number"].initial = registration_number
+            instance = instance.registration_number
+            self.fields["registration_number"].initial = instance
 
     def set_fields(self, userprofile):
         userprofile.name(self.cleaned_data.get('name'))
         userprofile.user.email = self.cleaned_data.get('email')
         userprofile.user.username = userprofile.user.email
         userprofile.engineering = self.cleaned_data.get('engineering')
-        registration_number = self.cleaned_data.get('registration_number')
-        userprofile.registration_number = registration_number
+        userprofile.registration_number = self.cleaned_data.get(
+            'registration_number')
         userprofile.category = self.cleaned_data.get('category')
 
     def update(self, userprofile):
@@ -162,7 +162,7 @@ class UserForm(UserProfileForm):
 
     def clean_registration_number(self):
         rn = self.cleaned_data["registration_number"]
-        if hasattr(self, "instance") and \
+        if hasattr(self, "instance")and \
            self.instance.registration_number == rn:
             return rn
         elif UserProfile.objects.filter(registration_number=rn).exists():

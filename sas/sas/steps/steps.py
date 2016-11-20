@@ -2,8 +2,8 @@ from aloe import step, world
 from aloe_webdriver.util import find_any_field, find_field_by_value
 from aloe_webdriver import TEXT_FIELDS
 from selenium.common.exceptions import NoSuchElementException
-from booking.models import Booking, Place, BookTime, Building, date_range
 from user.models import UserProfile, CATEGORY, ENGINEERING, Settings
+from booking.models import Booking, Place, BookTime, Building, date_range, Tag
 from django.contrib.auth.models import User
 from django.test import Client
 from django.core.management import call_command
@@ -138,6 +138,57 @@ def new_booking(step, booking_name, building, place_name, start_date, end_date, 
         booking.time.add(book)
     booking.save()
 
+@step(r'I register the booking "(.*)" with the building "(.*)" with the place name "(.*)" and start_date "(.*)" and end_date "(.*)" of responsible "(.*)"')
+def new_booking(step, booking_name, building, place_name, start_date, end_date, responsible):
+    booking = Booking()
+    booking.user = User()
+    booking.user = User.objects.get(username=responsible)
+    booking.name = booking_name
+    booking.start_date = start_date
+    booking.end_date = end_date
+    booking.place = Place()
+    booking.place.name = place_name
+    booking.place.building = Building()
+    booking.place.building.name = building
+    booking.responsible = responsible
+    booking.save()
+    tag_o = Tag(name="Software")
+    tag_o.save()
+    booking.tags.add(tag_o)
+    for day in range(0, 10):
+        book = BookTime()
+        book.date_booking = parser.parse(start_date) + timedelta(days=day)
+        book.start_hour = "20:00"
+        book.end_hour = "22:00"
+        book.save()
+        booking.time.add(book)
+    booking.save()        
+
+@step(r'I register the tagged booking "(.*)" with the building "(.*)" with the place name "(.*)" and start_date "(.*)" and end_date "(.*)" of user "(.*)" and tag "(.*)"')
+def new_tagged_booking(step, booking_name, building, place_name, start_date, end_date, username, tag):
+    booking = Booking()
+    booking.user = User()
+    booking.user = User.objects.get(username=username)
+    booking.name = booking_name
+    booking.start_date = start_date
+    booking.end_date = end_date
+    booking.place = Place()
+    booking.place.name = place_name
+    booking.place.building = Building()
+    booking.place.building.name = building
+    booking.responsible = username
+    booking.save()
+    tag_o = Tag(name=tag)
+    tag_o.save()
+    booking.tags.add(tag_o)
+    for day in range(0, 10):
+        book = BookTime()
+        book.date_booking = parser.parse(start_date) + timedelta(days=day)
+        book.start_hour = "20:00"
+        book.end_hour = "22:00"
+        book.save()
+        booking.time.add(book)
+    booking.save()
 
 @step(r'I login in with email "(.*)" and password "(.*)"')
 def login_user(step, email, password):
