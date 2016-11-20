@@ -6,7 +6,7 @@ from user.views import EditUserView
 from user.factories import UserProfileFactory
 from django.contrib.auth import logout
 from django.urls import reverse
-from user.forms import SettingsForm
+from user.forms import SettingsForm, UserForm
 from datetime import datetime, timedelta
 from user.views import settings
 
@@ -158,6 +158,15 @@ class UserProfileTest(TestCase):
         userprofile.make_as_academic_staff()
         self.assertTrue(userprofile.is_academic_staff())
 
+    def test_insert(self):
+        user_form = UserForm()
+        user_form.repeat_password = "1234567"
+        user_form.registration_number = "123456789"
+        user_form.category = 1
+        user_form.engineering = "Sofware"
+        if(user_form.is_valid()):
+            new_user = user_form.insert()
+            self.assertEqual(new_user.engineering, "Software")
 
 class ValidationTest(TestCase):
     def setUp(self):
