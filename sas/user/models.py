@@ -7,6 +7,10 @@ from django.contrib.auth.models import Group
 CATEGORY = (('', '----'), ('1', _('Student')),
             ('2', _('Teaching Staff')), ('3', _('Employees')))
 
+ENGINEERING = (('0', '----'), ('1', _('Software')), ('2', _('Eletronic')),
+               ('3', _('Energy')), ('4', _('Automotive')),
+               ('5', _('Aerospace')), ('6', _('Engineerings')))
+
 
 class UserProfile(models.Model):
     registration_number = models.CharField(
@@ -15,6 +19,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 related_name="profile_user")
     category = models.CharField(choices=CATEGORY, max_length=20)
+    engineering = models.CharField(choices=ENGINEERING, max_length=15,
+                                   default=1)
 
     def create_user(self):
         if not hasattr(self, "user"):

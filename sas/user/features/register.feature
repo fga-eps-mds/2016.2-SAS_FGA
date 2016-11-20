@@ -223,4 +223,26 @@ Scenario: User informs a password with size bigger than fifteen characters
   Then I press "Register"
   Then I should see an alert with text "Password must be between 6 and 15 characters."
 
+Scenario: Creating User with no engineering
+  When I visit site page "/user/newuser"
+  And I type in "120030551" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "email@gmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  And I select "----" from "Engineering"
+  Then I press "Register"
+  Then I should see "You have been registered"
 
+Scenario: Creating User with Software Engineering
+  When I visit site page "/user/newuser"
+  And I type in "120030551" to "Registration Number"
+  And I select "Student" from "Category"
+  And I fill in "Name" with "Pedro Pereira Pinto"
+  And I fill in "Email" with "email@gmail.com"
+  And I type in "teste123" to "Password"
+  And I type in "teste123" to "Repeat Password"
+  And I select "Software" from "Engineering"
+  Then I press "Register"
+  Then I should see "You have been registered"

@@ -2,6 +2,7 @@ Feature: EditUser
 
 Background:
 	Given I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574"
+    Given I register the user "luis@gmail.com" with the password "123456" and registration number "150016310" and engineering "Software" and category "Student"
 
 Scenario: Invalid email
 	When I login in with email "lucas@gmail.com" and password "123456"
@@ -88,3 +89,17 @@ Scenario: New Password do not match
 	And I type in "asdfgh3iu4i3" to id "renew_password"
 	And I press "Change Password"
 	Then I should see "Passwords do not match"
+
+Scenario: Changing to no engineering
+    When I login in with email "luis@gmail.com" and password "123456"
+    Then I visit site page "/user/edituser/"
+    And I select "----" from "Engineering"
+    And I press "Save Data"
+    Then I should see "Your data has been updated"
+
+Scenario: Changing to another engineering
+    When I login in with email "luis@gmail.com" and password "123456"
+    Then I visit site page "/user/edituser/"
+    And I select "Automotive" from "Engineering"
+    And I press "Save Data"
+    Then I should see "Your data has been updated"

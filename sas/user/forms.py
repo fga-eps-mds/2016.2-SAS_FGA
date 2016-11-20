@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm
 from .models import UserProfile, Validation
-from .models import CATEGORY, Settings
+from .models import CATEGORY, ENGINEERING, Settings
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -77,7 +77,8 @@ class PasswordForm(UserProfileForm):
         password = cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         if user is None:
-            self.add_error('password', _('Current password is wrong'))
+            msg = 'Current password is wrong'
+            self.add_error('password', _(msg))
             return False
         return True
 
@@ -96,6 +97,21 @@ class UserForm(UserProfileForm):
         label=_('Repeat Password:'),
         required=False,
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
+    registration_number = forms.CharField(
+        label=_('Registration number:'),
+        widget=forms.TextInput(attrs={'placeholder': ''}))
+    category = forms.ChoiceField(choices=CATEGORY, label=_('Category:'))
+    engineering = forms.ChoiceField(choices=ENGINEERING,
+                                    label=_('Engineering:'))
+
+    def save(self, force_insert=False, force_update=False,
+             commit=True, is_edit_form=False):
+        userprofile = super(UserForm, self).save(commit=False)
+
+        # if it is a new user
+        if not hasattr(userprofile, 'user'):
+            userprofile.user = User()
+            userprofile.user.set_password(self.cleaned_data.get('password'))
 
     def __init__(self, *args, **kwargs):
         instance = kwargs.pop("instance", None)
@@ -117,6 +133,7 @@ class UserForm(UserProfileForm):
         userprofile.name(self.cleaned_data.get('name'))
         userprofile.user.email = self.cleaned_data.get('email')
         userprofile.user.username = userprofile.user.email
+        userprofile.engineering = self.cleaned_data.get('engineering')
         userprofile.registration_number = self.cleaned_data.get(
             'registration_number')
         userprofile.category = self.cleaned_data.get('category')
@@ -185,14 +202,16 @@ class UserForm(UserProfileForm):
     class Meta:
         model = UserProfile
         fields = ['name', 'registration_number',
-                  'category', 'email', 'password', 'repeat_password']
+                  'category', 'email', 'password', 'repeat_password',
+                  'engineering']
 
 
 class EditUserForm(UserForm):
 
     class Meta:
         model = UserProfile
-        fields = ['name', 'registration_number', 'category', 'email']
+        fields = ['name', 'registration_number', 'category',
+                  'email', 'engineering']
 
 
 class SettingsForm(forms.Form):
