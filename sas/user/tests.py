@@ -185,6 +185,7 @@ class UserProfileTest(TestCase):
             valid = passowrd_form.is_passoword_valid()
             self.assertTrue(valid)
 
+
 class ValidationTest(TestCase):
     def setUp(self):
         self.validation = Validation()
