@@ -688,6 +688,11 @@ class TemplateTagsTest(TestCase):
         pk = str(places_list[0].pk)
         self.assertEqual(search_place(places_list, 0), pk)
 
+    def test_search_building(self):
+        places_list = list(Place.objects.all())
+        pk = str(places_list[0].building.pk)
+        self.assertEqual(search_building(places_list, 0), pk)        
+
 
 
 class TestBookingTags(TestCase):
