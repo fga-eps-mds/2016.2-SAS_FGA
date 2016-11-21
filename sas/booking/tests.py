@@ -683,6 +683,12 @@ class TemplateTagsTest(TestCase):
         nothing = 0
         self.assertEqual(status_glyphicon(nothing), None)
 
+    def test_search_place(self):
+        places_list = list(Place.objects.all())
+        pk = str(places_list[0].pk)
+        self.assertEqual(search_place(places_list, 0), pk)
+
+
 
 class TestBookingTags(TestCase):
     def setUp(self):
