@@ -111,37 +111,15 @@ class Booking(models.Model):
                 " - " + str(self.start_date) + " - " + str(self.end_date))
 
     def exists(self, start_hour, end_hour, week_days):
-        str_weekdays = []
-        if not week_days:
-            return True
-        for day in week_days:
-                new_day = int(day) + 1 % 6
-                str_weekdays.append("'" + str(new_day) + "'")
-
-        str_weekdays = ",".join(str_weekdays)
-        sql = """select count(*) from booking_booking_time bbt
-               inner join booking_booktime bt on bbt.booktime_id = bt.id
-               inner join booking_booking bb on bbt.booking_id = bb.id
-               inner join booking_place bp on bb.place_id = bp.id"""
-        sql += " where bt.date_booking >= date('" + (
-               self.start_date.strftime("%Y-%m-%d") + "')")
-        sql += " and bt.date_booking <= date('" + (
-               self.end_date.strftime("%Y-%m-%d") + "')")
-        sql += " and bt.start_hour <= time('" + (
-               start_hour.strftime("%H:%M:%S") + "')")
-        sql += " and bt.end_hour >= time('" + (
-               end_hour.strftime("%H:%M:%S") + "')")
-        sql += " and bb.status = 2"
-        sql += " and strftime('%w',bt.date_booking) IN (" + str_weekdays + ")"
-        sql += " and bp.id = '" + str(self.place.pk) + "'"
-
-        with connection.cursor() as cursor:
-            cursor.execute(sql)
-            row = cursor.fetchone()
-        if row[0] > 0:
-            return True
-        else:
-            return False
+        week_days = [1 if int(x) == 6 else int(x) + 2 for x in week_days]
+        return Booking.objects.filter(place_id = self.place_id,
+                                   time__date_booking__gte = self.start_date,
+                                   time__date_booking__lt = self.end_date,
+                                   time__start_hour = start_hour,
+                                   time__end_hour = end_hour,
+                                   time__date_booking__week_day__in = week_days 
+                                   ).exists()
+        
 
     def save(self, *args, **kwargs):
         if (self.place.is_laboratory and not
