@@ -36,14 +36,7 @@
 <script src="{% static 'plugins/select2/js/select2.js' %}"> </script>
 <script type="text/javascript">
 $(function () {
-	$('.datepicker1').datepicker({
-		inline: true,
-		sideBySide: true,
-		format: '{% trans "mm/dd/yyyy" %}',
-		language: '{% trans "en" %}',
-		autoclose: true,
-	});
-
+	
   $(".select2").select2({
 		theme: "classic"
 	});
@@ -115,6 +108,4 @@ $(document).ready(function () {
 });
 
 </script>
-<script src= "{% static 'jquery/ui/jquery-ui.min.js' %}"></script>
-<script src= "{% static 'plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
 {% endblock %}
