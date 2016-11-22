@@ -209,6 +209,21 @@ $(document).ready(function(){
             }
         }
 
+        if(start_date == end_date) {
+            var weekdays = new Array(7);
+            weekdays[0] = "Sunday";
+            weekdays[1] = "Monday";
+            weekdays[2] = "Tuesday";
+            weekdays[3] = "Wednesday";
+            weekdays[4] = "Thursday";
+            weekdays[5] = "Friday";
+            weekdays[6] = "Saturday";
+
+            var weekdayOneDate = new Date(start_date);
+            ar_week_days.push(weekdayOneDate.getDay()+1);
+            ar_week_days_names = weekdays[weekdayOneDate.getDay()+1];
+        }
+
         $("#page1").hide();
         $("#page2").hide();
         $("#page3").show();
@@ -262,26 +277,9 @@ $(document).ready(function(){
         booking.post_form(building, start_date, end_date, start_hour, end_hour, ar_week_days, test);
     });
 
-    $("#next-finish").click(function(e){
-        e.preventDefault();
-
+    $("#next-finish").click(function(){
         place = $(".place-selected > input").attr("value");
         place_name = $(".place-selected").text();
-
-        if(start_date == end_date) {
-            var weekdays = new Array(7);
-            weekdays[0] = "Sunday";
-            weekdays[1] = "Monday";
-            weekdays[2] = "Tuesday";
-            weekdays[3] = "Wednesday";
-            weekdays[4] = "Thursday";
-            weekdays[5] = "Friday";
-            weekdays[6] = "Saturday";
-
-            var weekdayOneDate = new Date(start_date);
-            ar_week_days.push(weekdayOneDate.getDay()+1);
-            ar_week_days_names = weekdays[weekdayOneDate.getDay()+1];
-        }
 
         if(!$('td').hasClass("place-selected")) {
             booking.addSpan($('#booking-places'), 'Please, select a place to continue');
@@ -292,9 +290,7 @@ $(document).ready(function(){
         $('.help-block').empty();
     });
 
-    $("#btn-newbooking").click(function(e){
-        e.preventDefault();
-
+    $("#newbooking").submit(function(){
         var place = $(".place-selected > input").attr("value");
         var building = $(".building-selected > input").attr("value");
 
@@ -317,6 +313,5 @@ $(document).ready(function(){
 
             $("input[name='week_days'][value='" + day + "']").prop("checked", true);
         }        
-    });
-    
+    }); 
 });

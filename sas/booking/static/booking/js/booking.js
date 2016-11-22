@@ -121,7 +121,6 @@ function Booking() {
 
     this.check_weekdays = function(element, array) {
         if (array.length == 0) {
-            console.log('Entrou');
             this.addError(element.parent());
             this.addSpan(element, "Weekday(s) cannot be blank");
 
