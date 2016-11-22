@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-16 16:14-0200\n"
+"POT-Creation-Date: 2016-11-21 12:44-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,10 +43,6 @@ msgstr ""
 
 #: sas/templates/sas/base.html:112
 msgid "board"
-msgstr ""
-
-#: sas/templates/sas/faq.html:7
-msgid "My name"
 msgstr ""
 
 #: sas/templates/sas/faq.html:12
@@ -157,10 +153,14 @@ msgstr ""
 msgid "My Bookings"
 msgstr ""
 
-#: sas/templates/sas/menu.html:66
+#: sas/templates/sas/menu.html:67
+msgid "Settings"
+msgstr ""
+
+#: sas/templates/sas/menu.html:71
 msgid "Logout"
 msgstr ""
 
-#: sas/templates/sas/menu.html:74
+#: sas/templates/sas/menu.html:79
 msgid "Sign In | Sign Up"
 msgstr ""

@@ -2,6 +2,7 @@
 {% load static %}
 {% load i18n %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
   <meta charset="utf-8">
@@ -25,7 +26,6 @@
       <div class="col-md-4 col-md-offset-8" style="float:right; padding-top:5px;">
         <form action="{% url 'set_language' %}" method="post">
           {% csrf_token %}
-          <input name="next" type="hidden" value="{{ redirect_to }}" />
           <div class="input-group input-group-sm"  style="max-width:250px;">
             <select class="form-control" style="padding:5px" name="language">
               {% get_current_language as LANGUAGE_CODE %}
