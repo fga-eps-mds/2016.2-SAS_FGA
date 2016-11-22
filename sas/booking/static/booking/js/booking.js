@@ -119,6 +119,18 @@ function Booking() {
         return true;
     }
 
+    this.check_weekdays = function(element, array) {
+        if (array.length == 0) {
+            console.log('Entrou');
+            this.addError(element.parent());
+            this.addSpan(element, "Weekday(s) cannot be blank");
+
+            return false;
+        }
+
+        return true;
+    }
+
     this.post_form = function(building, start_date, end_date, start_hour, end_hour, week_days, callback) {
         var place = new Place(1, "teste");
 

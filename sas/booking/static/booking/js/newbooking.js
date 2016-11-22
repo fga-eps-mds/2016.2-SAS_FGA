@@ -164,6 +164,14 @@ $(document).ready(function(){
         start_hour = $( "#slider_begin_time" ).slider("value") + ":00:00";
         end_hour = $( "#slider_end_time" ).slider("value") + ":00:00";
 
+        ar_week_days = [];
+        ar_week_days_names = [];
+
+        $("input[name=week_days]:checked").each(function(index){
+            ar_week_days.push($(this).val());
+            ar_week_days_names.push($(this).parent().text());
+        });
+
         if($('input[name=times]:checked', '#page2').val() == "interval") {
             var startDate = $("#id_start_date").val();
             var endDate = $("#id_end_date").val();
@@ -177,6 +185,10 @@ $(document).ready(function(){
             if(!booking.check_date($("#id_start_date")) || !booking.check_date($("#id_end_date")) ||
                 !booking.check_interval_date($("#id_start_date"), $("#id_end_date")) ||
                 !booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'))) {
+                return 0;
+            }
+
+            else if(!booking.check_weekdays($('#id_week_days'), ar_week_days)) {
                 return 0;
             }
         }
@@ -197,21 +209,6 @@ $(document).ready(function(){
             }
         }
 
-        booking.removeError($("#id_one_day_date"));
-        booking.removeError($("#id_start_date"));
-        booking.removeError($("#id_end_date"));
-
-        booking.removeError($("#input_slider_begin_time"));
-        booking.removeError($("#input_slider_end_time"));
-
-        ar_week_days = [];
-        ar_week_days_names = [];
-
-        $("input[name=week_days]:checked").each(function(index){
-            ar_week_days.push($(this).val());
-            ar_week_days_names.push($(this).parent().text());
-        });
-
         $("#page1").hide();
         $("#page2").hide();
         $("#page3").show();
@@ -219,6 +216,13 @@ $(document).ready(function(){
         $("#booking-buildings").find(".place-span").remove();
 
         breadcrumbsadd(2);
+
+        booking.removeError($("#id_one_day_date"));
+        booking.removeError($("#id_start_date"));
+        booking.removeError($("#id_end_date"));
+
+        booking.removeError($("#input_slider_begin_time"));
+        booking.removeError($("#input_slider_end_time"));
 
         for(var i = 0; i < buildings.length; i++){
             var b = buildings[i];
@@ -258,7 +262,9 @@ $(document).ready(function(){
         booking.post_form(building, start_date, end_date, start_hour, end_hour, ar_week_days, test);
     });
 
-    $("#next-finish").click(function(){
+    $("#next-finish").click(function(e){
+        e.preventDefault();
+
         place = $(".place-selected > input").attr("value");
         place_name = $(".place-selected").text();
 
@@ -288,7 +294,7 @@ $(document).ready(function(){
 
     $("#btn-newbooking").click(function(e){
         e.preventDefault();
-        
+
         var place = $(".place-selected > input").attr("value");
         var building = $(".building-selected > input").attr("value");
 
