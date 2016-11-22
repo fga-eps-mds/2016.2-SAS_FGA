@@ -34,6 +34,20 @@ function Booking() {
         element.after("<span class='help-block'>" + text + "</span>");
     }
 
+    this.removeError = function(element) {
+        var text = document.getElementsByClassName('help-block');
+
+        if(element.id == 'input_slider_begin_time' || element.id == 'input_slider_end_time' || 
+            text.length) {
+
+            $('.help-block').remove(); 
+        }
+
+        if(element.parent().hasClass("has-error")) {
+            element.parent().removeClass("has-error");
+        }
+    }
+
     this.check_name_element = function(element) {
         var name = element.val();
 

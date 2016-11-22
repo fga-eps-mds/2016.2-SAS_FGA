@@ -157,6 +157,7 @@ $(document).ready(function(){
         $("#page4").hide();
 
         breadcrumbsadd(1);
+        booking.removeError($("#name_of_booking"));
     });
 
     $("#next-building").click(function() {
@@ -195,6 +196,13 @@ $(document).ready(function(){
                 return 0;
             }
         }
+
+        booking.removeError($("#id_one_day_date"));
+        booking.removeError($("#id_start_date"));
+        booking.removeError($("#id_end_date"));
+
+        booking.removeError($("#input_slider_begin_time"));
+        booking.removeError($("#input_slider_end_time"));
 
         ar_week_days = [];
         ar_week_days_names = [];
@@ -242,6 +250,7 @@ $(document).ready(function(){
         $("#page4").show();
 
         breadcrumbsadd(3);
+        $('.help-block').empty();
         //TODO: breadcrumps refresh
         $("#booking-places").find(".place-span").remove();
         //places = Place.all();
@@ -273,9 +282,13 @@ $(document).ready(function(){
             $('.help-block').css('text-align', 'center');
             return 0;
         }
+
+        $('.help-block').empty();
     });
 
-    $("#newbooking").submit(function(){
+    $("#btn-newbooking").click(function(e){
+        e.preventDefault();
+        
         var place = $(".place-selected > input").attr("value");
         var building = $(".building-selected > input").attr("value");
 
