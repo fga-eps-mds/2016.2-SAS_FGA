@@ -36,15 +36,11 @@ function Booking() {
 
     this.removeError = function(element) {
         var text = document.getElementsByClassName('help-block');
+        var error = document.getElementsByClassName('has-error');
 
-        if(element.id == 'input_slider_begin_time' || element.id == 'input_slider_end_time' || 
-            text.length) {
-
+        if(text.length || error.length) {
             $('.help-block').remove(); 
-        }
-
-        if(element.parent().hasClass("has-error")) {
-            element.parent().removeClass("has-error");
+            $('.has-error').removeClass("has-error"); 
         }
     }
 

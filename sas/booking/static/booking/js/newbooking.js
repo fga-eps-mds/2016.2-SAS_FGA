@@ -183,8 +183,11 @@ $(document).ready(function(){
             end_date = $.datepicker.formatDate( "yy-mm-dd", new Date(EndDateinISO));
 
             if(!booking.check_date($("#id_start_date")) || !booking.check_date($("#id_end_date")) ||
-                !booking.check_interval_date($("#id_start_date"), $("#id_end_date")) ||
-                !booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'))) {
+                !booking.check_interval_date($("#id_start_date"), $("#id_end_date"))) {
+                return 0;
+            }
+
+            else if(!booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'))) {
                 return 0;
             }
 
