@@ -70,6 +70,26 @@ class BookTime(models.Model):
             booking.time.remove(self)
             super(BookTime, self).delete()
 
+
+class Tag(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def get_tags():
+        tags = Tag.objects.all()
+        choices = []
+        for tag in tags:
+            new_choice = (tag, tag)
+            choices.append(new_choice)
+        choices = sorted(choices, key=lambda tag_tuple:
+                         tag_tuple[0].name)
+        choices.insert(0, ('', ''))
+        return choices
+
+
 BOOKING_STATUS = ((0, _("Denied")), (1, _("Pending")), (2, _("Approved")))
 
 
@@ -84,6 +104,7 @@ class Booking(models.Model):
     end_date = models.DateField(null=False, blank=False)
     status = models.PositiveSmallIntegerField(choices=BOOKING_STATUS,
                                               default=2)
+    tags = models.ManyToManyField(Tag, related_name="tags")
 
     def __str__(self):
         return (self.name + " " + self.user.email + " | " + str(self.place) +
@@ -171,6 +192,27 @@ class Booking(models.Model):
             new_choice = (booking['name'], booking['name'])
             choices = (new_choice,) + choices
         return choices
+
+    @staticmethod
+    def get_responsibles():
+        bookings = Booking.objects.values('responsible').distinct()
+        choices = ()
+        for booking in bookings:
+            new_choice = (booking['responsible'], booking['responsible'])
+            choices = (new_choice,) + choices
+        return choices
+
+    @staticmethod
+    def get_places(bookings):
+        place_name = []
+        place = []
+
+        for booking in bookings:
+            p = booking.place.name.split('-')
+            if (booking.status > 1) and (p[1] not in place_name):
+                place_name.append(p[1])
+                place.append(booking.place)
+        return place, place_name
 
 
 class Validation():

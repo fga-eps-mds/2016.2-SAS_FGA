@@ -1,6 +1,7 @@
 from django import template
 from datetime import timedelta, datetime
 from user.models import UserProfile
+from booking.models import Tag
 
 register = template.Library()
 
@@ -67,6 +68,9 @@ def search_place(place, count):
 
     if str(type(place)) == "<class 'django.db.models.query.QuerySet'>":
         return str(place[count].pk)
+
+    elif type(place) is list:
+        return str(place[count].pk)
     else:
         return str(place.pk)
 
@@ -76,6 +80,8 @@ def search_building(place, count):
 
     if str(type(place)) == "<class 'django.db.models.query.QuerySet'>":
         return str(place[count].building.pk)
+    elif type(place) is list:
+        return str(place[count].building.pk)
     else:
         return str(place.building.pk)
 
@@ -84,3 +90,9 @@ def search_building(place, count):
 def search_user():
     users = UserProfile.get_users()
     return users
+
+
+@register.simple_tag(name='search_tags')
+def search_tags():
+    tags = Tag.get_tags()
+    return tags
