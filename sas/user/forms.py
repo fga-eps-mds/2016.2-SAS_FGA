@@ -16,6 +16,7 @@ class UserProfileForm(forms.Form):
         label=_('Registration number:'),
         widget=forms.TextInput(attrs={'placeholder': ''}))
     category = forms.ChoiceField(choices=CATEGORY, label=_('Category:'))
+    engineering = forms.ChoiceField(choices=ENGINEERING, label=_('Engineering:'))
     email = forms.EmailField(
         label=_('Email:'),
         required=True,
@@ -35,6 +36,7 @@ class LoginForm(UserProfileForm):
         self.fields.pop("category")
         self.fields.pop("name")
         self.fields.pop("registration_number")
+        self.fields.pop("engineering")
 
     def authenticate_user(self):
         username = self.cleaned_data.get("email")
@@ -126,6 +128,7 @@ class UserForm(UserProfileForm):
             self.fields["email"].initial = instance.user.email
             self.fields["category"].initial = instance.category
             self.fields["name"].initial = instance.full_name()
+            self.fields["engineering"].initial = instance.engineering
             instance = instance.registration_number
             self.fields["registration_number"].initial = instance
 
