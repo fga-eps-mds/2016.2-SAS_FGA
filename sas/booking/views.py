@@ -13,6 +13,7 @@ from collections import OrderedDict
 import traceback
 from django.utils import formats
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.views import View
 from user.models import Settings
 from django.contrib.auth.models import User
 
@@ -219,12 +220,18 @@ class SearchBookingQueryView(View):
         return render(request, self.template_name, {'search_booking': form})
 
 
+class NewBooking(View):
+
+    def get(self, request):
+        return render(request, 'booking/newBooking2.html')
+
 @login_required(login_url='/?showLoginModal=yes')
 def new_booking(request):
     start_semester = Settings.objects.last().start_semester
     end_semester = Settings.objects.last().end_semester
     user = request.user
     if request.method == "POST":
+        print(request.POST)
         form_booking = BookingForm(request.POST)
         if (form_booking.is_valid()):
             booking = form_booking.save(request.user)
@@ -233,7 +240,9 @@ def new_booking(request):
                 return render(request, 'booking/showDates.html',
                               {'booking': booking})
             else:
-                messages.error(request, _("Booking already exists"))
+                messages.error(request, _("Booking alread exists"))
+        else:
+            print (form_booking.errors)
     else:
         form_booking = BookingForm()
     return render(request, 'booking/newBooking.html',

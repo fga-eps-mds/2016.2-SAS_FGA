@@ -16,7 +16,7 @@
              <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
              <li><a href="{% url 'booking:searchbookingtable' %}">{% trans "Search" %}</a></li>
              {% if not request.user|is_admin and request.user.is_authenticated %}
-             <li><a href="{% url 'booking:newbooking' %}">{% trans "Book a Place" %}</a></li>
+             <li><a href="{% url 'booking:newbooking2' %}">{% trans "Book a Place" %}</a></li>
              {% endif %}
              <!-- IF request.user is ADM -->
                {% if request.user|is_admin %}

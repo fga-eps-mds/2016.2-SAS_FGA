@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib import admin
 from .views import new_booking
+from .views import NewBooking
 from .views import search_booking
 from .views import SearchBookingQueryView
 from .views import search_booking_table
@@ -19,6 +20,8 @@ from .views import tagged_bookings
 urlpatterns = [
     url(r'^newbooking/$',
         new_booking, name='newbooking'),
+    url(r'^newbooking2/$',
+        NewBooking.as_view(), name='newbooking2'),
     url(r'^searchbooking/$',
         search_booking, name='searchbooking'),
     url(r'^confirmbooking/(\d+)$',

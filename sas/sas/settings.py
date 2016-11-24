@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'aloe_django',
     'django_extensions',
     'test_pep8',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
