@@ -724,8 +724,8 @@ class TestBookingTags(TestCase):
     def test_tagged_bookings_not_found(self):
         self.client.login(username=self.user.user.username, password='1234567')
         url = reverse('booking:taggedbookings', args=(self.tag2.pk,))
-        response = self.client.get(url)
-        self.assertContains(response, "0")
+        response = self.client.get(url, follow=True)
+        self.assertContains(response, "Booking not found.")
 
     def test_get_tags(self):
         self.assertEquals(Tag.get_tags()[1][0], self.tag)
