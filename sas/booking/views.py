@@ -404,6 +404,12 @@ def booking_details(request, booking_id):
 
 @login_required(login_url='/?showLoginModal=yes')
 def tagged_bookings(request, tag_id):
-    bookings = Booking.objects.filter(tags__id=tag_id).prefetch_related('tags')
-    return render(request, 'booking/searchBooking.html',
-                  {'bookings': bookings})
+    try:
+        tag = Booking.objects.get(tags__id=tag_id).name
+        name = _("Tagged Bookings ")
+        bookings = Booking.objects.filter(tags__id=tag_id).prefetch_related('tags')
+        return render(request, 'booking/searchBooking.html',
+                      {'bookings': bookings, 'name': name})
+    except:
+        messages.error(request, _('Booking not found.'))
+        return redirect("index")
