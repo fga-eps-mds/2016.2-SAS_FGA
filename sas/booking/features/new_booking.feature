@@ -65,7 +65,7 @@ Scenario: Empty booking name
     And I select "22:00" from "End Time:"
     And I click on an element with id of "id_week_days_0"
     Then I press "Perform Booking"
-    Then I should see an alert with text "Please select an item in the list."
+    Then I should see an alert with text "Please fill out this field."
 
 Scenario: Empty start date
     When I login in with email "lucas@gmail.com" and password "123456"
@@ -79,7 +79,7 @@ Scenario: Empty start date
     And I select "22:00" from "End Time:"
     And I click on an element with id of "id_week_days_0"
     Then I press "Perform Booking"
-    Then I should see an alert with text "Please select an item in the list."
+    Then I should see an alert with text "Please fill out this field."
 
 Scenario: Empty end date
     When I login in with email "lucas@gmail.com" and password "123456"
@@ -93,7 +93,7 @@ Scenario: Empty end date
     And I select "22:00" from "End Time:"
     And I click on an element with id of "id_week_days_0"
     Then I press "Perform Booking"
-    Then I should see an alert with text "Please select an item in the list."
+    Then I should see an alert with text "Please fill out this field."
 
 Scenario: Empty start time
     When I login in with email "lucas@gmail.com" and password "123456"
@@ -119,6 +119,19 @@ Scenario: Empty end time
     And I select "UAC" from "Building"
     And I select "UAC | FGA-I1" from "Place"
     And I select "22:00" from "Start Time:"
+    And I click on an element with id of "id_week_days_0"
+    Then I press "Perform Booking"
+    Then I should see an alert with text "Please select an item in the list."
+
+Scenario: Empty building
+    When I login in with email "lucas@gmail.com" and password "123456"
+    Then I visit site page "/booking/newbooking/"
+    And I choose "No"
+    And I fill in "Booking Name:" with "Teste"
+    And I fill in "Start Date:" with "10/20/2018"
+    And I fill in "End Date:" with "10/30/2018"
+    And I select "22:00" from "Start Time:"
+    And I select "00:00" from "End Time:"
     And I click on an element with id of "id_week_days_0"
     Then I press "Perform Booking"
     Then I should see an alert with text "Please select an item in the list."
