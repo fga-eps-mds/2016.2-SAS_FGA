@@ -231,7 +231,6 @@ def new_booking(request):
     end_semester = Settings.objects.last().end_semester
     user = request.user
     if request.method == "POST":
-        print(request.POST)
         form_booking = BookingForm(request.POST)
         if (form_booking.is_valid()):
             booking = form_booking.save(request.user)
@@ -241,8 +240,6 @@ def new_booking(request):
                               {'booking': booking})
             else:
                 messages.error(request, _("Booking alread exists"))
-        else:
-            print (form_booking.errors)
     else:
         form_booking = BookingForm()
     return render(request, 'booking/newBooking.html',
