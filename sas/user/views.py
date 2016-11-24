@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect
 from .forms import PasswordForm, SettingsForm
-from .forms import NewUserForm, LoginForm, EditUserForm, UserForm
+from .forms import LoginForm, UserForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from .models import UserProfile
@@ -11,7 +11,6 @@ from django.contrib.auth.decorators import login_required
 from sas.decorators.decorators import required_to_be_admin
 from django.views.generic.edit import FormView
 from django.views import View
-
 
 class NewUserView(FormView):
     template_name = "user/newUser.html"
@@ -23,9 +22,8 @@ class NewUserView(FormView):
         messages.success(self.request, _('You have been registered'))
         return super(NewUserView, self).form_valid(form)
 
-
 class EditUserView(View):
-
+    
     def post(self, request):
         user_form = UserForm(request.POST, editing=True,
                              instance=request.user.profile_user)
@@ -33,8 +31,8 @@ class EditUserView(View):
             useprofile = user_form.update(request.user.profile_user)
             request.user.refresh_from_db()
             messages.success(request, _('Your data has been updated'))
-        return self.get(request, user_form=user_form)
-
+        return self.get(request,user_form=user_form)
+            
     def get(self, request, user_form=None):
         if user_form is None:
             user_form = UserForm(instance=request.user.profile_user)
@@ -113,23 +111,6 @@ def search_user(request):
 
 @login_required(login_url='/?showLoginModal=yes')
 @required_to_be_admin
-def settings(request):
-    if request.method == "POST":
-        form = SettingsForm(request.POST)
-        if not(form.is_valid()):
-            return render(request, 'user/settings.html',
-                          {'form_settings': form})
-        else:
-            form.save()
-            messages.success(request, _('Settings updated'))
-            return index(request)
-    else:
-        form = SettingsForm()
-        return render(request, 'user/settings.html', {'form_settings': form})
-
-
-@login_required(login_url='/?showLoginModal=yes')
-@required_to_be_admin
 def make_user_an_admin(request, id):
     try:
         user = UserProfile.objects.get(pk=id)
@@ -145,3 +126,19 @@ def make_user_an_admin(request, id):
         messages.error(request, _('User not found.'))
     finally:
         return search_user(request)
+
+@login_required(login_url='/?showLoginModal=yes')
+@required_to_be_admin
+def settings(request):
+    if request.method == "POST":
+        form = SettingsForm(request.POST)
+        if not(form.is_valid()):
+            return render(request, 'user/settings.html',
+                          {'form_settings': form})
+        else:
+            form.save()
+            messages.success(request, _('Settings updated'))
+            return index(request)
+    else:
+        form = SettingsForm()
+        return render(request, 'user/settings.html', {'form_settings': form})
