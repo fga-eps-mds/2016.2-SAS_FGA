@@ -90,13 +90,6 @@ Scenario: New Password do not match
 	And I press "Change Password"
 	Then I should see "Passwords do not match"
 
-Scenario: Changing to no engineering
-    When I login in with email "luis@gmail.com" and password "123456"
-    Then I visit site page "/user/edituser/"
-    And I select "----" from "Engineering"
-    And I press "Save Data"
-    Then I should see "Your data has been updated"
-
 Scenario: Changing to another engineering
     When I login in with email "luis@gmail.com" and password "123456"
     Then I visit site page "/user/edituser/"
