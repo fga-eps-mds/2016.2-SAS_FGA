@@ -37,12 +37,13 @@
 <script type="text/javascript">
 $(function () {
 	$('.datepicker1').datepicker({
-		inline: true,
-		sideBySide: true,
-		format: '{% trans "mm/dd/yyyy" %}',
-		language: '{% trans "en" %}',
-		autoclose: true,
+			inline: true,
+			useCurrent: true,
+			autoclose: true,
 	});
+
+    $.datepicker.setDefaults( $.datepicker.regional[ "{{ LANGUAGE_CODE|default:"" }}" ] )
+
 
   $(".select2").select2({
 		theme: "classic"
@@ -115,6 +116,7 @@ $(document).ready(function () {
 });
 
 </script>
+<script src= "{% static 'jquery/ui/datepicker-pt-BR.js' %}"></script>
 <script src= "{% static 'jquery/ui/jquery-ui.min.js' %}"></script>
 <script src= "{% static 'plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
 {% endblock %}
