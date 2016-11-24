@@ -203,7 +203,7 @@ class UserProfileTest(TestCase):
             self.assertTrue(valid)
 
     def test_clean(self):
-        new_form = NewUserForm()
+        new_form = UserForm()
         if(new_form.is_valid()):
             clean = new_form.clean()
             self.assertTrue(clean)
