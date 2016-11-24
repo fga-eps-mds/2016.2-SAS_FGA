@@ -260,7 +260,7 @@ def search_booking_table(request):
 def search_booking(request):
     bookings = Booking.objects.filter(user=request.user)
     return render(request, 'booking/searchBooking.html',
-                  {'bookings': bookings})
+                  {'bookings': bookings, 'name': ""})
 
 
 @login_required(login_url='/?showLoginModal=yes')
@@ -314,7 +314,6 @@ def confirm_booking(request, id):
 
 @login_required(login_url='/?showLoginModal=yes')
 def delete_booking(request, id):
-    print(id)
     try:
         booking = Booking.objects.get(pk=id)
         if (request.user.profile_user.is_admin() or
