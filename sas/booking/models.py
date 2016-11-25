@@ -7,12 +7,16 @@ from datetime import datetime, timedelta
 import copy
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 
-CATEGORY = (('', '----'), ('1', _('Student')),
+CATEGORY = (('', '----------'), ('1', _('Student')),
             ('2', _('Teaching Staff')), ('3', _('Employees')))
 
 WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
             ('3', _("Thursday")), ('4', _("Friday")), ('5', _("Saturday")),
             ('6', _("Sunday")))
+
+ENGINEERINGS = (('0', '----'), ('1', _('Software')), ('2', _('Eletronic')),
+               ('3', _('Energy')), ('4', _('Automotive')),
+               ('5', _('Aerospace')), ('6', _('Engineerings')))
 
 
 class Building(models.Model):
@@ -106,6 +110,8 @@ class Booking(models.Model):
                                               default=2)
     tags = models.ManyToManyField(Tag, related_name="tags")
 
+    engineering = models.CharField(choices=ENGINEERINGS, max_length=5)
+
     def __str__(self):
         return (self.name + " " + self.user.email + " | " + str(self.place) +
                 " - " + str(self.start_date) + " - " + str(self.end_date))
@@ -117,9 +123,9 @@ class Booking(models.Model):
                                    time__date_booking__lt = self.end_date,
                                    time__start_hour = start_hour,
                                    time__end_hour = end_hour,
-                                   time__date_booking__week_day__in = week_days 
+                                   time__date_booking__week_day__in = week_days
                                    ).exists()
-        
+
 
     def save(self, *args, **kwargs):
         if (self.place.is_laboratory and not
