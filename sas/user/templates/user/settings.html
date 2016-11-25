@@ -28,7 +28,7 @@
 {% endblock %}
 
 {% block extrajs %}
-<script>
+<script type="text/javascript">
 $(document).ready(function () {
 
   $('.datepicker1').datepicker({
@@ -38,9 +38,8 @@ $(document).ready(function () {
 	});
 
     $.datepicker.setDefaults( $.datepicker.regional[ "{{ LANGUAGE_CODE|default:"" }}" ] )
-
+});
 </script>
 <script src= "{% static 'jquery/ui/datepicker-pt-BR.js' %}"></script>
 <script src= "{% static 'jquery/ui/jquery-ui.min.js' %}"></script>
-<script src= "{% static 'plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
 {% endblock %}
