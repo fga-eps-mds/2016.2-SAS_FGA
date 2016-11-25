@@ -1,1 +1,1 @@
-[{"model": "user.userprofile", "pk": 2, "fields": {"registration_number": "000000000", "user": 4, "category": "2"}}]
+[{"model": "user.userprofile", "pk": 2, "fields": {"registration_number": "000000000", "user": 4, "category": "2", "engineering": "1"}}]

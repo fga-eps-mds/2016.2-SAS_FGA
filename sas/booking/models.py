@@ -70,6 +70,26 @@ class BookTime(models.Model):
             booking.time.remove(self)
             super(BookTime, self).delete()
 
+
+class Tag(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def get_tags():
+        tags = Tag.objects.all()
+        choices = []
+        for tag in tags:
+            new_choice = (tag, tag)
+            choices.append(new_choice)
+        choices = sorted(choices, key=lambda tag_tuple:
+                         tag_tuple[0].name)
+        choices.insert(0, ('', ''))
+        return choices
+
+
 BOOKING_STATUS = ((0, _("Denied")), (1, _("Pending")), (2, _("Approved")))
 
 
@@ -84,43 +104,22 @@ class Booking(models.Model):
     end_date = models.DateField(null=False, blank=False)
     status = models.PositiveSmallIntegerField(choices=BOOKING_STATUS,
                                               default=2)
+    tags = models.ManyToManyField(Tag, related_name="tags")
 
     def __str__(self):
         return (self.name + " " + self.user.email + " | " + str(self.place) +
                 " - " + str(self.start_date) + " - " + str(self.end_date))
 
     def exists(self, start_hour, end_hour, week_days):
-        str_weekdays = []
-        if not week_days:
-            return True
-        for day in week_days:
-                new_day = int(day) + 1 % 6
-                str_weekdays.append("'" + str(new_day) + "'")
-
-        str_weekdays = ",".join(str_weekdays)
-        sql = """select count(*) from booking_booking_time bbt
-               inner join booking_booktime bt on bbt.booktime_id = bt.id
-               inner join booking_booking bb on bbt.booking_id = bb.id
-               inner join booking_place bp on bb.place_id = bp.id"""
-        sql += " where bt.date_booking >= date('" + (
-               self.start_date.strftime("%Y-%m-%d") + "')")
-        sql += " and bt.date_booking <= date('" + (
-               self.end_date.strftime("%Y-%m-%d") + "')")
-        sql += " and bt.start_hour <= time('" + (
-               start_hour.strftime("%H:%M:%S") + "')")
-        sql += " and bt.end_hour >= time('" + (
-               end_hour.strftime("%H:%M:%S") + "')")
-        sql += " and bb.status = 2"
-        sql += " and strftime('%w',bt.date_booking) IN (" + str_weekdays + ")"
-        sql += " and bp.id = '" + str(self.place.pk) + "'"
-
-        with connection.cursor() as cursor:
-            cursor.execute(sql)
-            row = cursor.fetchone()
-        if row[0] > 0:
-            return True
-        else:
-            return False
+        week_days = [1 if int(x) == 6 else int(x) + 2 for x in week_days]
+        return Booking.objects.filter(place_id = self.place_id,
+                                   time__date_booking__gte = self.start_date,
+                                   time__date_booking__lt = self.end_date,
+                                   time__start_hour = start_hour,
+                                   time__end_hour = end_hour,
+                                   time__date_booking__week_day__in = week_days 
+                                   ).exists()
+        
 
     def save(self, *args, **kwargs):
         if (self.place.is_laboratory and not
@@ -171,6 +170,27 @@ class Booking(models.Model):
             new_choice = (booking['name'], booking['name'])
             choices = (new_choice,) + choices
         return choices
+
+    @staticmethod
+    def get_responsibles():
+        bookings = Booking.objects.values('responsible').distinct()
+        choices = ()
+        for booking in bookings:
+            new_choice = (booking['responsible'], booking['responsible'])
+            choices = (new_choice,) + choices
+        return choices
+
+    @staticmethod
+    def get_places(bookings):
+        place_name = []
+        place = []
+
+        for booking in bookings:
+            p = booking.place.name.split('-')
+            if (booking.status > 1) and (p[1] not in place_name):
+                place_name.append(p[1])
+                place.append(booking.place)
+        return place, place_name
 
 
 class Validation():

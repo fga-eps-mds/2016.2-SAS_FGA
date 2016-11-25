@@ -24,22 +24,22 @@
 {% endblock %}
 
 {% block extrastyle %}
-<link rel="stylesheet" href="{% static 'plugins/datepicker/bootstrap-datepicker.css' %}" />
+<link rel="stylesheet" href="{% static 'jquery/ui/jquery-ui.min.css' %}" />
 {% endblock %}
 
 {% block extrajs %}
-<script>
+<script type="text/javascript">
 $(document).ready(function () {
 
-	$('.datepicker1').datepicker({
+  $('.datepicker1').datepicker({
 			inline: true,
 			useCurrent: true,
-			format: '{% trans "mm/dd/yyyy" %}',
-			language: '{% trans "en" %}',
 			autoclose: true,
 	});
+
+    $.datepicker.setDefaults( $.datepicker.regional[ "{{ LANGUAGE_CODE|default:"" }}" ] )
 });
 </script>
-<script src= "{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
-<script src= "{% static 'plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
+<script src= "{% static 'jquery/ui/datepicker-pt-BR.js' %}"></script>
+<script src= "{% static 'jquery/ui/jquery-ui.min.js' %}"></script>
 {% endblock %}

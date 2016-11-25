@@ -2,6 +2,7 @@ Feature: EditUser
 
 Background:
 	Given I register the user "lucas@gmail.com" with the password "123456" and registration number "140016574"
+    Given I register the user "luis@gmail.com" with the password "123456" and registration number "150016310" and engineering "Software" and category "Student"
 
 Scenario: Invalid email
 	When I login in with email "lucas@gmail.com" and password "123456"

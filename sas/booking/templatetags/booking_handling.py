@@ -21,6 +21,7 @@ def get_timetable(booking):
             break
     return timetable
 
+
 @register.filter(name='status_glyphicon')
 def status_glyphicon(booking):
     STATUS = ((0, "glyphicon-remove"), (1, "glyphicon-option-horizontal"),
@@ -29,6 +30,7 @@ def status_glyphicon(booking):
         return STATUS[booking.status][1]
     except:
         return None
+
 
 @register.filter(name='is_all_bookings')
 def is_all_bookings(name):

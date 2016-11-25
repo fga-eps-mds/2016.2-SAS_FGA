@@ -1,6 +1,8 @@
 {% load staticfiles bootstrap3 user_extras %}
+{% load static %}
 {% load i18n %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
   <meta charset="utf-8">
@@ -9,6 +11,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   {% bootstrap_css %}
+  <link rel="stylesheet" type="text/css" href="{% static "jquery/ui/jquery-ui.min.css" %}">
   <link rel="stylesheet" type="text/css" href="{% static 'style/base.css' %}" />
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{% static "font-awesome/font-awesome.min.css" %}">
@@ -23,7 +26,6 @@
       <div class="col-md-4 col-md-offset-8" style="float:right; padding-top:5px;">
         <form action="{% url 'set_language' %}" method="post">
           {% csrf_token %}
-          <input name="next" type="hidden" value="{{ redirect_to }}" />
           <div class="input-group input-group-sm"  style="max-width:250px;">
             <select class="form-control" style="padding:5px" name="language">
               {% get_current_language as LANGUAGE_CODE %}
@@ -120,9 +122,11 @@
 <!-- end wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
-<script src="{% static "jquery//jquery.min.js" %}"></script>
+<script src="{% static "jquery/jquery.min.js" %}"></script>
+<script src="{% static "jquery/ui/jquery-ui.min.js" %}"></script>
 <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
-{% block extrajs %}{% endblock %}
 
+{% block extrajs %}{% endblock %}
+ 
 </body>
 </html>

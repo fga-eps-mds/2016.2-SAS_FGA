@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib import admin
 from .views import new_booking
+from .views import NewBooking
 from .views import search_booking
 from .views import SearchBookingQueryView
 from .views import search_booking_table
@@ -13,10 +14,14 @@ from .views import pending_bookings
 from .views import approve_booking
 from .views import deny_booking
 from .views import show_booktimes
+from .views import booking_details
+from .views import tagged_bookings
 
 urlpatterns = [
     url(r'^newbooking/$',
         new_booking, name='newbooking'),
+    url(r'^newbooking2/$',
+        NewBooking.as_view(), name='newbooking2'),
     url(r'^searchbooking/$',
         search_booking, name='searchbooking'),
     url(r'^confirmbooking/(\d+)$',
@@ -34,6 +39,10 @@ urlpatterns = [
         approve_booking, name='approvebooking'),
     url(r'^denybooking/(\d+)$',
         deny_booking, name='denybooking'),
+    url(r'^taggedbookings/(\d+)$',
+        tagged_bookings, name='taggedbookings'),
+    url(r'^bookingdetails/(\d+)$',
+        booking_details, name='bookingdetails'),
     url(r'^deletebooktime/(\d+)/(\d+)$',
         delete_booktime, name='deletebooktime'),
     url(r'^allbookings/$',

@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm
 from .models import UserProfile, Validation
-from .models import CATEGORY, Settings
+from .models import CATEGORY, ENGINEERING, Settings
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -89,14 +89,20 @@ class PasswordForm(UserProfileForm):
             raise ValidationError({'renew_password': [_('Passwords \
                                                          do not match'), ]})
 
+        if len(password1) < 6 or len(password1) > 15:
+            raise ValidationError({'new_password': [_('Password must be \
+                                                       between 6 and 15 \
+                                                       characters.'), ]})
 
 class UserForm(UserProfileForm):
 
     repeat_password = forms.CharField(
         label=_('Repeat Password:'),
-        required=False,
+        required=True,
         widget=forms.PasswordInput(attrs={'placeholder': ''}))
 
+    engineering = forms.ChoiceField(choices=ENGINEERING,
+                                    label=_('Engineering:'))
     def __init__(self, *args, **kwargs):
         instance = kwargs.pop("instance", None)
         editing = kwargs.pop("editing", None)
@@ -111,11 +117,13 @@ class UserForm(UserProfileForm):
             self.fields["category"].initial = instance.category
             self.fields["name"].initial = instance.full_name()
             self.fields["registration_number"].initial = instance.registration_number
+            self.fields['engineering'].initial = instance.engineering
 
     def set_fields(self, userprofile):
         userprofile.name(self.cleaned_data.get('name'))
         userprofile.user.email = self.cleaned_data.get('email')
         userprofile.user.username = userprofile.user.email
+        userprofile.engineering = self.cleaned_data.get('engineering')
         userprofile.registration_number = self.cleaned_data.get('registration_number')
         userprofile.category = self.cleaned_data.get('category')
 
@@ -142,11 +150,20 @@ class UserForm(UserProfileForm):
         return userprofile
 
     def clean_registration_number(self):
+        validation = Validation()
         rn = self.cleaned_data["registration_number"]
         if hasattr(self, "instance") and self.instance.registration_number == rn:
             return rn
         elif UserProfile.objects.filter(registration_number=rn).exists():
                 raise ValidationError(_('Registration Number already exists.'))
+        if (len(rn) is not 9):
+            raise ValidationError([_('Registration Number must have 9 characters.'), ])
+        if validation.hasSpecialCharacters(rn):
+            raise ValidationError([_('Registration Number cannot \
+                                      contain special characters.'), ])
+        if validation.hasLetters(rn):
+            raise ValidationError([_('Registration Number cannot \
+                                      contain letters.'), ])
 
         return rn
 
@@ -164,33 +181,33 @@ class UserForm(UserProfileForm):
         name = self.cleaned_data['name']
 
         if (len(name) < 2 or len(name) > 50):
-            raise ValidationError({'name': [_('Name must be \
-                                               between 2 and \
-                                               50 characters.'), ]})
+            raise ValidationError([_('Name must be between 2 and \
+                                               50 characters.'), ])
 
         if validation.hasSpecialCharacters(name):
-            raise ValidationError({'name': [_('Name cannot \
-                                               contain special \
-                                               characters.'), ]})
+            raise ValidationError([_('Name cannot contain special \
+                                               characters.'), ])
 
         if validation.hasNumbers(name):
-            raise ValidationError({'name': [_('Name cannot \
-                                               contain numbers.'), ]})
-
+            raise ValidationError([_('Name cannot contain numbers.'), ])
         return name
 
-    class Meta:
-        model = UserProfile
-        fields = ['name', 'registration_number',
-                  'category', 'email', 'password', 'repeat_password']
+    def clean(self):
+        cleaned_data = super(UserForm, self).clean()
 
+        if "password" in self.fields and "repeat_password" in self.fields:
+            password1 = cleaned_data['password']
+            password2 = cleaned_data['repeat_password']
 
-class EditUserForm(UserForm):
+            if len(password1) < 6 or len(password1) > 15:
+                raise ValidationError({'password': [_('Password must be \
+                                                       between 6 and 15 \
+                                                       characters.'), ]})
 
-    class Meta:
-        model = UserProfile
-        fields = ['name', 'registration_number', 'category', 'email']
-
+            if password1 and password2 and password1 != password2:
+                raise ValidationError({'repeat_password': [_('Passwords do \
+                                                              not match.'), ]})
+        return cleaned_data
 
 class SettingsForm(forms.Form):
     start_semester = forms.DateField(
@@ -226,23 +243,3 @@ class SettingsForm(forms.Form):
     class Meta:
         model = Settings
         fields = ['start_semester', 'end_semester']
-
-
-class NewUserForm(UserForm):
-
-    def clean(self):
-        cleaned_data = super(UserForm, self).clean()
-
-        if "password" in self.fields and "repeat_password" in self.fields:
-            password1 = cleaned_data['password']
-            password2 = cleaned_data['repeat_password']
-
-            if len(password1) < 6 or len(password1) > 15:
-                raise ValidationError({'password': [_('Password must be \
-                                                       between 6 and 15 \
-                                                       characters.'), ]})
-
-            if password1 and password2 and password1 != password2:
-                raise ValidationError({'repeat_password': [_('Passwords do \
-                                                              not match.'), ]})
-        return cleaned_data
