@@ -6,7 +6,7 @@ from user.views import EditUserView
 from user.factories import UserProfileFactory
 from django.contrib.auth import logout
 from django.urls import reverse
-from user.forms import SettingsForm
+from user.forms import *
 from datetime import datetime, timedelta
 from user.views import settings
 
@@ -33,13 +33,33 @@ class EditUserTest(TestCase):
     def test_edit_post_registration_number(self):
         self.factory.get('/user/edituser/')
         client = self.client
+        print(self.userprofile.registration_number)
         client.login(username='gutorc@hotmail.com', password='123456')
         parameters = {'name': 'Pedro', 'registration_number': '140000000',
-                      'category': '1', 'email': "gutorc@hotmail.com"}
+                      'category': '1', 'email': "gutorc@hotmail.com",
+                      'engineering': '1'}
         client.post('/user/edituser/', parameters)
+        print(self.userprofile.registration_number)
         self.userprofile.refresh_from_db()
         self.assertEqual('140000000', self.userprofile.registration_number)
 
+    def test_change_password(self):
+        client = self.client
+        client.login(username='gutorc@hotmail.com', password='123456')
+        new_password = '12333567'
+        parameters = {'password': '123456', 'new_password': new_password, 'renew_password': new_password}
+        client.post('/user/change/', parameters)
+        client.logout()
+        login_sucess = client.login(username='gutorc@hotmail.com', password=new_password)
+        self.assertTrue(login_sucess)
+
+    def test_change_password_invalid(self):
+        client = self.client
+        client.login(username='gutorc@hotmail.com', password='123456')
+        new_password = '12333567'
+        parameters = {'password': '123455', 'new_password': new_password, 'renew_password': new_password}
+        response = client.post('/user/change/', parameters)
+        self.assertContains(response, 'Current password is wrong')
 
 class DeleteUserTest(TestCase):
     def setUp(self):
@@ -154,6 +174,39 @@ class UserProfileTest(TestCase):
         self.assertFalse(userprofile.is_academic_staff())
         userprofile.make_as_academic_staff()
         self.assertTrue(userprofile.is_academic_staff())
+
+    def test_insert(self):
+        user_form = UserForm()
+        user_form.repeat_password = "1234567"
+        user_form.registration_number = "123456789"
+        user_form.category = 1
+        user_form.engineering = "Software"
+        if(user_form.is_valid()):
+            new_user = user_form.insert()
+            self.assertEqual(new_user.engineering, "Software")
+            self.assertEqual(new_user.user.password, "1234567")
+            self.assertEqual(new_user.registration_number, "123456789")
+            self.assertEqual(new_user.category, 1)
+
+    def test_is_password_valid(self):
+        self.userprofile.name("Gustavo Rodrigues Coelho")
+        self.userprofile.registration_number = "11/0030559"
+        self.userprofile.user.username = "gutorc@hotmail.com"
+        self.userprofile.user.email = "gutorc@hotmail.com"
+        self.userprofile.user.set_password("1234567")
+        self.userprofile.save()
+        password_form = PasswordForm()
+        password_form.new_password = "1234567"
+        password_form.renew_password = "1234567"
+        if(password_form.is_valid()):
+            valid = password_form.is_password_valid()
+            self.assertTrue(valid)
+
+    def test_clean(self):
+        new_form = UserForm()
+        if(new_form.is_valid()):
+            clean = new_form.clean()
+            self.assertTrue(clean)
 
 
 class ValidationTest(TestCase):

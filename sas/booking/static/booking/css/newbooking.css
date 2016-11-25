@@ -1,0 +1,143 @@
+#booking_canvas{
+    width: 100%;
+}
+.checkbox.newbooking-checkbox {
+    display: inline;
+}
+.form-group.newbooking-dates {
+    display: inline;
+}
+.building-selected{
+   background-color: #4e8aa5;
+   color: white;
+   border-radius: 4px;
+}
+.place-selected{
+   background-color: #4e8aa5;
+   color: white;
+   border-radius: 4px;
+}
+.btn-newbooking{
+   margin-top: 20px;
+   background-color: #4e8aa5;
+
+}
+.help-block{
+  color: #A94442 !important;
+  margin-top: 10px !important;
+}
+#breadcrumbs{
+    margin-bottom: 50px;
+}
+
+#page2{
+    width: 100%;
+    height: 350px;
+}
+.place-span{
+  vertical-align: middle;
+  text-align: left;
+  cursor: pointer;
+  padding: 10px 50px;
+  margin: 5px;
+}
+.place-span:hover{
+  background: #4e8aa5;
+  color:white;
+  border-radius: 4px;
+}
+.place{
+   width: 100%;
+   font-size: 40px;
+   font-size: 1vw;
+   padding: 10px;
+   height: 100px;
+}
+
+#breadcrumbs{
+    margin: 10px 0;
+}
+
+.glyphicon {
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+ul.bread-crumbs {
+  margin: 2em auto 3em auto;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  width: 95%;
+  *zoom: 1;
+}
+ul.bread-crumbs li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  *zoom: 1;
+  *display: inline;
+  white-space: nowrap;
+}
+ul.bread-crumbs li {
+  position: relative;
+  padding: 10px 15px 10px 30px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #4e8aa5;
+  text-align: center;
+}
+ul.bread-crumbs li:after {
+  -moz-transform: skew(45deg, 0);
+  -ms-transform: skew(45deg, 0);
+  -webkit-transform: skew(45deg, 0);
+  transform: skew(45deg, 0);
+  content: "";
+  height: 50%;
+  width: 1px;
+  background: #d2e6e6;
+  border-right: 1px solid #d2e6e6;
+  position: absolute;
+  top: 0;
+  right: -15px;
+  z-index: 1;
+}
+ul.bread-crumbs li:before {
+  -moz-transform: skew(-45deg, 0);
+  -ms-transform: skew(-45deg, 0);
+  -webkit-transform: skew(-45deg, 0);
+  transform: skew(-45deg, 0);
+  content: "";
+  height: 51%;
+  width: 1px;
+  background: #d2e6e6;
+  border-right: 1px solid #d2e6e6;
+  position: absolute;
+  bottom: 0;
+  right: -15px;
+  z-index: 1;
+}
+ul.bread-crumbs li.active {
+  color: white;
+  background: #417323;
+  border: 1px solid #d2e6e6;
+  border-left: none;
+  padding-left: 35px;
+  left: -5px;
+}
+ul.bread-crumbs li.active:first-child {
+  border-left: 1px solid #d2e6e6;
+  left: 0;
+  padding-left: 30px;
+}
+ul.bread-crumbs li.active:after {
+  width: 25px;
+  background: #417323;
+}
+ul.bread-crumbs li.active:before {
+  width: 25px;
+  background: #417323;
+}

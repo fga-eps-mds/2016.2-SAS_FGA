@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from booking.models import (WEEKDAYS, Booking, BookTime, Place, Building,
-                            date_range, Validation, ENGINEERINGS)
+                            date_range, Validation, ENGINEERINGS, Tag)
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
@@ -13,6 +13,7 @@ from user.models import UserProfile
 import copy
 import re
 import traceback
+import ast
 
 
 class SearchBookingForm(forms.Form):
@@ -26,11 +27,21 @@ class SearchBookingForm(forms.Form):
             widget=forms.widgets.Select(
                 attrs={'class': 'select2 optional'})
         )
+
+        self.fields['responsible'] = forms.CharField(
+            label=_('Responsible:'),
+            required=False,
+            widget=forms.widgets.Select(
+                attrs={'class': 'select2 optional'},
+                choices=Booking.get_responsibles(),)
+        )
+
     SEARCH_CHOICES = (
         ('opt_day_room', _("Room's Week Timetable")),
         ('opt_booking_week', _(' Booking')),
         ('opt_building_day', _(' Occupation')),
         ('opt_room_period', _(' Room ')),
+        ('opt_responsible', _(' Responsible')),
     )
 
     search_options = forms.ChoiceField(label=_('Search options'),
@@ -171,7 +182,6 @@ class BookingForm(forms.Form):
              (hour7, ('20:00')), (hour8, ('22:00')),
              (hour9, ('00:00')))
 
-
     DATE_CHOICES = (
         ('opt_date_semester', _("Yes")),
         ('opt_select_date', _("No")),
@@ -226,6 +236,16 @@ class BookingForm(forms.Form):
                 choices=UserProfile.get_users(),
             )
         )
+
+        self.fields['tags'] = forms.CharField(
+            label=_('Tags (optional):'),
+            required=False,
+            widget=forms.widgets.SelectMultiple(
+                attrs={'class': 'selectize_multiple'},
+                choices=Tag.get_tags(),
+            )
+        )
+
         try:
             if not(user and user.profile_user.is_admin()):
                 self.fields.pop('engineering_choice')
@@ -233,6 +253,7 @@ class BookingForm(forms.Form):
         except:
             self.fields.pop('engineering_choice')
             self.fields.pop('responsible')
+
 
     def save(self, user, force_insert=False, force_update=False, commit=True):
         booking = Booking()
@@ -275,6 +296,15 @@ class BookingForm(forms.Form):
                                                date_booking=day)
                         newBookTime.save()
                         booking.time.add(newBookTime)
+                tags = self.cleaned_data['tags']
+                if tags:
+                    tags = ast.literal_eval(tags)
+                    for name in tags:
+                        if not Tag.objects.filter(name=name).exists():
+                            tag = Tag(name=name)
+                            tag.save()
+                        tag = Tag.objects.get(name=name)
+                        booking.tags.add(tag)
                 booking.save()
         except Exception as e:
             booking.delete()

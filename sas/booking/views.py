@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render, redirect, get_object_or_404
 from booking.forms import BookingForm, SearchBookingForm
-from booking.models import Booking, BookTime, Place, Building
+from booking.models import Booking, BookTime, Place, Building, Tag
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from sas.decorators.decorators import required_to_be_admin
@@ -13,6 +13,7 @@ from collections import OrderedDict
 import traceback
 from django.utils import formats
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.views import View
 from user.models import Settings
 from django.contrib.auth.models import User
 
@@ -90,6 +91,46 @@ def search_booking_building_day(request, form_booking):
                    'table_header': table_header, 'place': places})
 
 
+def search_booking_responsible(request, form_booking):
+    form_day = form_booking.get_day()
+    search_booking_responsible = form_booking["responsible"].data
+    booking_responsible = form_booking["responsible"].data
+    hours = [(6, "06-08"), (8, "08-10"), (10, "10-12"),
+             (12, "12-14"), (14, "14-16"), (16, "16-18"),
+             (18, "18-20"), (20, "20-22"), (22, ("22-00"))]
+
+    table = []
+    responsible = booking_responsible.split('\r')
+
+    bookings = Booking.objects.filter(responsible__contains=responsible[0])
+
+    if len(responsible) > 1:
+        responsible_ = responsible[1].split('\n')
+        bookings = Booking.objects.filter(
+            responsible__contains=responsible_[1])
+
+    places, place_names = Booking.get_places(bookings)
+
+    for place in place_names:
+        aux = []
+        for booking in bookings:
+            p = booking.place.name.split('-')
+            if (booking.status > 1 and p[1] == place):
+                book = booking.time.get(date_booking=str(form_day))
+                aux_tuple = (book.start_hour.hour, booking)
+                aux.append(aux_tuple)
+
+        table.append(aux)
+
+    n = len(places) + 1
+
+    print(table)
+    return render(request, 'booking/template_table.html',
+                  {'days': form_day, 'table': table,
+                   'column_header': place_names, 'hours': hours,
+                   'n': n, 'name': _(' Responsible'), 'place': places})
+
+
 def search_booking_booking_name_week(request, form_booking):
     form_days = form_booking.days_list()
     search_booking_name = form_booking["booking_name"].data
@@ -154,7 +195,8 @@ def search_booking_room_period(request, form_booking):
 search_options = {'opt_day_room': search_booking_day_room,
                   'opt_booking_week': search_booking_booking_name_week,
                   'opt_building_day': search_booking_building_day,
-                  'opt_room_period': search_booking_room_period}
+                  'opt_room_period': search_booking_room_period,
+                  'opt_responsible': search_booking_responsible}
 
 
 class SearchBookingQueryView(View):
@@ -177,6 +219,11 @@ class SearchBookingQueryView(View):
                 traceback.print_exc()
         return render(request, self.template_name, {'search_booking': form})
 
+
+class NewBooking(View):
+
+    def get(self, request):
+        return render(request, 'booking/newBooking2.html')
 
 @login_required(login_url='/?showLoginModal=yes')
 def new_booking(request):
@@ -201,6 +248,7 @@ def new_booking(request):
                    'end_semester': end_semester,
                    'is_staff': user.is_staff})
 
+
 def search_booking_table(request):
     if request.method == "POST":
         form_booking = SearchBooking(request.POST)
@@ -218,7 +266,7 @@ def search_booking_table(request):
 def search_booking(request):
     bookings = Booking.objects.filter(user=request.user)
     return render(request, 'booking/searchBooking.html',
-                  {'bookings': bookings})
+                  {'bookings': bookings, 'name': ""})
 
 
 @login_required(login_url='/?showLoginModal=yes')
@@ -272,7 +320,6 @@ def confirm_booking(request, id):
 
 @login_required(login_url='/?showLoginModal=yes')
 def delete_booking(request, id):
-    print(id)
     try:
         booking = Booking.objects.get(pk=id)
         if (request.user.profile_user.is_admin() or
@@ -338,3 +385,31 @@ def show_booktimes(request, booking_id):
         return all_bookings(request)
     else:
         return search_booking(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+def booking_details(request, booking_id):
+    try:
+        booking = Booking.objects.get(pk=booking_id)
+        tags = booking.tags.all()
+        return render(request, 'booking/bookingDetails.html',
+                      {'booking': booking, 'tags': tags})
+    except:
+        messages.error(request, _('Booking not found.'))
+    if request.user.profile_user.is_admin():
+        return all_bookings(request)
+    else:
+        return search_booking(request)
+
+
+@login_required(login_url='/?showLoginModal=yes')
+def tagged_bookings(request, tag_id):
+    try:
+        tag = Booking.objects.get(tags__id=tag_id).name
+        name = _("Tagged Bookings ")
+        bookings = Booking.objects.filter(tags__id=tag_id).prefetch_related('tags')
+        return render(request, 'booking/searchBooking.html',
+                      {'bookings': bookings, 'name': name})
+    except:
+        messages.error(request, _('Booking not found.'))
+        return redirect("index")

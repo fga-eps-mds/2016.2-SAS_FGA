@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-16 16:14-0200\n"
+"POT-Creation-Date: 2016-11-21 12:44-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,29 +17,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: user/forms.py:12
+#: user/forms.py:13
 msgid "Name:"
 msgstr ""
 
-#: user/forms.py:15
+#: user/forms.py:16 user/forms.py:101
 msgid "Registration number:"
 msgstr ""
 
-#: user/forms.py:17
+#: user/forms.py:18 user/forms.py:103
 msgid "Category:"
 msgstr ""
 
-#: user/forms.py:19
+#: user/forms.py:20
 msgid "Email:"
 msgstr ""
 
-#: user/forms.py:22
+#: user/forms.py:23
 msgid ""
 "Email address must                                        be in a valid "
 "format."
 msgstr ""
 
-#: user/forms.py:25
+#: user/forms.py:26
 msgid "Password:"
 msgstr ""
 
@@ -51,59 +51,79 @@ msgstr ""
 msgid "New Password:"
 msgstr ""
 
-#: user/forms.py:60 user/forms.py:96
+#: user/forms.py:60 user/forms.py:97
 msgid "Repeat Password:"
 msgstr ""
 
-#: user/forms.py:80
-msgid "Current password is wrong"
-msgstr ""
-
-#: user/forms.py:89
+#: user/forms.py:90
 msgid ""
 "Passwords                                                          do not "
 "match"
 msgstr ""
 
-#: user/forms.py:127 user/forms.py:140
+#: user/forms.py:105
+msgid "Engineering:"
+msgstr ""
+
+#: user/forms.py:146 user/forms.py:159
 msgid ""
 "Something went wrong so we could not save                              your "
 "data. Try again later"
 msgstr ""
 
-#: user/forms.py:149
+#: user/forms.py:169
 msgid "Registration Number already exists."
 msgstr ""
 
-#: user/forms.py:158
+#: user/forms.py:178
 msgid "Email already used."
 msgstr ""
 
-#: user/forms.py:167
+#: user/forms.py:187
 msgid ""
 "Name must be                                                between 2 "
 "and                                                50 characters."
 msgstr ""
 
-#: user/forms.py:172
+#: user/forms.py:192
 msgid ""
 "Name cannot                                                contain "
 "special                                                characters."
 msgstr ""
 
-#: user/forms.py:177
+#: user/forms.py:197
 msgid ""
 "Name cannot                                                contain numbers."
 msgstr ""
 
-#: user/forms.py:189
+#: user/forms.py:219
+msgid "Semester Start:"
+msgstr ""
+
+#: user/forms.py:221 user/forms.py:225 user/templates/user/settings.html:37
+msgid "mm/dd/yyyy"
+msgstr ""
+
+#: user/forms.py:223
+msgid "Semester End:"
+msgstr ""
+
+#: user/forms.py:233
+msgid "Semester start must be before the end of it."
+msgstr ""
+
+#: user/forms.py:238
+msgid "Inputs are invalid"
+msgstr ""
+
+#: user/forms.py:263
 msgid ""
 "Password must be                                                        "
 "between 6 and 15                                                        "
 "characters."
 msgstr ""
 
-#: user/forms.py:194
+#: user/forms.py:268
 msgid ""
 "Passwords do                                                               "
 "not match."
@@ -121,22 +141,46 @@ msgstr ""
 msgid "Employees"
 msgstr ""
 
-#: user/models.py:14
+#: user/models.py:10
+msgid "Software"
+msgstr ""
+
+#: user/models.py:10
+msgid "Eletronic"
+msgstr ""
+
+#: user/models.py:11
+msgid "Energy"
+msgstr ""
+
+#: user/models.py:11
+msgid "Automotive"
+msgstr ""
+
+#: user/models.py:12
+msgid "Aerospace"
+msgstr ""
+
+#: user/models.py:12
+msgid "Engineerings"
+msgstr ""
+
+#: user/models.py:18
 msgid "Registration Number already used."
 msgstr ""
 
-#: user/models.py:42
+#: user/models.py:48
 msgid ""
 "Registration number                                       must have 9 digits."
 msgstr ""
 
-#: user/models.py:47
+#: user/models.py:53
 msgid ""
 "Registration number                                       cannot contain "
 "letters."
 msgstr ""
 
-#: user/models.py:52
+#: user/models.py:58
 msgid ""
 "Registration number                                       cannot contain "
 "special characters."
@@ -164,10 +208,11 @@ msgid "Delete my Account"
 msgstr ""
 
 #: user/templates/user/newUser.html:5 user/templates/user/newUser.html:10
+#: user/templates/user/settings.html:6
 msgid "New User"
 msgstr ""
 
-#: user/templates/user/newUser.html:17
+#: user/templates/user/newUser.html:17 user/templates/user/settings.html:18
 msgid "Register"
 msgstr ""
 
@@ -215,6 +260,14 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+#: user/templates/user/settings.html:11
+msgid "Settings"
+msgstr ""
+
+#: user/templates/user/settings.html:38
+msgid "en"
+msgstr ""
+
 #: user/templatetags/user_extras.py:19
 msgid "Admin"
 msgstr ""
@@ -223,26 +276,30 @@ msgstr ""
 msgid "Academic User"
 msgstr ""
 
-#: user/views.py:22
+#: user/views.py:23
 msgid "You have been registered"
 msgstr ""
 
-#: user/views.py:33
+#: user/views.py:35
 msgid "Your data has been updated"
 msgstr ""
 
-#: user/views.py:65
+#: user/views.py:67
 msgid "You have been logged out successfully!"
 msgstr ""
 
-#: user/views.py:92
+#: user/views.py:94
 msgid "Your password has been changed"
 msgstr ""
 
-#: user/views.py:120 user/views.py:123
+#: user/views.py:124
+msgid "Settings updated"
+msgstr ""
+
+#: user/views.py:139 user/views.py:142
 msgid "User "
 msgstr ""
 
-#: user/views.py:126
+#: user/views.py:145
 msgid "User not found."
 msgstr ""
