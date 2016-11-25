@@ -19,13 +19,13 @@
 			<p>{% trans "End Date" %}: {{booking.end_date}}</p>
 			</div>
 			<table class="table">
-			{% for book in booking.time.values %}
+			{% for book in booking.time.all %}
 				<tr>
 					<td>
 					{{ book.date_booking }}
 					</td>
 					<td>
-					{{ book.get_str_weekday }}
+					{% trans  book.get_str_weekday  %}
 					</td>
 					<td>
 					{{ book.start_hour }}
