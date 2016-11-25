@@ -23,10 +23,8 @@ msgid "Booking:"
 msgstr "Reserva:"
 
 #: booking/forms.py:32
-#, fuzzy
-#| msgid "Responsible"
 msgid "Responsible:"
-msgstr "Responsável"
+msgstr "Responsável:"
 
 #: booking/forms.py:40 booking/views.py:55
 msgid "Room's Week Timetable"
@@ -45,8 +43,6 @@ msgid " Room "
 msgstr " Sala "
 
 #: booking/forms.py:44 booking/views.py:130
-#, fuzzy
-#| msgid "Responsible"
 msgid " Responsible"
 msgstr "Responsável"
 
@@ -100,10 +96,8 @@ msgid "Responsible (optional):"
 msgstr "Responsável (opcional):"
 
 #: booking/forms.py:180
-#, fuzzy
-#| msgid "Responsible (optional):"
 msgid "Tags (optional):"
-msgstr "Responsável (opcional):"
+msgstr "Tags (opcional):"
 
 #: booking/forms.py:203
 msgid "Yes"
@@ -118,14 +112,12 @@ msgid "Booking Name:"
 msgstr "Nome da Reserva:"
 
 #: booking/forms.py:210
-#, fuzzy
-#| msgid ""
-#| "Doesnt exist any booking in                              this period of "
-#| "time"
 msgid ""
 "Do you wish to register "
 "booking                                                 for a semester?"
-msgstr "Período de reserva inválido: Reserva precisa ser em datas futuras"
+msgstr ""
+"Deseja registrar "
+"reserva                                                 pelo semestre inteiro?"
 
 #: booking/forms.py:215
 msgid "Start Date:"
@@ -450,10 +442,8 @@ msgid "Invalid option"
 msgstr "Opção inválida"
 
 #: booking/views.py:236
-#, fuzzy
-#| msgid "Booking alread exists"
 msgid "Booking already exists"
-msgstr "Conflito: já existe reserva neste horário e local"
+msgstr "Já existe esta reserva"
 
 #: booking/views.py:291
 msgid "Booking has been canceled"
@@ -492,20 +482,20 @@ msgstr "Reserva aprovada!"
 msgid "Booking Denied!"
 msgstr "Reserva negada!"
 
-#~ msgid "Doesnt exist any building with this name"
-#~ msgstr "Não existe prédio com este nome"
+msgid "Doesnt exist any building with this name"
+msgstr "Não existe prédio com este nome"
 
-#~ msgid "Doesnt exist any booking in this place"
-#~ msgstr "Não existe reserva neste local"
+msgid "Doesnt exist any booking in this place"
+msgstr "Não existe reserva neste local"
 
-#~ msgid "Doesnt exist any booking with this name"
-#~ msgstr "Não existe reserva com este nome"
+msgid "Doesnt exist any booking with this name"
+msgstr "Não existe reserva com este nome"
 
-#~ msgid " Day"
-#~ msgstr " Dia"
+msgid " Day"
+msgstr " Dia"
 
-#~ msgid "Inputs are in invalid format"
-#~ msgstr "Valores informados inválidos"
+msgid "Inputs are in invalid format"
+msgstr "Valores informados inválidos"
 
-#~ msgid "Nome da Sala:"
-#~ msgstr "Nome da Sala"
+msgid "Nome da Sala:"
+msgstr "Nome da Sala:"
