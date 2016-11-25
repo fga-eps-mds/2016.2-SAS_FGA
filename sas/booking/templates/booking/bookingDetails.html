@@ -23,6 +23,7 @@
 			<p>{% trans "Place" %}: {{booking.place.name}}</p>
 			<p>{% trans "Start Date" %}: {{booking.start_date}}</p>
 			<p>{% trans "End Date" %}: {{booking.end_date}}</p>
+      <p>{% trans "Engineering" %}: {{ booking.get_engineering_display }}</p>
 			<p>{% trans "Responsible" %}: {{booking.responsible}}</p>
 			<p>{% trans "Tags" %}:
       {% for tag in tags %}
