@@ -47,19 +47,23 @@ class EditUserTest(TestCase):
         client = self.client
         client.login(username='gutorc@hotmail.com', password='123456')
         new_password = '12333567'
-        parameters = {'password': '123456', 'new_password': new_password, 'renew_password': new_password}
+        parameters = {'password': '123456', 'new_password': new_password,
+                      'renew_password': new_password}
         client.post('/user/change/', parameters)
         client.logout()
-        login_sucess = client.login(username='gutorc@hotmail.com', password=new_password)
+        login_sucess = client.login(username='gutorc@hotmail.com',
+                                    password=new_password)
         self.assertTrue(login_sucess)
 
     def test_change_password_invalid(self):
         client = self.client
         client.login(username='gutorc@hotmail.com', password='123456')
         new_password = '12333567'
-        parameters = {'password': '123455', 'new_password': new_password, 'renew_password': new_password}
+        parameters = {'password': '123455', 'new_password': new_password,
+                      'renew_password': new_password}
         response = client.post('/user/change/', parameters)
         self.assertContains(response, 'Current password is wrong')
+
 
 class DeleteUserTest(TestCase):
     def setUp(self):

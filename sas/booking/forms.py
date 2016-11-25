@@ -338,6 +338,12 @@ class BookingForm(forms.Form):
                 self.add_error('start_hour', msg)
                 self.add_error('end_hour', msg)
                 raise forms.ValidationError(msg)
+            if(start_hour >= end_hour):
+                msg = _('Invalid booking hours: End date must be'
+                        ' greater then start date')
+                self.add_error('start_hour', msg)
+                self.add_error('end_hour', msg)
+                raise forms.ValidationError(msg)
 
         except Exception as e:
             print(e)

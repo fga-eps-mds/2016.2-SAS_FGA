@@ -111,15 +111,16 @@ class Booking(models.Model):
                 " - " + str(self.start_date) + " - " + str(self.end_date))
 
     def exists(self, start_hour, end_hour, week_days):
+        st_date = self.start_date
         week_days = [1 if int(x) == 6 else int(x) + 2 for x in week_days]
-        return Booking.objects.filter(place_id = self.place_id,
-                                   time__date_booking__gte = self.start_date,
-                                   time__date_booking__lt = self.end_date,
-                                   time__start_hour = start_hour,
-                                   time__end_hour = end_hour,
-                                   time__date_booking__week_day__in = week_days 
-                                   ).exists()
-        
+        wk = week_days
+        return Booking.objects.filter(place_id=self.place_id,
+                                      time__date_booking__gte=st_date,
+                                      time__date_booking__lt=self.end_date,
+                                      time__start_hour=start_hour,
+                                      time__end_hour=end_hour,
+                                      time__date_booking__week_day__in=wk
+                                      ).exists()
 
     def save(self, *args, **kwargs):
         if (self.place.is_laboratory and not
