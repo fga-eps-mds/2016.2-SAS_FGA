@@ -101,14 +101,23 @@ function Booking() {
         return true;
     }
 
-    this.check_time = function(element1, element2) {
+    this.check_time = function(element1, element2, element3) {
+        var startDate = Date.parse(element3.val());
         var beginTime = parseInt(element1.val());
         var endTime = parseInt(element2.val());
+        var now = new Date();
 
         if(beginTime >= endTime) {
             this.addError(element2.parent());
             this.addSpan(element2, "End time has to be after begin time");
 
+            return false;
+        }
+
+        if (beginTime < now.getHours() && startDate < now){
+            this.addError(element1.parent());
+            this.addSpan(element1, "Book time has to be after current time");                
+            
             return false;
         }
 

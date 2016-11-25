@@ -187,7 +187,7 @@ $(document).ready(function(){
                 return 0;
             }
 
-            else if(!booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'))) {
+            else if(!booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'), $("#id_start_date"))) {
                 return 0;
             }
 
@@ -207,7 +207,7 @@ $(document).ready(function(){
             end_date = $.datepicker.formatDate( "yy-mm-dd", new Date(EndDateinISO));
 
             if(!booking.check_date($("#id_one_day_date")) ||
-                !booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'))) {
+                !booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'), $('#id_one_day_date'))) {
                 return 0;
             }
         }
@@ -287,7 +287,7 @@ $(document).ready(function(){
         if(!$('td').hasClass("place-selected")) {
             booking.addSpan($('#booking-places'), 'Please, select a place to continue');
             $('.help-block').css('text-align', 'center');
-            return 0;
+            return false;
         }
 
         $('.help-block').empty();
