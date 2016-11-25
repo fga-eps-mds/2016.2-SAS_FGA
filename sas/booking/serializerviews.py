@@ -54,7 +54,7 @@ class UnoccupiedPlaceList(viewsets.ViewSet):
                 booking_place__time__date_booking__week_day__in = weekday
             ).distinct()
 
-            unoccupied = Place.objects.filter(building_id=1).exclude(pk__in=places)
+            unoccupied = Place.objects.filter(building_id=id_building).exclude(pk__in=places)
 
         else:
             unoccupied = Place.objects.all()
