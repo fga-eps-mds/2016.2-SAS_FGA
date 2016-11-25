@@ -239,7 +239,7 @@ def new_booking(request):
                 return render(request, 'booking/showDates.html',
                               {'booking': booking})
             else:
-                messages.error(request, _("Booking alread exists"))
+                messages.error(request, _("Booking already exists"))
     else:
         form_booking = BookingForm()
     return render(request, 'booking/newBooking.html',
