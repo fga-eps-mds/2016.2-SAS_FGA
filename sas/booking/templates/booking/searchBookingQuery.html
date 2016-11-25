@@ -35,26 +35,18 @@
 {% block extrajs %}
 <script src="{% static 'plugins/select2/js/select2.js' %}"> </script>
 <script type="text/javascript">
-$(function () {
-	$('.datepicker1').datepicker({
-			inline: true,
-			useCurrent: true,
-			autoclose: true,
-	});
+$(document).ready(function () {
+    $('.datepicker1').datepicker({ inline: true, useCurrent: true, autoclose: true, });
     {% if LANGUAGE_CODE == "en" %}
-        $.datepicker.setDefaults( $.datepicker.regional[ "" ] )
+            $('.datepicker1').datepicker( "option", $.datepicker.regional[ "" ] );
     {% else %}
-        $.datepicker.setDefaults( $.datepicker.regional[ "{{ LANGUAGE_CODE|default:"" }}" ] )
+            $('.datepicker1').datepicker( "option", $.datepicker.regional[ "{{ LANGUAGE_CODE|default:"" }}" ] );
     {% endif %}
-
-  $(".select2").select2({
+    $(".select2").select2({
 		theme: "classic"
 	});
 
 	$('.optional').closest('div').hide();
-});
-
-$(document).ready(function () {
 	$('form').trigger('reset');
 	$('#id_building_name').change(function () {
 		$("#id_room_name").prop('selectedIndex',0);
@@ -118,7 +110,6 @@ $(document).ready(function () {
 });
 
 </script>
-<script src= "{% static 'jquery/ui/datepicker-pt-BR.js' %}"></script>
 <script src= "{% static 'jquery/ui/jquery-ui.min.js' %}"></script>
-<script src= "{% static 'plugins/datepicker/locales/bootstrap-datepicker.pt-BR.min.js' %}"></script>
+<script src= "{% static 'jquery/ui/datepicker-pt-BR.js' %}"></script>
 {% endblock %}
