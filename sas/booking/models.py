@@ -115,7 +115,7 @@ class Booking(models.Model):
         week_days = [1 if int(x) == 6 else int(x) + 2 for x in week_days]
         wk = week_days
         return Booking.objects.filter(place_id=self.place_id,
-                                      time__date_booking__gte=self.st_date,
+                                      time__date_booking__gte=st_date,
                                       time__date_booking__lt=self.end_date,
                                       time__start_hour=start_hour,
                                       time__end_hour=end_hour,
