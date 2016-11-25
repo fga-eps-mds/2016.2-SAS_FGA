@@ -169,7 +169,8 @@ Scenario: Empty building
 Scenario: End time equals start time
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/newbooking/"
-    And I fill in "Booking Name:" with "Teste"    And I choose "No"
+    And I fill in "Booking Name:" with "Teste"
+    And I choose "No"
     And I fill in "Start Date:" with "10/20/2019"
     And I fill in "End Date:" with "10/30/2019"
     And I select "UAC" from "Building"
@@ -178,12 +179,13 @@ Scenario: End time equals start time
     And I select "20:00" from "End Time:"
     And I click on an element with id of "id_week_days_0"
     Then I press "Perform Booking"
-    Then I should see "Invalid booking hours"
+    Then I should see "Invalid booking hours: End date must be greater then start date"
 
 Scenario: End time lower then start time
     When I login in with email "lucas@gmail.com" and password "123456"
     Then I visit site page "/booking/newbooking/"
-    And I fill in "Booking Name:" with "Teste"    And I choose "No"
+    And I fill in "Booking Name:" with "Teste"
+    And I choose "No"
     And I fill in "Start Date:" with "10/20/2019"
     And I fill in "End Date:" with "10/30/2019"
     And I select "UAC" from "Building"
@@ -192,5 +194,4 @@ Scenario: End time lower then start time
     And I select "18:00" from "End Time:"
     And I click on an element with id of "id_week_days_0"
     Then I press "Perform Booking"
-    Then I should see "Invalid booking hours"
-
+    Then I should see "Invalid booking hours: End date must be greater then start date"
