@@ -27,6 +27,7 @@ from booking.templatetags.check_table import search_place, search_hour
 from booking.templatetags.check_table import search_user, aux_search_date
 from booking.templatetags.check_table import search_date, search_tags
 from booking.templatetags.booking_handling import is_all_bookings
+from booking.templatetags.booking_handling import status_glyphicon
 
 
 class DeleteBookingTest(TestCase):
@@ -200,7 +201,9 @@ class TestNewBooking(TestCase):
         client = self.client
         self.user.make_as_admin()
         responsible_user = UserProfileFactory.create()
-        self.parameters['responsible'] = str(responsible_user)
+        self.parameters['date_options'] = 'opt_select_date'
+        self.parameters['engineering_choice'] = '1'
+        self.parameters['responsible'] = responsible_user.__str__()
         client.login(username=username, password='1234567')
         response = client.post('/booking/newbooking/', self.parameters)
         booking = Booking.objects.get(name=self.parameters['name'])
@@ -210,6 +213,8 @@ class TestNewBooking(TestCase):
         username = self.user.user.username
         client = self.client
         self.user.make_as_admin()
+        self.parameters['date_options'] = 'opt_select_date'
+        self.parameters['engineering_choice'] = '1'
         self.parameters['responsible'] = 'Carla Rocha'
         client.login(username=username, password='1234567')
         response = client.post('/booking/newbooking/', self.parameters)
@@ -677,6 +682,21 @@ class TemplateTagsTest(TestCase):
     def test_aux_search_date(self):
         days_n = (7, 8)
         self.assertEquals(aux_search_date(7, 8), days_n)
+
+    def test_status_glyphicon(self):
+        nothing = 0
+        self.assertEqual(status_glyphicon(nothing), None)
+
+    def test_search_place(self):
+        places_list = list(Place.objects.all())
+        pk = str(places_list[0].pk)
+        self.assertEqual(search_place(places_list, 0), pk)
+
+    def test_search_building(self):
+        places_list = list(Place.objects.all())
+        pk = str(places_list[0].building.pk)
+        self.assertEqual(search_building(places_list, 0), pk)
+
 
 
 class TestBookingTags(TestCase):

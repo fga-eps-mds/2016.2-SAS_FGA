@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from booking.models import (WEEKDAYS, Booking, BookTime, Place, Building,
-                            date_range, Validation, Tag)
+                            date_range, Validation, ENGINEERINGS, Tag)
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
@@ -166,24 +166,7 @@ class SearchBookingForm(forms.Form):
 
 
 class BookingForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super(BookingForm, self).__init__(*args, **kwargs)
-        self.fields['responsible'] = forms.CharField(
-            label=_('Responsible (optional):'),
-            required=False,
-            widget=forms.widgets.Select(
-                attrs={'class': 'selectize'},
-                choices=UserProfile.get_users(),
-            )
-        )
-        self.fields['tags'] = forms.CharField(
-            label=_('Tags (optional):'),
-            required=False,
-            widget=forms.widgets.SelectMultiple(
-                attrs={'class': 'selectize_multiple'},
-                choices=Tag.get_tags(),
-            )
-        )
+
     hour = datetime.strptime("08:00", "%H:%M").time()
     hour2 = datetime.strptime("10:00", "%H:%M").time()
     hour3 = datetime.strptime("12:00", "%H:%M").time()
@@ -239,6 +222,38 @@ class BookingForm(forms.Form):
         required=False,
         choices=WEEKDAYS,
         widget=forms.CheckboxSelectMultiple())
+    engineering_choice = forms.ChoiceField(
+        label=_('Engineering:'),
+        choices=ENGINEERINGS)
+
+    def __init__(self, user=None, *args, **kwargs):
+        super(BookingForm, self).__init__(*args, **kwargs)
+        self.fields['responsible'] = forms.CharField(
+            label=_('Responsible (optional):'),
+            required=False,
+            widget=forms.widgets.Select(
+                attrs={'class': 'selectize'},
+                choices=UserProfile.get_users(),
+            )
+        )
+
+        self.fields['tags'] = forms.CharField(
+            label=_('Tags (optional):'),
+            required=False,
+            widget=forms.widgets.SelectMultiple(
+                attrs={'class': 'selectize_multiple'},
+                choices=Tag.get_tags(),
+            )
+        )
+
+        try:
+            if not(user and user.profile_user.is_admin()):
+                self.fields.pop('engineering_choice')
+                self.fields.pop('responsible')
+        except:
+            self.fields.pop('engineering_choice')
+            self.fields.pop('responsible')
+
 
     def save(self, user, force_insert=False, force_update=False, commit=True):
         booking = Booking()
@@ -250,6 +265,7 @@ class BookingForm(forms.Form):
         weekdays = self.cleaned_data.get("week_days")
 
         if user.profile_user.is_admin():
+            booking.engineering = self.cleaned_data.get("engineering_choice")
             booking.responsible = self.cleaned_data.get("responsible")
             name = re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+',
                              booking.responsible)
@@ -260,12 +276,14 @@ class BookingForm(forms.Form):
             if user.profile_user.is_admin() and (users.count() is ONE_FOUND):
                 booking.user = users[0]
         else:
+            booking.engineering = user.profile_user.engineering
             booking.responsible = str(user.profile_user)
 
         book = BookTime()
         book.date_booking = booking.start_date
         book.start_hour = self.cleaned_data.get("start_hour")
         book.end_hour = self.cleaned_data.get("end_hour")
+
         try:
             booking.save()
             if booking.exists(book.start_hour, book.end_hour, weekdays):
@@ -279,16 +297,18 @@ class BookingForm(forms.Form):
                                                date_booking=day)
                         newBookTime.save()
                         booking.time.add(newBookTime)
-                tags = self.cleaned_data['tags']
-                if tags:
-                    tags = ast.literal_eval(tags)
-                    for name in tags:
-                        if not Tag.objects.filter(name=name).exists():
-                            tag = Tag(name=name)
-                            tag.save()
-                        tag = Tag.objects.get(name=name)
-                        booking.tags.add(tag)
-                booking.save()
+
+            tags = self.cleaned_data['tags']
+            if tags:
+                tags = ast.literal_eval(tags)
+                for name in tags:
+                    if not Tag.objects.filter(name=name).exists():
+                        tag = Tag(name=name)
+                        tag.save()
+                    tag = Tag.objects.get(name=name)
+                    booking.tags.add(tag)
+            booking.save()
+
         except Exception as e:
             booking.delete()
             msg = _('Failed to book selected period')

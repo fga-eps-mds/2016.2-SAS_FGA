@@ -38,3 +38,7 @@ def is_all_bookings(name):
         return True
     else:
         return False
+
+@register.filter(name='is_false')
+def is_false(arg): 
+    return arg is False

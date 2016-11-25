@@ -224,8 +224,11 @@
 			useCurrent: true,
 			autoclose: true,
 	});
-
-    $.datepicker.setDefaults( $.datepicker.regional[ "{{ LANGUAGE_CODE|default:"" }}" ] )
+    {% if LANGUAGE_CODE == "en" %}
+            $('.datepicker1').datepicker( "option", $.datepicker.regional[ "" ] );
+    {% else %}
+            $('.datepicker1').datepicker( "option", $.datepicker.regional[ "{{ LANGUAGE_CODE|default:"" }}" ] );
+    {% endif %}
 
     $('html').bind('keypress', function(e){
         if(e.keyCode == 13){

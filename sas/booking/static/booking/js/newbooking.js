@@ -176,10 +176,19 @@ $(document).ready(function(){
             var startDate = $("#id_start_date").val();
             var endDate = $("#id_end_date").val();
 
-            var StartDateinISO = $.datepicker.parseDate('mm/dd/yy', startDate);
+           try {
+                var StartDateinISO = $.datepicker.parseDate('mm/dd/yy', startDate);
+            }
+            catch(err) {
+                StartDateinISO = $.datepicker.parseDate('dd/mm/yy', startDate);
+            } 
             start_date = $.datepicker.formatDate( "yy-mm-dd", new Date(StartDateinISO));
-
-            var EndDateinISO = $.datepicker.parseDate('mm/dd/yy', endDate);
+            
+            try{
+                var EndDateinISO = $.datepicker.parseDate('mm/dd/yy', endDate);
+            }catch(err){
+                var EndDateinISO = $.datepicker.parseDate('dd/mm/yy', endDate);
+            }
             end_date = $.datepicker.formatDate( "yy-mm-dd", new Date(EndDateinISO));
 
             if(!booking.check_date($("#id_start_date")) || !booking.check_date($("#id_end_date")) ||
@@ -200,12 +209,21 @@ $(document).ready(function(){
             var startDate = $('#id_one_day_date').val();
             var endDate = $('#id_one_day_date').val();
 
-            var StartDateinISO = $.datepicker.parseDate('mm/dd/yy', startDate);
+            try {
+                var StartDateinISO = $.datepicker.parseDate('mm/dd/yy', startDate);
+            }
+            catch(err) {
+                StartDateinISO = $.datepicker.parseDate('dd/mm/yy', startDate);
+            } 
             start_date = $.datepicker.formatDate( "yy-mm-dd", new Date(StartDateinISO));
-
-            var EndDateinISO = $.datepicker.parseDate('mm/dd/yy', endDate);
+            
+            try{
+                var EndDateinISO = $.datepicker.parseDate('mm/dd/yy', endDate);
+            }catch(err){
+                var EndDateinISO = $.datepicker.parseDate('dd/mm/yy', endDate);
+            }
             end_date = $.datepicker.formatDate( "yy-mm-dd", new Date(EndDateinISO));
-
+            
             if(!booking.check_date($("#id_one_day_date")) ||
                 !booking.check_time($('#input_slider_begin_time'), $('#input_slider_end_time'), $('#id_one_day_date'))) {
                 return 0;
