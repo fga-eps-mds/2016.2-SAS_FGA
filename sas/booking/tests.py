@@ -201,7 +201,9 @@ class TestNewBooking(TestCase):
         client = self.client
         self.user.make_as_admin()
         responsible_user = UserProfileFactory.create()
-        self.parameters['responsible'] = str(responsible_user)
+        self.parameters['date_options'] = 'opt_select_date'
+        self.parameters['engineering_choice'] = '1'
+        self.parameters['responsible'] = responsible_user.__str__()
         client.login(username=username, password='1234567')
         response = client.post('/booking/newbooking/', self.parameters)
         booking = Booking.objects.get(name=self.parameters['name'])
@@ -211,6 +213,8 @@ class TestNewBooking(TestCase):
         username = self.user.user.username
         client = self.client
         self.user.make_as_admin()
+        self.parameters['date_options'] = 'opt_select_date'
+        self.parameters['engineering_choice'] = '1'
         self.parameters['responsible'] = 'Carla Rocha'
         client.login(username=username, password='1234567')
         response = client.post('/booking/newbooking/', self.parameters)
@@ -691,7 +695,7 @@ class TemplateTagsTest(TestCase):
     def test_search_building(self):
         places_list = list(Place.objects.all())
         pk = str(places_list[0].building.pk)
-        self.assertEqual(search_building(places_list, 0), pk)        
+        self.assertEqual(search_building(places_list, 0), pk)
 
 
 
