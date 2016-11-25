@@ -287,7 +287,7 @@ $(document).ready(function(){
         if(!$('td').hasClass("place-selected")) {
             booking.addSpan($('#booking-places'), 'Please, select a place to continue');
             $('.help-block').css('text-align', 'center');
-            return 0;
+            return false;
         }
 
         $('.help-block').empty();
