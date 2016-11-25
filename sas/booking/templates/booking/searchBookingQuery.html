@@ -41,9 +41,11 @@ $(function () {
 			useCurrent: true,
 			autoclose: true,
 	});
-
-    $.datepicker.setDefaults( $.datepicker.regional[ "{{ LANGUAGE_CODE|default:"" }}" ] )
-
+    {% if LANGUAGE_CODE == "en" %}
+        $.datepicker.setDefaults( $.datepicker.regional[ "" ] )
+    {% else %}
+        $.datepicker.setDefaults( $.datepicker.regional[ "{{ LANGUAGE_CODE|default:"" }}" ] )
+    {% endif %}
 
   $(".select2").select2({
 		theme: "classic"
