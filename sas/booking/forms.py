@@ -276,13 +276,14 @@ class BookingForm(forms.Form):
             if user.profile_user.is_admin() and (users.count() is ONE_FOUND):
                 booking.user = users[0]
         else:
-            booking.engineering = "6";
+            booking.engineering = user.profile_user.engineering
             booking.responsible = str(user.profile_user)
 
         book = BookTime()
         book.date_booking = booking.start_date
         book.start_hour = self.cleaned_data.get("start_hour")
         book.end_hour = self.cleaned_data.get("end_hour")
+
         try:
             booking.save()
             if booking.exists(book.start_hour, book.end_hour, weekdays):
@@ -296,16 +297,18 @@ class BookingForm(forms.Form):
                                                date_booking=day)
                         newBookTime.save()
                         booking.time.add(newBookTime)
-                tags = self.cleaned_data['tags']
-                if tags:
-                    tags = ast.literal_eval(tags)
-                    for name in tags:
-                        if not Tag.objects.filter(name=name).exists():
-                            tag = Tag(name=name)
-                            tag.save()
-                        tag = Tag.objects.get(name=name)
-                        booking.tags.add(tag)
-                booking.save()
+
+            tags = self.cleaned_data['tags']
+            if tags:
+                tags = ast.literal_eval(tags)
+                for name in tags:
+                    if not Tag.objects.filter(name=name).exists():
+                        tag = Tag(name=name)
+                        tag.save()
+                    tag = Tag.objects.get(name=name)
+                    booking.tags.add(tag)
+            booking.save()
+
         except Exception as e:
             booking.delete()
             msg = _('Failed to book selected period')

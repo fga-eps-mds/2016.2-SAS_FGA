@@ -14,10 +14,9 @@ WEEKDAYS = (('0', _("Monday")), ('1', _("Tuesday")), ('2', _("Wednesday")),
             ('3', _("Thursday")), ('4', _("Friday")), ('5', _("Saturday")),
             ('6', _("Sunday")))
 
-ENGINEERINGS = (('0', _("----------")), ('1', _("Aerospace Engineering")), 
-            ('2', _("Automotive Engineering")), ('3', _("Electronic Engineering")), 
-            ('4', _("Energy Engineering")), ('5', _("Software Engineering")),
-            ('6', _("Engineerings")))
+ENGINEERINGS = (('0', '----'), ('1', _('Software')), ('2', _('Eletronic')),
+               ('3', _('Energy')), ('4', _('Automotive')),
+               ('5', _('Aerospace')), ('6', _('Engineerings')))
 
 
 class Building(models.Model):
@@ -124,9 +123,9 @@ class Booking(models.Model):
                                    time__date_booking__lt = self.end_date,
                                    time__start_hour = start_hour,
                                    time__end_hour = end_hour,
-                                   time__date_booking__week_day__in = week_days 
+                                   time__date_booking__week_day__in = week_days
                                    ).exists()
-        
+
 
     def save(self, *args, **kwargs):
         if (self.place.is_laboratory and not
